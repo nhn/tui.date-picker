@@ -14,7 +14,7 @@ date-picker
 
 ## Dependency
 * jquery: v1.8.3
-* code-snippet: v1.0.1
+* code-snippet: v1.0.0
 
 ## Test environment
 * PC

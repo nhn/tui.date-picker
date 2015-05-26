@@ -1,6 +1,7 @@
 /**
  * Created by nhnent on 15. 5. 14..
  * @fileoverview 날짜를 선택하는 기능을 구현한다. 특정 범위를 받으면, 그 날짜만 선택 가능하다.
+ * @author NHN ENTERTAINMENT - FE 개발팀
  * @author 이제인(jein.yi@nhnent.com)
  * @author 이민규(minkyu.yi@nhnent.com) 2015-05-14
  * @dependency jquery.1.8.3.js, code-snippet.js, calendar.js

@@ -22,12 +22,12 @@ module.exports = function(config) {
         files: [
             'lib/code-snippet/js/*.js',
             'lib/jquery/js/*.js',
-            'lib/calendar/js/*.js',
+            'lib/component-calendar/js/*.js',
             'node_modules/jasmine-jquery/lib/jasmine-jquery.js',
 
-            'src/spinbox.js',
-            'src/timepicker.js',
-            'src/datepicker.js',
+            'src/js/spinbox.js',
+            'src/js/timepicker.js',
+            'src/js/datepicker.js',
 
             'test/fixtures/**/*.html',
             'test/css/**/*.css',

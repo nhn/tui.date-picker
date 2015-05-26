@@ -6,7 +6,8 @@
   "featureList": [],
   "dependency": [
     "jquery#~1.8.3",
-    "code-snippet#~1.0.1"
+    "code-snippet#~1.0.0",
+    "component-calendar#1.0.1"
   ],
   "test": {
     "PC": [
@@ -45,7 +46,7 @@
   "scripts": {
     "doc": "./node_modules/.bin/jsdoc -t ./node_modules/fedoc-template -c conf.json"
   },
-  "author": "FE",
+  "author": "NHN ENTERTAINMENT - FE 개발팀",
   "history": {
     "0.1.0": {
       "content": "최초개발",

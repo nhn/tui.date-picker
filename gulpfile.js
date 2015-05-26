@@ -9,24 +9,29 @@ var gulp = require('gulp'),
     connect = require('gulp-connect');
 
 var paths = {
-        scripts: ['./src/spinbox.js', './src/timepicker.js', './src/datepicker.js'],
+        scripts: ['./src/js/spinbox.js', './src/js/timepicker.js', './src/js/datepicker.js'],
         image: []
     };
+
+gulp.task('concat', function() {
+    return gulp.src(paths.scripts)
+        .pipe(concat('datepicker.all.js'))
+        .pipe(gulp.dest(''));
+});
 
 gulp.task('scripts', function(){
     return gulp.src(paths.scripts)
         .pipe(sourcemaps.init())
         .pipe(uglify())
         .pipe(concat('datepicker.min.js'))
-        .pipe(sourcemaps.write('./'))
+        .pipe(sourcemaps.write(''))
         .pipe(gulp.dest(''));
 });
 
 gulp.task('connect', function() {
    connect.server({
-       port: 9998,
-       livereload: true
+       port: 9998
    });
 });
 
-gulp.task('default',['scripts', 'connect']);
+gulp.task('default',['concat', 'scripts', 'connect']);

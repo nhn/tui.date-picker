@@ -1,4 +1,4 @@
-# Created by https://www.gitignore.io
+reated by https://www.gitignore.io
 # intellij, node, bower, osx, windows, svn, eclipse, grunt
 
 ### Intellij ###
@@ -190,3 +190,15 @@ dist/
 
 # Grunt usually preprocesses files such as coffeescript, compass... inside the .tmp directory
 .tmp/
+
+# js-files
+src
+test
+samples
+report
+package.json
+karma.conf.js
+conf.json
+bower.json
+
+

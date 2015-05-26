@@ -18,7 +18,7 @@
   "tutorial": "date-picker",
   "repository": {
     "type": "git",
-    "url": "https://github.nhnent.com/fe/component-time-picker.git"
+    "url": "https://github.nhnent.com/fe/component-date-picker.git"
   },
   "devDependencies": {
     "fedoc-template": "git+http://14bfd38a036366f7ca90355d202038126127bd01:x-oauth-basic@github.nhnent.com/fe/share-fedoc-template.git",
@@ -43,7 +43,7 @@
     "requirejs": "^2.1.14"
   },
   "scripts": {
-    "doc": "./node_modules/.bin/jsdoc -c conf.json"
+    "doc": "./node_modules/.bin/jsdoc -t ./node_modules/fedoc-template -c conf.json"
   },
   "author": "FE",
   "history": {

@@ -34,4 +34,4 @@ date-picker
 | ---- | ---- | ---- | ---- |
 | 0.1.0 | 최초개발 | 2014.11 | 이제인 <jein.yi@nhnent.com> |
 | <a href=https://github.nhnent.com/pages/fe/component-calendar/1.0.0/>1.0.0</a> | 데이트 피커 | 2015.03 | 이제인 <jein.yi@nhnent.com> |
-| 1.1.0 | 데이트-타임 피커 | 2015.05 | 이민규 <minkyu.yi@nhnent.com> |
+| <a href=https://github.nhnent.com/pages/fe/component-date-picker/1.1.0/>1.1.0</a> | 데이트-타임 피커 | 2015.05 | 이민규 <minkyu.yi@nhnent.com> |

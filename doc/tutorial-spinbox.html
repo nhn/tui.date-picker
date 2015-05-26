@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Tutorial: spinbox</title>
+    <link type="text/css" rel="stylesheet" href="styles/prettify-jsdoc.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-fe2.css">
+</head>
+<body>
+
+<div id="wrap">
+
+    <div class="header">
+
+        <div class="container-fluid">
+            <h3><a href="index.html">API Documentation</a> <small>FE개발팀</small></h3>
+        </div>
+
+    </div>
+
+    <div class="body">
+        <div id="navigation" class="navigation"><h3>Samples</h3><ul class="list samples"><li class="item"><a href="tutorial-datepicker.html">datepicker</a></li><li class="item"><a href="tutorial-spinbox.html">spinbox</a></li><li class="item"><a href="tutorial-timepicker.html">timepicker</a></li></ul><h3>Classes</h3><ul class="list classes"><li class="item" id="ne.component.DatePicker"><span class="title"><span class="p-item">ne.component.</span><a href="ne.component.DatePicker.html">DatePicker</a></span><span class="icon blue static">static</span><ul class="sublist methods ne.component.DatePicker"><span class="subtitle">Methods</span><li><a href="ne.component.DatePicker.html#close">close</a></li><li><a href="ne.component.DatePicker.html#getDateObject">getDateObject</a></li><li><a href="ne.component.DatePicker.html#getDayInMonth">getDayInMonth</a></li><li><a href="ne.component.DatePicker.html#getMonth">getMonth</a></li><li><a href="ne.component.DatePicker.html#getTimePicker">getTimePicker</a></li><li><a href="ne.component.DatePicker.html#getYear">getYear</a></li><li><a href="ne.component.DatePicker.html#open">open</a></li><li><a href="ne.component.DatePicker.html#setDate">setDate</a></li><li><a href="ne.component.DatePicker.html#setDateForm">setDateForm</a></li></ul></li><li class="item" id="ne.component.Spinbox"><span class="title"><span class="p-item">ne.component.</span><a href="ne.component.Spinbox.html">Spinbox</a></span><span class="icon blue static">static</span><ul class="sublist methods ne.component.Spinbox"><span class="subtitle">Methods</span><li><a href="ne.component.Spinbox.html#addExclusion">addExclusion</a></li><li><a href="ne.component.Spinbox.html#getContainerElement">getContainerElement</a></li><li><a href="ne.component.Spinbox.html#getOption">getOption</a></li><li><a href="ne.component.Spinbox.html#getStep">getStep</a></li><li><a href="ne.component.Spinbox.html#getValue">getValue</a></li><li><a href="ne.component.Spinbox.html#removeExclusion">removeExclusion</a></li><li><a href="ne.component.Spinbox.html#setStep">setStep</a></li><li><a href="ne.component.Spinbox.html#setValue">setValue</a></li></ul></li><li class="item" id="ne.component.TimePicker"><span class="title"><span class="p-item">ne.component.</span><a href="ne.component.TimePicker.html">TimePicker</a></span><span class="icon blue static">static</span><ul class="sublist methods ne.component.TimePicker"><span class="subtitle">Methods</span><li><a href="ne.component.TimePicker.html#addHourExclusion">addHourExclusion</a></li><li><a href="ne.component.TimePicker.html#addMinuteExclusion">addMinuteExclusion</a></li><li><a href="ne.component.TimePicker.html#close">close</a></li><li><a href="ne.component.TimePicker.html#fromSpinboxes">fromSpinboxes</a></li><li><a href="ne.component.TimePicker.html#getHour">getHour</a></li><li><a href="ne.component.TimePicker.html#getHourStep">getHourStep</a></li><li><a href="ne.component.TimePicker.html#getMinute">getMinute</a></li><li><a href="ne.component.TimePicker.html#getMinuteStep">getMinuteStep</a></li><li><a href="ne.component.TimePicker.html#getTime">getTime</a></li><li><a href="ne.component.TimePicker.html#hide">hide</a></li><li><a href="ne.component.TimePicker.html#open">open</a></li><li><a href="ne.component.TimePicker.html#removeHourExclusion">removeHourExclusion</a></li><li><a href="ne.component.TimePicker.html#removeMinuteExclusion">removeMinuteExclusion</a></li><li><a href="ne.component.TimePicker.html#setHour">setHour</a></li><li><a href="ne.component.TimePicker.html#setHourStep">setHourStep</a></li><li><a href="ne.component.TimePicker.html#setMinute">setMinute</a></li><li><a href="ne.component.TimePicker.html#setMinuteStep">setMinuteStep</a></li><li><a href="ne.component.TimePicker.html#setTime">setTime</a></li><li><a href="ne.component.TimePicker.html#setTimeFromInputElement">setTimeFromInputElement</a></li><li><a href="ne.component.TimePicker.html#setTimeFromString">setTimeFromString</a></li><li><a href="ne.component.TimePicker.html#setXYPosition">setXYPosition</a></li><li><a href="ne.component.TimePicker.html#show">show</a></li><li><a href="ne.component.TimePicker.html#toSpinboxes">toSpinboxes</a></li></ul></li></ul></div>
+        <div id="main" class="main"><section>
+<header>
+    
+
+    <h2>spinbox</h2>
+</header>
+
+<article>
+	
+    <a href="tutorials/spinbox.html" target="_blank">새창으로 열기</a><br/>
+    <iframe id="exampleFrame" width="500" height="700" frameborder="0" src=tutorials/spinbox.html onload="onIframeLoad()"></iframe>
+    <br/>
+    <div id='codeArea'></div>
+</article>
+<script>
+/**
+ * iframe load 이벤트 핸들러
+ */
+function onIframeLoad() {
+    generateCode();
+    autoResize();
+}
+
+/**
+ * iframe 의 너비/높이를 resize 한다.
+ */
+function autoResize() {
+    var ef = document.getElementById('exampleFrame');
+    ef.width = document.getElementById('main').clientWidth - 40;
+    ef.height = getIframeDocument().body.clientHeight + 40;
+}
+
+/**
+ * iframe 의 document 를 반환한다.
+ * @returns {HTMLDocument|Document}
+ */
+function getIframeDocument() {
+    var ef = document.getElementById('exampleFrame');
+    return ef.contentDocument || ef.contentWindow.document;
+}
+
+/**
+ * iframe 마지막 script code 를 div 에 할당한다.
+ */
+function generateCode() {
+    var codeArea = document.getElementById('codeArea'),
+        doc = getIframeDocument(),
+        scripts;
+
+    if (doc) {
+        scripts = doc.getElementsByTagName('script');
+        codeArea.innerHTML = '<pre>' + encodeHTMLEntity(scripts[scripts.length-1].innerHTML) + '</pre>';
+    }
+}
+
+/**
+ * html entity 로 인코딩한다.
+ * @param html
+ * @returns {XML|string|void}
+ */
+function encodeHTMLEntity(html) {
+    var entities = {'"': 'quot', '&': 'amp', '<': 'lt', '>': 'gt', '\'': '#39'};
+    return html.replace(/[<>&"']/g, function(m0) {
+        return entities[m0] ? '&' + entities[m0] + ';' : m0;
+    });
+}
+</script>
+
+</section></div>
+        <div class="clearfix"></div>
+    </div>
+
+</div>
+<script>
+(function() {
+// 영역 height 설정
+var height = (window.innerHeight || document.documentElement.clientHeight || document.getElementByTagName('body')[0].clientHeight) - 50;
+var navigation = document.getElementById('navigation');
+var main = document.getElementById('main');
+navigation.style.height = height + 'px';
+main.style.height = height + 'px';
+
+// IE 7,8을 위한 getElementsByClassName 구현
+var getElementsByClassName = function(className, parentElement) {
+	if(document.getElementsByClassName) {
+		return (parentElement || document).getElementsByClassName(className);
+	}
+
+    var regEx = new RegExp('(^| )'+className+'( |$)');
+	var nodes = new Array();
+    var elements = (parentElement || document.body).getElementsByTagName("*");
+    for(var i = 0, len = elements.length; i < len ; i++) {
+        if(regEx.test(elements[i].className)) {
+			nodes.push(elements[i]);
+		}
+	}
+	elements = null;
+    return nodes;
+}
+
+// url 파싱후 해당 카테고리만 display:block 처리
+var url = location.href;
+var path = url.lastIndexOf('/');
+var fileName = url.substring(path+1);
+var fullName = fileName.split('.');
+fullName.length -= 1;
+fullName = fullName.join('.');
+fullName = fullName.split('-');
+fullName = fullName[fullName.length - 1];
+var lnbList = getElementsByClassName(fullName);
+if(lnbList.length && lnbList.length > 0) {
+    for(var i = 0, len = lnbList.length; i < len; i++) {
+        lnbList[i].className += ' selected';
+    }
+}
+
+var title = document.getElementById(fullName);
+if(title) {
+    title.className += ' selected';
+    title.innerHTML = '<span class="arrow">▶</span>' + title.innerHTML;
+
+    var static = getElementsByClassName('static', title);
+    if(static) {
+        static[0].className += ' selected';
+    }
+}
+})();
+</script>
+<script type="text/javascript" src="scripts/prettify/prettify.js"></script>
+<script type="text/javascript" src="scripts/prettify/lang-css.js"></script>
+<script type="text/javascript">prettyPrint();</script>
+<script type="text/javascript" src="scripts/linenumber.js"></script>
+</body>
+</html>

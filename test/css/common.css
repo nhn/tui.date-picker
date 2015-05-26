@@ -1,0 +1,34 @@
+.layer { display:; }
+.layer-show { display:block; }
+.layer {position:absolute; width:195px;padding-bottom:9px;border:1px solid #777;background:#ffffff;}
+.layer div{margin-bottom:10px;padding:7px 0 9px 0px;text-align:center;background:#f6f6f6; vertical-align:top;}
+.layer div button {border: 0 none; cursor: pointer; margin 0; padding:0;}
+.layer div button span {display:none;}
+.layer div .calendar-btn-prev-year{position:absolute;top:7px;left:5px;width:20px;height:18px;font:11px dotum; white-space:nowrap; letter-spacing:-1px;}
+.layer div .calendar-btn-prev-mon{position:absolute;top:7px;left:38px;width:20px;height:18px;font:11px dotum; white-space:nowrap; letter-spacing:-1px;}
+.layer div .calendar-title{float:none !important;font-family:verdana;font-size:12px;color:#383838;}
+.layer div .calendar-btn-next-mon{position:absolute;top:7px;left:130px;width:20px;height:18px;font:11px dotum; white-space:nowrap; letter-spacing:-1px;}
+.layer div .calendar-btn-next-year{position:absolute;top:7px;left:163px;width:20px;height:18px;font:11px dotum; white-space:nowrap; letter-spacing:-1px;}
+.layer table{width:175px;margin:0 auto;text-align:center;}
+.layer table *{font-family:tahoma !important;font-size:10px;}
+.layer table td{width:25px;height:16px;text-align:center;color:#000000;}
+.layer table td a{display:block;height:15px;padding-top:1px;color:#000000;}
+.layer table td a:hover{background:#edf4fe;color:#6d6d6d;text-decoration:none !important;font-family:tahoma !important;}
+.layer table td a:visited,
+.layer table td a:active{color:#000000;text-decoration:none !important;}
+.layer table .calendar-selected{background:#edf4fe;color:#6d6d6d;}
+.layer table .calendar-selected a{color:#6d6d6d;text-decoration:none;}
+.layer table .calendar-sun{color:#e82828;}
+.layer table .calendar-sun a,
+.layer table .calendar-sun a:visited,
+.layer table .calendar-sun a:hover,
+.layer table .calendar-sun a:active{color:#e82828 !important;}
+.layer table .calendar-today{background:#6595db;color:#ffffff;}
+.layer table .calendar-today a{font-weight:bold;text-decoration:none;color:#fff}
+.layer table .calendar-today a:hover,
+.layer table .calendar-today a:visited,
+.layer table .calendar-today a:active{background:#6595db;color:#fff}
+.layer table .calendar-prev-mon .calendar-date,
+.layer table .calendar-next-mon .calendar-date {display:none}
+.layer table .calendar-noselect span{background:none !important;color:#d1d1d1 !important;}
+.layer table .calendar-sun span{background:none !important;color:#eca9a9 !important;}

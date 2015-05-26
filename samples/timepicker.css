@@ -1,0 +1,45 @@
+* {
+    -webkit-box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    box-sizing:border-box;
+}
+
+h1.template {
+    margin:100px 100px 100px 100px;
+}
+
+input {
+    font-size: 14px;
+}
+
+.timepicker {
+    width: 150px;
+    font-weight: bold;
+    padding: 3px;
+    border: 1px solid #eaeaea;
+    text-align: center;
+}
+
+#layer .timepicker {
+    padding: 0 40px 0 40px;
+    border-left: transparent;
+    border-bottom: transparent;
+    border-right: transparent;
+}
+
+.timepicker input {
+    font-size: 12px;
+    text-align: center;
+    border: transparent;
+}
+
+#layer .timepicker input {
+    font-size: 15px;
+}
+
+.timepicker .timepicker-btn {
+    width: 3em;
+    margin:0 1em 0 1em;
+    background-color: transparent;
+    border: 1px solid #eaeaea;
+}

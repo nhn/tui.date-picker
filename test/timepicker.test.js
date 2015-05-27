@@ -1,10 +1,6 @@
 /**
  * Created by nhnent on 15. 4. 28..
  */
-
-/**
- * @todo refactoring
- */
 describe('Timepicker', function() {
 
     jasmine.getFixtures().fixturesPath = 'base/test/fixtures';
@@ -34,7 +30,7 @@ describe('Timepicker', function() {
             expect(timepicker2).toBeDefined();
         });
 
-        it('a instance is setted by default option', function() {
+        it('create with a input element but no other options', function() {
             var opt = timepicker1._option,
                 showMeridian = opt.showMeridian,
                 position = opt.position;
@@ -46,7 +42,7 @@ describe('Timepicker', function() {
             expect(position.y).toEqual(jasmine.any(Number));
         });
 
-        it('a instance is setted by custom option', function() {
+        it('create with options', function() {
             var opt = timepicker2._option,
                 showMeridian = opt.showMeridian,
                 position = opt.position;
@@ -55,6 +51,30 @@ describe('Timepicker', function() {
             expect(timepicker2.getTime()).toEqual('00:34 PM');
             expect(position).toEqual({x:10, y:10});
         });
+
+        it('create with another options', function() {
+            var tp = new TimePicker({
+                defaultHour: 15,
+                hourStep: 2,
+                minuteStep: 2,
+                hourExclusion: [8, 12],
+                minuteExclusion: [14, 16],
+                showMeridian: true
+            });
+
+            expect(tp).toBeDefined();
+            expect(tp.getHour()).toEqual(15);
+            expect(tp.getTime()).toEqual('03:00 PM');
+        });
+
+        it('create without input element', function() {
+            var tp = new TimePicker();
+
+            expect(tp).toBeDefined();
+            expect(tp).toEqual(jasmine.any(TimePicker));
+            expect(tp.getTime()).toEqual('00:00');
+        });
+
     });
 
     describe('setter/getter', function() {
@@ -95,18 +115,24 @@ describe('Timepicker', function() {
             expect(timepicker1.getTime()).toEqual('15:23');
         });
 
-        it('transform time into formatted string', function() {
+        it('set time from string - valid', function() {
             timepicker1.setHour(1);
             timepicker1.setMinute(1);
             expect(timepicker1.getTime()).toEqual('01:01');
-            /**
-             * Invalid Time setting
-             */
+        });
+
+        it('set time from string - invalid', function() {
             originTime1 = timepicker1.getTime();
             timepicker1.setTimeFromString('24:33 PM');
             expect(timepicker1.getTime()).toEqual(originTime1);
 
             timepicker2.setTimeFromString('13:33 PM');
+            expect(timepicker2.getTime()).toEqual(originTime2);
+
+            timepicker1.setTimeFromString('34:34 CC');
+            expect(timepicker1.getTime()).toEqual(originTime1);
+
+            timepicker2.setTimeFromString('15:22 DD');
             expect(timepicker2.getTime()).toEqual(originTime2);
         });
 
@@ -315,4 +341,6 @@ describe('Timepicker', function() {
             expect(timepicker1.getMinute()).not.toEqual(minute);
         });
     });
+
+
 });

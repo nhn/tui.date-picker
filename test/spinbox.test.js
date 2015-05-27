@@ -248,6 +248,49 @@ describe('Spinbox', function() {
             expect(1).toEqual(spinbox.getValue());
         });
     });
+
+    describe('fire key event', function() {
+
+        var preValue;
+
+        beforeEach(function() {
+            preValue = spinbox.getValue();
+        });
+
+
+        it('when push the up-arrow, value will be increased - event.which', function() {
+            var ev = $.Event('keydown'),
+                nextValue;
+
+            ev.which = 38;  // up-arrow;
+            spinbox._$inputElement.trigger(ev);
+            nextValue = spinbox.getValue();
+
+            expect(nextValue).toEqual(preValue + spinbox.getStep());
+        });
+
+        it('when push the down-arrow, value will be decreased - event.keyCode', function() {
+            var ev = $.Event('keydown'),
+                nextValue;
+
+            ev.keyCode = 40;  // down-arrow;
+            spinbox._$inputElement.trigger(ev);
+            nextValue = spinbox.getValue();
+
+            expect(nextValue).toEqual(preValue - spinbox.getStep());
+        });
+
+        it('when push an invalid key, no operate', function() {
+           var ev = $.Event('keydown'),
+               nextValue;
+
+            ev.keycode = 22;
+            spinbox._$inputElement.trigger(ev);
+            nextValue = spinbox.getValue();
+
+            expect(nextValue).toEqual(preValue);
+        });
+    });
 });
 
 

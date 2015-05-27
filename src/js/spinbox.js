@@ -102,8 +102,8 @@ if(!ne.component) {
                 step: 1,
                 max: Number.MAX_SAFE_INTEGER || 9007199254740991,
                 min: Number.MIN_SAFE_INTEGER || -9007199254740991,
-                upBtnTag: '<button><strong>+</strong></button>',
-                downBtnTag: '<button><strong>-</strong></button>'
+                upBtnTag: '<button type="button"><b>+</b></button>',
+                downBtnTag: '<button type="button"><b>-</b></button>'
             };
             util.extend(this._option, option);
 

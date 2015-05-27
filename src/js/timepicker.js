@@ -26,8 +26,8 @@ if(!ne.component) {
         timePickerTag = '<table class="timepicker"><tr class="timepicker-row"></tr></table>',
         columnTag = '<td class="timepicker-column"></td>',
         spinBoxTag = '<td class="timepicker-column timepicker-spinbox"><input type="text" class="timepicker-spinbox-input"></td>',
-        upBtnTag = '<button class="timepicker-btn timepicker-btn-up"><strong>+</strong></button>',
-        downBtnTag = '<button class="timepicker-btn timepicker-btn-down"><strong>-</strong></button>';
+        upBtnTag = '<button type="button" class="timepicker-btn timepicker-btn-up"><b>+</b></button>',
+        downBtnTag = '<button type="button" class="timepicker-btn timepicker-btn-down"><b>-</b></button>';
 
 
     /**

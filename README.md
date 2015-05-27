@@ -7,9 +7,9 @@ date-picker
 * 날짜 형식 지정 가능
 
 ## Documentation
-* API : https://github.nhnent.com/pages/fe/component-date-picker/1.1.0
-* Tutorial : https://github.nhnent.com/fe/component-date-picker/wiki/date-picker-컴포넌트-적용방법
-* CI : http://fe.nhnent.com:8080/jenkins/job/component-date-picker/
+* API : <https://github.nhnent.com/pages/fe/component-date-picker/1.1.0>
+* Tutorial : <https://github.nhnent.com/fe/component-date-picker/wiki/date-picker-컴포넌트-적용방법>
+* CI : <http://fe.nhnent.com:8080/jenkins/job/component-date-picker/>
 
 
 
@@ -29,7 +29,7 @@ date-picker
 * Bower:
    * 최신버전 : `bower install "git+http://70327b4564c7a80eb61724056876b960290946dd:x-oauth-basic@github.nhnent.com/fe/component-date-picker.git#master"`
    * 특정버전 : `bower install "git+http://70327b4564c7a80eb61724056876b960290946dd:x-oauth-basic@github.nhnent.com/fe/component-date-picker.git[#tag]"`
-* Download: https://github.nhnent.com/fe/component-date-picker
+* Download: <https://github.nhnent.com/fe/component-date-picker>
 
 ## History
 | Version | Description | Date | Developer |

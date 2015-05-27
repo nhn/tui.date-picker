@@ -3,7 +3,8 @@ Date Picker
 date-picker
 
 ## Feature
-
+* 데이트피커 + 타임피커
+* 날짜 형식 지정 가능
 
 ## Documentation
 * API : https://github.nhnent.com/pages/fe/component-date-picker/1.1.0
@@ -14,7 +15,8 @@ date-picker
 
 ## Dependency
 * jquery: v1.8.3
-* code-snippet: v1.0.1
+* code-snippet: v1.0.0
+* component-calendar: v1.0.1
 
 ## Test environment
 * PC
@@ -33,5 +35,5 @@ date-picker
 | Version | Description | Date | Developer |
 | ---- | ---- | ---- | ---- |
 | 0.1.0 | 최초개발 | 2014.11 | 이제인 <jein.yi@nhnent.com> |
-| <a href=https://github.nhnent.com/pages/fe/component-calendar/1.0.0/>1.0.0</a> | 데이트 피커 | 2015.03 | 이제인 <jein.yi@nhnent.com> |
-| <a href=https://github.nhnent.com/pages/fe/component-date-picker/1.1.0/>1.1.0</a> | 데이트-타임 피커 | 2015.05 | 이민규 <minkyu.yi@nhnent.com> |
+| [1.0.0](https://github.nhnent.com/pages/fe/component-calendar/1.0.0/tutorial-sample2.html) | 데이트 피커 | 2015.03 | 이제인 <jein.yi@nhnent.com> |
+| [1.1.0](https://github.nhnent.com/pages/fe/component-date-picker/1.1.0/) | 데이트-타임 피커 | 2015.05 | 이민규 <minkyu.yi@nhnent.com> |

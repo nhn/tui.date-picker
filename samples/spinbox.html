@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <title>spinbox example</title>
     <style rel="stylesheet" type="text/css">
-        .spinbox{margin:2em; width:100px; text-align:center;}
+        .spinbox{width:100px; text-align:center;}
         .spinbox input{font-size:2em; text-align:center; border:transparent 0px;}
-        .spinbox .btn-lg{width:100%; font-size:2em; background-color:transparent; border:solid 1px black;}
+        .spinbox .btn-lg{width:100%; font-size:1.5em; background-color:transparent; border:solid 1px black;}
     </style>
 </head>
 <body>
@@ -52,8 +52,8 @@
                 min: 0,
                 max: 59,
                 exclusion: [16, 18],
-                upBtnTag: '<button class="btn-lg"><strong>+</strong></button>',
-                downBtnTag: '<button class="btn-lg"><strong>-</strong></button>'
+                upBtnTag: '<button class="btn-lg">UP</button>',
+                downBtnTag: '<button class="btn-lg">DOWN</button>'
             });
     </script>
 </body>

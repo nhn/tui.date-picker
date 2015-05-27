@@ -1,6 +1,5 @@
 # Created by https://www.gitignore.io
 # intellij, node, bower, osx, windows, svn, eclipse, grunt
-
 ### Intellij ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm
 
@@ -190,3 +189,6 @@ dist/
 
 # Grunt usually preprocesses files such as coffeescript, compass... inside the .tmp directory
 .tmp/
+
+# api
+1.1.0

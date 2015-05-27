@@ -1,13 +1,13 @@
 {
   "name": "component-date-picker",
   "version": "1.1.0",
-  "description": "date-picker",
+  "description": "데이트 피커 버전 1.1.0",
   "private": true,
   "featureList": [],
   "dependency": [
     "jquery#~1.8.3",
     "code-snippet#~1.0.0",
-    "component-calendar#1.0.1"
+    "component-calendar#~1.0.1"
   ],
   "test": {
     "PC": [

@@ -23,6 +23,7 @@ module.exports = function(config) {
             'lib/code-snippet/js/*.js',
             'lib/jquery/js/*.js',
             'lib/component-calendar/js/*.js',
+
             'node_modules/jasmine-jquery/lib/jasmine-jquery.js',
 
             'src/js/spinbox.js',
@@ -81,7 +82,7 @@ module.exports = function(config) {
         },
 
         // web server port
-        port: 9999,
+        port: 9876,
 
 
         // enable / disable colors in the output (reporters and logs)

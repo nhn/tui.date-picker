@@ -1,10 +1,11 @@
 Date Picker
 ===============
-데이트피커 1.1.0 버전
+데이트 피커 컴포넌트
+날짜 선택을 용이하게 할 수 있도록 캘린더 UI를 제공한다.
 
 ## Feature
-* 데이트피커 + 타임피커
-* 날짜 형식 지정 가능
+* 캘린더 상에서 클릭을 통해 특정 날짜 선택 기능 지원
+* 시간 선택 기능(타임 피커)를 옵션을 통해 사용 가능
 
 ## Documentation
 * API : https://github.nhnent.com/pages/fe/component-date-picker/1.1.0

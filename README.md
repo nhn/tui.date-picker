@@ -13,7 +13,7 @@ Date Picker
 ## Documentation
 * **API** : https://github.nhnent.com/pages/fe/component-date-picker/1.1.0
 * **Tutorial** : https://github.nhnent.com/fe/component-date-picker/wiki/date-picker-컴포넌트-적용방법
-
+* **Sample** - https://github.nhnent.com/pages/fe/component-date-picker/1.1.0/tutorial-datepicker.html
 * **CI** : http://fe.nhnent.com:8080/jenkins/job/component-date-picker/
 
 

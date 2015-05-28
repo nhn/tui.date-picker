@@ -23,6 +23,7 @@
       "Firefox"
     ]
   },
+  "samplePage": "datepicker.html",
   "tutorial": "date-picker",
   "repository": {
     "type": "git",

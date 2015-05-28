@@ -932,7 +932,7 @@ ne.component.TimePicker = util.defineClass(/** @lends ne.component.TimePicker.pr
         return this._formToTimeFormat();
     }
 });
-ne.util.CustomEvents.mixin(exports.TimePicker);
+ne.util.CustomEvents.mixin(ne.component.TimePicker);
 
 
 

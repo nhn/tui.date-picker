@@ -38,7 +38,7 @@ gulp.task('concat', function() {
         .pipe(footer(fnFooter))
         .pipe(concat('date-picker.all.js', {pkg: pkg}))
         .pipe(header(headerBanner, {pkg: pkg}))
-        .pipe(gulp.dest(''));
+        .pipe(gulp.dest('./'));
 });
 
 gulp.task('scripts', function(){
@@ -49,8 +49,8 @@ gulp.task('scripts', function(){
         .pipe(uglify())
         .pipe(concat('date-picker.min.js', {pkg: pkg}))
         .pipe(header(headerBanner, {pkg: pkg}))
-        .pipe(sourcemaps.write(''))
-        .pipe(gulp.dest(''));
+        .pipe(sourcemaps.write('./'))
+        .pipe(gulp.dest('./'));
 });
 
 gulp.task('connect', function() {

@@ -4,8 +4,12 @@ Date Picker
 날짜 선택을 용이하게 할 수 있도록 캘린더 UI를 제공한다.
 
 ## Feature
-* 캘린더 상에서 클릭을 통해 특정 날짜 선택 기능 지원
-* 시간 선택 기능(타임 피커)를 옵션을 통해 사용 가능
+* Date Picker
+  * 캘린더 상에서 클릭을 통해 특정 날짜 선택 기능 지원
+  * 시간 선택 기능(타임 피커)를 옵션을 통해 사용 가능
+* Time Picker
+  * 마우스 클릭이나 키보드를 이용해 시간 지정 가능
+  * 옵션 기능(AM/PM, 제외시간 등) 제공
 
 ## Documentation
 * API : https://github.nhnent.com/pages/fe/component-date-picker/1.1.0

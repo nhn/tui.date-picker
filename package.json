@@ -6,7 +6,7 @@
   "featureList": [],
   "dependency": [
     "jquery#~1.8.3",
-    "code-snippet#~1.0.0",
+    "code-snippet#~1.0.2",
     "component-calendar#~1.0.1"
   ],
   "test": {
@@ -26,6 +26,8 @@
     "gulp": "^3.8.11",
     "gulp-concat": "^2.5.2",
     "gulp-connect": "^2.2.0",
+    "gulp-footer": "^1.0.5",
+    "gulp-header": "^1.2.2",
     "gulp-sourcemaps": "^1.5.2",
     "gulp-uglify": "^1.2.0",
     "install": "^0.1.8",

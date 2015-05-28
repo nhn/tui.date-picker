@@ -11,12 +11,12 @@ Date Picker
 * API : https://github.nhnent.com/pages/fe/component-date-picker/1.1.0
 * Tutorial : https://github.nhnent.com/fe/component-date-picker/wiki/date-picker-컴포넌트-적용방법
 * CI : http://fe.nhnent.com:8080/jenkins/job/component-date-picker
-
+* Sample : https://github.nhnent.com/pages/fe/component-date-picker/1.1.0/tutorial-DatePicker.html
 
 
 ## Dependency
 * jquery: v1.8.3
-* code-snippet: v1.0.0
+* code-snippet: v1.0.2
 * component-calendar: v1.0.1
 
 ## Test environment
@@ -38,4 +38,3 @@ Date Picker
 | [1.1.0](https://github.nhnent.com/pages/fe/component-date-picker/1.1.0/) | 타임 피커 기능 추가 | 2015.05 | 이민규 <minkyu.yi@nhnent.com> |
 | [1.0.0](https://github.nhnent.com/pages/fe/component-calendar/1.0.0/tutorial-sample2.html) | 데이트 피커 | 2015.03 | 이제인 <jein.yi@nhnent.com> |
 | 0.1.0 | 최초개발 | 2014.11 | 이제인 <jein.yi@nhnent.com> |
-

@@ -2,16 +2,13 @@
   "name": "component-date-picker",
   "version": "1.1.0",
   "authors": [
-    "NHN ENTERTAINMENT - FE 개발팀",
     "이민규 <minkyu.yi@nhnent.com>"
   ],
   "license": "MIT",
-	"private" : true,
   "ignore": [
     "**/.*",
     "node_modules",
     "bower_components",
-    "lib",
     "test",
     "tests",
     "src",
@@ -22,12 +19,11 @@
     "karma.conf.js",
     "package.json",
     ".gitignore",
-    "gulpfile.js",
     "samples"
   ],
   "dependencies": {
-    "jquery" : "^1.8.3",
-	"code-snippet" : "git+http://70327b4564c7a80eb61724056876b960290946dd:x-oauth-basic@github.nhnent.com/fe/code-snippet.git#^1.0.2",
-    "component-calendar": "git+http://70327b4564c7a80eb61724056876b960290946dd:x-oauth-basic@github.nhnent.com/fe/component-calendar.git#^1.0.1"
+    "jquery" : "~1.8.3",
+	"code-snippet" : "~1.0.2",
+	"component-calendar" : "~1.0.1"
   }
 }

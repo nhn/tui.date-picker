@@ -10,7 +10,7 @@
     "Time Picker",
     "* 마우스 클릭이나 키보드를 이용해 시간 지정 가능",
     "* 옵션 기능(AM/PM, 제외시간 등) 제공"
-    ],
+  ],
   "dependency": [
     "jquery#~1.8.3",
     "code-snippet#~1.0.2",
@@ -50,6 +50,7 @@
     "karma-phantomjs-launcher": "^0.1.4",
     "karma-requirejs": "^0.2.2",
     "karma-webdriver-launcher": "git+https://github.com/everedifice/karma-webdriver-launcher.git",
+    "readme-builder": "git+https://github.com/jein-yi/readme-builder.git",
     "requirejs": "^2.1.14"
   },
   "scripts": {

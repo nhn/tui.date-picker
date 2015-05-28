@@ -58,23 +58,21 @@
   },
   "author": "NHN ENTERTAINMENT - FE 개발팀",
   "history": {
-    "0.1.0": {
-      "content": "최초개발",
-      "date": "2014.11",
-      "author": "이제인 <jein.yi@nhnent.com>",
-      "hasAPI": true
-    },
-    "1.0.0": {
-      "content": "데이트 피커",
-      "date": "2015.03",
-      "author": "이제인 <jein.yi@nhnent.com>",
-      "hasAPI": true
-    },
     "1.1.0": {
       "content": "데이트-타임 피커",
       "date": "2015.05",
       "author": "이민규 <minkyu.yi@nhnent.com>",
       "hasAPI": true
+    },
+    "1.0.0": {
+      "content": "데이트 피커 분리",
+      "date": "2015.05",
+      "author": "이민규 <jein.yi@nhnent.com>"
+    },
+    "0.1.0": {
+      "content": "최초개발",
+      "date": "2014.11",
+      "author": "이제인 <jein.yi@nhnent.com>"
     }
   }
 }

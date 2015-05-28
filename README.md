@@ -11,10 +11,10 @@ Date Picker
 	* 옵션 기능(AM/PM, 제외시간 등) 제공
 
 ## Documentation
-* **API** : https://github.nhnent.com/pages/fe/component-date-picker/1.1.0
-* **Tutorial** : https://github.nhnent.com/fe/component-date-picker/wiki/date-picker-컴포넌트-적용방법
-* **Sample** - https://github.nhnent.com/pages/fe/component-date-picker/1.1.0/tutorial-datepicker.html
-* **CI** : http://fe.nhnent.com:8080/jenkins/job/component-date-picker/
+* **API** : https://nhnent.github.io/fe.component-date-picker/1.1.0
+* **Tutorial** : https://github.com/nhnent/fe.component-date-picker/wiki/date-picker-컴포넌트-적용방법
+* **Sample** - https://nhnent.github.io/fe.component-date-picker/1.1.0/tutorial-datepicker.html
+
 
 
 
@@ -32,9 +32,9 @@ Date Picker
 
 ## Download/Install
 * Bower:
-   * 최신버전 : `bower install "git+http://70327b4564c7a80eb61724056876b960290946dd:x-oauth-basic@github.nhnent.com/fe/component-date-picker.git#master"`
-   * 특정버전 : `bower install "git+http://70327b4564c7a80eb61724056876b960290946dd:x-oauth-basic@github.nhnent.com/fe/component-date-picker.git[#tag]"`
-* Download: https://github.nhnent.com/fe/component-date-picker
+   * 최신버전 : `bower install ne-component-date-picker#master`
+   * 특정버전 : `bower install ne-component-date-picker[#tag]`
+* Download: https://github.com/nhnent/fe.component-date-picker
 
 ## History
 | Version | Description | Date | Developer |

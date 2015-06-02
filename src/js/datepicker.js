@@ -164,12 +164,12 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
         this._openers = [];
 
         /**
-         * is opend?
+         * is opened?
          * @type {boolean}
          * @private
          * @since 1.1.1
          */
-        this._opend = false;
+        this._opened = false;
 
         this._initializeDatePicker(option);
     },
@@ -325,7 +325,6 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
                 lastDayInMonth = 29;
             }
         }
-
         isBetween = !!(util.isNumber(date) && (date > 0) && (date <= lastDayInMonth));
 
         return isBetween;
@@ -354,20 +353,38 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
              * 그래서 isDateElement로 한번 더 확인을 한다.
              */
             var isDateElement = (event.target.className.indexOf(this._calendar._option.classPrefix) > -1),
-                isContains = $.contains(this._$calendarElement[0], event.target),
-                isOpener = (inArray(event.target, this._openers) > -1);
+                isContains = $.contains(this._$calendarElement[0], event.target);
 
             /**
              * calendar를 클릭하지 않았을 경우
              * 데이트 피커는 닫히게 된다.
              */
-            if ((this.isOpend() && !isDateElement && !isContains && !isOpener)) {
+            if ((this.isOpened() && !isDateElement && !isContains && !this._isOpener(event.target))) {
                 $(document).off('click', layer);
                 this._onKeydownPicker(event);
                 this.close();
             }
         }, this);
         $(document).on('click', layer);
+    },
+
+    /**
+     * 해당 엘리먼트가 opener 인지 확인한다.
+     * @param {HTMLElement} target element
+     * @returns {boolean} opener true/false
+     * @private
+     */
+    _isOpener: function(target) {
+        var result = false;
+
+        util.forEach(this._openers, function(opener) {
+            if (target === opener || $.contains(opener, target)) {
+                result = true;
+                return false;
+            }
+        });
+
+        return result;
     },
 
     /**
@@ -395,18 +412,14 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
             bound,
             ceil;
 
-        if (!el) {
-            return null;
-        } else {
-            bound = el.getBoundingClientRect();
-            ceil = Math.ceil;
-            return {
-                left: ceil(bound.left),
-                top: ceil(bound.top),
-                bottom: ceil(bound.bottom),
-                right: ceil(bound.right)
-            };
-        }
+        bound = el.getBoundingClientRect();
+        ceil = Math.ceil;
+        return {
+            left: ceil(bound.left),
+            top: ceil(bound.top),
+            bottom: ceil(bound.bottom),
+            right: ceil(bound.right)
+        };
     },
 
     /**
@@ -605,8 +618,8 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
      * @returns {boolean} result
      * @private
      */
-    isOpend: function() {
-        return this._opend;
+    isOpened: function() {
+        return this._opened;
     },
 
     /**
@@ -670,7 +683,7 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
      */
     open: function() {
         // 달력을 물고있는 활성화된 picker가 있으면 닫는다.
-        if (this.isOpend()) {
+        if (this.isOpened()) {
             return;
         }
 
@@ -689,7 +702,7 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
         this._calendar.draw(this._date.year, this._date.month, false);
         this._$calendarElement.show();
 
-        this._opend = true;
+        this._opened = true;
     },
 
     /**
@@ -701,7 +714,7 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
         this._unbindOnClickToCalendar();
         this._unbindCalendarEvent();
         this._$calendarElement.hide();
-        this._opend = false;
+        this._opened = false;
     },
 
     /**

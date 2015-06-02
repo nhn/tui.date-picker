@@ -64,7 +64,10 @@ describe('Date Picker', function() {
                 month: 11,
                 date: 27
             },
-            element: document.getElementById('datePick1')
+            element: document.getElementById('datePick1'),
+            openers: [
+                document.getElementById('opener')
+            ]
         }, calendar1);
 
         datepicker2 = new ne.component.DatePicker({
@@ -90,7 +93,9 @@ describe('Date Picker', function() {
         }, calendar2);
 
         datepicker3 = new ne.component.DatePicker({
-            element: document.getElementById('datePick3')
+            element: document.getElementById('datePick3'),
+            date: {
+            }
         }, calendar3);
     });
 
@@ -106,24 +111,50 @@ describe('Date Picker', function() {
     });
 
 
-    describe('생성', function() {
+    describe('생성자', function() {
         it('to be defined', function() {
             expect(datepicker1).toBeDefined();
             expect(datepicker2).toBeDefined();
             expect(datepicker3).toBeDefined();
+        });
+
+        it('opner test', function() {
+            var opener = document.getElementById('opener'),
+                openerSpan = document.getElementById('opener-span');
+
+            $(opener).click();
+            expect(datepicker1.isOpened()).toEqual(true);
+
+            datepicker1.close();
+            $(openerSpan).click();
+            expect(datepicker1.isOpened()).toEqual(true);
+        });
+
+        it('default date', function() {
+            var date = datepicker3.getDateObject(),
+                minYear = 1970;
+
+            expect(date).toEqual({
+                year: minYear,
+                month: 1,
+                date: 1
+            });
         });
     });
 
     describe('api 호출', function() {
         it('open datepicker', function() {
             datepicker1.open();
-            expect(datepicker1.isOpend()).toEqual(true);
+            expect(datepicker1.isOpened()).toEqual(true);
+
+            datepicker1.open();
+            expect(datepicker1.isOpened()).toEqual(true);
         });
 
         it('close datepicker', function() {
             datepicker1.open();
             datepicker1.close();
-            expect(datepicker1.isOpend()).toEqual(false);
+            expect(datepicker1.isOpened()).toEqual(false);
         });
 
         it('get date object', function() {
@@ -304,14 +335,11 @@ describe('Date Picker', function() {
             datepicker1.addOpener(btn);
             $(btn).click();
 
-
-
             expect(ne.util.inArray(btn, datepicker1._openers)).not.toEqual(-1);
             expect(datepicker1.close).not.toHaveBeenCalled();
         });
 
         it('remove openenr', function() {
-
             var btn = document.createElement('BUTTON');
             btn.id = 'opener';
             document.body.appendChild(btn);
@@ -572,6 +600,40 @@ describe('Date Picker', function() {
             expect(res3.year).toBe(2014);
             expect(res3.month).toBe(11);
             expect(res3.date).toBe(9);
+        });
+
+        it('현재 달에서 이전달의 날짜 클릭 테스트', function() {
+            var prevMonthEl,
+                dateObj;
+
+            datepicker1.setDate(2015, 4, 1);
+            datepicker1.open();
+            prevMonthEl = datepicker1._$calendarElement.find('.calendar-prev-mon')[0];
+            $(prevMonthEl).click();
+            dateObj = datepicker1.getDateObject();
+
+            expect(dateObj).toEqual({
+                year: 2015,
+                month: 3,
+                date: 29
+            });
+        });
+
+        it('현재 달에서 다음달의 날짜 클릭 테스트', function() {
+            var nextMonthEl,
+                dateObj;
+
+            datepicker1.setDate(2015, 4, 1);
+            datepicker1.open();
+            nextMonthEl = datepicker1._$calendarElement.find('.calendar-next-mon')[0];
+            $(nextMonthEl).click();
+            dateObj = datepicker1.getDateObject();
+
+            expect(dateObj).toEqual({
+                year: 2015,
+                month: 5,
+                date: 1
+            });
         });
     });
 });

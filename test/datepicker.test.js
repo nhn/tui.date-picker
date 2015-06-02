@@ -218,7 +218,78 @@ describe('Date Picker', function() {
             nextInputValue = datepicker2._element.value;
 
             expect(nextInputValue).not.toEqual(preInputValue);
-        })
+        });
+
+        it('set XY - 1', function() {
+            var x = 20,
+                y = 20;
+            datepicker1.setXY(x, y);
+            datepicker1.open();
+
+            expect(datepicker1._$calendarElement[0].style.left).toEqual(x + 'px');
+            expect(datepicker1._$calendarElement[0].style.top).toEqual(y + 'px');
+        });
+
+        it('set XY - 2', function() {
+            var originTop = datepicker1._pos.top;
+            datepicker1.setXY(0, null);
+            datepicker1.open();
+
+            expect(datepicker1._$calendarElement[0].style.left).toEqual(0 + 'px');
+            expect(datepicker1._$calendarElement[0].style.top).toEqual(originTop + 'px');
+        });
+
+        it('set XY - 3', function() {
+            var originLeft = datepicker1._pos.left;
+            datepicker1.setXY(null, 0);
+            datepicker1.open();
+
+            expect(datepicker1._$calendarElement[0].style.left).toEqual(originLeft + 'px');
+            expect(datepicker1._$calendarElement[0].style.top).toEqual(0 + 'px');
+        });
+
+        it('set zIndex - 1, valid', function() {
+            var zIndex = 199;
+
+            datepicker1.setZIndex(zIndex);
+            datepicker1.open();
+
+            expect(Number(datepicker1._$calendarElement[0].style.zIndex)).toEqual(zIndex);
+
+            zIndex = 0;
+            datepicker1.close();
+            datepicker1.setZIndex(zIndex);
+            datepicker1.open();
+
+            expect(Number(datepicker1._$calendarElement[0].style.zIndex)).toEqual(zIndex);
+        });
+
+        it('set zIndex - 2, invalid', function() {
+            var originZIndex = datepicker1._pos.zIndex;
+
+            datepicker1.setZIndex();
+            datepicker1.open();
+
+            expect(Number(datepicker1._$calendarElement[0].style.zIndex)).toEqual(originZIndex);
+
+            datepicker1.close();
+            datepicker1.setZIndex(null);
+            datepicker1.open();
+
+            expect(Number(datepicker1._$calendarElement[0].style.zIndex)).toEqual(originZIndex);
+
+            datepicker1.close();
+            datepicker1.setZIndex({});
+            datepicker1.open();
+
+            expect(Number(datepicker1._$calendarElement[0].style.zIndex)).toEqual(originZIndex);
+
+            datepicker1.close();
+            datepicker1.setZIndex('aaa');
+            datepicker1.open();
+
+            expect(Number(datepicker1._$calendarElement[0].style.zIndex)).toEqual(originZIndex);
+        });
     });
 
     describe('private 테스트', function() {
@@ -247,21 +318,6 @@ describe('Date Picker', function() {
 
             str = datepicker1._formed();
             expect(str).toBe('84-4-02');
-        });
-
-        it('_arrangeLayer use _getBoundingClientRect', function() {
-            var bound, calbound;
-
-            bound = datepicker1._getBoundingClientRect();
-            datepicker1._$calendarElement.show();
-            datepicker1._arrangeLayer();
-            calbound = datepicker1._getBoundingClientRect(datepicker1._$calendarElement[0]);
-
-            var isIE7 = navigator.userAgent.indexOf('MSIE') !== -1 && navigator.userAgent.indexOf('7.0') !== -1;
-
-            expect(bound.left).toBe(isIE7 ? calbound.left - 2 : calbound.left);
-            expect(bound.bottom).toBe(isIE7 ? calbound.top - 2 : calbound.top);
-
         });
 
         it('_extractDate', function() {

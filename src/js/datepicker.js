@@ -11,6 +11,7 @@
 
 var calendarUtil = ne.component.Calendar.Util,
     util = ne.util,
+    inArray = util.inArray,
     formatRegExp = /yyyy|yy|mm|m|dd|d/gi,
     mapForConverting = {
         yyyy: {expression: '(\\d{4}|\\d{2})', type: 'year'},
@@ -43,6 +44,8 @@ var calendarUtil = ne.component.Calendar.Util,
  *      @param {string} [option.selectableClass = selectableClass] 선택가능한 날짜에 입힐 클래스
  *      @param {Object} [option.startDate = 1900.01.01] 날짜 시작일 (해당 날짜 선택 불가)
  *      @param {Object} [option.endDate = 3000.01.01] 날짜 종료일 (해당 날짜 선택 불가)
+ *      @param {Object} [option.pos = {}] position - left & top & zIndex
+ *      @param {Object} [option.openers = []] opener list
  * @param {ne.component.Calendar} calendar 캘린더 컴포넌트
  * */
 ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker.prototype */{
@@ -145,7 +148,7 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
         this._timePicker = null;
 
         /**
-         * position - left & top
+         * position - left & top & zIndex
          * @type {Object}
          * @private
          * @since 1.1.1
@@ -160,6 +163,14 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
          */
         this._openers = [];
 
+        /**
+         * is opend?
+         * @type {boolean}
+         * @private
+         * @since 1.1.1
+         */
+        this._opend = false;
+
         this._initializeDatePicker(option);
     },
 
@@ -172,10 +183,10 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
         this._setDefaultDate(option.date);
         this._setDefaultPosition(option.pos);
         this._setRestrictiveDate(option.startDate, option.endDate);
+        this._setOpeners(option.openers);
 
         // 엘리먼트가 존재하면 이벤트를 등록한다.
         if (this._element) {
-            this._openers.push(this._element);
             this._bindElementEvent();
         }
         // timePicker를 생성한다.
@@ -193,12 +204,12 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
      */
     _setDefaultDate: function(opDate) {
         if (!opDate) {
-            this.date = calendarUtil.getDateHashTable(null);
+            this._date = calendarUtil.getDateHashTable(null);
         } else {
-            this.date = {
-                year: opDate.year || MIN_YEAR,
-                month: opDate.month || 1,
-                date: opDate.date || 1
+            this._date = {
+                year: util.isNumber(opDate.year) ? opDate.year : MIN_YEAR,
+                month: util.isNumber(opDate.month) ? opDate.month : 1,
+                date: util.isNumber(opDate.date) ? opDate.date : 1
             };
         }
     },
@@ -230,6 +241,20 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
 
         this._startEdge = calendarUtil.getTime(startDate) - 1;
         this._endEdge = calendarUtil.getTime(endDate) + 1;
+    },
+
+    /**
+     * opener list를 저장한다.
+     * @param {Array} opOpeners [option.openers] opener 엘리먼트 리스트
+     * @private
+     */
+    _setOpeners: function(opOpeners) {
+        var self = this;
+
+        this.addOpener(this._element);
+        util.forEach(opOpeners, function(opener) {
+            self.addOpener(opener);
+        });
     },
 
     /**
@@ -301,7 +326,7 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
             }
         }
 
-        isBetween = !!(util.isNumber(date) && date > 0 && date <= lastDayInMonth);
+        isBetween = !!(util.isNumber(date) && (date > 0) && (date <= lastDayInMonth));
 
         return isBetween;
     },
@@ -330,14 +355,13 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
              */
             var isDateElement = (event.target.className.indexOf(this._calendar._option.classPrefix) > -1),
                 isContains = $.contains(this._$calendarElement[0], event.target),
-                isInputElement = (this._element === event.target),
-                isOpened = (this.constructor.enabledPicker === this);
+                isOpener = (inArray(event.target, this._openers) > -1);
 
             /**
              * calendar를 클릭하지 않았을 경우
              * 데이트 피커는 닫히게 된다.
              */
-            if ((isOpened && !isDateElement && !isContains && !isInputElement)) {
+            if ((this.isOpend() && !isDateElement && !isContains && !isOpener)) {
                 $(document).off('click', layer);
                 this._onKeydownPicker(event);
                 this.close();
@@ -577,6 +601,15 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
     },
 
     /**
+     * current opened picker is this?
+     * @returns {boolean} result
+     * @private
+     */
+    isOpend: function() {
+        return this._opend;
+    },
+
+    /**
      * calendar element의 left, top값 지정
      * @param {number} x left값
      * @param {number} y top값
@@ -589,6 +622,7 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
 
         pos.left = nX;
         pos.top = nY;
+        this._arrangeLayer();
     },
 
     /**
@@ -605,20 +639,42 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
     },
 
     /**
+     * add opener
+     * @param {HTMLElement} opener element
+     */
+    addOpener: function(opener) {
+        var self = this;
+        if (inArray(opener, this._openers) < 0) {
+            this._openers.push(opener);
+            $(opener).on('click', function() {
+                self.open();
+            });
+        }
+    },
+
+    /**
+     * remove opener
+     * @param {HTMLElement} opener element
+     */
+    removeOpener: function(opener) {
+        var index = inArray(opener, this._openers);
+
+        if (index > -1) {
+            $(this._openers[index]).off('click');
+            this._openers.splice(index, 1);
+        }
+    },
+
+    /**
      * 달력의 위치를 조정하고, 달력을 펼친다.
      */
     open: function() {
-        var enabledPicker = this.constructor.enabledPicker;
-
         // 달력을 물고있는 활성화된 picker가 있으면 닫는다.
-        if (enabledPicker) {
-            if (enabledPicker === this) {
-                return;
-            } else {
-                enabledPicker.close();
-            }
+        if (this.isOpend()) {
+            return;
         }
 
+        // 달력 레이어 위치 조정
         this._arrangeLayer();
 
         // 선택영역 제한이 있는지 확인후 선택불가능한 부분을 설정한다.
@@ -626,13 +682,14 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
 
         // 달력 레이어를 뺀 위치에서 마우스 클릭시 달력닫힘
         this._bindCloseLayerEvent();
+
         // 달력 커스텀이벤트
         this._bindCalendarCustomEvent();
 
         this._calendar.draw(this._date.year, this._date.month, false);
         this._$calendarElement.show();
 
-        this.constructor.enabledPicker = this;
+        this._opend = true;
     },
 
     /**
@@ -644,7 +701,7 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
         this._unbindOnClickToCalendar();
         this._unbindCalendarEvent();
         this._$calendarElement.hide();
-        this.constructor.enabledPicker = null;
+        this._opend = false;
     },
 
     /**

@@ -12,10 +12,10 @@
 
 'use strict';
 
-ne.util.defineNamespace('ne.component');
-
 var util = ne.util,
     inArray = util.inArray;
+
+util.defineNamespace('ne.component');
 
 /**
  * @namespace ne.component.Spinbox
@@ -112,7 +112,7 @@ ne.component.Spinbox = util.defineClass(/** @lends ne.component.Spinbox.prototyp
 
     /**
      * is a valid option?
-     * @returns {boolean}
+     * @returns {boolean} result
      * @private
      */
     _isValidOption: function() {
@@ -123,8 +123,8 @@ ne.component.Spinbox = util.defineClass(/** @lends ne.component.Spinbox.prototyp
 
     /**
      * is a valid value?
-     * @param {number} value
-     * @returns {boolean}
+     * @param {number} value for spinbox
+     * @returns {boolean} result
      * @private
      */
     _isValidValue: function(value) {
@@ -145,8 +145,8 @@ ne.component.Spinbox = util.defineClass(/** @lends ne.component.Spinbox.prototyp
 
     /**
      * is a valid step?
-     * @param {number} step
-     * @returns {boolean}
+     * @param {number} step for spinbox up/down
+     * @returns {boolean} result
      * @private
      */
     _isValidStep: function(step) {
@@ -184,7 +184,7 @@ ne.component.Spinbox = util.defineClass(/** @lends ne.component.Spinbox.prototyp
      * Default value is a digits of a longer value of option.min or option.max
      * @private
      */
-    _setInputSizeAndMaxLength: function(){
+    _setInputSizeAndMaxLength: function() {
         var $input = this._$inputElement,
             minValueLength = String(this._option.min).length,
             maxValueLength = String(this._option.max).length,
@@ -236,14 +236,14 @@ ne.component.Spinbox = util.defineClass(/** @lends ne.component.Spinbox.prototyp
             } else if (nextValue < min) {
                 nextValue = max;
             }
-        } while(inArray(nextValue, exclusion) > -1);
+        } while (inArray(nextValue, exclusion) > -1);
 
         this.setValue(nextValue);
     },
 
     /**
      * DOM(Up/Down button) Click Event handler
-     * @param {jQuery.Event} event
+     * @param {Event} event event-object
      * @private
      */
     _onClickButton: function(event) {
@@ -252,6 +252,7 @@ ne.component.Spinbox = util.defineClass(/** @lends ne.component.Spinbox.prototyp
 
     /**
      * DOM(Input element) Keydown Event handler
+     * @param {Event} event event-object
      * @private
      */
     _onKeyDownInputElement: function(event) {
@@ -281,7 +282,7 @@ ne.component.Spinbox = util.defineClass(/** @lends ne.component.Spinbox.prototyp
 
     /**
      * set step of spinbox
-     * @param {number} step
+     * @param {number} step for spinbox
      */
     setStep: function(step) {
         if (!this._isValidStep(step)) {
@@ -292,7 +293,7 @@ ne.component.Spinbox = util.defineClass(/** @lends ne.component.Spinbox.prototyp
 
     /**
      * get step of spinbox
-     * @returns {number}
+     * @returns {number} step
      */
     getStep: function() {
         return this._option.step;
@@ -351,7 +352,7 @@ ne.component.Spinbox = util.defineClass(/** @lends ne.component.Spinbox.prototyp
 
     /**
      * get container element
-     * @return {HTMLElement}
+     * @return {HTMLElement} element
      */
     getContainerElement: function() {
         return this._$containerElement[0];
@@ -371,18 +372,16 @@ ne.component.Spinbox = util.defineClass(/** @lends ne.component.Spinbox.prototyp
 
 'use strict';
 
-ne.util.defineNamespace('ne.component');
-
 var util = ne.util,
-    Spinbox = ne.component.Spinbox;
-
-var timeRegExp = /\s*(\d{1,2})\s*:\s*(\d{1,2})\s*([ap][m])?(?:[\s\S]*)/i,
+    Spinbox = ne.component.Spinbox,
+    timeRegExp = /\s*(\d{1,2})\s*:\s*(\d{1,2})\s*([ap][m])?(?:[\s\S]*)/i,
     timePickerTag = '<table class="timepicker"><tr class="timepicker-row"></tr></table>',
     columnTag = '<td class="timepicker-column"></td>',
     spinBoxTag = '<td class="timepicker-column timepicker-spinbox"><input type="text" class="timepicker-spinbox-input"></td>',
     upBtnTag = '<button type="button" class="timepicker-btn timepicker-btn-up"><b>+</b></button>',
     downBtnTag = '<button type="button" class="timepicker-btn timepicker-btn-down"><b>-</b></button>';
 
+util.defineNamespace('ne.component');
 
 /**
  * @namespace ne.component.TimePicker
@@ -461,7 +460,7 @@ ne.component.TimePicker = util.defineClass(/** @lends ne.component.TimePicker.pr
 
     /**
      * Initialize with option
-     * @param {Object} option
+     * @param {Object} option for time picker
      * @private
      */
     _initialize: function(option) {
@@ -474,7 +473,7 @@ ne.component.TimePicker = util.defineClass(/** @lends ne.component.TimePicker.pr
 
     /**
      * Set option
-     * @param {Object} option
+     * @param {Object} option for time picker
      * @private
      */
     _setOption: function(option) {
@@ -537,7 +536,7 @@ ne.component.TimePicker = util.defineClass(/** @lends ne.component.TimePicker.pr
 
         $tpRow.append(this._hourSpinbox.getContainerElement(), $colon, this._minuteSpinbox.getContainerElement());
 
-        if(opt.showMeridian) {
+        if (opt.showMeridian) {
             $meridian = $(columnTag)
                 .addClass('meridian')
                 .append(this._isPM ? 'PM' : 'AM');
@@ -558,7 +557,7 @@ ne.component.TimePicker = util.defineClass(/** @lends ne.component.TimePicker.pr
 
     /**
      * set position of timepicker container
-     * @param {jQuery} $input
+     * @param {jQuery} $input jquery-object (element)
      * @private
      */
     _setDefaultPosition: function($input) {
@@ -619,7 +618,7 @@ ne.component.TimePicker = util.defineClass(/** @lends ne.component.TimePicker.pr
 
     /**
      * is clicked inside of container?
-     * @param {Event} event
+     * @param {Event} event event-object
      * @returns {boolean}
      * @private
      */
@@ -632,6 +631,7 @@ ne.component.TimePicker = util.defineClass(/** @lends ne.component.TimePicker.pr
 
     /**
      * transform time into formatted string
+     * @returns {string} time string
      * @private
      */
     _formToTimeFormat: function() {
@@ -660,7 +660,7 @@ ne.component.TimePicker = util.defineClass(/** @lends ne.component.TimePicker.pr
 
     /**
      * get postfix when AM/PM option is true.
-     * @returns {string}
+     * @returns {string} postfix (AM/PM)
      * @private
      */
     _getPostfix: function() {
@@ -708,7 +708,7 @@ ne.component.TimePicker = util.defineClass(/** @lends ne.component.TimePicker.pr
 
     /**
      * listener to show container
-     * @param {Event} event
+     * @param {Event} event event-object
      */
     open: function(event) {
         if (this._isShown) {
@@ -722,7 +722,7 @@ ne.component.TimePicker = util.defineClass(/** @lends ne.component.TimePicker.pr
 
     /**
      * listener to hide container
-     * @param {Event} event
+     * @param {Event} event event-object
      */
     close: function(event) {
         if (!this._isShown || this._isClickedInside(event)) {
@@ -757,7 +757,7 @@ ne.component.TimePicker = util.defineClass(/** @lends ne.component.TimePicker.pr
 
     /**
      * set time from input element.
-     * @param {jQuery} [$inputElement]
+     * @param {jQuery} [$inputElement] jquery object (element)
      * @return {boolean} result of set time
      */
     setTimeFromInputElement: function($inputElement) {
@@ -767,7 +767,7 @@ ne.component.TimePicker = util.defineClass(/** @lends ne.component.TimePicker.pr
 
     /**
      * set hour
-     * @param {number} hour
+     * @param {number} hour for time picker
      * @return {boolean} result of set time
      */
     setHour: function(hour) {
@@ -776,7 +776,7 @@ ne.component.TimePicker = util.defineClass(/** @lends ne.component.TimePicker.pr
 
     /**
      * set minute
-     * @param {number} minute
+     * @param {number} minute for time picker
      * @return {boolean} result of set time
      */
     setMinute: function(minute) {
@@ -785,8 +785,8 @@ ne.component.TimePicker = util.defineClass(/** @lends ne.component.TimePicker.pr
 
     /**
      * set time
-     * @param {number} hour
-     * @param {number} minute
+     * @param {number} hour for time picker
+     * @param {number} minute for time picker
      * @return {boolean} result of set time
      */
     setTime: function(hour, minute) {
@@ -811,7 +811,7 @@ ne.component.TimePicker = util.defineClass(/** @lends ne.component.TimePicker.pr
 
     /**
      * set time from time-string
-     * @param {string} timeString
+     * @param {string} timeString time-string
      * @return {boolean} result of set time
      */
     setTimeFromString: function(timeString) {
@@ -834,7 +834,7 @@ ne.component.TimePicker = util.defineClass(/** @lends ne.component.TimePicker.pr
                     isPM = this._isPM;
                 }
 
-                if(isPM) {
+                if (isPM) {
                     hour += 12;
                 }
             }
@@ -844,7 +844,7 @@ ne.component.TimePicker = util.defineClass(/** @lends ne.component.TimePicker.pr
 
     /**
      * set step of hour
-     * @param {number} step
+     * @param {number} step for time picker
      */
     setHourStep: function(step) {
         this._hourSpinbox.setStep(step);
@@ -853,7 +853,7 @@ ne.component.TimePicker = util.defineClass(/** @lends ne.component.TimePicker.pr
 
     /**
      * set step of minute
-     * @param {number} step
+     * @param {number} step for time picker
      */
     setMinuteStep: function(step) {
         this._minuteSpinbox.setStep(step);
@@ -862,7 +862,7 @@ ne.component.TimePicker = util.defineClass(/** @lends ne.component.TimePicker.pr
 
     /**
      * add a specific hour to exclude
-     * @param {number} hour
+     * @param {number} hour for exclusion
      */
     addHourExclusion: function(hour) {
         this._hourSpinbox.addExclusion(hour);
@@ -870,7 +870,7 @@ ne.component.TimePicker = util.defineClass(/** @lends ne.component.TimePicker.pr
 
     /**
      * add a specific minute to exclude
-     * @param {number} minute
+     * @param {number} minute for exclusion
      */
     addMinuteExclusion: function(minute) {
         this._minuteSpinbox.addExclusion(minute);
@@ -894,7 +894,7 @@ ne.component.TimePicker = util.defineClass(/** @lends ne.component.TimePicker.pr
 
     /**
      * remove hour from exclusion list
-     * @param {number} hour
+     * @param {number} hour that you want to remove
      */
     removeHourExclusion: function(hour) {
         this._hourSpinbox.removeExclusion(hour);
@@ -902,7 +902,7 @@ ne.component.TimePicker = util.defineClass(/** @lends ne.component.TimePicker.pr
 
     /**
      * remove minute from exclusion list
-     * @param {number} minute
+     * @param {number} minute that you want to remove
      */
     removeMinuteExclusion: function(minute) {
         this._minuteSpinbox.removeExclusion(minute);
@@ -950,10 +950,9 @@ ne.util.CustomEvents.mixin(ne.component.TimePicker);
 
 'use strict';
 
-ne.util.defineNamespace('ne.component');
-
 var calendarUtil = ne.component.Calendar.Util,
     util = ne.util,
+    inArray = util.inArray,
     formatRegExp = /yyyy|yy|mm|m|dd|d/gi,
     mapForConverting = {
         yyyy: {expression: '(\\d{4}|\\d{2})', type: 'year'},
@@ -964,7 +963,7 @@ var calendarUtil = ne.component.Calendar.Util,
         dd: {expression: '([12]\\d{1}|3[01]|0[1-9]|[1-9]\\b)', type: 'date'},
         d: {expression: '([12]\\d{1}|3[01]|0[1-9]|[1-9]\\b)', type: 'date'}
     },
-    MIN_YEAR = 1900,
+    MIN_YEAR = 1970,
     MAX_YEAR = 3000,
     MONTH_DAYS = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
@@ -978,17 +977,19 @@ var calendarUtil = ne.component.Calendar.Util,
  * @param {Object} option DatePicker 옵션값
  *      @param {HTMLElement} option.element DatePicker의 input 창
  *      @param {Object} [option.date = 오늘] 초기 날짜
- *        @param {Object} option.date.year 년도
- *        @param {Object} option.date.month 월
- *        @param {Object} option.date.date 일
+ *          @param {number} [option.date.year] 년도
+ *          @param {number} [option.date.month] 월
+ *          @param {number} [option.date.date] 일
  *      @param {string} [option.dateForm = yyyy-mm-dd] 날짜 형식
  *      @param {string} [option.defaultCentury = 20] yy 형식일때 자동으로 붙여지는 값 [19|20]
  *      @param {string} [option.selectableClass = selectableClass] 선택가능한 날짜에 입힐 클래스
  *      @param {Object} [option.startDate = 1900.01.01] 날짜 시작일 (해당 날짜 선택 불가)
  *      @param {Object} [option.endDate = 3000.01.01] 날짜 종료일 (해당 날짜 선택 불가)
+ *      @param {Object} [option.pos = {}] position - left & top & zIndex
+ *      @param {Object} [option.openers = []] opener list
  * @param {ne.component.Calendar} calendar 캘린더 컴포넌트
  * */
-ne.component.DatePicker = ne.util.defineClass(/**@lends ne.component.DatePicker.prototype */{
+ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker.prototype */{
     init: function(option, calendar) {
         /**
          * 캘린더 객체
@@ -1041,10 +1042,10 @@ ne.component.DatePicker = ne.util.defineClass(/**@lends ne.component.DatePicker.
          * @type {Date}
          * @private
          */
-        this._date = option.date || calendarUtil.getDateHashTable(null);
+        this._date = null;
 
         /**
-         * yy-mm-dd형식으로 인풋창에 값을 직접 입력 할 시, 앞에 자동으로 붙을 숫자.
+         * yy-mm-dd 형식으로 인풋창에 값을 직접 입력 할 시, 앞에 자동으로 붙을 숫자.
          * @type {string}
          * @private
          */
@@ -1072,7 +1073,7 @@ ne.component.DatePicker = ne.util.defineClass(/**@lends ne.component.DatePicker.
         this._endEdge = option.endDate;
 
         /**
-         * timepicker option
+         * with time picker option
          * @type {boolean}
          * @private
          * @since 1.1.0
@@ -1088,12 +1089,28 @@ ne.component.DatePicker = ne.util.defineClass(/**@lends ne.component.DatePicker.
         this._timePicker = null;
 
         /**
-         * position - left & top
+         * position - left & top & zIndex
          * @type {Object}
          * @private
          * @since 1.1.1
          */
         this._pos = null;
+
+        /**
+         * openers - opener list
+         * @type {Array}
+         * @private
+         * @since 1.1.1
+         */
+        this._openers = [];
+
+        /**
+         * is opend?
+         * @type {boolean}
+         * @private
+         * @since 1.1.1
+         */
+        this._opend = false;
 
         this._initializeDatePicker(option);
     },
@@ -1104,31 +1121,81 @@ ne.component.DatePicker = ne.util.defineClass(/**@lends ne.component.DatePicker.
      * @private
      */
     _initializeDatePicker: function(option) {
-        var pos = this._pos = option.pos || {};
-
-        // 캘린더의 기본 포지션을 설정한다.
-        var bound = this._getBoundingClientRect();
-        pos.left = pos.left || bound.left;
-        pos.top = pos.top || bound.bottom;
-        pos.zIndex = pos.zIndex || 9999;
-
-        // 날짜 제한 값을 설정한다.
-        option.startDate = option.startDate || {year:MIN_YEAR, month:1, date: 1};
-        option.endDate = option.endDate || {year:MAX_YEAR, month:1 , date: 1};
-
-        this._startEdge = calendarUtil.getTime(option.startDate);
-        this._endEdge = calendarUtil.getTime(option.endDate);
+        this._setDefaultDate(option.date);
+        this._setDefaultPosition(option.pos);
+        this._setRestrictiveDate(option.startDate, option.endDate);
+        this._setOpeners(option.openers);
 
         // 엘리먼트가 존재하면 이벤트를 등록한다.
-        if(this._element) {
+        if (this._element) {
             this._bindElementEvent();
         }
-
+        // timePicker를 생성한다.
         if (this._withTimePicker) {
             this._initializeTimePicker();
         }
         // 날짜 형식을 지정하고 현재 날짜를 input element에 출력한다.
         this.setDateForm();
+    },
+
+    /**
+     * 데이트피커의 기본값 날짜를 지정한다.
+     * @param {Object} opDate [option.date] 사용자가 지정한 기본값 날짜
+     * @private
+     */
+    _setDefaultDate: function(opDate) {
+        if (!opDate) {
+            this._date = calendarUtil.getDateHashTable(null);
+        } else {
+            this._date = {
+                year: util.isNumber(opDate.year) ? opDate.year : MIN_YEAR,
+                month: util.isNumber(opDate.month) ? opDate.month : 1,
+                date: util.isNumber(opDate.date) ? opDate.date : 1
+            };
+        }
+    },
+
+    /**
+     * 캘린더의 기본 포지션을 설정한다.
+     * @param {Object} opPos [option.pos] 사용자가 지정한 캘린더엘리먼트의 좌표와 zIndex
+     * @private
+     */
+    _setDefaultPosition: function(opPos) {
+        var pos = this._pos = opPos || {},
+            bound = this._getBoundingClientRect();
+
+        //
+        pos.left = pos.left || bound.left;
+        pos.top = pos.top || bound.bottom;
+        pos.zIndex = pos.zIndex || 9999;
+    },
+
+    /**
+     * 데이트피커의 제한 날짜를 설정한다.
+     * @param {Object} opStartDate [option.startDate] 선택 가능한 시작 날짜
+     * @param {Object} opEndDate [option.endDate] 선택 가능한 마지막 날짜
+     * @private
+     */
+    _setRestrictiveDate: function(opStartDate, opEndDate) {
+        var startDate = opStartDate || {year: MIN_YEAR, month: 1, date: 1},
+            endDate = opEndDate || {year: MAX_YEAR, month: 12, date: 0};
+
+        this._startEdge = calendarUtil.getTime(startDate) - 1;
+        this._endEdge = calendarUtil.getTime(endDate) + 1;
+    },
+
+    /**
+     * opener list를 저장한다.
+     * @param {Array} opOpeners [option.openers] opener 엘리먼트 리스트
+     * @private
+     */
+    _setOpeners: function(opOpeners) {
+        var self = this;
+
+        this.addOpener(this._element);
+        util.forEach(opOpeners, function(opener) {
+            self.addOpener(opener);
+        });
     },
 
     /**
@@ -1152,8 +1219,8 @@ ne.component.DatePicker = ne.util.defineClass(/**@lends ne.component.DatePicker.
 
     /**
      * 해당 년도가 유효한지 판단한다.
-     * @param {number} year
-     * @returns {boolean}
+     * @param {number} year 년도
+     * @returns {boolean} 유효 여부
      * @private
      */
     _isValidYear: function(year) {
@@ -1162,8 +1229,8 @@ ne.component.DatePicker = ne.util.defineClass(/**@lends ne.component.DatePicker.
 
     /**
      * 해당 월이 유효한지 판단한다.
-     * @param {number} month
-     * @returns {boolean}
+     * @param {number} month 월
+     * @returns {boolean} 유효 여부
      * @private
      */
     _isValidMonth: function(month) {
@@ -1172,7 +1239,7 @@ ne.component.DatePicker = ne.util.defineClass(/**@lends ne.component.DatePicker.
 
     /**
      * 해당 날짜가 유효한 날짜인지 판단한다.
-     * @param {Object} datehash
+     * @param {Object} datehash 날짜 값 객체
      * @returns {boolean} 유효한 날짜 여부
      * @private
      */
@@ -1183,7 +1250,7 @@ ne.component.DatePicker = ne.util.defineClass(/**@lends ne.component.DatePicker.
             lastDayInMonth,
             isBetween;
 
-        if(!this._isValidYear(year) || !this._isValidMonth(month)) {
+        if (!this._isValidYear(year) || !this._isValidMonth(month)) {
             return false;
         }
 
@@ -1195,12 +1262,12 @@ ne.component.DatePicker = ne.util.defineClass(/**@lends ne.component.DatePicker.
          */
         lastDayInMonth = MONTH_DAYS[month];
         if (month === 2 && year % 4 === 0) {
-            if(year % 100 !== 0 || year % 400 === 0) {
+            if (year % 100 !== 0 || year % 400 === 0) {
                 lastDayInMonth = 29;
             }
         }
 
-        isBetween = !!(util.isNumber(date) && date > 0 && date <= lastDayInMonth);
+        isBetween = !!(util.isNumber(date) && (date > 0) && (date <= lastDayInMonth));
 
         return isBetween;
     },
@@ -1229,14 +1296,13 @@ ne.component.DatePicker = ne.util.defineClass(/**@lends ne.component.DatePicker.
              */
             var isDateElement = (event.target.className.indexOf(this._calendar._option.classPrefix) > -1),
                 isContains = $.contains(this._$calendarElement[0], event.target),
-                isInputElement = (this._element === event.target),
-                isOpened = (this.constructor.enabledPicker === this);
+                isOpener = (inArray(event.target, this._openers) > -1);
 
             /**
              * calendar를 클릭하지 않았을 경우
              * 데이트 피커는 닫히게 된다.
              */
-            if ((isOpened && !isDateElement && !isContains && !isInputElement)) {
+            if ((this.isOpend() && !isDateElement && !isContains && !isOpener)) {
                 $(document).off('click', layer);
                 this._onKeydownPicker(event);
                 this.close();
@@ -1261,8 +1327,8 @@ ne.component.DatePicker = ne.util.defineClass(/**@lends ne.component.DatePicker.
 
     /**
      * 앨리먼트의 BoundingClientRect를 구한다.
-     * @param {HTMLElement} [element]
-     * @returns {Object}
+     * @param {HTMLElement} [element] 엘리먼트
+     * @returns {Object} 경계 값들 - left, top, bottom, right
      * @private
      */
     _getBoundingClientRect: function(element) {
@@ -1270,7 +1336,7 @@ ne.component.DatePicker = ne.util.defineClass(/**@lends ne.component.DatePicker.
             bound,
             ceil;
 
-        if(!el) {
+        if (!el) {
             return null;
         } else {
             bound = el.getBoundingClientRect();
@@ -1314,7 +1380,7 @@ ne.component.DatePicker = ne.util.defineClass(/**@lends ne.component.DatePicker.
 
     /**
      * 문자열로부터 날짜 정보를 추출하여 저장한다.
-     * @param str {string}
+     * @param {string} str 문자열
      * @private
      */
     _setDateFromString: function(str) {
@@ -1332,7 +1398,7 @@ ne.component.DatePicker = ne.util.defineClass(/**@lends ne.component.DatePicker.
 
     /**
      * 인풋 상자에서 엔터를 쳤을 경우 이벤트 처리
-     * @param {Event} [event]
+     * @param {Event} [event] 이벤트 객체
      * @private
      */
     _onKeydownPicker: function(event) {
@@ -1345,7 +1411,7 @@ ne.component.DatePicker = ne.util.defineClass(/**@lends ne.component.DatePicker.
 
     /**
      * 클릭시 발생한 이벤트
-     * @param {Event} e
+     * @param {Event} e 이벤트 객체
      * @private
      */
     _onClickCalendar: function(e) {
@@ -1355,12 +1421,12 @@ ne.component.DatePicker = ne.util.defineClass(/**@lends ne.component.DatePicker.
             date;
 
         if (value && !isNaN(value)) {
-            if(className.indexOf('prev-mon') > -1) {
-                date = calendarUtil.getRelativeDate(0, -1, value-1, this._calendar._getShownDate());
+            if (className.indexOf('prev-mon') > -1) {
+                date = calendarUtil.getRelativeDate(0, -1, value - 1, this._calendar._getShownDate());
             } else if (className.indexOf('next-mon') > -1) {
-                date = calendarUtil.getRelativeDate(0, 1, value-1, this._calendar._getShownDate());
+                date = calendarUtil.getRelativeDate(0, 1, value - 1, this._calendar._getShownDate());
             } else {
-                date = calendarUtil.getRelativeDate(0, 0, value-1, this._calendar._getShownDate());
+                date = calendarUtil.getRelativeDate(0, 0, value - 1, this._calendar._getShownDate());
             }
 
             this.setDate(date.year, date.month, date.date);
@@ -1376,21 +1442,22 @@ ne.component.DatePicker = ne.util.defineClass(/**@lends ne.component.DatePicker.
     _formed: function() {
         var year = this._date.year,
             month = this._date.month,
-            date = this._date.date;
+            date = this._date.date,
+            form = this._dateForm,
+            replaceMap,
+            dateString;
 
         month = month < 10 ? ('0' + month) : month;
         date = date < 10 ? ('0' + date) : date;
 
-        var form = this._dateForm,
-            replaceMap = {
-                yyyy: year,
-                yy: String(year).substr(2, 2),
-                mm: month,
-                m: Number(month),
-                dd: date,
-                d: Number(date)
-            },
-            dateString;
+        replaceMap = {
+            yyyy: year,
+            yy: String(year).substr(2, 2),
+            mm: month,
+            m: Number(month),
+            dd: date,
+            d: Number(date)
+        };
 
         dateString = form.replace(formatRegExp, function(key) {
             return replaceMap[key.toLowerCase()] || '';
@@ -1400,9 +1467,9 @@ ne.component.DatePicker = ne.util.defineClass(/**@lends ne.component.DatePicker.
     },
 
     /**
-     * 입력 텍스트로부터 지정한 날짜 형식과 비교하여 datehash객체를 만들고 그 결과를 반환한다.
-     * @param {String} str 사용자가 입력한 텍스트
-     * @returns {Object|boolean}
+     * 입력 텍스트로부터 지정한 날짜 형식과 비교하여 날짜 데이터 객체를 만들고 그 결과를 반환한다.
+     * @param {String} str 입력 텍스트
+     * @returns {Object|boolean} false 또는 추출한 날짜 데이터 객체
      * @private
      */
     _extractDate: function(str) {
@@ -1428,8 +1495,8 @@ ne.component.DatePicker = ne.util.defineClass(/**@lends ne.component.DatePicker.
 
     /**
      * 선택 불가능한 날짜인지 확인한다.
-     * @param {Object} datehash 비교할 날짜데이터
-     * @returns {boolean}
+     * @param {Object} datehash 날짜 데이터 객체
+     * @returns {boolean} 제한 여부
      * @private
      */
     _isRestricted: function(datehash) {
@@ -1475,9 +1542,18 @@ ne.component.DatePicker = ne.util.defineClass(/**@lends ne.component.DatePicker.
     },
 
     /**
+     * current opened picker is this?
+     * @returns {boolean} result
+     * @private
+     */
+    isOpend: function() {
+        return this._opend;
+    },
+
+    /**
      * calendar element의 left, top값 지정
-     * @param {number} x
-     * @param {number} y
+     * @param {number} x left값
+     * @param {number} y top값
      * @since 1.1.1
      */
     setXY: function(x, y) {
@@ -1487,11 +1563,12 @@ ne.component.DatePicker = ne.util.defineClass(/**@lends ne.component.DatePicker.
 
         pos.left = nX;
         pos.top = nY;
+        this._arrangeLayer();
     },
 
     /**
      * calendar element의 z-index 값 지정
-     * @param {number} zIndex
+     * @param {number} zIndex z-index 값
      * @since 1.1.1
      */
     setZIndex: function(zIndex) {
@@ -1503,20 +1580,42 @@ ne.component.DatePicker = ne.util.defineClass(/**@lends ne.component.DatePicker.
     },
 
     /**
+     * add opener
+     * @param {HTMLElement} opener element
+     */
+    addOpener: function(opener) {
+        var self = this;
+        if (inArray(opener, this._openers) < 0) {
+            this._openers.push(opener);
+            $(opener).on('click', function() {
+                self.open();
+            });
+        }
+    },
+
+    /**
+     * remove opener
+     * @param {HTMLElement} opener element
+     */
+    removeOpener: function(opener) {
+        var index = inArray(opener, this._openers);
+
+        if (index > -1) {
+            $(this._openers[index]).off('click');
+            this._openers.splice(index, 1);
+        }
+    },
+
+    /**
      * 달력의 위치를 조정하고, 달력을 펼친다.
      */
     open: function() {
-        var enabledPicker = this.constructor.enabledPicker;
-
         // 달력을 물고있는 활성화된 picker가 있으면 닫는다.
-        if (enabledPicker) {
-            if(enabledPicker === this) {
-                return;
-            } else {
-                enabledPicker.close();
-            }
+        if (this.isOpend()) {
+            return;
         }
 
+        // 달력 레이어 위치 조정
         this._arrangeLayer();
 
         // 선택영역 제한이 있는지 확인후 선택불가능한 부분을 설정한다.
@@ -1524,13 +1623,14 @@ ne.component.DatePicker = ne.util.defineClass(/**@lends ne.component.DatePicker.
 
         // 달력 레이어를 뺀 위치에서 마우스 클릭시 달력닫힘
         this._bindCloseLayerEvent();
+
         // 달력 커스텀이벤트
         this._bindCalendarCustomEvent();
 
         this._calendar.draw(this._date.year, this._date.month, false);
         this._$calendarElement.show();
 
-        this.constructor.enabledPicker = this;
+        this._opend = true;
     },
 
     /**
@@ -1542,12 +1642,12 @@ ne.component.DatePicker = ne.util.defineClass(/**@lends ne.component.DatePicker.
         this._unbindOnClickToCalendar();
         this._unbindCalendarEvent();
         this._$calendarElement.hide();
-        this.constructor.enabledPicker = null;
+        this._opend = false;
     },
 
     /**
      * 현재 날짜 해시 객체를 반환한다.
-     * @returns {Object}
+     * @returns {Object} 날짜 데이터 객체
      */
     getDateObject: function() {
         return util.extend({}, this._date);
@@ -1555,7 +1655,7 @@ ne.component.DatePicker = ne.util.defineClass(/**@lends ne.component.DatePicker.
 
     /**
      * 년도를 반환한다.
-     * @returns {number}
+     * @returns {number} 년도
      */
     getYear: function() {
         return this._date.year;
@@ -1563,7 +1663,7 @@ ne.component.DatePicker = ne.util.defineClass(/**@lends ne.component.DatePicker.
 
     /**
      * 월을 반환한다.
-     * @returns {number}
+     * @returns {number} 월
      */
     getMonth: function() {
         return this._date.month;
@@ -1571,7 +1671,7 @@ ne.component.DatePicker = ne.util.defineClass(/**@lends ne.component.DatePicker.
 
     /**
      * 일을 반환한다.
-     * @returns {number}
+     * @returns {number} 일
      */
     getDayInMonth: function() {
         return this._date.date;
@@ -1612,11 +1712,10 @@ ne.component.DatePicker = ne.util.defineClass(/**@lends ne.component.DatePicker.
      * @param {String} [form] - 날짜 형식 (ex- 'yyyy-mm-dd', 'mm-dd, yyyy', 'y/m/d', 'yy/mm/dd')
      */
     setDateForm: function(form) {
-        this._dateForm = form || this._dateForm;
-
         var regExpStr = '^',
             formOrder = this._formOrder,
             index = 0;
+        this._dateForm = form || this._dateForm;
 
         /**
          * formOrder는 날짜 형식의 순서를 기억한다.
@@ -1626,6 +1725,8 @@ ne.component.DatePicker = ne.util.defineClass(/**@lends ne.component.DatePicker.
          * 날짜 형식은 setDateForm에 따라 가변적이기 때문에,
          * index 변수를 사용해서 항상
          * 0, 1, 2 순서에 저장하도록 한다.
+         *
+         * @param {string} str 날짜 형식의 키값
          */
         this._dateForm.replace(formatRegExp, function(str) {
             var key = str.toLowerCase();
@@ -1642,7 +1743,7 @@ ne.component.DatePicker = ne.util.defineClass(/**@lends ne.component.DatePicker.
 
     /**
      * TimePicker 엘리먼트를 반환한다.
-     * @returns {TimePicker}
+     * @returns {TimePicker} 타임 피커 객체
      */
     getTimePicker: function() {
         return this._timePicker;

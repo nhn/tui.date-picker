@@ -9,7 +9,7 @@
 <body style="height:350px;">
 <input id="datePick1" type="text" size="25"/>
 
-<input id="datePick2" type="text" size="25" style="margin-left:50px;"/><button id="opener2" type="button"> picker open </button>
+<input id="datePick2" type="text" size="25" style="margin-left:50px;"/><button id="opener2" type="button"> picker open <span> aaa </span> </button>
 
 
 <div id="layer" class="layer" style="display:none;"> <!-- 기준 엘리먼트 -->
@@ -119,7 +119,10 @@
             date: 1
         },
         element: document.getElementById('datePick2'),
-        withTimePicker: true
+        withTimePicker: true,
+        openers: [
+            document.getElementById('opener2')
+        ]
     }, cal);
 </script>
 </body>

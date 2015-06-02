@@ -11,10 +11,8 @@ describe('Date Picker', function() {
         datepicker3;
 
     jasmine.getFixtures().fixturesPath = 'base/test/fixtures';
-    jasmine.getStyleFixtures().fixturesPath = 'base/test/css';
 
     beforeEach(function() {
-        loadStyleFixtures('common.css');
         loadFixtures('datepicker.html');
 
         layer1 = $('#layer1');
@@ -74,17 +72,17 @@ describe('Date Picker', function() {
             dateForm: 'yy년 mm월 dd일, ',
             date: {
                 year: 2015,
-                month: 05,
+                month: 5,
                 date: 10
             },
             startDate: {
                 year: 1994,
-                month: 05,
+                month: 5,
                 date: 9
             },
             endDate: {
                 year: 2090,
-                month: 05,
+                month: 5,
                 date: 11
             },
             selectableClass: 'mySelectable',
@@ -119,30 +117,22 @@ describe('Date Picker', function() {
     describe('api 호출', function() {
         it('open datepicker', function() {
             datepicker1.open();
-            expect(ne.component.DatePicker.enabledPicker).toBe(datepicker1);
-
-            datepicker2.open();
-            expect(ne.component.DatePicker.enabledPicker).toBe(datepicker2);
-            datepicker2.open();
-            datepicker2.open();
-
-            datepicker3.open();
-            expect(ne.component.DatePicker.enabledPicker).toBe(datepicker3);
+            expect(datepicker1.isOpend()).toEqual(true);
         });
 
         it('close datepicker', function() {
             datepicker1.open();
             datepicker1.close();
-            expect(ne.component.DatePicker.enabledPicker).toBe(null);
+            expect(datepicker1.isOpend()).toEqual(false);
         });
 
         it('get date object', function() {
             var obj = datepicker1.getDateObject();
 
             expect(obj).toEqual({
-                year:2014,
-                month:11,
-                date:27
+                year: 2014,
+                month: 11,
+                date: 27
             });
         });
 
@@ -290,6 +280,50 @@ describe('Date Picker', function() {
 
             expect(Number(datepicker1._$calendarElement[0].style.zIndex)).toEqual(originZIndex);
         });
+
+        it('without - "add opener"', function() {
+            var btn = document.createElement('BUTTON');
+            document.body.appendChild(btn);
+            spyOn(datepicker1, 'close');
+
+            // addOpener로 등록하지 않은 경우 close method가 호출된다.
+            $(btn).on('click', function () {
+                datepicker1.open();
+            });
+            $(btn).click();
+            expect(datepicker1.close).toHaveBeenCalled();
+        });
+
+        it('with - "add opener"', function() {
+            var btn = document.createElement('BUTTON');
+            document.body.appendChild(btn);
+            spyOn(datepicker1, 'close');
+
+            // addOpener로 등록하면 click event가 등록되고,
+            // close method가 호출되지 않는다.
+            datepicker1.addOpener(btn);
+            $(btn).click();
+
+
+
+            expect(ne.util.inArray(btn, datepicker1._openers)).not.toEqual(-1);
+            expect(datepicker1.close).not.toHaveBeenCalled();
+        });
+
+        it('remove openenr', function() {
+
+            var btn = document.createElement('BUTTON');
+            btn.id = 'opener';
+            document.body.appendChild(btn);
+            spyOn(datepicker1, 'open');
+
+            datepicker1.addOpener(btn);
+            datepicker1.removeOpener(btn);
+            $(btn).click();
+
+            expect(ne.util.inArray(btn, datepicker1._openers)).toEqual(-1);
+            expect(datepicker1.open).not.toHaveBeenCalled();
+        });
     });
 
     describe('private 테스트', function() {
@@ -398,15 +432,15 @@ describe('Date Picker', function() {
 
 
         it('_bindDrawEventForSelectableRange 선택 불가능한 영역을 입힌다.', function() {
-
+            var unselectableList;
             datepicker2._bindDrawEventForSelectableRange();
             calendar2.draw(2014, 11);
-            var unselectableList = datepicker2._$calendarElement.find('.mySelectable');
+
+            unselectableList = datepicker2._$calendarElement.find('.mySelectable');
             // 10/30~11/10(12)
             expect(unselectableList.length);
             expect(unselectableList.length).not.toBe(12);
         });
-
     });
 
     describe('public - 다양한 입력 케이스', function() {
@@ -480,12 +514,12 @@ describe('Date Picker', function() {
         });
 
         it('_onClickCalendar 달력의 날짜를 눌렀을때를 테스트한다.', function() {
-            var td = document.createElement('td');
+            var td = document.createElement('td'),
+                e = {
+                    target: td,
+                    stopPropagation: function() {}
+                };
             td.innerHTML = '<a>9</a>';
-            var e = {
-                target: td,
-                stopPropagation: function() {}
-            };
 
             datepicker1.open();
             datepicker1.setDateForm('dd-mm-yyyy');
@@ -494,16 +528,16 @@ describe('Date Picker', function() {
         });
 
         it('_onKeydownPicker 엔터를 쳤을때와 아닐때, 동작테스트', function() {
-            datepicker2.setDateForm('yyyymmdd');
             var e1 = {
-                keyCode: 10
-            };
-            var e2 = {
-                keyCode: 13
-            };
-            var res1,
+                    keyCode: 10
+                },
+                e2 = {
+                    keyCode: 13
+                },
+                res1,
                 res2,
                 res3;
+            datepicker2.setDateForm('yyyymmdd');
 
             // enter를 치지 않았기때문에 동작하지 않는다.
             datepicker2.setDateForm('yy-mm-dd');

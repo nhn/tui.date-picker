@@ -1,6 +1,13 @@
 // Karma configuration
 // Generated on Tue Apr 28 2015 17:35:38 GMT+0900 (KST)
+
 module.exports = function(config) {
+    var webdriverConfig = {
+        hostname: 'fe.nhnent.com',
+        port: 4444,
+        remoteHost: true
+    };
+
     config.set({
 
         // base path that will be used to resolve all patterns (eg. files, exclude)
@@ -30,7 +37,8 @@ module.exports = function(config) {
 
 
         // list of files to exclude
-        exclude: [],
+        exclude: [
+        ],
 
 
         // preprocess matching files before serving them to the browser
@@ -50,17 +58,17 @@ module.exports = function(config) {
         ],
 
         coverageReporter: {
-            dir: 'report/coverage/',
+            dir : 'report/coverage/',
             reporters: [
                 {
                     type: 'html',
-                    subdir: function (browser) {
+                    subdir: function(browser) {
                         return 'report-html/' + browser;
                     }
                 },
                 {
                     type: 'cobertura',
-                    subdir: function (browser) {
+                    subdir: function(browser) {
                         return 'report-cobertura/' + browser;
                     },
                     file: 'cobertura.txt'
@@ -93,8 +101,53 @@ module.exports = function(config) {
         // start these browsers
         // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
         browsers: [
+            'IE7',
+            'IE8',
+            'IE9',
+            'IE10',
+            'IE11',
+            'Chrome-WebDriver',
+            'Firefox-WebDriver',
             'PhantomJS'
         ],
+
+        customLaunchers: {
+            'IE7': {
+                base: 'WebDriver',
+                config: webdriverConfig,
+                browserName: 'IE7'
+            },
+            'IE8': {
+                base: 'WebDriver',
+                config: webdriverConfig,
+                browserName: 'IE8'
+            },
+            'IE9': {
+                base: 'WebDriver',
+                config: webdriverConfig,
+                browserName: 'IE9'
+            },
+            'IE10': {
+                base: 'WebDriver',
+                config: webdriverConfig,
+                browserName: 'IE10'
+            },
+            'IE11': {
+                base: 'WebDriver',
+                config: webdriverConfig,
+                browserName: 'IE11'
+            },
+            'Chrome-WebDriver': {
+                base: 'WebDriver',
+                config: webdriverConfig,
+                browserName: 'chrome'
+            },
+            'Firefox-WebDriver': {
+                base: 'WebDriver',
+                config: webdriverConfig,
+                browserName: 'firefox'
+            }
+        },
 
         // Continuous Integration mode
         // if true, Karma captures browsers, runs the tests and exits

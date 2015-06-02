@@ -41,7 +41,7 @@ gulp.task('concat', function() {
         .pipe(gulp.dest('./'));
 });
 
-gulp.task('scripts', function(){
+gulp.task('scripts', function() {
     return gulp.src(paths.scripts)
         .pipe(header(fnHeader))
         .pipe(footer(fnFooter))
@@ -50,7 +50,8 @@ gulp.task('scripts', function(){
         .pipe(concat('date-picker.min.js', {pkg: pkg}))
         .pipe(header(headerBanner, {pkg: pkg}))
         .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest('./'));
+        .pipe(gulp.dest('./'))
+        .pipe(gulp.dest('./samples/js/'));
 });
 
 gulp.task('connect', function() {
@@ -59,4 +60,4 @@ gulp.task('connect', function() {
    });
 });
 
-gulp.task('default',['concat', 'scripts', 'connect']);
+gulp.task('default', ['concat', 'scripts', 'connect']);

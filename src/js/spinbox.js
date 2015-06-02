@@ -8,10 +8,10 @@
 
 'use strict';
 
-ne.util.defineNamespace('ne.component');
-
 var util = ne.util,
     inArray = util.inArray;
+
+util.defineNamespace('ne.component');
 
 /**
  * @namespace ne.component.Spinbox
@@ -108,7 +108,7 @@ ne.component.Spinbox = util.defineClass(/** @lends ne.component.Spinbox.prototyp
 
     /**
      * is a valid option?
-     * @returns {boolean}
+     * @returns {boolean} result
      * @private
      */
     _isValidOption: function() {
@@ -119,8 +119,8 @@ ne.component.Spinbox = util.defineClass(/** @lends ne.component.Spinbox.prototyp
 
     /**
      * is a valid value?
-     * @param {number} value
-     * @returns {boolean}
+     * @param {number} value for spinbox
+     * @returns {boolean} result
      * @private
      */
     _isValidValue: function(value) {
@@ -141,8 +141,8 @@ ne.component.Spinbox = util.defineClass(/** @lends ne.component.Spinbox.prototyp
 
     /**
      * is a valid step?
-     * @param {number} step
-     * @returns {boolean}
+     * @param {number} step for spinbox up/down
+     * @returns {boolean} result
      * @private
      */
     _isValidStep: function(step) {
@@ -180,7 +180,7 @@ ne.component.Spinbox = util.defineClass(/** @lends ne.component.Spinbox.prototyp
      * Default value is a digits of a longer value of option.min or option.max
      * @private
      */
-    _setInputSizeAndMaxLength: function(){
+    _setInputSizeAndMaxLength: function() {
         var $input = this._$inputElement,
             minValueLength = String(this._option.min).length,
             maxValueLength = String(this._option.max).length,
@@ -232,14 +232,14 @@ ne.component.Spinbox = util.defineClass(/** @lends ne.component.Spinbox.prototyp
             } else if (nextValue < min) {
                 nextValue = max;
             }
-        } while(inArray(nextValue, exclusion) > -1);
+        } while (inArray(nextValue, exclusion) > -1);
 
         this.setValue(nextValue);
     },
 
     /**
      * DOM(Up/Down button) Click Event handler
-     * @param {jQuery.Event} event
+     * @param {Event} event event-object
      * @private
      */
     _onClickButton: function(event) {
@@ -248,6 +248,7 @@ ne.component.Spinbox = util.defineClass(/** @lends ne.component.Spinbox.prototyp
 
     /**
      * DOM(Input element) Keydown Event handler
+     * @param {Event} event event-object
      * @private
      */
     _onKeyDownInputElement: function(event) {
@@ -277,7 +278,7 @@ ne.component.Spinbox = util.defineClass(/** @lends ne.component.Spinbox.prototyp
 
     /**
      * set step of spinbox
-     * @param {number} step
+     * @param {number} step for spinbox
      */
     setStep: function(step) {
         if (!this._isValidStep(step)) {
@@ -288,7 +289,7 @@ ne.component.Spinbox = util.defineClass(/** @lends ne.component.Spinbox.prototyp
 
     /**
      * get step of spinbox
-     * @returns {number}
+     * @returns {number} step
      */
     getStep: function() {
         return this._option.step;
@@ -347,7 +348,7 @@ ne.component.Spinbox = util.defineClass(/** @lends ne.component.Spinbox.prototyp
 
     /**
      * get container element
-     * @return {HTMLElement}
+     * @return {HTMLElement} element
      */
     getContainerElement: function() {
         return this._$containerElement[0];

@@ -420,7 +420,22 @@ describe('Date Picker', function() {
             beforeDate = datepicker1.getDayInMonth();
         });
 
-        it('setDate _not valid date, set run with nothing', function() {
+        it('setDate - valid date', function() {
+            var inputDate = {
+                    year: 2014,
+                    month: 3,
+                    date: 1
+                },
+                outputDate;
+            datepicker1.setDate(inputDate.year, inputDate.month, inputDate.date);
+            outputDate = datepicker1.getDateObject();
+
+            expect(outputDate.year).toBe(inputDate.year);
+            expect(outputDate.month).toBe(inputDate.month);
+            expect(outputDate.date).toBe(inputDate.date);
+        });
+
+        it('setDate - no value', function() {
             var notday;
             datepicker1.setDate();
             notday = datepicker1.getDateObject();
@@ -430,22 +445,19 @@ describe('Date Picker', function() {
             expect(notday.date).toBe(beforeDate);
         });
 
-        it('setDate _not valid date, set run with year and month', function() {
-            var notday;
-            datepicker1.setDate(1919, 7);
-            notday = datepicker1.getDateObject();
-
-            expect(notday.year).not.toBe(beforeYear);
-            expect(notday.month).not.toBe(beforeMonth);
-            expect(notday.date).toBe(beforeDate);
-        });
-
-        it('setDate _not valid date, set run with year', function() {
+        it('setDate - restrictive date', function() {
             var notday;
             datepicker1.setDate(1920);
             notday = datepicker1.getDateObject();
 
-            expect(notday.year).not.toBe(beforeYear);
+            expect(notday.year).toBe(beforeYear);
+            expect(notday.month).toBe(beforeMonth);
+            expect(notday.date).toBe(beforeDate);
+
+            datepicker1.setDate(1919, 7);
+            notday = datepicker1.getDateObject();
+
+            expect(notday.year).toBe(beforeYear);
             expect(notday.month).toBe(beforeMonth);
             expect(notday.date).toBe(beforeDate);
         });

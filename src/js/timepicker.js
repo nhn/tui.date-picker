@@ -8,18 +8,16 @@
 
 'use strict';
 
-ne.util.defineNamespace('ne.component');
-
 var util = ne.util,
-    Spinbox = ne.component.Spinbox;
-
-var timeRegExp = /\s*(\d{1,2})\s*:\s*(\d{1,2})\s*([ap][m])?(?:[\s\S]*)/i,
+    Spinbox = ne.component.Spinbox,
+    timeRegExp = /\s*(\d{1,2})\s*:\s*(\d{1,2})\s*([ap][m])?(?:[\s\S]*)/i,
     timePickerTag = '<table class="timepicker"><tr class="timepicker-row"></tr></table>',
     columnTag = '<td class="timepicker-column"></td>',
     spinBoxTag = '<td class="timepicker-column timepicker-spinbox"><input type="text" class="timepicker-spinbox-input"></td>',
     upBtnTag = '<button type="button" class="timepicker-btn timepicker-btn-up"><b>+</b></button>',
     downBtnTag = '<button type="button" class="timepicker-btn timepicker-btn-down"><b>-</b></button>';
 
+util.defineNamespace('ne.component');
 
 /**
  * @namespace ne.component.TimePicker
@@ -98,7 +96,7 @@ ne.component.TimePicker = util.defineClass(/** @lends ne.component.TimePicker.pr
 
     /**
      * Initialize with option
-     * @param {Object} option
+     * @param {Object} option for time picker
      * @private
      */
     _initialize: function(option) {
@@ -111,7 +109,7 @@ ne.component.TimePicker = util.defineClass(/** @lends ne.component.TimePicker.pr
 
     /**
      * Set option
-     * @param {Object} option
+     * @param {Object} option for time picker
      * @private
      */
     _setOption: function(option) {
@@ -174,7 +172,7 @@ ne.component.TimePicker = util.defineClass(/** @lends ne.component.TimePicker.pr
 
         $tpRow.append(this._hourSpinbox.getContainerElement(), $colon, this._minuteSpinbox.getContainerElement());
 
-        if(opt.showMeridian) {
+        if (opt.showMeridian) {
             $meridian = $(columnTag)
                 .addClass('meridian')
                 .append(this._isPM ? 'PM' : 'AM');
@@ -195,7 +193,7 @@ ne.component.TimePicker = util.defineClass(/** @lends ne.component.TimePicker.pr
 
     /**
      * set position of timepicker container
-     * @param {jQuery} $input
+     * @param {jQuery} $input jquery-object (element)
      * @private
      */
     _setDefaultPosition: function($input) {
@@ -256,7 +254,7 @@ ne.component.TimePicker = util.defineClass(/** @lends ne.component.TimePicker.pr
 
     /**
      * is clicked inside of container?
-     * @param {Event} event
+     * @param {Event} event event-object
      * @returns {boolean}
      * @private
      */
@@ -269,6 +267,7 @@ ne.component.TimePicker = util.defineClass(/** @lends ne.component.TimePicker.pr
 
     /**
      * transform time into formatted string
+     * @returns {string} time string
      * @private
      */
     _formToTimeFormat: function() {
@@ -297,7 +296,7 @@ ne.component.TimePicker = util.defineClass(/** @lends ne.component.TimePicker.pr
 
     /**
      * get postfix when AM/PM option is true.
-     * @returns {string}
+     * @returns {string} postfix (AM/PM)
      * @private
      */
     _getPostfix: function() {
@@ -345,7 +344,7 @@ ne.component.TimePicker = util.defineClass(/** @lends ne.component.TimePicker.pr
 
     /**
      * listener to show container
-     * @param {Event} event
+     * @param {Event} event event-object
      */
     open: function(event) {
         if (this._isShown) {
@@ -359,7 +358,7 @@ ne.component.TimePicker = util.defineClass(/** @lends ne.component.TimePicker.pr
 
     /**
      * listener to hide container
-     * @param {Event} event
+     * @param {Event} event event-object
      */
     close: function(event) {
         if (!this._isShown || this._isClickedInside(event)) {
@@ -394,7 +393,7 @@ ne.component.TimePicker = util.defineClass(/** @lends ne.component.TimePicker.pr
 
     /**
      * set time from input element.
-     * @param {jQuery} [$inputElement]
+     * @param {jQuery} [$inputElement] jquery object (element)
      * @return {boolean} result of set time
      */
     setTimeFromInputElement: function($inputElement) {
@@ -404,7 +403,7 @@ ne.component.TimePicker = util.defineClass(/** @lends ne.component.TimePicker.pr
 
     /**
      * set hour
-     * @param {number} hour
+     * @param {number} hour for time picker
      * @return {boolean} result of set time
      */
     setHour: function(hour) {
@@ -413,7 +412,7 @@ ne.component.TimePicker = util.defineClass(/** @lends ne.component.TimePicker.pr
 
     /**
      * set minute
-     * @param {number} minute
+     * @param {number} minute for time picker
      * @return {boolean} result of set time
      */
     setMinute: function(minute) {
@@ -422,8 +421,8 @@ ne.component.TimePicker = util.defineClass(/** @lends ne.component.TimePicker.pr
 
     /**
      * set time
-     * @param {number} hour
-     * @param {number} minute
+     * @param {number} hour for time picker
+     * @param {number} minute for time picker
      * @return {boolean} result of set time
      */
     setTime: function(hour, minute) {
@@ -448,7 +447,7 @@ ne.component.TimePicker = util.defineClass(/** @lends ne.component.TimePicker.pr
 
     /**
      * set time from time-string
-     * @param {string} timeString
+     * @param {string} timeString time-string
      * @return {boolean} result of set time
      */
     setTimeFromString: function(timeString) {
@@ -471,7 +470,7 @@ ne.component.TimePicker = util.defineClass(/** @lends ne.component.TimePicker.pr
                     isPM = this._isPM;
                 }
 
-                if(isPM) {
+                if (isPM) {
                     hour += 12;
                 }
             }
@@ -481,7 +480,7 @@ ne.component.TimePicker = util.defineClass(/** @lends ne.component.TimePicker.pr
 
     /**
      * set step of hour
-     * @param {number} step
+     * @param {number} step for time picker
      */
     setHourStep: function(step) {
         this._hourSpinbox.setStep(step);
@@ -490,7 +489,7 @@ ne.component.TimePicker = util.defineClass(/** @lends ne.component.TimePicker.pr
 
     /**
      * set step of minute
-     * @param {number} step
+     * @param {number} step for time picker
      */
     setMinuteStep: function(step) {
         this._minuteSpinbox.setStep(step);
@@ -499,7 +498,7 @@ ne.component.TimePicker = util.defineClass(/** @lends ne.component.TimePicker.pr
 
     /**
      * add a specific hour to exclude
-     * @param {number} hour
+     * @param {number} hour for exclusion
      */
     addHourExclusion: function(hour) {
         this._hourSpinbox.addExclusion(hour);
@@ -507,7 +506,7 @@ ne.component.TimePicker = util.defineClass(/** @lends ne.component.TimePicker.pr
 
     /**
      * add a specific minute to exclude
-     * @param {number} minute
+     * @param {number} minute for exclusion
      */
     addMinuteExclusion: function(minute) {
         this._minuteSpinbox.addExclusion(minute);
@@ -531,7 +530,7 @@ ne.component.TimePicker = util.defineClass(/** @lends ne.component.TimePicker.pr
 
     /**
      * remove hour from exclusion list
-     * @param {number} hour
+     * @param {number} hour that you want to remove
      */
     removeHourExclusion: function(hour) {
         this._hourSpinbox.removeExclusion(hour);
@@ -539,7 +538,7 @@ ne.component.TimePicker = util.defineClass(/** @lends ne.component.TimePicker.pr
 
     /**
      * remove minute from exclusion list
-     * @param {number} minute
+     * @param {number} minute that you want to remove
      */
     removeMinuteExclusion: function(minute) {
         this._minuteSpinbox.removeExclusion(minute);

@@ -75,7 +75,7 @@ ne.component.DatePicker = ne.util.defineClass(/**@lends ne.component.DatePicker.
          * @type {string}
          * @private
          */
-        this._dateForm = option.dateForm || 'yyyy-mm-dd';
+        this._dateForm = option.dateForm || 'yyyy-mm-dd ';
 
         /**
          * 날짜 형식에 맞는 정규표현식 객체
@@ -131,18 +131,28 @@ ne.component.DatePicker = ne.util.defineClass(/**@lends ne.component.DatePicker.
         this._endEdge = option.endDate;
 
         /**
-         * 추가 - timepicker option
+         * timepicker option
          * @type {boolean}
          * @private
+         * @since 1.1.0
          */
         this._withTimePicker = !!(option.withTimePicker);
 
         /**
-         * 추가 - TimePicker Object
+         * TimePicker Object
          * @type {TimePicker}
          * @private
+         * @since 1.1.0
          */
         this._timePicker = null;
+
+        /**
+         * position - left & top
+         * @type {Object}
+         * @private
+         * @since 1.1.1
+         */
+        this._pos = null;
 
         this._initializeDatePicker(option);
     },
@@ -153,6 +163,14 @@ ne.component.DatePicker = ne.util.defineClass(/**@lends ne.component.DatePicker.
      * @private
      */
     _initializeDatePicker: function(option) {
+        var pos = this._pos = option.pos || {};
+
+        // 캘린더의 기본 포지션을 설정한다.
+        var bound = this._getBoundingClientRect();
+        pos.left = pos.left || bound.left;
+        pos.top = pos.top || bound.bottom;
+        pos.zIndex = pos.zIndex || 9999;
+
         // 날짜 제한 값을 설정한다.
         option.startDate = option.startDate || {year:MIN_YEAR, month:1, date: 1};
         option.endDate = option.endDate || {year:MAX_YEAR, month:1 , date: 1};
@@ -221,7 +239,8 @@ ne.component.DatePicker = ne.util.defineClass(/**@lends ne.component.DatePicker.
         var year = datehash.year,
             month = datehash.month,
             date = datehash.date,
-            lastDayInMonth;
+            lastDayInMonth,
+            isBetween;
 
         if(!this._isValidYear(year) || !this._isValidMonth(month)) {
             return false;
@@ -240,11 +259,9 @@ ne.component.DatePicker = ne.util.defineClass(/**@lends ne.component.DatePicker.
             }
         }
 
-        return !!(
-        util.isNumber(date) &&
-        date > 0 &&
-        date <= lastDayInMonth
-        );
+        isBetween = !!(util.isNumber(date) && date > 0 && date <= lastDayInMonth);
+
+        return isBetween;
     },
 
     /**
@@ -292,16 +309,13 @@ ne.component.DatePicker = ne.util.defineClass(/**@lends ne.component.DatePicker.
      * @private
      */
     _arrangeLayer: function() {
-        var $element = this._$calendarElement,
-            bound = this._getBoundingClientRect();
+        var style = this._$calendarElement[0].style,
+            pos = this._pos;
 
-        if (bound) {
-            $element.css({
-                position: 'absolute',
-                left: bound.left + 'px',
-                top: bound.bottom + 'px'
-            });
-        }
+        style.position = 'absolute';
+        style.left = pos.left + 'px';
+        style.top = pos.top + 'px';
+        style.zIndex = pos.zIndex;
     },
 
     /**
@@ -517,6 +531,34 @@ ne.component.DatePicker = ne.util.defineClass(/**@lends ne.component.DatePicker.
      */
     _unbindCalendarEvent: function() {
         this._calendar.off();
+    },
+
+    /**
+     * calendar element의 left, top값 지정
+     * @param {number} x
+     * @param {number} y
+     * @since 1.1.1
+     */
+    setXY: function(x, y) {
+        var pos = this._pos,
+            nX = util.isNumber(x) ? x : pos.left,
+            nY = util.isNumber(y) ? y : pos.top;
+
+        pos.left = nX;
+        pos.top = nY;
+    },
+
+    /**
+     * calendar element의 z-index 값 지정
+     * @param {number} zIndex
+     * @since 1.1.1
+     */
+    setZIndex: function(zIndex) {
+        if (!util.isNumber(zIndex)) {
+            return;
+        }
+
+        this._pos.zIndex = zIndex;
     },
 
     /**

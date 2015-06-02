@@ -33,7 +33,7 @@ Date Picker
 ## Download/Install
 * Bower:
    * 최신버전 : `bower install "git+http://70327b4564c7a80eb61724056876b960290946dd:x-oauth-basic@github.nhnent.com/fe/component-date-picker.git#master"`
-   *    * 특정버전 : `bower install "git+http://70327b4564c7a80eb61724056876b960290946dd:x-oauth-basic@github.nhnent.com/fe/component-date-picker.git[#tag]"`
+   * 특정버전 : `bower install "git+http://70327b4564c7a80eb61724056876b960290946dd:x-oauth-basic@github.nhnent.com/fe/component-date-picker.git[#tag]"`
 * Download: https://github.nhnent.com/fe/component-date-picker
 
 ## History

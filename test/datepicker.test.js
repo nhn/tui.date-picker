@@ -635,5 +635,18 @@ describe('Date Picker', function() {
                 date: 1
             });
         });
+
+        xit('선택한 날짜에 "selected" css class 확인', function() {
+            var selection = {year: 2015, month: 4, date: 1},
+                el,
+                value;
+
+            datepicker1.setDate(selection.year, selection.month, selection.date);
+            datepicker1.open();
+            el = datepicker1._$calendarElement.find('.selected');
+
+            value = Number((el.innerText || el.textContent || el.nodeValue));
+            expect(value).toEqual(selection.date);
+        });
     });
 });

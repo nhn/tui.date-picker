@@ -39,12 +39,21 @@ var calendarUtil = ne.component.Calendar.Util,
  *          @param {number} [option.date.year] 년도
  *          @param {number} [option.date.month] 월
  *          @param {number} [option.date.date] 일
- *      @param {string} [option.dateForm = yyyy-mm-dd] 날짜 형식
+ *      @param {string} [option.dateForm = 'yyyy-mm-dd'] 날짜 형식
  *      @param {string} [option.defaultCentury = 20] yy 형식일때 자동으로 붙여지는 값 [19|20]
- *      @param {string} [option.selectableClass = selectableClass] 선택가능한 날짜에 입힐 클래스
- *      @param {Object} [option.startDate = 1900.01.01] 날짜 시작일 (해당 날짜 선택 불가)
- *      @param {Object} [option.endDate = 3000.01.01] 날짜 종료일 (해당 날짜 선택 불가)
- *      @param {Object} [option.pos = {}] position - left & top & zIndex
+ *      @param {string} [option.selectableClass = 'selectableClass'] 선택가능한 날짜에 입힐 클래스
+ *      @param {Object} [option.startDate = {year:1970, month:1, date:1}] 날짜 시작일 (해당 날짜 선택 불가)
+ *          @param {number} [option.startDate.year] 시작 날짜 - 년도
+ *          @param {number} [option.startDate.month] 시작 날짜 - 월
+ *          @param {number} [option.startDate.date] 시작 날짜 - 일
+ *      @param {Object} [option.endDate = {year:3000, month:12, date:31}] 날짜 종료일 (해당 날짜 선택 불가)
+ *          @param {number} [option.endDate.year] 끝 날짜 - 년도
+ *          @param {number} [option.endDate.month] 끝 날짜 - 월
+ *          @param {number} [option.endDate.date] 끝 날짜 - 일
+ *      @param {Object} [option.pos = {x: number, y: number, zIndex: number}] position - left & top & zIndex
+ *          @param {number} [option.pos.x] 캘린더의 position left 값
+ *          @param {number} [option.pos.y] 캘린더의 position top 값
+ *          @param {number} [option.pos.zIndex] 캘린더의 z-index 값
  *      @param {Object} [option.openers = []] opener list
  * @param {ne.component.Calendar} calendar 캘린더 컴포넌트
  * */
@@ -195,8 +204,10 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
         }
         // 날짜 형식을 지정하고 현재 날짜를 input element에 출력한다.
         this.setDateForm();
-    },
 
+        // 캘린더를 숨긴다.
+        this.close();
+    },
     /**
      * 데이트피커의 기본값 날짜를 지정한다.
      * @param {Object} opDate [option.date] 사용자가 지정한 기본값 날짜
@@ -305,6 +316,7 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
         var year = datehash.year,
             month = datehash.month,
             date = datehash.date,
+            isLeapYear,
             lastDayInMonth,
             isBetween;
 
@@ -319,8 +331,9 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
          * @type {number}
          */
         lastDayInMonth = MONTH_DAYS[month];
-        if (month === 2 && year % 4 === 0) {
-            if (year % 100 !== 0 || year % 400 === 0) {
+        if ((month === 2)) {
+            isLeapYear = (year % 4 === 0) && (year % 100 !== 0) || (year % 400 === 0);
+            if (isLeapYear) {
                 lastDayInMonth = 29;
             }
         }
@@ -425,7 +438,7 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
      * 달력에 이벤트를 붙인다.
      * @private
      */
-    _bindOnClickToCalendar: function() {
+    _bindOnClickCalendar: function() {
         if (!ne.util.isFunction(this._binder)) {
             this._binder = ne.util.bind(this._onClickCalendar, this);
         }
@@ -437,7 +450,7 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
      * 달력 이벤트를 제거한다
      * @private
      */
-    _unbindOnClickToCalendar: function() {
+    _unbindOnClickCalendar: function() {
         this._$calendarElement.find('.' + this._selectableClass).off('click');
     },
 
@@ -490,18 +503,22 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
             className = target.className,
             value = Number((target.innerText || target.textContent || target.nodeValue)),
             shownDate,
+            relativeMonth,
             date;
 
         if (value && !isNaN(value)) {
             shownDate = this._calendar._getShownDate();
+            //shownDate = this._calendar.getShownDate();
+            //shownDate.date = 1;
             if (className.indexOf('prev-mon') > -1) {
-                date = calendarUtil.getRelativeDate(0, -1, value - 1, shownDate);
+                relativeMonth = -1;
             } else if (className.indexOf('next-mon') > -1) {
-                date = calendarUtil.getRelativeDate(0, 1, value - 1, shownDate);
+                relativeMonth = 1;
             } else {
-                date = calendarUtil.getRelativeDate(0, 0, value - 1, shownDate);
+                relativeMonth = 0;
             }
 
+            date = calendarUtil.getRelativeDate(0, relativeMonth, value - 1, shownDate);
             this.setDate(date.year, date.month, date.date);
         }
     },
@@ -598,10 +615,10 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
      */
     _bindCalendarCustomEvent: function() {
         this._calendar.on('beforeDraw', ne.util.bind(function() {
-            this._unbindOnClickToCalendar();
+            this._unbindOnClickCalendar();
         }, this));
         this._calendar.on('afterDraw', ne.util.bind(function() {
-            this._bindOnClickToCalendar();
+            this._bindOnClickCalendar();
         }, this));
     },
 
@@ -706,7 +723,7 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
      */
     close: function() {
         this._setDateFromString(this._element.value);
-        this._unbindOnClickToCalendar();
+        this._unbindOnClickCalendar();
         this._unbindCalendarEvent();
         this._$calendarElement.hide();
         this._opened = false;

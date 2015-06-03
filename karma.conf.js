@@ -13,9 +13,9 @@ module.exports = function(config) {
 
         // list of files / patterns to load in the browser
         files: [
-            'lib/code-snippet/js/*.js',
-            'lib/jquery/js/*.js',
-            'lib/component-calendar/js/*.js',
+            'lib/jquery/*.js',
+            'lib/ne-code-snippet/*.js',
+            'lib/ne-component-calendar/*.js',
 
             'node_modules/jasmine-jquery/lib/jasmine-jquery.js',
 

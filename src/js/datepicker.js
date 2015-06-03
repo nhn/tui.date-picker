@@ -223,7 +223,6 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
         var pos = this._pos = opPos || {},
             bound = this._getBoundingClientRect();
 
-        //
         pos.left = pos.left || bound.left;
         pos.top = pos.top || bound.bottom;
         pos.zIndex = pos.zIndex || 9999;
@@ -490,15 +489,17 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
         var target = e.target,
             className = target.className,
             value = Number((target.innerText || target.textContent || target.nodeValue)),
+            shownDate,
             date;
 
         if (value && !isNaN(value)) {
+            shownDate = this._calendar._getShownDate();
             if (className.indexOf('prev-mon') > -1) {
-                date = calendarUtil.getRelativeDate(0, -1, value - 1, this._calendar._getShownDate());
+                date = calendarUtil.getRelativeDate(0, -1, value - 1, shownDate);
             } else if (className.indexOf('next-mon') > -1) {
-                date = calendarUtil.getRelativeDate(0, 1, value - 1, this._calendar._getShownDate());
+                date = calendarUtil.getRelativeDate(0, 1, value - 1, shownDate);
             } else {
-                date = calendarUtil.getRelativeDate(0, 0, value - 1, this._calendar._getShownDate());
+                date = calendarUtil.getRelativeDate(0, 0, value - 1, shownDate);
             }
 
             this.setDate(date.year, date.month, date.date);
@@ -507,7 +508,6 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
 
     /**
      * 날짜 해쉬를 받아 양식에 맞춘 값을 생성해 돌려준다.
-     *
      * @return {string} - 폼에 맞춘 날짜 스트링
      * @private
      */
@@ -629,12 +629,10 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
      * @since 1.1.1
      */
     setXY: function(x, y) {
-        var pos = this._pos,
-            nX = util.isNumber(x) ? x : pos.left,
-            nY = util.isNumber(y) ? y : pos.top;
+        var pos = this._pos;
 
-        pos.left = nX;
-        pos.top = nY;
+        pos.left = util.isNumber(x) ? x : pos.left;
+        pos.top = util.isNumber(y) ? y : pos.top;
         this._arrangeLayer();
     },
 
@@ -656,12 +654,9 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
      * @param {HTMLElement} opener element
      */
     addOpener: function(opener) {
-        var self = this;
         if (inArray(opener, this._openers) < 0) {
             this._openers.push(opener);
-            $(opener).on('click', function() {
-                self.open();
-            });
+            $(opener).on('click', util.bind(this._onClickPicker, this));
         }
     },
 

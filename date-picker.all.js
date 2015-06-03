@@ -1431,15 +1431,17 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
         var target = e.target,
             className = target.className,
             value = Number((target.innerText || target.textContent || target.nodeValue)),
+            shownDate,
             date;
 
         if (value && !isNaN(value)) {
+            shownDate = this._calendar._getShownDate();
             if (className.indexOf('prev-mon') > -1) {
-                date = calendarUtil.getRelativeDate(0, -1, value - 1, this._calendar._getShownDate());
+                date = calendarUtil.getRelativeDate(0, -1, value - 1, shownDate);
             } else if (className.indexOf('next-mon') > -1) {
-                date = calendarUtil.getRelativeDate(0, 1, value - 1, this._calendar._getShownDate());
+                date = calendarUtil.getRelativeDate(0, 1, value - 1, shownDate);
             } else {
-                date = calendarUtil.getRelativeDate(0, 0, value - 1, this._calendar._getShownDate());
+                date = calendarUtil.getRelativeDate(0, 0, value - 1, shownDate);
             }
 
             this.setDate(date.year, date.month, date.date);

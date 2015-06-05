@@ -1,12 +1,9 @@
 body {font-size:12px; font-family:malgun gothic, verdana, consolas;min-width:700px;}
-.layer { display:none; }
-.layer-show { display:block; }
 #layer {position:relative; width:230px;background:#ffffff;border:1px solid #eaeaea;padding-bottom:0;}
 #layer a {color:#a9a9a9; font-size:11px;}
 #layer div{padding:7px 0 9px 0px;text-align:center; vertical-align:top;}
 #layer div p { padding:0; margin:0; }
 #layer div p em { font-style: normal; }
-/*#layer div button {border: 0 none; cursor: pointer; margin: 0; padding:0;}*/
 #layer div button span {display:none;}
 #layer .calendar-header {border-bottom:1px solid #eee; }
 #layer .calendar-header .calendar-title {color:#888;}
@@ -47,6 +44,11 @@ body {font-size:12px; font-family:malgun gothic, verdana, consolas;min-width:700
 #layer table .calendar-next-mon.calendar-sun,
 #layer table .calendar-prev-mon.calendar-sun {color: #e3a08c;}
 #layer table .calendar-sat {color:#0000FF;}
-#layer table .calendar-noselect span{background:none !important;color:#d1d1d1 !important;}
 #layer table .calendar-sun span{background:none !important;color:#eca9a9 !important;}
-.code-layer {border-radius: 10px; border:1px solid #e3e3e3; padding:20px;color:#666; }
+
+/* 커서 포인터 모양 CSS */
+.layer table .selectableClass{cursor:pointer;}
+/* 마우스 오버시 yellow 하이라이트 */
+.layer table .selectableClass:hover{background-color:yellow;}
+/* 날짜 선택시 하이라이트 */
+.layer table .selectableClass.selected{background-color:skyblue;}

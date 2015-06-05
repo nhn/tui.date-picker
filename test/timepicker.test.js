@@ -74,7 +74,6 @@ describe('Timepicker', function() {
             expect(tp).toEqual(jasmine.any(TimePicker));
             expect(tp.getTime()).toEqual('00:00');
         });
-
     });
 
     describe('setter/getter', function() {
@@ -304,13 +303,13 @@ describe('Timepicker', function() {
 
     describe('xy postion', function() {
         it('setPosition', function() {
-            timepicker1.setXYPosition(0,0);
+            timepicker1.setXYPosition(0, 0);
             expect(timepicker1.$timePickerElement.css('left')).toEqual('0px');
             expect(timepicker1.$timePickerElement.css('top')).toEqual('0px');
         });
 
         it('set Invalid position', function() {
-            timepicker1.setXYPosition(0,0);
+            timepicker1.setXYPosition(0, 0);
             expect(timepicker1.$timePickerElement.css('left')).toEqual('0px');
             expect(timepicker1.$timePickerElement.css('top')).toEqual('0px');
 

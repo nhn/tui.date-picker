@@ -22,9 +22,12 @@ var calendarUtil = ne.component.Calendar.Util,
         dd: {expression: '([12]\\d{1}|3[01]|0[1-9]|[1-9]\\b)', type: 'date'},
         d: {expression: '([12]\\d{1}|3[01]|0[1-9]|[1-9]\\b)', type: 'date'}
     },
-    MIN_YEAR = 1970,
-    MAX_YEAR = 3000,
-    MONTH_DAYS = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    CONSTANTS = {
+        minYear: 1970,
+        maxYear: 2999,
+        monthDays: [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
+        wrapperTag: '<div style="position:absolute;"><p>Calendar</p></div>'
+    };
 
 /**
  * 달력 생성
@@ -55,6 +58,7 @@ var calendarUtil = ne.component.Calendar.Util,
  *          @param {number} [option.pos.y] 캘린더의 position top 값
  *          @param {number} [option.pos.zIndex] 캘린더의 z-index 값
  *      @param {Object} [option.openers = []] opener list
+ *      @param {ne.component.TimePicker} [option.timePicker] 데이트피커에 붙을 타임피커
  * @param {ne.component.Calendar} calendar 캘린더 컴포넌트
  * */
 ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker.prototype */{
@@ -67,18 +71,18 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
         this._calendar = calendar;
 
         /**
-         * 캘린더 엘리먼트
-         * @type {HTMLElement}
-         * @private
-         */
-        this._$calendarElement = $(calendar.getElement());
-
-        /**
          * 실제 날짜값 문자열이 보여질 엘리먼트
          * @type {HTMLElement}
          * @private
          */
-        this._element = option.element;
+        this._$element = $(option.element);
+
+        /**
+         * 캘린더 엘리먼트
+         * @type {HTMLElement}
+         * @private
+         */
+        this._$wrapperElement = null;
 
         /**
          * 날짜 표시 형식
@@ -141,14 +145,6 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
         this._endEdge = option.endDate;
 
         /**
-         * with time picker option
-         * @type {boolean}
-         * @private
-         * @since 1.1.0
-         */
-        this._withTimePicker = !!(option.withTimePicker);
-
-        /**
          * TimePicker Object
          * @type {TimePicker}
          * @private
@@ -173,12 +169,11 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
         this._openers = [];
 
         /**
-         * is opened?
-         * @type {boolean}
-         * @private
-         * @since 1.1.1
+         * this._binders
+         * @todo
+         *      unbindCalendarEvent
          */
-        this._opened = false;
+        this._binders = {};
 
         this._initializeDatePicker(option);
     },
@@ -189,25 +184,35 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
      * @private
      */
     _initializeDatePicker: function(option) {
+        this._setWrapperElement();
         this._setDefaultDate(option.date);
         this._setDefaultPosition(option.pos);
         this._setRestrictiveDate(option.startDate, option.endDate);
-        this._setOpeners(option.openers);
-
         // 엘리먼트가 존재하면 이벤트를 등록한다.
-        if (this._element) {
-            this._bindElementEvent();
-        }
-        // timePicker를 생성한다.
-        if (this._withTimePicker) {
-            this._initializeTimePicker();
+        this._bindElementEvent(option.openers);
+
+        // timePicker를 등록하거나 새로 생성한다.
+        if (option.timePicker) {
+            this._timePicker = option.timePicker;
+            this._setTimePicker();
         }
         // 날짜 형식을 지정하고 현재 날짜를 input element에 출력한다.
         this.setDateForm();
 
-        // 캘린더를 숨긴다.
-        this.close();
+        // wrapperElement를 숨긴다.
+        this._$wrapperElement.hide();
     },
+
+    /**
+     *
+     * @private
+     */
+    _setWrapperElement: function() {
+        this._$wrapperElement = $(CONSTANTS.wrapperTag)
+            .insertAfter(this._$element)
+            .append(this._calendar.$element);
+    },
+
     /**
      * 데이트피커의 기본값 날짜를 지정한다.
      * @param {Object} opDate [option.date] 사용자가 지정한 기본값 날짜
@@ -215,10 +220,10 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
      */
     _setDefaultDate: function(opDate) {
         if (!opDate) {
-            this._date = calendarUtil.getDateHashTable(null);
+            this._date = calendarUtil.getDateHashTable();
         } else {
             this._date = {
-                year: util.isNumber(opDate.year) ? opDate.year : MIN_YEAR,
+                year: util.isNumber(opDate.year) ? opDate.year : CONSTANTS.minYear,
                 month: util.isNumber(opDate.month) ? opDate.month : 1,
                 date: util.isNumber(opDate.date) ? opDate.date : 1
             };
@@ -246,8 +251,8 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
      * @private
      */
     _setRestrictiveDate: function(opStartDate, opEndDate) {
-        var startDate = opStartDate || {year: MIN_YEAR, month: 1, date: 1},
-            endDate = opEndDate || {year: MAX_YEAR, month: 12, date: 0};
+        var startDate = opStartDate || {year: CONSTANTS.minYear, month: 1, date: 1},
+            endDate = opEndDate || {year: CONSTANTS.maxYear, month: 12, date: 31};
 
         this._startEdge = calendarUtil.getTime(startDate) - 1;
         this._endEdge = calendarUtil.getTime(endDate) + 1;
@@ -259,30 +264,24 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
      * @private
      */
     _setOpeners: function(opOpeners) {
-        var self = this;
-
-        this.addOpener(this._element);
+        this.addOpener(this._$element);
         util.forEach(opOpeners, function(opener) {
-            self.addOpener(opener);
-        });
+            this.addOpener(opener);
+        }, this);
     },
 
     /**
      * 타임 피커 포함시 초기화 메서드
      * @private
      */
-    _initializeTimePicker: function() {
-        var self = this;
-
+    _setTimePicker: function() {
         this._timePicker = new ne.component.TimePicker({
             showMeridian: true
         });
-
         this._timePicker.on('change', function() {
-            self.setDate();
-        });
-
-        this._$calendarElement.append(this._timePicker.$timePickerElement);
+            this.setDate();
+        }, this);
+        this._calendar.$element.append(this._timePicker.$timePickerElement);
         this._timePicker.show();
     },
 
@@ -293,7 +292,7 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
      * @private
      */
     _isValidYear: function(year) {
-        return util.isNumber(year) && year > MIN_YEAR && year < MAX_YEAR;
+        return util.isNumber(year) && year > CONSTANTS.minYear && year < CONSTANTS.maxYear;
     },
 
     /**
@@ -316,7 +315,7 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
         var year = datehash.year,
             month = datehash.month,
             date = datehash.date,
-            isLeapYear,
+            isLeapYear = (year % 4 === 0) && (year % 100 !== 0) || (year % 400 === 0),
             lastDayInMonth,
             isBetween;
 
@@ -324,18 +323,9 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
             return false;
         }
 
-        /**
-         * 1. 서력 기원 연수가 4로 나누어 떨어지는 해는 우선 윤년으로 하고,
-         * 2. 그 중에서 100으로 나누어 떨어지는 해는 평년으로 하며,
-         * 3. 다만 400으로 나누어 떨어지는 해는 다시 윤년으로 정하였다.
-         * @type {number}
-         */
-        lastDayInMonth = MONTH_DAYS[month];
-        if ((month === 2)) {
-            isLeapYear = (year % 4 === 0) && (year % 100 !== 0) || (year % 400 === 0);
-            if (isLeapYear) {
+        lastDayInMonth = CONSTANTS.monthDays[month];
+        if (isLeapYear && month === 2) {
                 lastDayInMonth = 29;
-            }
         }
         isBetween = !!(util.isNumber(date) && (date > 0) && (date <= lastDayInMonth));
 
@@ -344,40 +334,37 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
 
     /**
      * 엘리먼트 클릭시 이벤트 바인딩
+     * @param {Array} opOpeners [option.openers] opener 엘리먼트 리스트
      * @private
      */
-    _bindElementEvent: function() {
-        // 데이트 피커 엘리먼트에 이벤트 바인딩.
-        $(this._element).on('click', ne.util.bind(this._onClickPicker, this));
-        $(this._element).on('keydown', ne.util.bind(this._onKeydownPicker, this));
+    _bindElementEvent: function(opOpeners) {
+        this._setOpeners(opOpeners);
+        if (this._$element) {
+            this._$element.on('keydown', ne.util.bind(this._onKeydownPicker, this));
+        }
     },
 
     /**
-     * 레이어가 펼쳐지면 다른 곳을 클릭할 때 달력을 닫히도록 한다.
+     * closeLayer 이벤트 리스너를 document에 등록한다.
      * @private
      */
-    _bindCloseLayerEvent: function() {
-        var layer = ne.util.bind(function(event) {
-            /**
-             * 이벤트 발생 이후에
-             * 캘린더를 새로 그리는 this._calendar.draw() 가 호출되는 경우,
-             * $.contains() 메서드로 event.target을 검사하면 false 가 반환되는 경우가 있다.
-             * 그래서 isDateElement로 한번 더 확인을 한다.
-             */
-            var isDateElement = (event.target.className.indexOf(this._calendar._option.classPrefix) > -1),
-                isContains = $.contains(this._$calendarElement[0], event.target);
+    _bindCloseLayer: function() {
+        $(document).on('mousedown', util.bind(this._closeLayer, this));
+    },
 
-            /**
-             * calendar를 클릭하지 않았을 경우
-             * 데이트 피커는 닫히게 된다.
-             */
-            if ((this.isOpened() && !isDateElement && !isContains && !this._isOpener(event.target))) {
-                $(document).off('click', layer);
-                this._onKeydownPicker(event);
-                this.close();
-            }
-        }, this);
-        $(document).on('click', layer);
+    /**
+     * 레이어 영역 밖을 클릭했을 때 레이어를 닫는다.
+     * @param {Event} event 이벤트객체
+     * @private
+     */
+    _closeLayer: function(event) {
+        var isContains = $.contains(this._calendar.$element[0], event.target);
+
+        if ((!isContains && !this._isOpener(event.target))) {
+            $(document).off(event);
+            this._setDateFromString(this._$element.val());
+            this.close();
+        }
     },
 
     /**
@@ -395,7 +382,6 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
                 return false;
             }
         });
-
         return result;
     },
 
@@ -404,23 +390,23 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
      * @private
      */
     _arrangeLayer: function() {
-        var style = this._$calendarElement[0].style,
+        var style = this._$wrapperElement[0].style,
             pos = this._pos;
 
-        style.position = 'absolute';
         style.left = pos.left + 'px';
         style.top = pos.top + 'px';
         style.zIndex = pos.zIndex;
+        this._$wrapperElement.append(this._calendar.$element);
     },
 
     /**
      * 앨리먼트의 BoundingClientRect를 구한다.
-     * @param {HTMLElement} [element] 엘리먼트
+     * @param {HTMLElement|jQuery} [element] 엘리먼트
      * @returns {Object} 경계 값들 - left, top, bottom, right
      * @private
      */
     _getBoundingClientRect: function(element) {
-        var el = element || this._element,
+        var el = $(element)[0] || this._$element[0],
             bound,
             ceil;
 
@@ -439,11 +425,13 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
      * @private
      */
     _bindOnClickCalendar: function() {
-        if (!ne.util.isFunction(this._binder)) {
-            this._binder = ne.util.bind(this._onClickCalendar, this);
-        }
+        var binders = this._binders,
+            binder = binders._onClickCalendar;
 
-        this._$calendarElement.find('.' + this._selectableClass).on('click', this._binder);
+        if (!ne.util.isFunction(binder)) {
+            binder = binders._onClickCalendar = ne.util.bind(this._onClickCalendar, this);
+        }
+        this._$wrapperElement.find('.' + this._selectableClass).on('click', binder);
     },
 
     /**
@@ -451,15 +439,9 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
      * @private
      */
     _unbindOnClickCalendar: function() {
-        this._$calendarElement.find('.' + this._selectableClass).off('click');
-    },
+        var binder = this._binders._onClickCalendar;
 
-    /**
-     * 피커 이벤트 핸들러.
-     * @private
-     */
-    _onClickPicker: function() {
-        this.open();
+        this._$wrapperElement.find('.' + this._selectableClass).off('click', binder);
     },
 
     /**
@@ -472,7 +454,7 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
 
         if (date && !this._isRestricted(date)) {
             if (this._timePicker) {
-                this._timePicker.setTimeFromInputElement($(this._element));
+                this._timePicker.setTimeFromInputElement(this._$element);
             }
             this.setDate(date.year, date.month, date.date);
         } else {
@@ -490,11 +472,12 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
             return;
         }
 
-        this._setDateFromString(this._element.value);
+        this._setDateFromString(this._$element.val());
     },
 
     /**
-     * 클릭시 발생한 이벤트
+     * 클릭시 발생한 이벤트.
+     * 이벤트 타겟의 값으로 날짜를 업데이트한다.
      * @param {Event} e 이벤트 객체
      * @private
      */
@@ -507,9 +490,6 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
             date;
 
         if (value && !isNaN(value)) {
-            shownDate = this._calendar._getShownDate();
-            //shownDate = this._calendar.getShownDate();
-            //shownDate.date = 1;
             if (className.indexOf('prev-mon') > -1) {
                 relativeMonth = -1;
             } else if (className.indexOf('next-mon') > -1) {
@@ -518,7 +498,9 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
                 relativeMonth = 0;
             }
 
-            date = calendarUtil.getRelativeDate(0, relativeMonth, value - 1, shownDate);
+            shownDate = this._calendar.getDate();
+            shownDate.date = value;
+            date = calendarUtil.getRelativeDate(0, relativeMonth, 0, shownDate);
             this.setDate(date.year, date.month, date.date);
         }
     },
@@ -603,7 +585,13 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
      */
     _bindDrawEventForSelectableRange: function() {
         this._calendar.on('draw', ne.util.bind(function(data) {
-            if (!this._isRestricted(data)) {
+            var dateHash = {
+                year: data.year,
+                month: data.month,
+                date: data.date
+            };
+
+            if (!this._isRestricted(dateHash)) {
                 data.$dateContainer.addClass(this._selectableClass);
             }
         }, this));
@@ -612,6 +600,7 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
     /**
      * 달력이 갱신될때 이벤트를 건다.
      * @private
+     * @todo this.binders에 등록
      */
     _bindCalendarCustomEvent: function() {
         this._calendar.on('beforeDraw', ne.util.bind(function() {
@@ -622,21 +611,13 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
         }, this));
     },
 
-    /**
-     * 달력이 닫힐때 이벤트 제거
-     * @private
-     */
+   /**
+    * 달력이 닫힐때 커스텀이벤트 제거
+    * @private
+    * @todo this.binders에서 선택적 제거가 필요함!!!!
+    */
     _unbindCalendarEvent: function() {
         this._calendar.off();
-    },
-
-    /**
-     * current opened picker is this?
-     * @returns {boolean} result
-     * @private
-     */
-    isOpened: function() {
-        return this._opened;
     },
 
     /**
@@ -664,16 +645,17 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
         }
 
         this._pos.zIndex = zIndex;
+        this._arrangeLayer();
     },
 
     /**
      * add opener
-     * @param {HTMLElement} opener element
+     * @param {HTMLElement|jQuery} opener element
      */
     addOpener: function(opener) {
         if (inArray(opener, this._openers) < 0) {
-            this._openers.push(opener);
-            $(opener).on('click', util.bind(this._onClickPicker, this));
+            this._openers.push($(opener)[0]);
+            $(opener).on('click', util.bind(this.open, this));
         }
     },
 
@@ -694,7 +676,6 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
      * 달력의 위치를 조정하고, 달력을 펼친다.
      */
     open: function() {
-        // 달력을 물고있는 활성화된 picker가 있으면 닫는다.
         if (this.isOpened()) {
             return;
         }
@@ -705,16 +686,18 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
         // 선택영역 제한이 있는지 확인후 선택불가능한 부분을 설정한다.
         this._bindDrawEventForSelectableRange();
 
-        // 달력 레이어를 뺀 위치에서 마우스 클릭시 달력닫힘
-        this._bindCloseLayerEvent();
-
         // 달력 커스텀이벤트
         this._bindCalendarCustomEvent();
 
-        this._calendar.draw(this._date.year, this._date.month, false);
-        this._$calendarElement.show();
+        // 달력 레이어를 뺀 위치에서 마우스 클릭시 달력닫힘
+        this._bindCloseLayer();
 
-        this._opened = true;
+        this.setDate();
+        // 달력을 그린다.
+        //this._calendar.draw(this._date.year, this._date.month, false);
+
+        // wrapperElement를 보인다.
+        this._$wrapperElement.show();
     },
 
     /**
@@ -722,11 +705,13 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
      * 달력 레이어를 닫는다.
      */
     close: function() {
-        this._setDateFromString(this._element.value);
+        if (!this.isOpened()) {
+            return;
+        }
+        this._setDateFromString(this._$element.val());
         this._unbindOnClickCalendar();
-        this._unbindCalendarEvent();
-        this._$calendarElement.hide();
-        this._opened = false;
+        //this._unbindCalendarEvent();
+        this._$wrapperElement.hide();
     },
 
     /**
@@ -779,15 +764,13 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
         if (!this._isRestricted(newDateObj)) {
             util.extend(dateObj, newDateObj);
         }
-
-        if (this._element) {
+        if (this._$element) {
             value = this._formed();
-            if (this._withTimePicker) {
+            if (this._timePicker) {
                 value = value + this._timePicker.getTime();
             }
-            this._element.value = value;
+            this._$element.val(value);
         }
-
         this._calendar.draw(dateObj.year, dateObj.month, false);
     },
 
@@ -823,6 +806,10 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
 
         this._regExp = new RegExp(regExpStr, 'gi');
         this.setDate();
+    },
+
+    isOpened: function() {
+        return this._$wrapperElement.css('display') === 'block';
     },
 
     /**

@@ -1,5 +1,5 @@
+'use strict';
 describe('Date Picker', function() {
-
     var layer1,
         layer2,
         layer3,
@@ -20,43 +20,40 @@ describe('Date Picker', function() {
         layer3 = $('#layer3');
 
         calendar1 = new ne.component.Calendar({
+            el: layer1,
             year: 1983,
             month: 5,
-            date: 12,
             todayFormat: 'yyyy\/ mm\/ dd (D)',
             titleFormat: 'yyyy\/mm',
             yearTitleFormat: 'yyyy',
             monthTitleFormat: 'mm',
             monthTitle: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-            dayTitles: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-            isDrawOnload: true
-        }, layer1);
+            dayTitles: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+        });
 
         calendar2 = new ne.component.Calendar({
+            el: layer2,
             year: 1983,
             month: 5,
-            date: 12,
             todayFormat: 'yyyy\/ mm\/ dd (D)',
             titleFormat: 'yyyy\/mm',
             yearTitleFormat: 'yyyy',
             monthTitleFormat: 'mm',
             monthTitle: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-            dayTitles: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-            isDrawOnload: true
-        }, layer2);
+            dayTitles: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+        });
 
         calendar3 = new ne.component.Calendar({
+            el: layer3,
             year: 1983,
             month: 5,
-            date: 12,
             todayFormat: 'yyyy\/ mm\/ dd (D)',
             titleFormat: 'yyyy\/mm',
             yearTitleFormat: 'yyyy',
             monthTitleFormat: 'mm',
             monthTitle: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-            dayTitles: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-            isDrawOnload: true
-        }, layer3);
+            dayTitles: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+        });
 
         datepicker1 = new ne.component.DatePicker({
             date: {
@@ -122,10 +119,14 @@ describe('Date Picker', function() {
             var opener = document.getElementById('opener'),
                 openerSpan = document.getElementById('opener-span');
 
+            expect(datepicker1.isOpened()).toEqual(false);
+
             $(opener).click();
             expect(datepicker1.isOpened()).toEqual(true);
 
             datepicker1.close();
+            expect(datepicker1.isOpened()).toEqual(false);
+
             $(openerSpan).click();
             expect(datepicker1.isOpened()).toEqual(true);
         });
@@ -185,7 +186,7 @@ describe('Date Picker', function() {
             expect(year).toBe(2014);
         });
 
-        it('get timepicker', function() {
+        xit('get timepicker', function() {
             var tp = datepicker1.getTimePicker();
 
             expect(tp).toBeNull();
@@ -230,13 +231,13 @@ describe('Date Picker', function() {
             });
         });
 
-        it('timepicker set time', function() {
-            var preInputValue = datepicker2._element.value,
+        xit('timepicker set time', function() {
+            var preInputValue = datepicker2._$element.val(),
                 nextInputValue,
                 tp = datepicker2.getTimePicker();
 
             tp.setTime(12, 34);
-            nextInputValue = datepicker2._element.value;
+            nextInputValue = datepicker2._$element.val();
 
             expect(nextInputValue).not.toEqual(preInputValue);
         });
@@ -247,8 +248,8 @@ describe('Date Picker', function() {
             datepicker1.setXY(x, y);
             datepicker1.open();
 
-            expect(datepicker1._$calendarElement[0].style.left).toEqual(x + 'px');
-            expect(datepicker1._$calendarElement[0].style.top).toEqual(y + 'px');
+            expect(datepicker1._$wrapperElement[0].style.left).toEqual(x + 'px');
+            expect(datepicker1._$wrapperElement[0].style.top).toEqual(y + 'px');
         });
 
         it('set XY - 2', function() {
@@ -256,8 +257,8 @@ describe('Date Picker', function() {
             datepicker1.setXY(0, null);
             datepicker1.open();
 
-            expect(datepicker1._$calendarElement[0].style.left).toEqual(0 + 'px');
-            expect(datepicker1._$calendarElement[0].style.top).toEqual(originTop + 'px');
+            expect(datepicker1._$wrapperElement[0].style.left).toEqual(0 + 'px');
+            expect(datepicker1._$wrapperElement[0].style.top).toEqual(originTop + 'px');
         });
 
         it('set XY - 3', function() {
@@ -265,8 +266,8 @@ describe('Date Picker', function() {
             datepicker1.setXY(null, 0);
             datepicker1.open();
 
-            expect(datepicker1._$calendarElement[0].style.left).toEqual(originLeft + 'px');
-            expect(datepicker1._$calendarElement[0].style.top).toEqual(0 + 'px');
+            expect(datepicker1._$wrapperElement[0].style.left).toEqual(originLeft + 'px');
+            expect(datepicker1._$wrapperElement[0].style.top).toEqual(0 + 'px');
         });
 
         it('set zIndex - 1, valid', function() {
@@ -275,14 +276,14 @@ describe('Date Picker', function() {
             datepicker1.setZIndex(zIndex);
             datepicker1.open();
 
-            expect(Number(datepicker1._$calendarElement[0].style.zIndex)).toEqual(zIndex);
+            expect(Number(datepicker1._$wrapperElement[0].style.zIndex)).toEqual(zIndex);
 
             zIndex = 0;
             datepicker1.close();
             datepicker1.setZIndex(zIndex);
             datepicker1.open();
 
-            expect(Number(datepicker1._$calendarElement[0].style.zIndex)).toEqual(zIndex);
+            expect(Number(datepicker1._$wrapperElement[0].style.zIndex)).toEqual(zIndex);
         });
 
         it('set zIndex - 2, invalid', function() {
@@ -291,37 +292,41 @@ describe('Date Picker', function() {
             datepicker1.setZIndex();
             datepicker1.open();
 
-            expect(Number(datepicker1._$calendarElement[0].style.zIndex)).toEqual(originZIndex);
+            expect(Number(datepicker1._$wrapperElement[0].style.zIndex)).toEqual(originZIndex);
 
             datepicker1.close();
             datepicker1.setZIndex(null);
             datepicker1.open();
 
-            expect(Number(datepicker1._$calendarElement[0].style.zIndex)).toEqual(originZIndex);
+            expect(Number(datepicker1._$wrapperElement[0].style.zIndex)).toEqual(originZIndex);
 
             datepicker1.close();
             datepicker1.setZIndex({});
             datepicker1.open();
 
-            expect(Number(datepicker1._$calendarElement[0].style.zIndex)).toEqual(originZIndex);
+            expect(Number(datepicker1._$wrapperElement[0].style.zIndex)).toEqual(originZIndex);
 
             datepicker1.close();
             datepicker1.setZIndex('aaa');
             datepicker1.open();
 
-            expect(Number(datepicker1._$calendarElement[0].style.zIndex)).toEqual(originZIndex);
+            expect(Number(datepicker1._$wrapperElement[0].style.zIndex)).toEqual(originZIndex);
         });
 
         it('without - "add opener"', function() {
-            var btn = document.createElement('BUTTON');
+            var btn = document.createElement('BUTTON'),
+                isClickedDownBtn = false;
             document.body.appendChild(btn);
             spyOn(datepicker1, 'close');
 
+            datepicker1.open();
+
             // addOpener로 등록하지 않은 경우 close method가 호출된다.
-            $(btn).on('click', function () {
+            $(btn).on('mousedown', function () {
                 datepicker1.open();
             });
-            $(btn).click();
+            $(btn).mousedown();
+
             expect(datepicker1.close).toHaveBeenCalled();
         });
 
@@ -333,9 +338,11 @@ describe('Date Picker', function() {
             // addOpener로 등록하면 click event가 등록되고,
             // close method가 호출되지 않는다.
             datepicker1.addOpener(btn);
+            $(btn).mousedown();
             $(btn).click();
 
             expect(ne.util.inArray(btn, datepicker1._openers)).not.toEqual(-1);
+            expect(datepicker1.isOpened()).toEqual(true);
             expect(datepicker1.close).not.toHaveBeenCalled();
         });
 
@@ -464,7 +471,7 @@ describe('Date Picker', function() {
             datepicker2._bindDrawEventForSelectableRange();
             calendar2.draw(2014, 11);
 
-            unselectableList = datepicker2._$calendarElement.find('.mySelectable');
+            unselectableList = datepicker2._$wrapperElement.find('.mySelectable');
             // 10/30~11/10(12)
             expect(unselectableList.length);
             expect(unselectableList.length).not.toBe(12);
@@ -552,7 +559,7 @@ describe('Date Picker', function() {
             datepicker1.open();
             datepicker1.setDateForm('dd-mm-yyyy');
             datepicker1._onClickCalendar(e);
-            expect(datepicker1._element.value).toBe('09-11-2014');
+            expect(datepicker1._$element.val()).toBe('09-11-2014');
         });
 
         it('_onKeydownPicker 엔터를 쳤을때와 아닐때, 동작테스트', function() {
@@ -569,14 +576,14 @@ describe('Date Picker', function() {
 
             // enter를 치지 않았기때문에 동작하지 않는다.
             datepicker2.setDateForm('yy-mm-dd');
-            datepicker2._element.value = '14-11-01';
+            datepicker2._$element.val('14-11-01');
             datepicker2._onKeydownPicker(e1);
             res1 = datepicker2.getDateObject();
             expect(res1.date).not.toBe(1);
 
             // enter를 치면 동작
             datepicker2.setDateForm('yy-mm-dd');
-            datepicker2._element.value = '14-11-01';
+            datepicker2._$element.val('14-11-01');
             datepicker2._onKeydownPicker(e2);
             res1 = datepicker2.getDateObject();
             expect(res1.date).toBe(1);
@@ -584,17 +591,17 @@ describe('Date Picker', function() {
             // 제한된 날짜인 경우 엔터를 처도 날짜가 바뀌지 않는다.
             // === restric데이터라 갱신되지 않는다.
             datepicker2.setDateForm('yy-mm-dd');
-            datepicker2._element.value = '99-04-11';
+            datepicker2._$element.val('99-04-11');
             datepicker2._onKeydownPicker(e2);
             res2 = datepicker2.getDateObject();
 
             expect(res2.year).toBe(2014);
             expect(res2.month).toBe(11);
             expect(res2.date).toBe(1);
-            expect(datepicker2._element.value).not.toBe('99-04-11');
+            expect(datepicker2._$element.val()).not.toBe('99-04-11');
 
             // 올바른 데이터는 정상적으로 동작한다.
-            datepicker2._element.value = '2014-11-09';
+            datepicker2._$element.val('2014-11-09');
             datepicker2._onKeydownPicker(e2);
             res3 = datepicker2.getDateObject();
             expect(res3.year).toBe(2014);
@@ -608,7 +615,7 @@ describe('Date Picker', function() {
 
             datepicker1.setDate(2015, 4, 1);
             datepicker1.open();
-            prevMonthEl = datepicker1._$calendarElement.find('.calendar-prev-mon')[0];
+            prevMonthEl = datepicker1._$wrapperElement.find('.calendar-prev-mon')[0];
             $(prevMonthEl).click();
             dateObj = datepicker1.getDateObject();
 
@@ -625,7 +632,7 @@ describe('Date Picker', function() {
 
             datepicker1.setDate(2015, 4, 1);
             datepicker1.open();
-            nextMonthEl = datepicker1._$calendarElement.find('.calendar-next-mon')[0];
+            nextMonthEl = datepicker1._$wrapperElement.find('.calendar-next-mon')[0];
             $(nextMonthEl).click();
             dateObj = datepicker1.getDateObject();
 
@@ -643,7 +650,7 @@ describe('Date Picker', function() {
 
             datepicker1.setDate(selection.year, selection.month, selection.date);
             datepicker1.open();
-            el = datepicker1._$calendarElement.find('.selected');
+            el = datepicker1._$wrapperElement.find('.selected');
 
             value = Number((el.innerText || el.textContent || el.nodeValue));
             expect(value).toEqual(selection.date);

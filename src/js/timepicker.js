@@ -393,12 +393,12 @@ ne.component.TimePicker = util.defineClass(/** @lends ne.component.TimePicker.pr
 
     /**
      * set time from input element.
-     * @param {jQuery} [$inputElement] jquery object (element)
+     * @param {HTMLElement|jQuery} [inputElement] jquery object (element)
      * @return {boolean} result of set time
      */
-    setTimeFromInputElement: function($inputElement) {
-        var $input = $inputElement || this._$inputElement;
-        return !!($input && this.setTimeFromString($input.val()));
+    setTimeFromInputElement: function(inputElement) {
+        var input = $(inputElement)[0] || this._$inputElement[0];
+        return !!(input && this.setTimeFromString(input.value));
     },
 
     /**

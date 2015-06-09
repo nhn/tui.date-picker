@@ -20,7 +20,7 @@ describe('Date Picker', function() {
         layer3 = $('#layer3');
 
         calendar1 = new ne.component.Calendar({
-            el: layer1,
+            element: layer1,
             year: 1983,
             month: 5,
             todayFormat: 'yyyy\/ mm\/ dd (D)',
@@ -32,7 +32,7 @@ describe('Date Picker', function() {
         });
 
         calendar2 = new ne.component.Calendar({
-            el: layer2,
+            element: layer2,
             year: 1983,
             month: 5,
             todayFormat: 'yyyy\/ mm\/ dd (D)',
@@ -44,7 +44,7 @@ describe('Date Picker', function() {
         });
 
         calendar3 = new ne.component.Calendar({
-            el: layer3,
+            element: layer3,
             year: 1983,
             month: 5,
             todayFormat: 'yyyy\/ mm\/ dd (D)',
@@ -86,7 +86,9 @@ describe('Date Picker', function() {
                 date: 11
             },
             selectableClass: 'mySelectable',
-            withTimePicker: true
+            timePicker: new ne.component.TimePicker({
+                showMeridian: true
+            })
         }, calendar2);
 
         datepicker3 = new ne.component.DatePicker({
@@ -186,7 +188,7 @@ describe('Date Picker', function() {
             expect(year).toBe(2014);
         });
 
-        xit('get timepicker', function() {
+        it('get timepicker', function() {
             var tp = datepicker1.getTimePicker();
 
             expect(tp).toBeNull();
@@ -231,7 +233,7 @@ describe('Date Picker', function() {
             });
         });
 
-        xit('timepicker set time', function() {
+        it('timepicker set time', function() {
             var preInputValue = datepicker2._$element.val(),
                 nextInputValue,
                 tp = datepicker2.getTimePicker();
@@ -314,8 +316,8 @@ describe('Date Picker', function() {
         });
 
         it('without - "add opener"', function() {
-            var btn = document.createElement('BUTTON'),
-                isClickedDownBtn = false;
+            var btn = document.createElement('BUTTON');
+
             document.body.appendChild(btn);
             spyOn(datepicker1, 'close');
 
@@ -443,7 +445,7 @@ describe('Date Picker', function() {
             expect(res6.date).toBeUndefined();
         });
 
-        it('_checkRestrict, 제한된 날짜 판단', function() {
+        it('test _checkRestrict', function() {
             var date1 = {
                     year: 2014,
                     month: 9,
@@ -466,15 +468,15 @@ describe('Date Picker', function() {
         });
 
 
-        it('_bindDrawEventForSelectableRange 선택 불가능한 영역을 입힌다.', function() {
-            var unselectableList;
-            datepicker2._bindDrawEventForSelectableRange();
-            calendar2.draw(2014, 11);
+        //@todo
+        it('test selectable date element count', function() {
+            var selectableList;
+            datepicker2.setDate(2014, 11);
 
-            unselectableList = datepicker2._$wrapperElement.find('.mySelectable');
+            selectableList = datepicker2._$wrapperElement.find('.mySelectable');
             // 10/30~11/10(12)
-            expect(unselectableList.length);
-            expect(unselectableList.length).not.toBe(12);
+            expect(selectableList.length);
+            expect(selectableList.length).not.toBe(12);
         });
     });
 
@@ -577,14 +579,14 @@ describe('Date Picker', function() {
             // enter를 치지 않았기때문에 동작하지 않는다.
             datepicker2.setDateForm('yy-mm-dd');
             datepicker2._$element.val('14-11-01');
-            datepicker2._onKeydownPicker(e1);
+            datepicker2._onKeydownElement(e1);
             res1 = datepicker2.getDateObject();
             expect(res1.date).not.toBe(1);
 
             // enter를 치면 동작
             datepicker2.setDateForm('yy-mm-dd');
             datepicker2._$element.val('14-11-01');
-            datepicker2._onKeydownPicker(e2);
+            datepicker2._onKeydownElement(e2);
             res1 = datepicker2.getDateObject();
             expect(res1.date).toBe(1);
 
@@ -592,7 +594,7 @@ describe('Date Picker', function() {
             // === restric데이터라 갱신되지 않는다.
             datepicker2.setDateForm('yy-mm-dd');
             datepicker2._$element.val('99-04-11');
-            datepicker2._onKeydownPicker(e2);
+            datepicker2._onKeydownElement(e2);
             res2 = datepicker2.getDateObject();
 
             expect(res2.year).toBe(2014);
@@ -602,7 +604,7 @@ describe('Date Picker', function() {
 
             // 올바른 데이터는 정상적으로 동작한다.
             datepicker2._$element.val('2014-11-09');
-            datepicker2._onKeydownPicker(e2);
+            datepicker2._onKeydownElement(e2);
             res3 = datepicker2.getDateObject();
             expect(res3.year).toBe(2014);
             expect(res3.month).toBe(11);
@@ -643,17 +645,19 @@ describe('Date Picker', function() {
             });
         });
 
-        xit('선택한 날짜에 "selected" css class 확인', function() {
+        it('선택한 날짜에 "selected" css class 확인', function() {
             var selection = {year: 2015, month: 4, date: 1},
                 el,
                 value;
 
             datepicker1.setDate(selection.year, selection.month, selection.date);
             datepicker1.open();
-            el = datepicker1._$wrapperElement.find('.selected');
+            el = datepicker1._$wrapperElement.find('.selected')[0];
 
             value = Number((el.innerText || el.textContent || el.nodeValue));
             expect(value).toEqual(selection.date);
         });
     });
 });
+
+

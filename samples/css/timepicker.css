@@ -4,38 +4,19 @@
     box-sizing:border-box;
 }
 
-h1.template {
-    margin:100px 100px 100px 100px;
-}
-
-input {
-    font-size: 14px;
-}
-
-.timepicker {
-    width: 150px;
-    font-weight: bold;
-    padding: 3px;
-    border: 1px solid #eaeaea;
-    background: white;
-    text-align: center;
-}
-
-#layer .timepicker {
-    padding: 0 40px 0 40px;
-    border-left: transparent;
-    border-bottom: transparent;
-    border-right: transparent;
-}
-
 .timepicker input {
     font-size: 12px;
     text-align: center;
     border: transparent;
 }
 
-#layer .timepicker input {
-    font-size: 15px;
+.timepicker {
+    width: 230px;
+    font-weight: bold;
+    padding: 3px 30px 3px 30px;
+    border: 1px solid #eaeaea;
+    background: white;
+    text-align: center;
 }
 
 .timepicker .timepicker-btn {

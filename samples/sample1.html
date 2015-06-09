@@ -7,10 +7,12 @@
     <title>데이트피커1</title>
 </head>
 <body style="height:350px;">
+<h1>Datepicker - sample1 - 캘린더 공유</h1>
+
+click시 닫힘 :
 <input id="datePick1" type="text" size="25"/>
-
-<input id="datePick2" type="text" size="25" style="margin-left:50px;"/><button id="opener2" type="button"> picker open <span> aaa </span> </button>
-
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;click시 닫히지 않음 :
+<input id="datePick2" type="text" size="25"/><button id="opener2" type="button"> picker open <span> aaa </span> </button>
 
 <div id="layer" class="layer" style="display:none;"> <!-- 기준 엘리먼트 -->
     <div class="calendar-header">
@@ -47,55 +49,28 @@
     </div>
 </div>
 
-<div id="layer2" class="layer" style="display:none;"> <!-- 기준 엘리먼트 -->
-    <div class="calendar-header">
-        <a href="#" class="rollover calendar-btn-prev-year">이전년도</a> <!-- 이전년 버튼 (생략가능) -->
-        <a href="#" class="rollover calendar-btn-prev-mon">이전달</a> <!-- 이전달 버튼 (생략가능) -->
-        <strong class="calendar-title"></strong> <!-- 달력의 타이틀 (생략가능) -->
-        <!--<strong class="calendar-title-year"></strong> &lt;!&ndash; 달력의 타이틀 (생략가능) &ndash;&gt;-->
-        <!--<strong class="calendar-title-month"></strong> &lt;!&ndash; 달력의 타이틀 (생략가능) &ndash;&gt;-->
-        <a href="#" class="rollover calendar-btn-next-mon">다음달</a> <!-- 다음달 버튼 (생략가능) -->
-        <a href="#" class="rollover calendar-btn-next-year">다음년도</a> <!-- 다음년 버튼 (생략가능) -->
-    </div>
-    <div class="calendar-body">
-        <table cellspacing="0" cellpadding="0">
-            <thead>
-            <tr>
-                <th class="sun">S</th><th>M</th><th>T</th><th>W</th><th>T</th><th>F</th><th class="sat">S</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr class="calendar-week"> <!-- 달력의 한 주에 해당하는 엘리먼트 컨테이너 -->
-                <td class="calendar-date"></td> <!-- 날짜가 표시될 엘리먼트 -->
-                <td class="calendar-date"></td>
-                <td class="calendar-date"></td>
-                <td class="calendar-date"></td>
-                <td class="calendar-date"></td>
-                <td class="calendar-date"></td>
-                <td class="calendar-date"></td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-    <div class="calendar-footer">
-        <p>오늘 <em class="calendar-today"></em></p>
-    </div>
-</div>
-
 <script type="text/javascript" src="lib/jquery/jquery.js"></script>
-<script type="text/javascript" src="lib/ne-code-snippet/code-snippet.min.js"></script>
+<script type="text/javascript" src="lib/ne-code-snippet/code-snippet.js"></script>
 <script type="text/javascript" src="lib/ne-component-calendar/calendar.min.js"></script>
 <script type="text/javascript" src="../src/js/spinbox.js"></script>
 <script type="text/javascript" src="../src/js/timepicker.js"></script>
 <script type="text/javascript" src="../src/js/datepicker.js"></script>
 
 <script>
+
+    /**
+     * 생성자
+     */
+    var Calendar = ne.component.Calendar,
+        TimePicker = ne.component.TimePicker,
+        DatePicker = ne.component.DatePicker;
+
     /**
      * Calendar 생성
      * @type {ne.component.Calendar}
      * @see {https://github.nhnent.com/pages/fe/component-calendar/1.0.1/}
      */
-    var cal = new ne.component.Calendar($('#layer'));
+    var cal = new Calendar($('#layer'));
 
     /**
      * Date Picker 생성
@@ -105,70 +80,34 @@
      * 시작 날짜 - 2012년 1월 17일
      * 타임피커 포함여부 - 포함
      */
-    var picker1 = new ne.component.DatePicker({
-        dateForm: 'yyyy년 mm월 dd일 - ',
-        date: {
-            year: 2015,
-            month: 1,
-            date: 1
-        },
+    var picker1 = new DatePicker({
         element: document.getElementById('datePick1'),
+        dateForm: 'yyyy년 mm월 dd일 - ',
+        date: {year: 2015, month: 1, date: 1 },
         startDate: {year:2012, month:1, date:17},
-        withTimePicker: true
+        timePicker: new TimePicker({
+            showMeridian: true,
+            defaultHour: 13,
+            defaultMinute: 24
+        })
     }, cal);
 
-    var picker2 = new ne.component.DatePicker({
-        dateForm: 'mm/dd, yyyy',
-        date: {
-            year: 2015,
-            month: 2,
-            date: 1
-        },
-        endDate: {
-            year: 2015,
-            month: 12,
-            date: 1
-        },
+    var picker2 = new DatePicker({
         element: document.getElementById('datePick2'),
-//        withTimePicker: true,
+        dateForm: 'mm/dd, yyyy',
+        date: {year: 2015, month: 1, date: 15},
+        endDate: {year: 2015, month: 12, date: 1},
         openers: [
             document.getElementById('opener2')
         ]
     }, cal);
 
-    cal.on('draw', function(drawData) {
-        if (!drawData.isPrevMonth &&
-                !drawData.isNextMonth &&
-                drawData.year === 2015 &&
-                drawData.month === 6 &&
-                drawData.date === 6) {
+    $('#layer').on('click', function(event) {
+        var $el = $(event.target);
 
-            drawData.$date.html('<span style="color:red;">6</span>');
-        }
-    });
-
-    cal.on('draw', function(drawData) {
-        var picker1DateObj = picker1.getDateObject(),
-            picker2DateObj = picker2.getDateObject();
-
-        if(drawData.year === picker1DateObj.year &&
-                drawData.month === picker1DateObj.month &&
-                drawData.date === picker1DateObj.date) {
-            drawData.$date.addClass('selected');
-        }
-
-        if(drawData.year === picker2DateObj.year &&
-                drawData.month === picker2DateObj.month &&
-                drawData.date === picker2DateObj.date) {
-            drawData.$date.addClass('selected');
-        }
-    });
-
-    cal.on('afterDraw', function(dateHash) {
-        $('#layer').on('click', '.selectableClass', function(event) {
-            console.log('aa');
+        if ($el.hasClass('selectable')) {
             picker1.close();
-        });
+        }
     });
 </script>
 </body>

@@ -2,72 +2,59 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title>timepicker example</title>
-    <!--[if IE 7]>
-        <style>
-            html{margin:0; padding:0;}
-            body{margin:0; padding:0;}
-        </style>
-    <![endif]-->
-    <link href="css/calendar.css" rel="stylesheet">
-    <link href="css/timepicker.css" rel="stylesheet">
-    <style>
-        .example{margin-bottom:50px;}
+    <title>spinbox example</title>
+    <style rel="stylesheet" type="text/css">
+        .spinbox{width:100px; text-align:center;}
+        .spinbox input{font-size:2em; text-align:center; border:transparent 0px;}
+        .spinbox .btn-lg{width:100%; font-size:1.5em; background-color:transparent; border:solid 1px black;}
     </style>
 </head>
 <body>
-
-    <div class="example">
-        <h1>Timepicker-default</h1>
-        <input type="text" id="timepicker-default">
+    <h1>Default</h1>
+    <div id="spinbox-default" style="margin-bottom:50px;">
+        <input type="text">
     </div>
 
-    <div class="example">
-        <h1>Timepicker-option (AM/PM, default time, position)</h1>
-        <input type="text" id="timepicker-option">
+    <hr>
+
+    <h1>Custom option</h1>
+    <div id="spinbox-with-option" class="spinbox" style="margin-bottom:50px;">
+        <input type="text">
     </div>
 
     <script type="text/javascript" src="lib/jquery/jquery.js"></script>
-    <script type="text/javascript" src="lib/ne-code-snippet/code-snippet.min.js"></script>
+    <script type="text/javascript" src="lib/ne-code-snippet/code-snippet.js"></script>
     <script type="text/javascript" src="lib/ne-component-calendar/calendar.min.js"></script>
     <script type="text/javascript" src="js/date-picker.min.js"></script>
     <script>
 
-        var TimePicker = ne.component.TimePicker,
-            Calendar = ne.component.Calendar,
-            DatePicker = ne.component.DatePicker;
-
-        var optionInput = document.getElementById('timepicker-option');
+        var Spinbox = ne.component.Spinbox;
 
         /**
-         * TimePicker Example
-         * Default
-         *
-         * 기본 시간값은 '00:00' 입니다. 또한 24시간 표현입니다.
-         * timepicker element의 클래스는 'timepicker'입니다.
-         * up/down button elements의 클래스는 'timepicker-btn'입니다.
-         * 포지션은 지정하지 않은 경우 자동으로 인풋박스 왼쪽 하단으로 설정됩니다.
+         * 옵션 없이 생성
          */
-        var timepicker1 = new TimePicker({
-            inputElement: '#timepicker-default'
-        });
+        var spinboxDefault = new Spinbox('#spinbox-default');
 
         /**
-         * TimePicker Example
-         * Option
+         * 옵션 추가 하여 생성
          *
-         * 초기 시각 기본값은 12시 입니다. (defaultHour)
-         * 초기 분 기본값은 34분 입니다. (defaultMinute)
-         * AM/PM 설정이 되어있습니다. - 12시간 형식으로 표현합니다. (showMeridian)
-         * position left(x)와 top(y)은 위와같이 직접 설정하였습니다. (position)
+         * 초기 시작값은 10입니다. (defaultValue)
+         * up/down버튼 한번씩 클릭할 때마다 값이 2씩 변경됩니다. (step)
+         * 최솟값은 0 입니다. (min)
+         * 최댓값은 59 입니다. (max)
+         * 16, 18은 버튼 클릭시 제외됩니다. (exclusion, ex] 14 -> 20)
+         * up/down버튼의 Tag는 아래와 같이 지정하였습니다.
          */
-        var timepicker2 = new TimePicker({
-            inputElement: '#timepicker-option',
-            defaultHour: 12,
-            defaultMinute: 34,
-            showMeridian: true,
-            position: {x: optionInput.offsetLeft + optionInput.offsetWidth + 3, y: optionInput.offsetTop}
-        });
+        var spinboxWithOption = new Spinbox('#spinbox-with-option', {
+                defaultValue: 10,
+                step: 2,
+                min: 0,
+                max: 59,
+                exclusion: [16, 18],
+                upBtnTag: '<button class="btn-lg">UP</button>',
+                downBtnTag: '<button class="btn-lg">DOWN</button>'
+            });
     </script>
 </body>
 </html>
+

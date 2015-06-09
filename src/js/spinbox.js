@@ -40,7 +40,7 @@ ne.component.Spinbox = util.defineClass(/** @lends ne.component.Spinbox.prototyp
          * @type {jQuery}
          * @private
          */
-        this._$inputElement = this._$containerElement.children('input[type="text"]');
+        this._$inputElement = this._$containerElement.find('input[type="text"]');
 
         /**
          * @type {number}

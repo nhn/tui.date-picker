@@ -13,7 +13,7 @@ var util = ne.util,
     timeRegExp = /\s*(\d{1,2})\s*:\s*(\d{1,2})\s*([ap][m])?(?:[\s\S]*)/i,
     timePickerTag = '<table class="timepicker"><tr class="timepicker-row"></tr></table>',
     columnTag = '<td class="timepicker-column"></td>',
-    spinBoxTag = '<td class="timepicker-column timepicker-spinbox"><input type="text" class="timepicker-spinbox-input"></td>',
+    spinBoxTag = '<td class="timepicker-column timepicker-spinbox"><div><input type="text" class="timepicker-spinbox-input"></div></td>',
     upBtnTag = '<button type="button" class="timepicker-btn timepicker-btn-up"><b>+</b></button>',
     downBtnTag = '<button type="button" class="timepicker-btn timepicker-btn-down"><b>-</b></button>';
 
@@ -255,7 +255,7 @@ ne.component.TimePicker = util.defineClass(/** @lends ne.component.TimePicker.pr
     /**
      * is clicked inside of container?
      * @param {Event} event event-object
-     * @returns {boolean}
+     * @returns {boolean} result
      * @private
      */
     _isClickedInside: function(event) {

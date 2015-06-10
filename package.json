@@ -1,12 +1,13 @@
 {
   "name": "component-date-picker",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "데이트 피커 컴포넌트<br>날짜 선택을 용이하게 할 수 있도록 캘린더 UI를 제공한다.",
   "private": true,
   "featureList": [
     "Date Picker",
     "* 캘린더 상에서 클릭을 통해 특정 날짜 선택 기능 지원",
     "* 시간 선택 기능(타임 피커)를 옵션을 통해 사용 가능",
+    "* 캘린더와 타임피커 DI(Dependency injection)방식",
     "Time Picker",
     "* 마우스 클릭이나 키보드를 이용해 시간 지정 가능",
     "* 옵션 기능(AM/PM, 제외시간 등) 제공"
@@ -14,7 +15,7 @@
   "dependency": [
     "jquery#~1.8.3",
     "code-snippet#~1.0.2",
-    "component-calendar#~1.0.1"
+    "component-calendar#~1.1.0"
   ],
   "test": {
     "PC": [
@@ -59,6 +60,12 @@
   },
   "author": "NHN ENTERTAINMENT - FE 개발팀",
   "history": {
+    "1.1.1": {
+      "content": "데이트-타임 피커",
+      "date": "2015.06",
+      "author": "이민규 <minkyu.yi@nhnent.com>",
+      "hasAPI": true
+    },
     "1.1.0": {
       "content": "데이트-타임 피커",
       "date": "2015.05",
@@ -68,7 +75,7 @@
     "1.0.0": {
       "content": "데이트 피커 분리",
       "date": "2015.05",
-      "author": "이민규 <jein.yi@nhnent.com>"
+      "author": "이제인 <jein.yi@nhnent.com>"
     },
     "0.1.0": {
       "content": "최초개발",

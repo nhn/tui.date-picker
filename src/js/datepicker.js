@@ -202,13 +202,9 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
         this._setDefaultPosition(option.pos);
         this._setRestrictiveDate(option.startDate, option.endDate);
         this._setProxyHandlers();
-        // opener엘리먼트에 이벤트를 등록한다.
         this._bindOpenerEvent(option.openers);
-        // timePicker를 등록하거나 새로 생성한다.
         this._setTimePicker(option.timePicker);
-        // 날짜 형식을 지정하고 현재 날짜를 input element에 출력한다.
         this.setDateForm();
-        // wrapperElement를 숨긴다.
         this._$wrapperElement.hide();
     },
 
@@ -814,15 +810,11 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
         if (this.isOpened()) {
             return;
         }
-        // 달력 레이어 위치 조정
         this._arrangeLayer();
-        // 이벤트 바인딩
         this._bindCalendarCustomEvent();
         this._bindOnMousedownDocumnet();
-        // 달력을 그리고 화면에 표시한다.
         this._calendar.draw(this._date.year, this._date.month, false);
         this._$wrapperElement.show();
-
         this.fire('open');
     },
 
@@ -834,16 +826,9 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
         if (!this.isOpened()) {
             return;
         }
-        // 날짜 데이터 동기화
-        //this._setDateFromString(this._$element.val());
-
-        // 이벤트 언바인딩
         this._unbindCalendarCustomEvent();
         this._unbindOnMousedownDocument();
-
-        // 화면에서 숨김
         this._$wrapperElement.hide();
-
         this.fire('close');
     },
 

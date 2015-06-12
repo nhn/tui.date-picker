@@ -20,8 +20,8 @@ Date Picker
 
 ## Dependency
 * jquery: v1.8.3
-* code-snippet: v1.0.2
-* component-calendar: v1.1.0
+* ne-code-snippet: v1.0.2
+* ne-component-calendar: v1.1.0
 
 ## Test environment
 * PC

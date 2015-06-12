@@ -7,12 +7,9 @@
     <title>데이트피커1</title>
 </head>
 <body style="height:350px;">
-<h1>Datepicker - sample1 - 캘린더 공유</h1>
-
-click시 닫힘 :
-<input id="datePick1" type="text" size="25"/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;click시 닫히지 않음 :
-<input id="datePick2" type="text" size="25"/><button id="opener2" type="button"> picker open <span> aaa </span> </button>
+날짜 선택시 캘린더 창 닫힘 :
+<span><input id="picker" type="text" size="25"/></span>
+<button type="button" id="opener">open</button>
 
 <div id="layer" class="layer" style="display:none;"> <!-- 기준 엘리먼트 -->
     <div class="calendar-header">
@@ -52,56 +49,35 @@ click시 닫힘 :
 <script type="text/javascript" src="lib/jquery/jquery.js"></script>
 <script type="text/javascript" src="lib/ne-code-snippet/code-snippet.min.js"></script>
 <script type="text/javascript" src="lib/ne-component-calendar/calendar.min.js"></script>
-<script type="text/javascript" src="../src/js/spinbox.js"></script>
-<script type="text/javascript" src="../src/js/timepicker.js"></script>
-<script type="text/javascript" src="../src/js/datepicker.js"></script>
+<script type="text/javascript" src="js/date-picker.min.js"></script>
+<!--<script type="text/javascript" src="../src/js/spinbox.js"></script>-->
+<!--<script type="text/javascript" src="../src/js/timepicker.js"></script>-->
+<!--<script type="text/javascript" src="../src/js/datepicker.js"></script>-->
 
 <script>
+    var calendar = new ne.component.Calendar({
+        element: '#layer',
+        titleFormat: 'yyyy년 m월',
+        todayFormat: 'yyyy년 mm월 dd일 (D)'
+    });
 
-    /**
-     * 생성자
-     */
-    var Calendar = ne.component.Calendar,
-        TimePicker = ne.component.TimePicker,
-        DatePicker = ne.component.DatePicker;
+    var timePicker = new ne.component.TimePicker({
+        showMeridian: true,
+        defaultHour: 13,
+        defaultMinute: 24
+    });
 
-    /**
-     * Calendar 생성
-     * @type {ne.component.Calendar}
-     * @see {https://github.nhnent.com/pages/fe/component-calendar/1.0.1/}
-     */
-    var cal = new Calendar($('#layer'));
-
-    /**
-     * Date Picker 생성
-     * 형식 - yyyy년 mm월 dd일
-     * 표시 날짜(기본값) - 2015년 01월 01일
-     * 인풋 엘리먼트 - '#datePick'
-     * 시작 날짜 - 2012년 1월 17일
-     * 타임피커 포함여부 - 포함
-     */
-    var picker1 = new DatePicker({
-        element: document.getElementById('datePick1'),
+    var picker1 = new ne.component.DatePicker({
+        element: '#picker',
         dateForm: 'yyyy년 mm월 dd일 - ',
         date: {year: 2015, month: 1, date: 1 },
         startDate: {year:2012, month:1, date:17},
-        timePicker: new TimePicker({
-            showMeridian: true,
-            defaultHour: 13,
-            defaultMinute: 24
-        })
-    }, cal);
+        endDate: {year: 2070, month:12, date:31},
+        openers: ['#opener'],
+        timePicker: timePicker
+    }, calendar);
 
-    var picker2 = new DatePicker({
-        element: document.getElementById('datePick2'),
-        dateForm: 'mm/dd, yyyy',
-        date: {year: 2015, month: 1, date: 15},
-        endDate: {year: 2015, month: 12, date: 1},
-        openers: [
-            document.getElementById('opener2')
-        ]
-    }, cal);
-
+    /** 클릭 시 캘린더 닫히도록 설정 */
     $('#layer').on('click', function(event) {
         var $el = $(event.target);
 

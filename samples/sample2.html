@@ -2,72 +2,53 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title>timepicker example</title>
-    <!--[if IE 7]>
-        <style>
-            html{margin:0; padding:0;}
-            body{margin:0; padding:0;}
-        </style>
-    <![endif]-->
     <link href="css/calendar.css" rel="stylesheet">
     <link href="css/timepicker.css" rel="stylesheet">
-    <style>
-        .example{margin-bottom:100px;}
-    </style>
+    <title>데이트피커1</title>
 </head>
-<body>
+<body style="height:350px;">
+<span><input id="picker1" type="text" size="25"/></span>
+<button type="button" id="opener1">open</button>
 
-    <div class="example">
-        <h1>Timepicker-default</h1>
-        <input type="text" id="timepicker-default">
-    </div>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<span><input id="picker2" type="text" size="25"/></span>
 
-    <div class="example">
-        <h1>Timepicker-option (AM/PM, default time, position)</h1>
-        <input type="text" id="timepicker-option">
-    </div>
+<div id="layer" class="layer"></div>
 
-    <script type="text/javascript" src="lib/jquery/jquery.js"></script>
-    <script type="text/javascript" src="lib/ne-code-snippet/code-snippet.min.js"></script>
-    <script type="text/javascript" src="lib/ne-component-calendar/calendar.min.js"></script>
-    <script type="text/javascript" src="js/date-picker.min.js"></script>
-    <script>
+<script type="text/javascript" src="lib/jquery/jquery.js"></script>
+<script type="text/javascript" src="lib/ne-code-snippet/code-snippet.min.js"></script>
+<script type="text/javascript" src="lib/ne-component-calendar/calendar.min.js"></script>
+<script type="text/javascript" src="js/date-picker.min.js"></script>
+<!--<script type="text/javascript" src="../src/js/spinbox.js"></script>-->
+<!--<script type="text/javascript" src="../src/js/timepicker.js"></script>-->
+<!--<script type="text/javascript" src="../src/js/datepicker.js"></script>-->
 
-        var TimePicker = ne.component.TimePicker,
-            Calendar = ne.component.Calendar,
-            DatePicker = ne.component.DatePicker;
+<script>
+    var calendar = new ne.component.Calendar({
+        element: '#layer',
+        titleFormat: 'yyyy년 m월',
+        todayFormat: 'yyyy년 mm월 dd일 (D)'
+    });
 
-        var optionInput = document.getElementById('timepicker-option');
+    var timePicker = new ne.component.TimePicker({
+        showMeridian: true,
+        defaultHour: 13,
+        defaultMinute: 24
+    });
 
-        /**
-         * TimePicker Example
-         * Default
-         *
-         * 기본 시간값은 '00:00' 입니다. 또한 24시간 표현입니다.
-         * timepicker element의 클래스는 'timepicker'입니다.
-         * up/down button elements의 클래스는 'timepicker-btn'입니다.
-         * 포지션은 지정하지 않은 경우 자동으로 인풋박스 왼쪽 하단으로 설정됩니다.
-         */
-        var timepicker1 = new TimePicker({
-            inputElement: '#timepicker-default'
-        });
+    var picker1 = new ne.component.DatePicker({
+        element: '#picker1',
+        dateForm: 'yyyy년 mm월 dd일 - ',
+        date: {year: 2015, month: 1, date: 1 },
+        startDate: {year:2012, month:1, date:17},
+        endDate: {year: 2070, month:12, date:31},
+        openers: ['#opener1'],
+        timePicker: timePicker
+    }, calendar);
 
-        /**
-         * TimePicker Example
-         * Option
-         *
-         * 초기 시각 기본값은 12시 입니다. (defaultHour)
-         * 초기 분 기본값은 34분 입니다. (defaultMinute)
-         * AM/PM 설정이 되어있습니다. - 12시간 형식으로 표현합니다. (showMeridian)
-         * position left(x)와 top(y)은 위와같이 직접 설정하였습니다. (position)
-         */
-        var timepicker2 = new TimePicker({
-            inputElement: '#timepicker-option',
-            defaultHour: 12,
-            defaultMinute: 34,
-            showMeridian: true,
-            position: {x: optionInput.offsetLeft + optionInput.offsetWidth + 3, y: optionInput.offsetTop}
-        });
-    </script>
+    var picker2 = new ne.component.DatePicker({
+        element: '#picker2'
+    }, calendar);
+</script>
 </body>
 </html>

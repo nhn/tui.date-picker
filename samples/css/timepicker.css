@@ -11,10 +11,11 @@
 }
 
 .timepicker {
-    width: 230px;
+    width: 245px;
     font-weight: bold;
     padding: 3px 30px 3px 30px;
     border: 1px solid #eaeaea;
+    border-top: 0px;
     background: white;
     text-align: center;
 }

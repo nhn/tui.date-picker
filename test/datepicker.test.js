@@ -238,6 +238,7 @@ describe('Date Picker', function() {
                 nextInputValue,
                 tp = datepicker2.getTimePicker();
 
+            datepicker2.open();
             tp.setTime(12, 34);
             nextInputValue = datepicker2._$element.val();
 
@@ -617,7 +618,7 @@ describe('Date Picker', function() {
 
             datepicker1.setDate(2015, 4, 1);
             datepicker1.open();
-            prevMonthEl = datepicker1._$wrapperElement.find('.calendar-prev-mon')[0];
+            prevMonthEl = datepicker1._$wrapperElement.find('.calendar-prev-month')[0];
             $(prevMonthEl).click();
             dateObj = datepicker1.getDateObject();
 
@@ -634,7 +635,7 @@ describe('Date Picker', function() {
 
             datepicker1.setDate(2015, 4, 1);
             datepicker1.open();
-            nextMonthEl = datepicker1._$wrapperElement.find('.calendar-next-mon')[0];
+            nextMonthEl = datepicker1._$wrapperElement.find('.calendar-next-month')[0];
             $(nextMonthEl).click();
             dateObj = datepicker1.getDateObject();
 

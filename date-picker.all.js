@@ -990,19 +990,19 @@ var calendarUtil = ne.component.Calendar.Util,
  *      @param {string} [option.defaultCentury = 20] yy 형식일때 자동으로 붙여지는 값 [19|20]
  *      @param {string} [option.selectableClassName = 'selectable'] 선택가능한 날짜 엘리먼트에 입힐 클래스 이름
  *      @param {string} [option.selectedClassName = 'selected'] 선택된 날짜 엘리먼트에 입힐 클래스 이름
- *      @param {Object} [option.startDate = {year:1970, month:1, date:1}] 날짜 시작일
+ *      @param {Object} [option.startDate] 날짜 시작일
  *          @param {number} [option.startDate.year] 시작 날짜 - 년도
  *          @param {number} [option.startDate.month] 시작 날짜 - 월
  *          @param {number} [option.startDate.date] 시작 날짜 - 일
- *      @param {Object} [option.endDate = {year:3000, month:12, date:31}] 날짜 종료일
+ *      @param {Object} [option.endDate] 날짜 종료일
  *          @param {number} [option.endDate.year] 끝 날짜 - 년도
  *          @param {number} [option.endDate.month] 끝 날짜 - 월
  *          @param {number} [option.endDate.date] 끝 날짜 - 일
- *      @param {Object} [option.pos = {x: number, y: number, zIndex: number}] position - left & top & zIndex
+ *      @param {Object} [option.pos] 포지션
  *          @param {number} [option.pos.x] 캘린더의 position left 값
  *          @param {number} [option.pos.y] 캘린더의 position top 값
  *          @param {number} [option.pos.zIndex] 캘린더의 z-index 값
- *      @param {Object} [option.openers = []] opener list
+ *      @param {Object} [option.openers = [element]] 오프너 버튼 리스트 (날짜 아이콘 엘리먼트 등)
  *      @param {ne.component.TimePicker} [option.timePicker] 데이트피커에 붙을 타임피커
  * @param {ne.component.Calendar} calendar 캘린더 컴포넌트
  * */
@@ -1227,9 +1227,23 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
         }
 
         this._timePicker = opTimePicker;
-        this._timePicker.on('change', function() {
-            this.setDate();
-        }, this);
+        this._bindCustomEventWithTimePicker();
+    },
+
+    /**
+     *
+     * @private
+     */
+    _bindCustomEventWithTimePicker: function() {
+        var onChangeTimePicker = util.bind(this.setDate, this);
+
+        this.on('open', function() {
+            this._timePicker.setTimeFromInputElement(this._$element);
+            this._timePicker.on('change', onChangeTimePicker);
+        });
+        this.on('close', function() {
+            this._timePicker.off('change', onChangeTimePicker);
+        });
     },
 
     /**
@@ -1443,6 +1457,7 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
      * 해당 날짜가 선택된 날짜이면 엘리먼트에 selected class를 더한다.
      * @param {jQuery|HTMLElement} $element 엘리먼트
      * @param {{year: number, month: number, date: number}} dateHash 날짜 해시
+     * @private
      */
     _setSelectedClassName: function($element, dateHash) {
         var year = this._date.year,
@@ -1461,17 +1476,12 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
      */
     _setValueToInputElement: function() {
         var dateString = this._formed(),
-            timeString = '',
-            totalString;
+            timeString = '';
 
         if (this._timePicker) {
             timeString = this._timePicker.getTime();
         }
-
-        if (this._$element) {
-            totalString = dateString + timeString;
-            this._$element.val(totalString);
-        }
+        this._$element.val(dateString + timeString);
     },
 
     /**
@@ -1553,9 +1563,9 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
             date;
 
         if (value && !isNaN(value)) {
-            if (className.indexOf('prev-mon') > -1) {
+            if (className.indexOf('prev-month') > -1) {
                 relativeMonth = -1;
-            } else if (className.indexOf('next-mon') > -1) {
+            } else if (className.indexOf('next-month') > -1) {
                 relativeMonth = 1;
             } else {
                 relativeMonth = 0;

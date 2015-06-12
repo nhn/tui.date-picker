@@ -8,7 +8,8 @@ var gulp = require('gulp'),
     sourcemaps = require('gulp-sourcemaps'),
     connect = require('gulp-connect'),
     header = require('gulp-header'),
-    footer = require('gulp-footer');
+    footer = require('gulp-footer'),
+    jsinspect = require('gulp-jsinspect');
 
 var pkg = require('./package.json'),
     headerBanner = [
@@ -54,10 +55,20 @@ gulp.task('scripts', function() {
         .pipe(gulp.dest('./samples/js/'));
 });
 
+gulp.task('jsinspect', function() {
+    return gulp.src(paths.scripts)
+        .pipe(jsinspect({
+            'threshold': 15,
+            'identifiers': true
+        }));
+});
+
 gulp.task('connect', function() {
    connect.server({
        port: 9998
    });
 });
+
+gulp.task('build', ['concat', 'scripts', 'jsinspect']);
 
 gulp.task('default', ['concat', 'scripts', 'connect']);

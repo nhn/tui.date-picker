@@ -14,7 +14,7 @@ Date Picker
 ## Documentation
 * API : https://github.nhnent.com/pages/fe/component-date-picker/1.1.1
 * Tutorial : https://github.nhnent.com/fe/component-date-picker/wiki/date-picker-컴포넌트-적용방법
-* CI : http://fe.nhnent.com:8080/jenkins/job/component-date-picker/
+* Sample - https://nhnent.github.io/fe.component-date-picker/1.1.1/tutorial-sample1.html
 
 
 
@@ -32,14 +32,14 @@ Date Picker
 
 ## Download/Install
 * Bower:
-   * 최신버전 : `bower install "git+http://70327b4564c7a80eb61724056876b960290946dd:x-oauth-basic@github.nhnent.com/fe/component-date-picker.git#master"`
-   * 특정버전 : `bower install "git+http://70327b4564c7a80eb61724056876b960290946dd:x-oauth-basic@github.nhnent.com/fe/component-date-picker.git[#tag]"`
-* Download: https://github.nhnent.com/fe/component-date-picker
+   * 최신버전 : `ne-component-date-picker.git"`
+   * 특정버전 : `ne-component-date-picker.git[#tag]"`
+* Download: https://github.com/nhnent/fe.component-date-picker
 
 ## History
 | Version | Description | Date | Developer |
 | ---- | ---- | ---- | ---- |
-| <a href="https://github.nhnent.com/pages/fe/component-date-picker/1.1.1">1.1.1</a> | 데이트-타임 피커 | 2015.06 | 이민규 <minkyu.yi@nhnent.com> |
-| <a href="https://github.nhnent.com/pages/fe/component-date-picker/1.1.0">1.1.0</a> | 데이트-타임 피커 | 2015.05 | 이민규 <minkyu.yi@nhnent.com> |
+| <a href="http://nhnent.github.io/fe.component-date-picker/1.1.1/">1.1.1</a> | 데이트-타임 피커 | 2015.06 | 이민규 <minkyu.yi@nhnent.com> |
+| <a href="http://nhnent.github.io/fe.component-date-picker/1.1.0/">1.1.0</a> | 데이트-타임 피커 | 2015.05 | 이민규 <minkyu.yi@nhnent.com> |
 | 1.0.0 | 데이트 피커 분리 | 2015.05 | 이제인 <jein.yi@nhnent.com> |
 | 0.1.0 | 최초개발 | 2014.11 | 이제인 <jein.yi@nhnent.com> |

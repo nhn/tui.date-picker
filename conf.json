@@ -34,8 +34,9 @@
     "hardwrap": true
   },
   "opts": {
+    "template": "./node_modules/fedoc-template",
+    "encoding": "utf8",
     "recurse": true,
-    "private": true,
     "destination": "doc",
     "tutorials": "samples"
   }

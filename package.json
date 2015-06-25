@@ -2,6 +2,7 @@
   "name": "component-date-picker",
   "version": "1.1.1",
   "description": "데이트 피커 컴포넌트<br>날짜 선택을 용이하게 할 수 있도록 캘린더 UI를 제공한다.",
+  "lincese": "MIT",
   "private": true,
   "featureList": [
     "Date Picker",

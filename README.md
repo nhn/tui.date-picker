@@ -43,3 +43,7 @@ Date Picker
 | <a href="http://nhnent.github.io/fe.component-date-picker/1.1.0/">1.1.0</a> | 데이트-타임 피커 | 2015.05 | 이민규 <minkyu.yi@nhnent.com> |
 | 1.0.0 | 데이트 피커 분리 | 2015.05 | 이제인 <jein.yi@nhnent.com> |
 | 0.1.0 | 최초개발 | 2014.11 | 이제인 <jein.yi@nhnent.com> |
+
+<br>
+## License
+[MIT 라이선스](LICENSE)로 자유롭게 사용할 수 있습니다.

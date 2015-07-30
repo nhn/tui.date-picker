@@ -32,17 +32,18 @@
     "url": "https://github.com/nhnent/fe.component-date-picker.git"
   },
   "devDependencies": {
-    "gulp": "^3.8.11",
-    "gulp-concat": "^2.5.2",
+    "fedoc-template": "git+http://14bfd38a036366f7ca90355d202038126127bd01:x-oauth-basic@github.nhnent.com/fe/share-fedoc-template.git",
+    "gulp": "latest",
+    "gulp-clean": "^0.3.1",
+    "gulp-concat": "^2.6.0",
     "gulp-connect": "^2.2.0",
     "gulp-footer": "^1.0.5",
     "gulp-header": "^1.2.2",
     "gulp-jsinspect": "^1.0.1",
+    "gulp-run": "^1.6.10",
     "gulp-sourcemaps": "^1.5.2",
     "gulp-uglify": "^1.2.0",
-    "install": "^0.1.8",
     "jasmine-core": "^2.3.0",
-    "jasmine-jquery": "^2.0.5",
     "jsdoc": "git+https://github.com/jsdoc3/jsdoc.git",
     "karma": "^0.12.33",
     "karma-chrome-launcher": "^0.1.8",
@@ -53,8 +54,7 @@
     "karma-phantomjs-launcher": "^0.1.4",
     "karma-requirejs": "^0.2.2",
     "karma-webdriver-launcher": "git+https://github.com/everedifice/karma-webdriver-launcher.git",
-    "readme-builder": "git+https://github.com/jein-yi/readme-builder.git",
-    "requirejs": "^2.1.14"
+    "run-sequence": "^1.1.2"
   },
   "scripts": {
     "doc": "./node_modules/.bin/jsdoc -c conf.json"

@@ -20,11 +20,10 @@ module.exports = function(config) {
 
         // list of files / patterns to load in the browser
         files: [
-            'lib/jquery/*.js',
-            'lib/ne-code-snippet/*.js',
-            'lib/ne-component-calendar/*.js',
-
-            'node_modules/jasmine-jquery/lib/jasmine-jquery.js',
+            'bower_components/jquery/jquery.min.js',
+            'bower_components/jasmine-jquery/lib/jasmine-jquery.js',
+            'bower_components/ne-code-snippet/code-snippet.min.js',
+            'bower_components/ne-component-calendar/calendar.min.js',
 
             'src/js/spinbox.js',
             'src/js/timepicker.js',

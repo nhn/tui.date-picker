@@ -2,23 +2,28 @@
  * Created by nhnent on 15. 4. 28..
  */
 
-var gulp = require('gulp'),
-    concat = require('gulp-concat'),
-    uglify = require('gulp-uglify'),
-    sourcemaps = require('gulp-sourcemaps'),
-    connect = require('gulp-connect'),
-    header = require('gulp-header'),
-    footer = require('gulp-footer'),
-    jsinspect = require('gulp-jsinspect');
+var gulp = require('gulp');
+var concat = require('gulp-concat');
+var uglify = require('gulp-uglify');
+var sourcemaps = require('gulp-sourcemaps');
+var connect = require('gulp-connect');
+var header = require('gulp-header');
+var footer = require('gulp-footer');
+var jsinspect = require('gulp-jsinspect');
 
-var pkg = require('./package.json'),
+var clean = require('gulp-clean');
+var run = require('gulp-run');
+var runSequence = require('run-sequence');
+
+var pkg = require('./package.json');
+
+var libRoot = 'bower_components/',
     headerBanner = [
-        '/**',
-        ' * !<%= pkg.name %> v<%=pkg.version%> | NHN Entertainment',
-        ' */',
+        '/* !<%= pkg.name %> v<%=pkg.version%> | NHN Entertainment */',
         ''
     ].join('\n'),
     fnHeader = [
+        '',
         '(function() {',
         ''
     ].join('\n'),
@@ -26,12 +31,22 @@ var pkg = require('./package.json'),
         '',
         '})();',
         ''
-    ].join('\n');
-
-var paths = {
+    ].join('\n'),
+    paths = {
         scripts: ['./src/js/spinbox.js', './src/js/timepicker.js', './src/js/datepicker.js'],
-        image: []
+        lib: [libRoot + 'jquery/**/*.min.js', libRoot + 'ne-code-snippet/**/*.min.js', libRoot + 'ne-component-calendar/**/*.min.js'],
+        clean: ['./[0-9]*.[0-9]*.[0-9]', './latest', './samples/js', './samples/lib']
     };
+
+gulp.task('clean', function() {
+    return gulp.src(paths.clean, {read:false})
+        .pipe(clean());
+});
+
+gulp.task('copyLib', function() {
+    return gulp.src(paths.lib)
+        .pipe(gulp.dest('./samples/lib/'));
+});
 
 gulp.task('concat', function() {
     return gulp.src(paths.scripts)
@@ -63,12 +78,25 @@ gulp.task('jsinspect', function() {
         }));
 });
 
-gulp.task('connect', function() {
-   connect.server({
-       port: 9998
-   });
+gulp.task('jsdoc', function() {
+    var cmd = new run.Command('npm run doc');
+    cmd.exec('',function() {
+        gulp.src('./latest/**/*')
+            .pipe(gulp.dest('./' + pkg.version));
+    });
 });
 
-gulp.task('build', ['concat', 'scripts', 'jsinspect']);
+gulp.task('build', function() {
+    runSequence(
+        'clean',
+        'copyLib',
+        ['jsinspect', 'concat', 'scripts'],
+        'jsdoc'
+    );
+});
 
-gulp.task('default', ['concat', 'scripts', 'connect']);
+gulp.task('connect', function() {
+    connect.server({
+        port: 9998
+    });
+});

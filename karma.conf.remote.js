@@ -25,9 +25,9 @@ module.exports = function(config) {
             'bower_components/ne-code-snippet/code-snippet.min.js',
             'bower_components/ne-component-calendar/calendar.min.js',
 
-            'src/js/spinbox.js',
-            'src/js/timepicker.js',
-            'src/js/datepicker.js',
+            'src/spinbox.js',
+            'src/timepicker.js',
+            'src/datepicker.js',
 
             'test/fixtures/**/*.html',
             'test/css/**/*.css',

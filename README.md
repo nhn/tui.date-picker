@@ -32,8 +32,8 @@ Date Picker
 
 ## Download/Install
 * Bower:
-   * 최신버전 : `ne-component-date-picker.git"`
-   * 특정버전 : `ne-component-date-picker.git[#tag]"`
+   * 최신버전 : `ne-component-date-picker"`
+   * 특정버전 : `ne-component-date-picker[#tag]"`
 * Download: https://github.com/nhnent/fe.component-date-picker
 
 ## History

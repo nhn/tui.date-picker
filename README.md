@@ -12,9 +12,9 @@ Date Picker
 	* 옵션 기능(AM/PM, 제외시간 등) 제공
 
 ## Documentation
-* API : https://nhnent.github.io/fe.component-date-picker/1.1.1
+* API : https://nhnent.github.io/fe.component-date-picker/latest
 * Tutorial : https://github.com/nhnent/fe.component-date-picker/wiki/date-picker-컴포넌트-적용방법
-* Sample - https://nhnent.github.io/fe.component-date-picker/1.1.1/tutorial-sample1.html
+* Sample - https://nhnent.github.io/fe.component-date-picker/latest/tutorial-sample1.html
 
 
 

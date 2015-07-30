@@ -37,7 +37,7 @@
     "template": "./node_modules/fedoc-template",
     "encoding": "utf8",
     "recurse": true,
-    "destination": "doc",
+    "destination": "latest",
     "tutorials": "samples"
   }
 }

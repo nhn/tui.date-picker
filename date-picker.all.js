@@ -1,6 +1,5 @@
-/**
- * !component-date-picker v1.1.1 | NHN Entertainment
- */
+/* !component-date-picker v1.1.1 | NHN Entertainment */
+
 (function() {
 /**
  * Created by nhnent on 15. 4. 28..
@@ -360,6 +359,7 @@ ne.component.Spinbox = util.defineClass(/** @lends ne.component.Spinbox.prototyp
 });
 
 })();
+
 
 (function() {
 /**
@@ -937,6 +937,7 @@ ne.util.CustomEvents.mixin(ne.component.TimePicker);
 
 
 })();
+
 
 (function() {
 /**

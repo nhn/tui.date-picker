@@ -35,7 +35,7 @@ var libRoot = 'bower_components/',
     paths = {
         scripts: ['./src/spinbox.js', './src/timepicker.js', './src/datepicker.js'],
         lib: [libRoot + 'jquery/**/*.min.js', libRoot + 'ne-code-snippet/**/*.min.js', libRoot + 'ne-component-calendar/**/*.min.js'],
-        clean: ['./[0-9]*.[0-9]*.[0-9]', './latest', './samples/js', './samples/lib']
+        clean: [pkg.version, './latest', './samples/js', './samples/lib']
     };
 
 gulp.task('clean', function() {

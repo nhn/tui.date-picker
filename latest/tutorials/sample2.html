@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <link href="css/calendar.css" rel="stylesheet">
+    <link href="css/timepicker.css" rel="stylesheet">
+    <title>데이트피커1</title>
+</head>
+<body style="height:350px;">
+<span><input id="picker1" type="text" size="25"/></span>
+<button type="button" id="opener1">open</button>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<span><input id="picker2" type="text" size="25"/></span>
+
+<div id="layer" class="layer"></div>
+
+<script type="text/javascript" src="lib/jquery.min.js"></script>
+<script type="text/javascript" src="lib/code-snippet.min.js"></script>
+<script type="text/javascript" src="lib/calendar.min.js"></script>
+<script type="text/javascript" src="js/date-picker.min.js"></script>
+
+<script>
+    var calendar = new ne.component.Calendar({
+        element: '#layer',
+        titleFormat: 'yyyy년 m월',
+        todayFormat: 'yyyy년 mm월 dd일 (D)'
+    });
+
+    var timePicker = new ne.component.TimePicker({
+        showMeridian: true,
+        defaultHour: 13,
+        defaultMinute: 24
+    });
+
+    var picker1 = new ne.component.DatePicker({
+        element: '#picker1',
+        dateForm: 'yyyy년 mm월 dd일 - ',
+        date: {year: 2015, month: 1, date: 1 },
+        startDate: {year:2012, month:1, date:17},
+        endDate: {year: 2070, month:12, date:31},
+        openers: ['#opener1'],
+        timePicker: timePicker
+    }, calendar);
+
+    var picker2 = new ne.component.DatePicker({
+        element: '#picker2'
+    }, calendar);
+</script>
+</body>
+</html>

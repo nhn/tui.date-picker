@@ -9,7 +9,7 @@ Component - DatePicker<br>It provides calendarUI for pick a date easily
     * It provides some options (selectable date range, opener buttons, etc.)
 * Time Picker
     * It would be possible for setting a specific time with mouse-click and up/down-key
-	* It provides some options (exclude time, show meridian, etc.)
+    * It provides some options (exclude time, show meridian, etc.)
 
 ## Documentation
 * API : https://nhnent.github.io/fe.component-date-picker/latest

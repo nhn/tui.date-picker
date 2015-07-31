@@ -1,9 +1,8 @@
 /**
  * Created by nhnent on 15. 4. 28..
  * @fileoverview Spinbox Component
- * @author NHN ENTERTAINMENT FE 개발팀(e0242@nhnent.com)
- * @author 이민규(minkyu.yi@nhnent.com)
- * @dependency jquery 1.8.3, code-snippet 1.0.2,
+ * @author NHN ent FE dev <dl_javascript@nhnent.com> <minkyu.yi@nhnent.com>
+ * @dependency jquery-1.8.3, code-snippet-1.0.2
  */
 
 'use strict';

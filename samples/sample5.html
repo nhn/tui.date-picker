@@ -25,22 +25,22 @@
     <script type="text/javascript" src="lib/jquery.min.js"></script>
     <script type="text/javascript" src="lib/code-snippet.min.js"></script>
     <script type="text/javascript" src="lib/calendar.min.js"></script>
-    <script type="text/javascript" src="js/date-picker.min.js"></script>
+    <script type="text/javascript" src="js/datePicker.min.js"></script>
     <script>
         /**
-         * 옵션 없이 생성
+         * Default
          */
         var spinboxDefault = new ne.component.Spinbox('#spinbox-default');
 
         /**
-         * 옵션 추가 하여 생성
+         * Option
          *
-         * 초기 시작값은 10입니다. (defaultValue)
-         * up/down버튼 한번씩 클릭할 때마다 값이 2씩 변경됩니다. (step)
-         * 최솟값은 0 입니다. (min)
-         * 최댓값은 59 입니다. (max)
-         * 16, 18은 버튼 클릭시 제외됩니다. (exclusion, ex] 14 -> 20)
-         * up/down버튼의 Tag는 아래와 같이 지정하였습니다.
+         * Default value is 10. (defaultValue)
+         * Step value is 2. (step)
+         * Minimum value is 0. (min)
+         * Maximum value is 59. (max)
+         * Exclude values 16, 18. (exclusion, ex] 14 -> 20)
+         * Up/down button tag. (upBtnTag, downBtnTag)
          */
         var spinboxWithOption = new ne.component.Spinbox('#spinbox-with-option', {
                 defaultValue: 10,

@@ -1,10 +1,8 @@
 /**
  * Created by nhnent on 15. 5. 14..
- * @fileoverview 날짜를 선택하는 기능을 구현한다. 특정 범위를 받으면, 그 날짜만 선택 가능하다.
- * @author NHN ENTERTAINMENT FE 개발팀(e0242@nhnent.com)
- * @author 이제인(jein.yi@nhnent.com)
- * @author 이민규(minkyu.yi@nhnent.com) 2015-05-14
- * @dependency jquery 1.8.3, code-snippet 1.0.2, component-calendar 1.0.1
+ * @fileoverview This component provides a calendar for picking a date & time.
+ * @author NHN ent FE dev <dl_javascript@nhnent.com> <minkyu.yi@nhnent.com>
+ * @dependency jquery-1.8.3, code-snippet-1.0.2, component-calendar-1.0.1, timePicker.js
  */
 
 'use strict';
@@ -33,132 +31,170 @@ var calendarUtil = ne.component.Calendar.Util,
     };
 
 /**
- * 달력 생성
- * 날짜를 선택한다.
- * getYear, getMonth, getDayInMonth, getDateObject를 이용해 날짜를 받아온다.
- *
+ * Create DatePicker<br>
+ * You can get a date from 'getYear', 'getMonth', 'getDayInMonth', 'getDateObject'
  * @namespace ne.component.DatePicker
  * @constructor
- * @param {Object} option DatePicker 옵션값
- *      @param {HTMLElement} option.element DatePicker의 input 창
- *      @param {Object} [option.date = 오늘] 초기 날짜
- *          @param {number} [option.date.year] 년도
- *          @param {number} [option.date.month] 월
- *          @param {number} [option.date.date] 일
- *      @param {string} [option.dateForm = 'yyyy-mm-dd'] 날짜 형식
- *      @param {string} [option.defaultCentury = 20] yy 형식일때 자동으로 붙여지는 값 [19|20]
- *      @param {string} [option.selectableClassName = 'selectable'] 선택가능한 날짜 엘리먼트에 입힐 클래스 이름
- *      @param {string} [option.selectedClassName = 'selected'] 선택된 날짜 엘리먼트에 입힐 클래스 이름
- *      @param {Object} [option.startDate] 날짜 시작일
- *          @param {number} [option.startDate.year] 시작 날짜 - 년도
- *          @param {number} [option.startDate.month] 시작 날짜 - 월
- *          @param {number} [option.startDate.date] 시작 날짜 - 일
- *      @param {Object} [option.endDate] 날짜 종료일
- *          @param {number} [option.endDate.year] 끝 날짜 - 년도
- *          @param {number} [option.endDate.month] 끝 날짜 - 월
- *          @param {number} [option.endDate.date] 끝 날짜 - 일
- *      @param {Object} [option.pos] 포지션
- *          @param {number} [option.pos.x] 캘린더의 position left 값
- *          @param {number} [option.pos.y] 캘린더의 position top 값
- *          @param {number} [option.pos.zIndex] 캘린더의 z-index 값
- *      @param {Object} [option.openers = [element]] 오프너 버튼 리스트 (날짜 아이콘 엘리먼트 등)
- *      @param {ne.component.TimePicker} [option.timePicker] 데이트피커에 붙을 타임피커
- * @param {ne.component.Calendar} calendar 캘린더 컴포넌트
- * */
+ * @param {Object} option - options for DatePicker
+ *      @param {HTMLElement|string} option.element - input element(or selector) of DatePicker
+ *      @param {Object} [option.date = today] - initial date object
+ *          @param {number} [option.date.year] - year
+ *          @param {number} [option.date.month] - month
+ *          @param {number} [option.date.date] - day in month
+ *      @param {string} [option.dateForm = 'yyyy-mm-dd'] - format of date string
+ *      @param {string} [option.defaultCentury = 20] - if year-format is yy, this value is prepended automatically.
+ *      @param {string} [option.selectableClassName = 'selectable'] - for selectable date elements
+ *      @param {string} [option.selectedClassName = 'selected'] - for selected date element
+ *      @param {Object} [option.startDate] - start date in calendar
+ *          @param {number} [option.startDate.year] - year
+ *          @param {number} [option.startDate.month] - month
+ *          @param {number} [option.startDate.date] - day in month
+ *      @param {Object} [option.endDate] - last date in calendar
+ *          @param {number} [option.endDate.year] - year
+ *          @param {number} [option.endDate.month] - month
+ *          @param {number} [option.endDate.date] - day in month
+ *      @param {Object} [option.pos] - calendar position style vlaue
+ *          @param {number} [option.pos.left] - position left of calendar
+ *          @param {number} [option.pos.top] - position top of calendar
+ *          @param {number} [option.pos.zIndex] - z-index of calendar
+ *      @param {Object} [option.openers = [element]] - opener button list (example - icon, button, etc.)
+ *      @param {ne.component.TimePicker} [option.timePicker] - TimePicker instance
+ * @param {ne.component.Calendar} calendar - Calendar instance
+ * @example
+ *   var calendar = new ne.component.Calendar({
+ *       element: '#layer',
+ *       titleFormat: 'yyyy년 m월',
+ *       todayFormat: 'yyyy년 mm월 dd일 (D)'
+ *   });
+ *
+ *   var timePicker = new ne.component.TimePicker({
+ *       showMeridian: true,
+ *       defaultHour: 13,
+ *       defaultMinute: 24
+ *   });
+ *
+ *   var picker1 = new ne.component.DatePicker({
+ *       element: '#picker',
+ *       dateForm: 'yyyy년 mm월 dd일 - ',
+ *       date: {year: 2015, month: 1, date: 1 },
+ *       startDate: {year:2012, month:1, date:17},
+ *       endDate: {year: 2070, month:12, date:31},
+ *       openers: ['#opener'],
+ *       timePicker: timePicker
+ *   }, calendar);
+ *
+ *   // Close calendar when select a date
+ *   $('#layer').on('click', function(event) {
+ *       var $el = $(event.target);
+ *
+ *       if ($el.hasClass('selectable')) {
+ *           picker1.close();
+ *       }
+ *   });
+ */
 ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker.prototype */{
     init: function(option, calendar) {
         /**
-         * 캘린더 객체
-         * @type{Calendar}
+         * Calendar instance
+         * @type {Calendar}
          * @private
          */
         this._calendar = calendar;
 
         /**
-         * 실제 날짜값 문자열이 보여질 엘리먼트
+         * Element for displaying a date value
          * @type {HTMLElement}
          * @private
          */
         this._$element = $(option.element);
 
         /**
-         * 캘린더 엘리먼트
+         * Element wrapping calendar
          * @type {HTMLElement}
          * @private
          */
         this._$wrapperElement = null;
 
         /**
-         * 날짜 표시 형식
+         * Format of date string
          * @type {string}
          * @private
          */
         this._dateForm = option.dateForm || 'yyyy-mm-dd ';
 
         /**
-         * 날짜 형식에 맞는 정규표현식 객체
+         * RegExp instance for format of date string
          * @type {RegExp}
          * @private
-         * @see ne.component.DatePicker.prototype._setRegExp
          */
         this._regExp = null;
 
         /**
-         * 날짜 형식의 순서를 저장한다.
+         * Array saving a order of format
          * @type {Array}
          * @private
          * @see {ne.component.DatePicker.prototype.setDateForm}
          * @example
-         *  날짜 형식의 순서를 기억한다.
-         *  만약 날짜 형식이 'mm-dd, yyyy'라면
-         *  formOrder = ['month', 'date', 'year'];
+         *  // If the format is a 'mm-dd, yyyy'
+         *  // `this._formOrder` is ['month', 'date', 'year']
          */
         this._formOrder = [];
 
         /**
-         * 데이터를 해쉬 형식으로 저장
-         * @type {Date}
+         * Object having date values
+         * @type {{year: number, month: number, date: number}}
          * @private
          */
         this._date = null;
 
         /**
-         * yy-mm-dd 형식으로 인풋창에 값을 직접 입력 할 시, 앞에 자동으로 붙을 숫자.
+         * This value is prepended automatically when year-format is 'yy'
          * @type {string}
          * @private
+         * @example
+         *  //
+         *  // If this vlaue is '20', the format is 'yy-mm-dd' and the date string is '15-04-12',
+         *  // the date value object is
+         *  //  {
+         *  //      year: 2015,
+         *  //      month: 4,
+         *  //      date: 12
+         *  //  }
          */
         this._defaultCentury = option.defaultCentury || CONSTANTS.defaultCentury;
 
         /**
-         * 선택 가능한 날짜 엘리먼트에 추가될 클래스명
+         * Class name for selectable date elements
          * @type {string}
          * @private
          */
         this._selectableClassName = option.selectableClassName || CONSTANTS.selectableClassName;
 
         /**
-         * 선택된 날짜 엘리먼트의 클래스명
+         * Class name for selected date element
          * @type {string}
          * @private
          */
         this._selectedClassName = option.selectedClassName || CONSTANTS.selectedClassName;
 
         /**
-         * 선택 할 수 있는 첫 날
-         * @type {Date}
+         * Start date that can be selected
+         * It is number of date (=timestamp)
+         * @type {number}
          * @private
          */
         this._startEdge = option.startDate;
 
         /**
-         * 선택 할 수 있는 마지막 날
-         * @type {Date}
+         * End date that can be selected
+         * It is number of date (=timestamp)
+         * @type {number}
          * @private
          */
         this._endEdge = option.endDate;
 
         /**
-         * TimePicker Object
+         * TimePicker instance
          * @type {TimePicker}
          * @private
          * @since 1.1.0
@@ -182,7 +218,7 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
         this._openers = [];
 
         /**
-         * 이벤트 핸들러들을 바인딩하여 저장한다.
+         * Handlers binding context
          * @type {Object}
          * @private
          */
@@ -192,15 +228,15 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
     },
 
     /**
-     * 초기화 진행 메서드
-     * @param {Object} option 사용자 옵션
+     * Initialize method
+     * @param {Object} option - user option
      * @private
      */
     _initializeDatePicker: function(option) {
         this._setWrapperElement();
         this._setDefaultDate(option.date);
         this._setDefaultPosition(option.pos);
-        this._setRestrictiveDate(option.startDate, option.endDate);
+        this._restrictDate(option.startDate, option.endDate);
         this._setProxyHandlers();
         this._bindOpenerEvent(option.openers);
         this._setTimePicker(option.timePicker);
@@ -209,7 +245,7 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
     },
 
     /**
-     * 데이트피커의 WrapperElement (컨테이너 엘리먼트)를 셋팅한다.
+     * Set wrapper element(= container)
      * @private
      */
     _setWrapperElement: function() {
@@ -219,8 +255,8 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
     },
 
     /**
-     * 데이트피커의 기본값 날짜를 지정한다.
-     * @param {Object} opDate [option.date] 사용자가 지정한 기본값 날짜
+     * Set default date
+     * @param {{year: number, month: number, date: number}|Date} opDate [option.date] - user setting: date
      * @private
      */
     _setDefaultDate: function(opDate) {
@@ -236,8 +272,8 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
     },
 
     /**
-     * 캘린더의 기본 포지션을 설정한다.
-     * @param {Object} opPos [option.pos] 사용자가 지정한 캘린더엘리먼트의 좌표와 zIndex
+     * Save default style-position of calendar
+     * @param {Object} opPos [option.pos] - user setting: position(left, top, zIndex)
      * @private
      */
     _setDefaultPosition: function(opPos) {
@@ -250,12 +286,12 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
     },
 
     /**
-     * 데이트피커의 제한 날짜를 설정한다.
-     * @param {Object} opStartDate [option.startDate] 선택 가능한 시작 날짜
-     * @param {Object} opEndDate [option.endDate] 선택 가능한 마지막 날짜
+     * Restrict date
+     * @param {{year: number, month: number, date: number}} opStartDate [option.startDate] - start date in calendar
+     * @param {{year: number, month: number, date: number}} opEndDate [option.endDate] - end date in calendar
      * @private
      */
-    _setRestrictiveDate: function(opStartDate, opEndDate) {
+    _restrictDate: function(opStartDate, opEndDate) {
         var startDate = opStartDate || {year: CONSTANTS.minYear, month: 1, date: 1},
             endDate = opEndDate || {year: CONSTANTS.maxYear, month: 12, date: 31};
 
@@ -264,8 +300,8 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
     },
 
     /**
-     * opener list를 저장한다.
-     * @param {Array} opOpeners [option.openers] opener 엘리먼트 리스트
+     * Store opener element list
+     * @param {Array} opOpeners [option.openers] - opener element list
      * @private
      */
     _setOpeners: function(opOpeners) {
@@ -276,8 +312,8 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
     },
 
     /**
-     * 타임 피커 포함시 초기화 메서드
-     * @param {ne.component.TimePicker} [opTimePicker] 타임피커 인스턴스
+     * Set TimePicker instance
+     * @param {ne.component.TimePicker} [opTimePicker] - TimePicker instance
      * @private
      */
     _setTimePicker: function(opTimePicker) {
@@ -290,7 +326,7 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
     },
 
     /**
-     *
+     * Bind custom event with TimePicker
      * @private
      */
     _bindCustomEventWithTimePicker: function() {
@@ -306,9 +342,9 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
     },
 
     /**
-     * 해당 년도가 유효한지 판단한다.
-     * @param {number} year 년도
-     * @returns {boolean} 유효 여부
+     * Check validation of a year
+     * @param {number} year - year
+     * @returns {boolean} - whether the year is valid or not
      * @private
      */
     _isValidYear: function(year) {
@@ -316,9 +352,9 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
     },
 
     /**
-     * 해당 월이 유효한지 판단한다.
-     * @param {number} month 월
-     * @returns {boolean} 유효 여부
+     * Check validation of a month
+     * @param {number} month - month
+     * @returns {boolean} - whether the month is valid or not
      * @private
      */
     _isValidMonth: function(month) {
@@ -326,9 +362,9 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
     },
 
     /**
-     * 해당 날짜가 유효한 날짜인지 판단한다.
-     * @param {Object} datehash 날짜 값 객체
-     * @returns {boolean} 유효한 날짜 여부
+     * Check validation of values in a date object having year, month, day-in-month
+     * @param {{year: number, month: number, date: number}} datehash - date object
+     * @returns {boolean} - whether the date object is valid or not
      * @private
      */
     _isValidDate: function(datehash) {
@@ -353,9 +389,9 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
     },
 
     /**
-     * 해당 엘리먼트가 opener 인지 확인한다.
+     * Check an element is an opener.
      * @param {HTMLElement} target element
-     * @returns {boolean} opener true/false
+     * @returns {boolean} - opener true/false
      * @private
      */
     _isOpener: function(target) {
@@ -371,7 +407,7 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
     },
 
     /**
-     * 캘린더의 포지션을 설정한다.
+     * Set style-position of calendar
      * @private
      */
     _arrangeLayer: function() {
@@ -389,9 +425,9 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
     },
 
     /**
-     * 앨리먼트의 BoundingClientRect를 구한다.
-     * @param {HTMLElement|jQuery} [element] 엘리먼트
-     * @returns {Object} 경계 값들 - left, top, bottom, right
+     * Get boundingClientRect of an element
+     * @param {HTMLElement|jQuery} [element] - element
+     * @returns {Object} - an object having left, top, bottom, right of element
      * @private
      */
     _getBoundingClientRect: function(element) {
@@ -410,8 +446,8 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
     },
 
     /**
-     * 문자열로부터 날짜 정보를 추출하여 저장한다.
-     * @param {string} str 문자열
+     * Set date from string
+     * @param {string} str - date string
      * @private
      */
     _setDateFromString: function(str) {
@@ -428,8 +464,8 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
     },
 
     /**
-     * 날짜 해쉬를 받아 양식에 맞춘 값을 생성해 돌려준다.
-     * @return {string} - 폼에 맞춘 날짜 스트링
+     * Return formed date-string from date object
+     * @return {string} - formed date-string
      * @private
      */
     _formed: function() {
@@ -460,9 +496,10 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
     },
 
     /**
-     * 입력 텍스트로부터 지정한 날짜 형식과 비교하여 날짜 데이터 객체를 만들고 그 결과를 반환한다.
-     * @param {String} str 입력 텍스트
-     * @returns {Object|boolean} false 또는 추출한 날짜 데이터 객체
+     * Extract date-object from input string with comparing date-format<br>
+     * If can not extract, return false
+     * @param {String} str - input string(text)
+     * @returns {{year: number, month: number, date: number}|false} - extracted date object or false
      * @private
      */
     _extractDate: function(str) {
@@ -487,9 +524,9 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
     },
 
     /**
-     * 선택 불가능한 날짜인지 확인한다.
-     * @param {Object} datehash 날짜 데이터 객체
-     * @returns {boolean} 제한 여부
+     * Check a date-object is restricted or not
+     * @param {{year: number, month: number, date: number}} datehash - date object
+     * @returns {boolean} - whether the date-object is restricted or not
      * @private
      */
     _isRestricted: function(datehash) {
@@ -501,36 +538,36 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
     },
 
     /**
-     * 해당 날짜가 선택가능한 날짜이면 엘리먼트에 selectable class를 더한다.
-     * @param {jQuery|HTMLElement} $element 엘리먼트
-     * @param {{year: number, month: number, date: number}} dateHash 날짜 해시
+     * Set selectable-class-name to selectable date element.
+     * @param {HTMLElement|jQuery} element - date element
+     * @param {{year: number, month: number, date: number}} dateHash - date object
      * @private
      */
-    _setSelectableClassName: function($element, dateHash) {
+    _setSelectableClassName: function(element, dateHash) {
         if (!this._isRestricted(dateHash)) {
-            $($element).addClass(this._selectableClassName);
+            $(element).addClass(this._selectableClassName);
         }
     },
 
     /**
-     * 해당 날짜가 선택된 날짜이면 엘리먼트에 selected class를 더한다.
-     * @param {jQuery|HTMLElement} $element 엘리먼트
-     * @param {{year: number, month: number, date: number}} dateHash 날짜 해시
+     * Set selected-class-name to selected date element
+     * @param {HTMLElement|jQuery} element - date element
+     * @param {{year: number, month: number, date: number}} dateHash - date object
      * @private
      */
-    _setSelectedClassName: function($element, dateHash) {
+    _setSelectedClassName: function(element, dateHash) {
         var year = this._date.year,
             month = this._date.month,
             date = this._date.date,
             isSelected = (year === dateHash.year) && (month === dateHash.month) && (date === dateHash.date);
 
         if (isSelected) {
-            $($element).addClass(this._selectedClassName);
+            $(element).addClass(this._selectedClassName);
         }
     },
 
     /**
-     * 현재 데이트피커의 string값을 input element에 나타낸다.
+     * Set value a date-string of current this instance to input element
      * @private
      */
     _setValueToInputElement: function() {
@@ -544,7 +581,7 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
     },
 
     /**
-     * 현재 데이트 피커의 날짜 형식에 따라 RegExp 객체를 새로 만든다.
+     * Set(or make) RegExp instance from the date-format of this instance.
      * @private
      */
     _setRegExp: function() {
@@ -563,28 +600,28 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
     },
 
     /**
-     * 이벤트 핸들러들을 this로 컨텍스트를 바인딩시킨 이후 저장한다.
+     * Set event handlers to bind context and then store.
      * @private
      */
     _setProxyHandlers: function() {
         var proxies = this._proxyHandlers;
 
-        // 일반 엘리먼트의 이벤트 핸들러
+        // Event handlers for element
         proxies.onMousedownDocument = util.bind(this._onMousedownDocument, this);
         proxies.onKeydownElement = util.bind(this._onKeydownElement, this);
         proxies.onClickCalendar = util.bind(this._onClickCalendar, this);
         proxies.onClickOpener = util.bind(this._onClickOpener, this);
 
-        // 캘린더의 커스텀 이벤트 핸들러
+        // Event handlers for custom event of calendar
         proxies.onBeforeDrawCalendar = util.bind(this._onBeforeDrawCalendar, this);
         proxies.onDrawCalendar = util.bind(this._onDrawCalendar, this);
         proxies.onAfterDrawCalendar = util.bind(this._onAfterDrawCalendar, this);
     },
 
     /**
-     * document의 mousedown 이벤트 핸들러
-     * - 레이어 영역 밖을 클릭했을 때 레이어를 닫는다.
-     * @param {Event} event 이벤트객체
+     * Event handler for mousedown of document<br>
+     * - When click the out of layer, close the layer
+     * @param {Event} event - event object
      * @private
      */
     _onMousedownDocument: function(event) {
@@ -596,8 +633,8 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
     },
 
     /**
-     * 인풋 상자에서 엔터를 쳤을 경우 이벤트 처리
-     * @param {Event} [event] 이벤트 객체
+     * Event handler for enter-key down of input element
+     * @param {Event} [event] - event object
      * @private
      */
     _onKeydownElement: function(event) {
@@ -608,13 +645,13 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
     },
 
     /**
-     * 클릭시 발생한 이벤트.
-     * 이벤트 타겟의 값으로 날짜를 업데이트한다.
-     * @param {Event} e 이벤트 객체
+     * Event handler for click of calendar<br>
+     * - Update date form event-target
+     * @param {Event} event - event object
      * @private
      */
-    _onClickCalendar: function(e) {
-        var target = e.target,
+    _onClickCalendar: function(event) {
+        var target = event.target,
             className = target.className,
             value = Number((target.innerText || target.textContent || target.nodeValue)),
             shownDate,
@@ -638,7 +675,7 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
     },
 
     /**
-     * opener 엘리먼트의 클릭 이벤트 핸들러
+     * Event handler for click of opener-element
      * @private
      */
     _onClickOpener: function() {
@@ -646,8 +683,7 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
     },
 
     /**
-     * 캘린더를 그리기전,
-     * 캘린더의 'beforeDraw' 커스텀 이벤트 핸들러
+     * Event handler for 'beforeDraw'-custom event of calendar
      * @private
      * @see {ne.component.Calendar.draw}
      */
@@ -656,9 +692,8 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
     },
 
     /**
-     * 캘린더를 그리는동안,
-     * 캘린더의 'draw' 커스텀 이벤트 핸들러
-     * @param {Object} eventData 이벤트 데이터
+     * Event handler for 'draw'-custom event of calendar
+     * @param {Object} eventData - custom event data
      * @private
      * @see {ne.component.Calendar.draw}
      */
@@ -673,8 +708,7 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
     },
 
     /**
-     * 캘린더를 다 그린 이후,
-     * 캘린더의 'afterDraw' 커스텀 이벤트 핸들러
+     * Event handler for 'afterDraw'-custom event of calendar
      * @private
      * @see {ne.component.Calendar.draw}
      */
@@ -683,8 +717,8 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
     },
 
     /**
-     * 엘리먼트 클릭시 이벤트 바인딩
-     * @param {Array} opOpeners [option.openers] opener 엘리먼트 리스트
+     * Bind opener-elements event
+     * @param {Array} opOpeners [option.openers] - list of opener elements
      * @private
      */
     _bindOpenerEvent: function(opOpeners) {
@@ -693,7 +727,7 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
     },
 
     /**
-     * document의 mousedown 이벤트 핸들러를 등록한다.
+     * Bind mousedown event of documnet
      * @private
      */
     _bindOnMousedownDocumnet: function() {
@@ -701,7 +735,7 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
     },
 
     /**
-     * document의 mousedown 이벤트 핸들러를 해제한다.
+     * Unbind mousedown event of documnet
      * @private
      */
     _unbindOnMousedownDocument: function() {
@@ -709,7 +743,7 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
     },
 
     /**
-     * 달력에 이벤트를 붙인다.
+     * Bind click event of calendar
      * @private
      */
     _bindOnClickCalendar: function() {
@@ -718,7 +752,7 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
     },
 
     /**
-     * 달력 이벤트를 제거한다
+     * Unbind click event of calendar
      * @private
      */
     _unbindOnClickCalendar: function() {
@@ -727,7 +761,7 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
     },
 
     /**
-     * 달력이 갱신될때 이벤트를 건다.
+     * Bind custom event of calendar
      * @private
      */
     _bindCalendarCustomEvent: function() {
@@ -744,7 +778,7 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
     },
 
    /**
-    * 달력이 닫힐때 커스텀이벤트 제거
+    * Unbind custom event of calendar
     * @private
     */
     _unbindCalendarCustomEvent: function() {
@@ -762,9 +796,9 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
 
 
     /**
-     * calendar element의 left, top값 지정
-     * @param {number} x left값
-     * @param {number} y top값
+     * Set position-left, top of calendar
+     * @param {number} x - position-left
+     * @param {number} y - position-top
      * @since 1.1.1
      */
     setXY: function(x, y) {
@@ -776,8 +810,8 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
     },
 
     /**
-     * calendar element의 z-index 값 지정
-     * @param {number} zIndex z-index 값
+     * Set z-index of calendar
+     * @param {number} zIndex - z-index value
      * @since 1.1.1
      */
     setZIndex: function(zIndex) {
@@ -791,7 +825,7 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
 
     /**
      * add opener
-     * @param {HTMLElement|jQuery} opener element
+     * @param {HTMLElement|jQuery} opener - element
      */
     addOpener: function(opener) {
         if (inArray(opener, this._openers) < 0) {
@@ -802,7 +836,7 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
 
     /**
      * remove opener
-     * @param {HTMLElement} opener element
+     * @param {HTMLElement} opener - element
      */
     removeOpener: function(opener) {
         var index = inArray(opener, this._openers);
@@ -814,7 +848,7 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
     },
 
     /**
-     * 달력의 위치를 조정하고, 달력을 펼친다.
+     * Open calendar with arranging position
      */
     open: function() {
         if (this.isOpened()) {
@@ -829,8 +863,7 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
     },
 
     /**
-     * 달력에 걸린 이벤트를 해지하고
-     * 달력 레이어를 닫는다.
+     * Close calendar with unbinding some events
      */
     close: function() {
         if (!this.isOpened()) {
@@ -843,42 +876,42 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
     },
 
     /**
-     * 현재 날짜 해시 객체를 반환한다.
-     * @returns {Object} 날짜 데이터 객체
+     * Get date-object of current DatePicker instance.
+     * @returns {Object} - date-object having year, month and day-in-month
      */
     getDateObject: function() {
         return util.extend({}, this._date);
     },
 
     /**
-     * 년도를 반환한다.
-     * @returns {number} 년도
+     * Return year
+     * @returns {number} - year
      */
     getYear: function() {
         return this._date.year;
     },
 
     /**
-     * 월을 반환한다.
-     * @returns {number} 월
+     * Return month
+     * @returns {number} - month
      */
     getMonth: function() {
         return this._date.month;
     },
 
     /**
-     * 일을 반환한다.
-     * @returns {number} 일
+     * Return day-in-month
+     * @returns {number} - day-in-month
      */
     getDayInMonth: function() {
         return this._date.date;
     },
 
     /**
-     * 날짜값을 셋팅하고 'update' 커스텀 이벤트를 발생시킨다.
-     * @param {string|number} [year] 연도
-     * @param {string|number} [month] 월
-     * @param {string|number} [date] 날짜
+     * Set date from values(year, month, date) and then fire 'update' custom event
+     * @param {string|number} [year] - year
+     * @param {string|number} [month] - month
+     * @param {string|number} [date] - day in month
      */
     setDate: function(year, month, date) {
         var dateObj = this._date,
@@ -898,8 +931,8 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
     },
 
     /**
-     * 날짜 폼을 변경한다.
-     * @param {String} [form] - 날짜 형식
+     * Set or update date-form
+     * @param {String} [form] - date-format
      * @example
      *  datepicker.setDateForm('yyyy-mm-dd');
      *  datepicker.setDateForm('mm-dd, yyyy');
@@ -913,16 +946,16 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
     },
 
     /**
-     * 현재 데이트피커가 열려있는지 여부를 반환한다.
-     * @returns {boolean} 현재 열려있는지 여부 true / false
+     * Return whether the calendar is opened or not
+     * @returns {boolean} - true if opened, false otherwise
      */
     isOpened: function() {
         return this._$wrapperElement.css('display') === 'block';
     },
 
     /**
-     * TimePicker 엘리먼트를 반환한다.
-     * @returns {TimePicker} 타임 피커 객체
+     * Return TimePicker instance
+     * @returns {TimePicker} - TimePicker instance
      */
     getTimePicker: function() {
         return this._timePicker;

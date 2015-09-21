@@ -7,7 +7,7 @@
     <title>데이트피커1</title>
 </head>
 <body style="height:350px;">
-날짜 선택시 캘린더 창 닫힘 :
+Close calendar when select a date :
 <span><input id="picker" type="text" size="25"/></span>
 <button type="button" id="opener">open</button>
 
@@ -49,7 +49,7 @@
 <script type="text/javascript" src="lib/jquery.min.js"></script>
 <script type="text/javascript" src="lib/code-snippet.min.js"></script>
 <script type="text/javascript" src="lib/calendar.min.js"></script>
-<script type="text/javascript" src="js/date-picker.min.js"></script>
+<script type="text/javascript" src="js/datePicker.min.js"></script>
 
 <script>
     var calendar = new ne.component.Calendar({
@@ -74,7 +74,7 @@
         timePicker: timePicker
     }, calendar);
 
-    /** 클릭 시 캘린더 닫히도록 설정 */
+    /** Close calendar when select a date */
     $('#layer').on('click', function(event) {
         var $el = $(event.target);
 

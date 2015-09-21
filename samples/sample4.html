@@ -30,17 +30,16 @@
     <script type="text/javascript" src="lib/jquery.min.js"></script>
     <script type="text/javascript" src="lib/code-snippet.min.js"></script>
     <script type="text/javascript" src="lib/calendar.min.js"></script>
-    <script type="text/javascript" src="js/date-picker.min.js"></script>
+    <script type="text/javascript" src="js/datePicker.min.js"></script>
     <script>
 
         var optionInput = document.getElementById('timepicker-option');
 
         /**
-         * Default
-         * 기본 시간값은 '00:00' 입니다. 또한 24시간 표현입니다.
-         * timepicker element의 클래스는 'timepicker'입니다.
-         * up/down button elements의 클래스는 'timepicker-btn'입니다.
-         * 포지션은 지정하지 않은 경우 자동으로 인풋박스 왼쪽 하단으로 설정됩니다.
+         * Default time string is '00:00' with 24hours-expression.
+         * CSS-Class of timepicker element is 'timepicker'.
+         * CSS-Class of up/down button elements is 'timepicker-btn'.
+         * If don't set position, it will be set lower end of left from input-box.
          */
         var timepicker1 = new ne.component.TimePicker({
             inputElement: '#timepicker-default'
@@ -48,10 +47,10 @@
 
         /**
          * Option
-         * 초기 시각 기본값은 12시 입니다. (defaultHour)
-         * 초기 분 기본값은 34분 입니다. (defaultMinute)
-         * AM/PM 설정이 되어있습니다. - 12시간 형식으로 표현합니다. (showMeridian)
-         * position left(x)와 top(y)은 위와같이 직접 설정하였습니다. (position)
+         * Default hour is 12. (defaultHour)
+         * Default minute is 34. (defaultMinute)
+         * Set meridian option for AM/PM expression. (showMeridian)
+         * Set position (x,y). (position)
          */
         var timepicker2 = new ne.component.TimePicker({
             inputElement: '#timepicker-option',

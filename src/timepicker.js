@@ -1,9 +1,8 @@
 /**
  * Created by nhnent on 15. 4. 30..
  * @fileoverview TimePicker Component
- * @author NHN ENTERTAINMENT - FE 개발팀
- * @author 이민규(minkyu.yi@nhnent.com)
- * @dependency jquery.1.8.3.js, code-snippet.js, spinbox.js
+ * @author NHN ent FE dev <dl_javascript@nhnent.com> <minkyu.yi@nhnent.com>
+ * @dependency jquery-1.8.3, code-snippet-1.0.2, spinbox.js
  */
 
 'use strict';

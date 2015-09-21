@@ -10,8 +10,7 @@ var connect = require('gulp-connect');
 var header = require('gulp-header');
 var footer = require('gulp-footer');
 var jsinspect = require('gulp-jsinspect');
-
-var clean = require('gulp-clean');
+var del = require('del');
 var run = require('gulp-run');
 var runSequence = require('run-sequence');
 
@@ -39,8 +38,7 @@ var libRoot = 'bower_components/',
     };
 
 gulp.task('clean', function() {
-    return gulp.src(paths.clean, {read:false})
-        .pipe(clean());
+    return del(paths.clean);
 });
 
 gulp.task('copyLib', function() {

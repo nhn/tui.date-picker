@@ -19,7 +19,7 @@ describe('Date Picker', function() {
         layer2 = $('#layer2');
         layer3 = $('#layer3');
 
-        calendar1 = new ne.component.Calendar({
+        calendar1 = new tui.component.Calendar({
             element: layer1,
             year: 1983,
             month: 5,
@@ -31,7 +31,7 @@ describe('Date Picker', function() {
             dayTitles: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
         });
 
-        calendar2 = new ne.component.Calendar({
+        calendar2 = new tui.component.Calendar({
             element: layer2,
             year: 1983,
             month: 5,
@@ -43,7 +43,7 @@ describe('Date Picker', function() {
             dayTitles: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
         });
 
-        calendar3 = new ne.component.Calendar({
+        calendar3 = new tui.component.Calendar({
             element: layer3,
             year: 1983,
             month: 5,
@@ -55,7 +55,7 @@ describe('Date Picker', function() {
             dayTitles: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
         });
 
-        datepicker1 = new ne.component.DatePicker({
+        datepicker1 = new tui.component.DatePicker({
             date: {
                 year: 2014,
                 month: 11,
@@ -67,7 +67,7 @@ describe('Date Picker', function() {
             ]
         }, calendar1);
 
-        datepicker2 = new ne.component.DatePicker({
+        datepicker2 = new tui.component.DatePicker({
             element: document.getElementById('datePick2'),
             dateForm: 'yy년 mm월 dd일, ',
             date: {
@@ -86,12 +86,12 @@ describe('Date Picker', function() {
                 date: 11
             },
             selectableClass: 'mySelectable',
-            timePicker: new ne.component.TimePicker({
+            timePicker: new tui.component.TimePicker({
                 showMeridian: true
             })
         }, calendar2);
 
-        datepicker3 = new ne.component.DatePicker({
+        datepicker3 = new tui.component.DatePicker({
             element: document.getElementById('datePick3'),
             date: {
             }
@@ -101,11 +101,11 @@ describe('Date Picker', function() {
     describe('namespace', function() {
         it('check component', function() {
             expect(window.ne).toBeDefined();
-            expect(window.ne.component).toBeDefined();
-            expect(window.ne.component.Calendar).toBeDefined();
-            expect(window.ne.component.Spinbox).toBeDefined();
-            expect(window.ne.component.TimePicker).toBeDefined();
-            expect(window.ne.component.DatePicker).toBeDefined();
+            expect(window.tui.component).toBeDefined();
+            expect(window.tui.component.Calendar).toBeDefined();
+            expect(window.tui.component.Spinbox).toBeDefined();
+            expect(window.tui.component.TimePicker).toBeDefined();
+            expect(window.tui.component.DatePicker).toBeDefined();
         });
     });
 
@@ -194,7 +194,7 @@ describe('Date Picker', function() {
             expect(tp).toBeNull();
 
             tp = datepicker2.getTimePicker();
-            expect(tp).toEqual(jasmine.any(ne.component.TimePicker));
+            expect(tp).toEqual(jasmine.any(tui.component.TimePicker));
         });
 
         it('set date', function() {
@@ -344,7 +344,7 @@ describe('Date Picker', function() {
             $(btn).mousedown();
             $(btn).click();
 
-            expect(ne.util.inArray(btn, datepicker1._openers)).not.toEqual(-1);
+            expect(tui.util.inArray(btn, datepicker1._openers)).not.toEqual(-1);
             expect(datepicker1.isOpened()).toEqual(true);
             expect(datepicker1.close).not.toHaveBeenCalled();
         });
@@ -359,7 +359,7 @@ describe('Date Picker', function() {
             datepicker1.removeOpener(btn);
             $(btn).click();
 
-            expect(ne.util.inArray(btn, datepicker1._openers)).toEqual(-1);
+            expect(tui.util.inArray(btn, datepicker1._openers)).toEqual(-1);
             expect(datepicker1.open).not.toHaveBeenCalled();
         });
     });

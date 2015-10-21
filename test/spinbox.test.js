@@ -9,7 +9,7 @@ describe('Spinbox', function() {
 
     jasmine.getFixtures().fixturesPath = 'base/test/fixtures';
 
-    var Spinbox = ne.component.Spinbox,
+    var Spinbox = tui.component.Spinbox,
         spinbox,
         spinboxWithOption;
 

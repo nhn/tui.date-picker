@@ -7,8 +7,8 @@
 
 'use strict';
 
-var calendarUtil = ne.component.Calendar.Util,
-    util = ne.util,
+var calendarUtil = tui.component.Calendar.Util,
+    util = tui.util,
     inArray = util.inArray,
     formatRegExp = /yyyy|yy|mm|m|dd|d/gi,
     mapForConverting = {
@@ -33,7 +33,7 @@ var calendarUtil = ne.component.Calendar.Util,
 /**
  * Create DatePicker<br>
  * You can get a date from 'getYear', 'getMonth', 'getDayInMonth', 'getDateObject'
- * @namespace ne.component.DatePicker
+ * @namespace tui.component.DatePicker
  * @constructor
  * @param {Object} option - options for DatePicker
  *      @param {HTMLElement|string} option.element - input element(or selector) of DatePicker
@@ -58,22 +58,22 @@ var calendarUtil = ne.component.Calendar.Util,
  *          @param {number} [option.pos.top] - position top of calendar
  *          @param {number} [option.pos.zIndex] - z-index of calendar
  *      @param {Object} [option.openers = [element]] - opener button list (example - icon, button, etc.)
- *      @param {ne.component.TimePicker} [option.timePicker] - TimePicker instance
- * @param {ne.component.Calendar} calendar - Calendar instance
+ *      @param {tui.component.TimePicker} [option.timePicker] - TimePicker instance
+ * @param {tui.component.Calendar} calendar - Calendar instance
  * @example
- *   var calendar = new ne.component.Calendar({
+ *   var calendar = new tui.component.Calendar({
  *       element: '#layer',
  *       titleFormat: 'yyyy년 m월',
  *       todayFormat: 'yyyy년 mm월 dd일 (D)'
  *   });
  *
- *   var timePicker = new ne.component.TimePicker({
+ *   var timePicker = new tui.component.TimePicker({
  *       showMeridian: true,
  *       defaultHour: 13,
  *       defaultMinute: 24
  *   });
  *
- *   var picker1 = new ne.component.DatePicker({
+ *   var picker1 = new tui.component.DatePicker({
  *       element: '#picker',
  *       dateForm: 'yyyy년 mm월 dd일 - ',
  *       date: {year: 2015, month: 1, date: 1 },
@@ -92,7 +92,7 @@ var calendarUtil = ne.component.Calendar.Util,
  *       }
  *   });
  */
-ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker.prototype */{
+tui.component.DatePicker = tui.util.defineClass(/** @lends tui.component.DatePicker.prototype */{
     init: function(option, calendar) {
         /**
          * Calendar instance
@@ -133,7 +133,7 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
          * Array saving a order of format
          * @type {Array}
          * @private
-         * @see {ne.component.DatePicker.prototype.setDateForm}
+         * @see {tui.component.DatePicker.prototype.setDateForm}
          * @example
          *  // If the format is a 'mm-dd, yyyy'
          *  // `this._formOrder` is ['month', 'date', 'year']
@@ -313,7 +313,7 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
 
     /**
      * Set TimePicker instance
-     * @param {ne.component.TimePicker} [opTimePicker] - TimePicker instance
+     * @param {tui.component.TimePicker} [opTimePicker] - TimePicker instance
      * @private
      */
     _setTimePicker: function(opTimePicker) {
@@ -685,7 +685,7 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
     /**
      * Event handler for 'beforeDraw'-custom event of calendar
      * @private
-     * @see {ne.component.Calendar.draw}
+     * @see {tui.component.Calendar.draw}
      */
     _onBeforeDrawCalendar: function() {
         this._unbindOnClickCalendar();
@@ -695,7 +695,7 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
      * Event handler for 'draw'-custom event of calendar
      * @param {Object} eventData - custom event data
      * @private
-     * @see {ne.component.Calendar.draw}
+     * @see {tui.component.Calendar.draw}
      */
     _onDrawCalendar: function(eventData) {
         var dateHash = {
@@ -710,7 +710,7 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
     /**
      * Event handler for 'afterDraw'-custom event of calendar
      * @private
-     * @see {ne.component.Calendar.draw}
+     * @see {tui.component.Calendar.draw}
      */
     _onAfterDrawCalendar: function() {
         this._bindOnClickCalendar();
@@ -962,5 +962,5 @@ ne.component.DatePicker = ne.util.defineClass(/** @lends ne.component.DatePicker
     }
 });
 
-util.CustomEvents.mixin(ne.component.DatePicker);
+util.CustomEvents.mixin(tui.component.DatePicker);
 

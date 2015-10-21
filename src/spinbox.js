@@ -7,13 +7,13 @@
 
 'use strict';
 
-var util = ne.util,
+var util = tui.util,
     inArray = util.inArray;
 
-util.defineNamespace('ne.component');
+util.defineNamespace('tui.component');
 
 /**
- * @namespace ne.component.Spinbox
+ * @namespace tui.component.Spinbox
  * @constructor
  *
  * @param {String|HTMLElement} container - container of spinbox
@@ -27,7 +27,7 @@ util.defineNamespace('ne.component');
  * @param {string} [option.downBtnTag = button HTML] - down button html string
  * @param {Array}  [option.exclusion = []] - value to be excluded. if this is [1,3], 0 -> 2 -> 4 -> 5 ->....
  */
-ne.component.Spinbox = util.defineClass(/** @lends ne.component.Spinbox.prototype */ {
+tui.component.Spinbox = util.defineClass(/** @lends tui.component.Spinbox.prototype */ {
     init: function(container, option) {
         /**
          * @type {jQuery}

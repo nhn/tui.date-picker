@@ -7,8 +7,8 @@
 
 'use strict';
 
-var util = ne.util,
-    Spinbox = ne.component.Spinbox,
+var util = tui.util,
+    Spinbox = tui.component.Spinbox,
     timeRegExp = /\s*(\d{1,2})\s*:\s*(\d{1,2})\s*([ap][m])?(?:[\s\S]*)/i,
     timePickerTag = '<table class="timepicker"><tr class="timepicker-row"></tr></table>',
     columnTag = '<td class="timepicker-column"></td>',
@@ -16,10 +16,10 @@ var util = ne.util,
     upBtnTag = '<button type="button" class="timepicker-btn timepicker-btn-up"><b>+</b></button>',
     downBtnTag = '<button type="button" class="timepicker-btn timepicker-btn-down"><b>-</b></button>';
 
-util.defineNamespace('ne.component');
+util.defineNamespace('tui.component');
 
 /**
- * @namespace ne.component.TimePicker
+ * @namespace tui.component.TimePicker
  * @constructor
  *
  * @param {Object} [option] - option for initialization
@@ -34,7 +34,7 @@ util.defineNamespace('ne.component');
  * @param {boolean} [option.showMeridian = false] - is time expression-"hh:mm AM/PM"?
  * @param {Object} [option.position = {}] - left, top position of timepicker element
  */
-ne.component.TimePicker = util.defineClass(/** @lends ne.component.TimePicker.prototype */ {
+tui.component.TimePicker = util.defineClass(/** @lends tui.component.TimePicker.prototype */ {
     init: function(option) {
         /**
          * @type {jQuery}
@@ -567,6 +567,6 @@ ne.component.TimePicker = util.defineClass(/** @lends ne.component.TimePicker.pr
         return this._formToTimeFormat();
     }
 });
-ne.util.CustomEvents.mixin(ne.component.TimePicker);
+tui.util.CustomEvents.mixin(tui.component.TimePicker);
 
 

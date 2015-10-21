@@ -4,7 +4,7 @@
 describe('Timepicker', function() {
 
     jasmine.getFixtures().fixturesPath = 'base/test/fixtures';
-    var TimePicker = ne.component.TimePicker;
+    var TimePicker = tui.component.TimePicker;
 
     var timepicker1,
         timepicker2;

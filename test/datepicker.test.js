@@ -1,4 +1,5 @@
 'use strict';
+var DatePicker = require('../src/datePicker');
 describe('Date Picker', function() {
     var layer1,
         layer2,

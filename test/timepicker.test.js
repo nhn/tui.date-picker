@@ -1,6 +1,7 @@
 /**
  * Created by nhnent on 15. 4. 28..
  */
+var TimePicker = require('../src/timepicker');
 describe('Timepicker', function() {
 
     jasmine.getFixtures().fixturesPath = 'base/test/fixtures';

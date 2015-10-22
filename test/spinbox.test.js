@@ -1,7 +1,7 @@
 /**
  * Created by nhnent on 15. 4. 28..
  */
-
+var Spinbox = require('../src/spinbox');
 /**
  * @todo refactoring
  */

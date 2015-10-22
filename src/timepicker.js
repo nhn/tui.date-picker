@@ -8,7 +8,7 @@
 'use strict';
 
 var util = tui.util,
-    Spinbox = tui.component.Spinbox,
+    Spinbox = require('./spinbox'),
     timeRegExp = /\s*(\d{1,2})\s*:\s*(\d{1,2})\s*([ap][m])?(?:[\s\S]*)/i,
     timePickerTag = '<table class="timepicker"><tr class="timepicker-row"></tr></table>',
     columnTag = '<td class="timepicker-column"></td>',
@@ -16,10 +16,7 @@ var util = tui.util,
     upBtnTag = '<button type="button" class="timepicker-btn timepicker-btn-up"><b>+</b></button>',
     downBtnTag = '<button type="button" class="timepicker-btn timepicker-btn-down"><b>-</b></button>';
 
-util.defineNamespace('tui.component');
-
 /**
- * @namespace tui.component.TimePicker
  * @constructor
  *
  * @param {Object} [option] - option for initialization
@@ -34,7 +31,7 @@ util.defineNamespace('tui.component');
  * @param {boolean} [option.showMeridian = false] - is time expression-"hh:mm AM/PM"?
  * @param {Object} [option.position = {}] - left, top position of timepicker element
  */
-tui.component.TimePicker = util.defineClass(/** @lends tui.component.TimePicker.prototype */ {
+var TimePicker = util.defineClass(/** @lends TimePicker.prototype */ {
     init: function(option) {
         /**
          * @type {jQuery}
@@ -567,6 +564,7 @@ tui.component.TimePicker = util.defineClass(/** @lends tui.component.TimePicker.
         return this._formToTimeFormat();
     }
 });
-tui.util.CustomEvents.mixin(tui.component.TimePicker);
+tui.util.CustomEvents.mixin(TimePicker);
 
+module.exports = TimePicker;
 

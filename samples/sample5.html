@@ -25,12 +25,12 @@
     <script type="text/javascript" src="lib/jquery.min.js"></script>
     <script type="text/javascript" src="lib/code-snippet.min.js"></script>
     <script type="text/javascript" src="lib/calendar.min.js"></script>
-    <script type="text/javascript" src="js/datePicker.min.js"></script>
+    <script type="text/javascript" src="js/date-picker.min.js"></script>
     <script>
         /**
          * Default
          */
-        var spinboxDefault = new ne.component.Spinbox('#spinbox-default');
+        var spinboxDefault = new tui.component.Spinbox('#spinbox-default');
 
         /**
          * Option
@@ -42,7 +42,7 @@
          * Exclude values 16, 18. (exclusion, ex] 14 -> 20)
          * Up/down button tag. (upBtnTag, downBtnTag)
          */
-        var spinboxWithOption = new ne.component.Spinbox('#spinbox-with-option', {
+        var spinboxWithOption = new tui.component.Spinbox('#spinbox-with-option', {
                 defaultValue: 10,
                 step: 2,
                 min: 0,

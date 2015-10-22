@@ -7,8 +7,9 @@
 
 'use strict';
 
-var calendarUtil = tui.component.Calendar.Util,
-    util = tui.util,
+var utils = require('./utils');
+
+var util = tui.util,
     inArray = util.inArray,
     formatRegExp = /yyyy|yy|mm|m|dd|d/gi,
     mapForConverting = {
@@ -33,7 +34,6 @@ var calendarUtil = tui.component.Calendar.Util,
 /**
  * Create DatePicker<br>
  * You can get a date from 'getYear', 'getMonth', 'getDayInMonth', 'getDateObject'
- * @namespace tui.component.DatePicker
  * @constructor
  * @param {Object} option - options for DatePicker
  *      @param {HTMLElement|string} option.element - input element(or selector) of DatePicker
@@ -92,7 +92,7 @@ var calendarUtil = tui.component.Calendar.Util,
  *       }
  *   });
  */
-tui.component.DatePicker = tui.util.defineClass(/** @lends tui.component.DatePicker.prototype */{
+var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
     init: function(option, calendar) {
         /**
          * Calendar instance
@@ -261,7 +261,7 @@ tui.component.DatePicker = tui.util.defineClass(/** @lends tui.component.DatePic
      */
     _setDefaultDate: function(opDate) {
         if (!opDate) {
-            this._date = calendarUtil.getDateHashTable();
+            this._date = utils.getDateHashTable();
         } else {
             this._date = {
                 year: util.isNumber(opDate.year) ? opDate.year : CONSTANTS.minYear,
@@ -295,8 +295,8 @@ tui.component.DatePicker = tui.util.defineClass(/** @lends tui.component.DatePic
         var startDate = opStartDate || {year: CONSTANTS.minYear, month: 1, date: 1},
             endDate = opEndDate || {year: CONSTANTS.maxYear, month: 12, date: 31};
 
-        this._startEdge = calendarUtil.getTime(startDate) - 1;
-        this._endEdge = calendarUtil.getTime(endDate) + 1;
+        this._startEdge = utils.getTime(startDate) - 1;
+        this._endEdge = utils.getTime(endDate) + 1;
     },
 
     /**
@@ -532,7 +532,7 @@ tui.component.DatePicker = tui.util.defineClass(/** @lends tui.component.DatePic
     _isRestricted: function(datehash) {
         var start = this._startEdge,
             end = this._endEdge,
-            date = calendarUtil.getTime(datehash);
+            date = utils.getTime(datehash);
 
         return !this._isValidDate(datehash) || (date < start || date > end);
     },
@@ -669,7 +669,7 @@ tui.component.DatePicker = tui.util.defineClass(/** @lends tui.component.DatePic
 
             shownDate = this._calendar.getDate();
             shownDate.date = value;
-            date = calendarUtil.getRelativeDate(0, relativeMonth, 0, shownDate);
+            date = utils.getRelativeDate(0, relativeMonth, 0, shownDate);
             this.setDate(date.year, date.month, date.date);
         }
     },
@@ -962,5 +962,7 @@ tui.component.DatePicker = tui.util.defineClass(/** @lends tui.component.DatePic
     }
 });
 
-util.CustomEvents.mixin(tui.component.DatePicker);
+util.CustomEvents.mixin(DatePicker);
+
+module.exports = DatePicker;
 

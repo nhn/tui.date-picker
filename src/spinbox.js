@@ -10,10 +10,7 @@
 var util = tui.util,
     inArray = util.inArray;
 
-util.defineNamespace('tui.component');
-
 /**
- * @namespace tui.component.Spinbox
  * @constructor
  *
  * @param {String|HTMLElement} container - container of spinbox
@@ -27,7 +24,7 @@ util.defineNamespace('tui.component');
  * @param {string} [option.downBtnTag = button HTML] - down button html string
  * @param {Array}  [option.exclusion = []] - value to be excluded. if this is [1,3], 0 -> 2 -> 4 -> 5 ->....
  */
-tui.component.Spinbox = util.defineClass(/** @lends tui.component.Spinbox.prototype */ {
+var Spinbox = util.defineClass(/** @lends Spinbox.prototype */ {
     init: function(container, option) {
         /**
          * @type {jQuery}
@@ -353,3 +350,5 @@ tui.component.Spinbox = util.defineClass(/** @lends tui.component.Spinbox.protot
         return this._$containerElement[0];
     }
 });
+
+module.exports = Spinbox;

@@ -30,7 +30,7 @@
     <script type="text/javascript" src="lib/jquery.min.js"></script>
     <script type="text/javascript" src="lib/code-snippet.min.js"></script>
     <script type="text/javascript" src="lib/calendar.min.js"></script>
-    <script type="text/javascript" src="js/datePicker.min.js"></script>
+    <script type="text/javascript" src="js/date-picker.min.js"></script>
     <script>
 
         var optionInput = document.getElementById('timepicker-option');
@@ -41,7 +41,7 @@
          * CSS-Class of up/down button elements is 'timepicker-btn'.
          * If don't set position, it will be set lower end of left from input-box.
          */
-        var timepicker1 = new ne.component.TimePicker({
+        var timepicker1 = new tui.component.TimePicker({
             inputElement: '#timepicker-default'
         });
 
@@ -52,7 +52,7 @@
          * Set meridian option for AM/PM expression. (showMeridian)
          * Set position (x,y). (position)
          */
-        var timepicker2 = new ne.component.TimePicker({
+        var timepicker2 = new tui.component.TimePicker({
             inputElement: '#timepicker-option',
             defaultHour: 12,
             defaultMinute: 34,

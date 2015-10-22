@@ -40,6 +40,7 @@ Component - DatePicker<br>It provides calendarUI for pick a date easily
 ## History
 | Version | Description | Date | Developer |
 | ---- | ---- | ---- | ---- |
+| <a href="http://nhnent.github.io/fe.component-date-picker/1.1.1/">1.1.1</a> | Namespace chagned | 2015.10 | NHNent. FE Dev team Minkyu.Yi<br><minkyu.yi@nhnent.com> |
 | <a href="http://nhnent.github.io/fe.component-date-picker/1.1.1/">1.1.1</a> | Date-Time Picker | 2015.06 | NHNent. FE Dev team Minkyu.Yi<br><minkyu.yi@nhnent.com> |
 | <a href="http://nhnent.github.io/fe.component-date-picker/1.1.0/">1.1.0</a> | Date-Time Picker | 2015.05 | NHNent. FE Dev team Minkyu.Yi<br><minkyu.yi@nhnent.com> |
 | 1.0.0 | Separate DatePicker | 2015.05 | NHNent. FE Dev team Jein.Yi<br><jein.yi@nhnent.com> |

@@ -20,28 +20,28 @@
 <script type="text/javascript" src="lib/jquery.min.js"></script>
 <script type="text/javascript" src="lib/code-snippet.min.js"></script>
 <script type="text/javascript" src="lib/calendar.min.js"></script>
-<script type="text/javascript" src="js/datePicker.min.js"></script>
+<script type="text/javascript" src="js/date-picker.min.js"></script>
 
 <script>
-    var calendar1 = new ne.component.Calendar({
+    var calendar1 = new tui.component.Calendar({
         element: '#layer1',
         titleFormat: 'yyyy년 m월',
         todayFormat: 'yyyy년 mm월 dd일 (D)'
     });
 
-    var calendar2 = new ne.component.Calendar({
+    var calendar2 = new tui.component.Calendar({
         element: '#layer2',
         titleFormat: 'yyyy-m',
         todayFormat: 'yyyy-mm-dd (D)'
     });
 
-    var timePicker1 = new ne.component.TimePicker({
+    var timePicker1 = new tui.component.TimePicker({
         showMeridian: true,
         defaultHour: 13,
         defaultMinute: 24
     });
 
-    var picker1 = new ne.component.DatePicker({
+    var picker1 = new tui.component.DatePicker({
         element: '#picker1',
         dateForm: 'yyyy년 mm월 dd일 - ',
         date: {year: 2015, month: 1, date: 1 },
@@ -51,7 +51,7 @@
         timePicker: timePicker1
     }, calendar1);
 
-    var picker2 = new ne.component.DatePicker({
+    var picker2 = new tui.component.DatePicker({
         element: '#picker2',
         timePicker: timePicker1
     }, calendar2);

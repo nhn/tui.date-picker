@@ -12,10 +12,10 @@ Component - DatePicker<br>It provides calendarUI for pick a date easily
     * It provides some options (exclude time, show meridian, etc.)
 
 ## Documentation
-* API : https://nhnent.github.io/tui.component-date-picker/latest
-* Tutorial(Korean) : https://github.com/nhnent/tui.component-date-picker/wiki/date-picker-컴포넌트-적용방법
-* Tutorial(English) : https://github.com/nhnent/tui.component-date-picker/wiki/How-to-use-DatePicker
-* Sample - https://nhnent.github.io/tui.component-date-picker/latest/tutorial-sample1.html
+* API : https://nhnent.github.io/tui.component.date-picker/latest
+* Tutorial(Korean) : https://github.com/nhnent/tui.component.date-picker/wiki/date-picker-컴포넌트-적용방법
+* Tutorial(English) : https://github.com/nhnent/tui.component.date-picker/wiki/How-to-use-DatePicker
+* Sample - https://nhnent.github.io/tui.component.date-picker/latest/tutorial-sample1.html
 
 
 
@@ -35,14 +35,14 @@ Component - DatePicker<br>It provides calendarUI for pick a date easily
 * Bower:
    * Latest : `ne-component-date-picker"`
    * Each version : `ne-component-date-picker[#tag]"`
-* Download: https://github.com/nhnent/tui.component-date-picker
+* Download: https://github.com/nhnent/tui.component.date-picker
 
 ## History
 | Version | Description | Date | Developer |
 | ---- | ---- | ---- | ---- |
-| <a href="http://nhnent.github.io/tui.component-date-picker/1.1.1/">1.1.1</a> | Namespace chagned | 2015.10 | NHNent. FE Dev team Minkyu.Yi<br><minkyu.yi@nhnent.com> |
-| <a href="http://nhnent.github.io/tui.component-date-picker/1.1.1/">1.1.1</a> | Date-Time Picker | 2015.06 | NHNent. FE Dev team Minkyu.Yi<br><minkyu.yi@nhnent.com> |
-| <a href="http://nhnent.github.io/tui.component-date-picker/1.1.0/">1.1.0</a> | Date-Time Picker | 2015.05 | NHNent. FE Dev team Minkyu.Yi<br><minkyu.yi@nhnent.com> |
+| <a href="http://nhnent.github.io/tui.component.date-picker/1.1.1/">1.1.1</a> | Namespace chagned | 2015.10 | NHNent. FE Dev team Minkyu.Yi<br><minkyu.yi@nhnent.com> |
+| <a href="http://nhnent.github.io/tui.component.date-picker/1.1.1/">1.1.1</a> | Date-Time Picker | 2015.06 | NHNent. FE Dev team Minkyu.Yi<br><minkyu.yi@nhnent.com> |
+| <a href="http://nhnent.github.io/tui.component.date-picker/1.1.0/">1.1.0</a> | Date-Time Picker | 2015.05 | NHNent. FE Dev team Minkyu.Yi<br><minkyu.yi@nhnent.com> |
 | 1.0.0 | Separate DatePicker | 2015.05 | NHNent. FE Dev team Jein.Yi<br><jein.yi@nhnent.com> |
 | 0.1.0 | Develop | 2014.11 | NHNent. FE Dev team Jein.Yi<br><jein.yi@nhnent.com> |
 

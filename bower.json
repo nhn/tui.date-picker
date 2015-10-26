@@ -25,8 +25,8 @@
   ],
   "devDependencies": {
     "jquery" : "~1.8.3",
-	"ne-code-snippet" : "~1.0.2",
-	"ne-component-calendar" : "~1.1.0",
+	"tui-code-snippet" : "~1.0.2",
+	"tui-component-calendar" : "~1.1.0",
     "jasmine-jquery": "~2.1.0"
   },
   "resolutions": {

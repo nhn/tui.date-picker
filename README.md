@@ -21,7 +21,7 @@ Component - DatePicker<br>It provides calendarUI for pick a date easily
 
 ## Dependency
 * jquery: ~1.8.3
-* ne-code-snippet: ~1.0.2
+* tui-code-snippet: ~1.0.2
 * tui-component-calendar: ~1.1.0
 
 ## Test environment

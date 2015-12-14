@@ -5,8 +5,6 @@ var TimePicker = require('../src/timepicker');
 describe('Timepicker', function() {
 
     jasmine.getFixtures().fixturesPath = 'base/test/fixtures';
-    var TimePicker = tui.component.TimePicker;
-
     var timepicker1,
         timepicker2;
 

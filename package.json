@@ -50,6 +50,7 @@
     "jasmine-core": "^2.3.0",
     "jsdoc": "git+https://github.com/jsdoc3/jsdoc.git",
     "karma": "^0.12.33",
+    "karma-browserify": "latest",
     "karma-chrome-launcher": "^0.1.8",
     "karma-coverage": "^0.2.6",
     "karma-firefox-launcher": "^0.1.6",
@@ -58,6 +59,7 @@
     "karma-phantomjs-launcher": "^0.1.4",
     "karma-requirejs": "^0.2.2",
     "karma-webdriver-launcher": "git+https://github.com/everedifice/karma-webdriver-launcher.git",
+    "requirejs": "^2.1.22",
     "run-sequence": "^1.1.2",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0"

@@ -1,5 +1,7 @@
 'use strict';
-var DatePicker = require('../src/datePicker');
+var DatePicker = require('../src/datePicker'),
+    TimePicker = require('../src/timePicker');
+
 describe('Date Picker', function() {
     var layer1,
         layer2,
@@ -56,7 +58,7 @@ describe('Date Picker', function() {
             dayTitles: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
         });
 
-        datepicker1 = new tui.component.DatePicker({
+        datepicker1 = new DatePicker({
             date: {
                 year: 2014,
                 month: 11,
@@ -68,7 +70,7 @@ describe('Date Picker', function() {
             ]
         }, calendar1);
 
-        datepicker2 = new tui.component.DatePicker({
+        datepicker2 = new DatePicker({
             element: document.getElementById('datePick2'),
             dateForm: 'yy년 mm월 dd일, ',
             date: {
@@ -87,29 +89,17 @@ describe('Date Picker', function() {
                 date: 11
             },
             selectableClass: 'mySelectable',
-            timePicker: new tui.component.TimePicker({
+            timePicker: new TimePicker({
                 showMeridian: true
             })
         }, calendar2);
 
-        datepicker3 = new tui.component.DatePicker({
+        datepicker3 = new DatePicker({
             element: document.getElementById('datePick3'),
             date: {
             }
         }, calendar3);
     });
-
-    describe('namespace', function() {
-        it('check component', function() {
-            expect(window.ne).toBeDefined();
-            expect(window.tui.component).toBeDefined();
-            expect(window.tui.component.Calendar).toBeDefined();
-            expect(window.tui.component.Spinbox).toBeDefined();
-            expect(window.tui.component.TimePicker).toBeDefined();
-            expect(window.tui.component.DatePicker).toBeDefined();
-        });
-    });
-
 
     describe('생성자', function() {
         it('to be defined', function() {
@@ -195,7 +185,7 @@ describe('Date Picker', function() {
             expect(tp).toBeNull();
 
             tp = datepicker2.getTimePicker();
-            expect(tp).toEqual(jasmine.any(tui.component.TimePicker));
+            expect(tp).toEqual(jasmine.any(TimePicker));
         });
 
         it('set date', function() {

@@ -67,7 +67,8 @@ describe('Date Picker', function() {
             element: document.getElementById('datePick1'),
             openers: [
                 document.getElementById('opener')
-            ]
+            ],
+            showOnlySelectableMonths: true
         }, calendar1);
 
         datepicker2 = new DatePicker({
@@ -96,19 +97,12 @@ describe('Date Picker', function() {
 
         datepicker3 = new DatePicker({
             element: document.getElementById('datePick3'),
-            date: {
-            }
+            date: {}
         }, calendar3);
     });
 
     describe('생성자', function() {
-        it('to be defined', function() {
-            expect(datepicker1).toBeDefined();
-            expect(datepicker2).toBeDefined();
-            expect(datepicker3).toBeDefined();
-        });
-
-        it('opner test', function() {
+        it('opener test', function() {
             var opener = document.getElementById('opener'),
                 openerSpan = document.getElementById('opener-span');
 
@@ -125,11 +119,10 @@ describe('Date Picker', function() {
         });
 
         it('default date', function() {
-            var date = datepicker3.getDateObject(),
-                minYear = 1970;
+            var date = datepicker3.getDateObject();
 
             expect(date).toEqual({
-                year: minYear,
+                year: 1970,
                 month: 1,
                 date: 1
             });
@@ -648,6 +641,35 @@ describe('Date Picker', function() {
 
             value = Number((el.innerText || el.textContent || el.nodeValue));
             expect(value).toEqual(selection.date);
+        });
+    });
+
+    describe('Set start/end date', function() {
+        it('"setStartDate" should set "_startEdge" as a little less time(ms)', function() {
+            datepicker1.setStartDate({
+                year: 2000,
+                month: 1,
+                date: 1
+            });
+
+            expect(datepicker1._startEdge).toEqual(+new Date(2000, 0, 1) - 1);
+        });
+
+        it('"setEndDate" should set "_endEdge" as a little more time(ms)', function() {
+            datepicker1.setEndDate({
+                year: 2000,
+                month: 1,
+                date: 1
+            });
+
+            expect(datepicker1._endEdge).toEqual(+new Date(2000, 0, 1) + 1);
+        });
+    });
+
+    describe('show/hide next-prev year btn', function() {
+        it('tdd-1', function() {
+            datepicker1.open();
+            expect(datepicker1.hideNextMonthButton).toEqual(true);
         });
     });
 });

@@ -349,6 +349,12 @@ var TimePicker = util.defineClass(/** @lends TimePicker.prototype */ {
 
         $(document).on('click', util.bind(this.close, this));
         this.show();
+
+        /**
+         * Open event - TimePicker
+         * @event TimePicker#open
+         * @param {(jQuery.Event|undefined)} - Click the input element
+         */
         this.fire('open', event);
     },
 
@@ -363,6 +369,12 @@ var TimePicker = util.defineClass(/** @lends TimePicker.prototype */ {
 
         $(document).off(event);
         this.hide();
+
+        /**
+         * Hide event - Timepicker
+         * @event TimePicker#close
+         * @param {(jQuery.Event|undefined)} - Click the document (not TimePicker)
+         */
         this.fire('close', event);
     },
 
@@ -437,6 +449,11 @@ var TimePicker = util.defineClass(/** @lends TimePicker.prototype */ {
         if (this._$meridianElement) {
             this._$meridianElement.html(this._getPostfix());
         }
+
+        /**
+         * Change event - TimePicker
+         * @event TimePicker#change
+         */
         this.fire('change');
         return true;
     },

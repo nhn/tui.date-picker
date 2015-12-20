@@ -89,12 +89,43 @@ module.exports = function(config) {
         // enable / disable watching file and executing tests whenever any file changes
         autoWatch: true,
 
-
         // start these browsers
         // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-        browsers: [
-            'PhantomJS'
-        ],
+        //browsers: [
+        //    'PhantomJS'
+        //],
+
+        browserStack: {
+            username: 'minkyuyi1',
+            accessKey: 'Sc1rbx1resor1wvAQusu'
+        },
+
+        customLaunchers: {
+            bs_firefox_mac: {
+                base: 'BrowserStack',
+                browser: 'firefox',
+                browser_version: '21.0',
+                os: 'OS X',
+                os_version: 'Mountain Lion'
+            },
+            bs_iphone5: {
+                base: 'BrowserStack',
+                device: 'iPhone 5',
+                os: 'ios',
+                os_version: '6.0'
+            },
+            bs_ie11_win7: {
+                base: 'BrowserStack',
+                "os_version":"7",
+                "device":null,
+                "browser":"ie",
+                "os":"Windows",
+                "browser_version":"11.0"
+            }
+        },
+
+        browsers: ['bs_ie11_win7', 'bs_firefox_mac', 'bs_iphone5'],
+
 
         // Continuous Integration mode
         // if true, Karma captures browsers, runs the tests and exits

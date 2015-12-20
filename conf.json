@@ -35,6 +35,7 @@
   },
   "opts": {
     "template": "./node_modules/fedoc-template",
+    "name": "Date Picker",
     "encoding": "utf8",
     "recurse": true,
     "destination": "latest",

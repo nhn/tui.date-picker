@@ -148,12 +148,19 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
         this._date = null;
 
         /**
+         * Whether show only selectable months or not.
+         * @type {boolean}
+         * @private
+         */
+        this._showOnlySelectableMonths = !!option.showOnlySelectableMonths;
+
+        /**
          * This value is prepended automatically when year-format is 'yy'
          * @type {string}
          * @private
          * @example
          *  //
-         *  // If this vlaue is '20', the format is 'yy-mm-dd' and the date string is '15-04-12',
+         *  // If this value is '20', the format is 'yy-mm-dd' and the date string is '15-04-12',
          *  // the date value object is
          *  //  {
          *  //      year: 2015,
@@ -689,6 +696,10 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
      */
     _onBeforeDrawCalendar: function() {
         this._unbindOnClickCalendar();
+
+        if (this.showOnlySelectableMonths) {
+            this.hideNextMonthButton = true;
+        }
     },
 
     /**
@@ -794,9 +805,45 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
        });
     },
 
+    /**
+     * Set start date
+     * @param {{year: number, month: number, date: number}} startDate - Date hash
+     * @api
+     * @example
+     *  datePicker.setStartDate({
+     *      year: 2015,
+     *      month: 1,
+     *      date: 1
+     *  });
+     */
+    setStartDate: function(startDate) {
+        if (!startDate) {
+            return;
+        }
+        this._startEdge = utils.getTime(startDate) - 1;
+    },
+
+    /**
+     * Set end date
+     * @param {{year: number, month: number, date: number}} endDate - Date hash
+     * @api
+     * @example
+     *  datePicker.setStartDate({
+     *      year: 2015,
+     *      month: 1,
+     *      date: 1
+     *  });
+     */
+    setEndDate: function(endDate) {
+        if (!endDate) {
+            return;
+        }
+        this._endEdge = utils.getTime(endDate) + 1;
+    },
 
     /**
      * Set position-left, top of calendar
+     * @api
      * @param {number} x - position-left
      * @param {number} y - position-top
      * @since 1.1.1
@@ -849,6 +896,9 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * Open calendar with arranging position
+     * @api
+     * @example
+     *  datepicker.open();
      */
     open: function() {
         if (this.isOpened()) {
@@ -859,11 +909,20 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
         this._bindOnMousedownDocumnet();
         this._calendar.draw(this._date.year, this._date.month, false);
         this._$wrapperElement.show();
+
+        /**
+         * Open event - DatePicker
+         * @api
+         * @event DatePicker#open
+         */
         this.fire('open');
     },
 
     /**
      * Close calendar with unbinding some events
+     * @api
+     * @exmaple
+     *  datepicker.close();
      */
     close: function() {
         if (!this.isOpened()) {
@@ -872,12 +931,22 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
         this._unbindCalendarCustomEvent();
         this._unbindOnMousedownDocument();
         this._$wrapperElement.hide();
+
+        /**
+         * Close event - DatePicker
+         * @api
+         * @event DatePicker#close
+         */
         this.fire('close');
     },
 
     /**
      * Get date-object of current DatePicker instance.
+     * @api
      * @returns {Object} - date-object having year, month and day-in-month
+     * @example
+     *  // 2015-04-13
+     *  datepicker.getDateObject(); // {year: 2015, month: 4, date: 13}
      */
     getDateObject: function() {
         return util.extend({}, this._date);
@@ -885,7 +954,11 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * Return year
+     * @api
      * @returns {number} - year
+     * @example
+     *  // 2015-04-13
+     *  datepicker.getYear(); // 2015
      */
     getYear: function() {
         return this._date.year;
@@ -893,7 +966,11 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * Return month
+     * @api
      * @returns {number} - month
+     * @example
+     *  // 2015-04-13
+     *  datepicker.getMonth(); // 4
      */
     getMonth: function() {
         return this._date.month;
@@ -901,7 +978,11 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * Return day-in-month
+     * @api
      * @returns {number} - day-in-month
+     * @example
+     *  // 2015-04-13
+     *  datepicker.getDayInMonth(); // 13
      */
     getDayInMonth: function() {
         return this._date.date;
@@ -909,9 +990,14 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * Set date from values(year, month, date) and then fire 'update' custom event
+     * @api
      * @param {string|number} [year] - year
      * @param {string|number} [month] - month
      * @param {string|number} [date] - day in month
+     * @example
+     *  datepicker.setDate(2014, 12, 3); // 2014-12- 03
+     *  datepicker.setDate(null, 11, 23); // 2014-11-23
+     *  datepicker.setDate('2015', '5', 3); // 2015-05-03
      */
     setDate: function(year, month, date) {
         var dateObj = this._date,
@@ -927,11 +1013,17 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
         this._setValueToInputElement();
         this._calendar.draw(dateObj.year, dateObj.month, false);
 
+        /**
+         * Update event
+         * @api
+         * @event DatePicker#update
+         */
         this.fire('update');
     },
 
     /**
      * Set or update date-form
+     * @api
      * @param {String} [form] - date-format
      * @example
      *  datepicker.setDateForm('yyyy-mm-dd');
@@ -947,15 +1039,25 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * Return whether the calendar is opened or not
+     * @api
      * @returns {boolean} - true if opened, false otherwise
+     * @example
+     *  datepicker.close();
+     *  datepicker.isOpened(); // false
+     *
+     *  datepicker.open();
+     *  datepicker.isOpened(); // true
      */
     isOpened: function() {
-        return this._$wrapperElement.css('display') === 'block';
+        return (this._$wrapperElement.css('display') === 'block');
     },
 
     /**
      * Return TimePicker instance
+     * @api
      * @returns {TimePicker} - TimePicker instance
+     * @example
+     *  var timepicker = this.getTimepicker();
      */
     getTimePicker: function() {
         return this._timePicker;

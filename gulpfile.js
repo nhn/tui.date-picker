@@ -13,7 +13,7 @@ var gutil = require('gulp-util');
 var concat = require('gulp-concat');
 var filename = require('./package.json').name.replace('component-', '');
 
-gulp.task('default', function() {
+gulp.task('test', function() {
     karma.start({
         configFile: path.join(__dirname, 'karma.conf.js'),
         singleRun: true
@@ -58,4 +58,4 @@ gulp.task('concat', ['compress'], function() {
         .pipe(gulp.dest('./samples/js/'));
 });
 
-gulp.task('default', ['bundle', 'compress', 'concat']);
+gulp.task('default', ['test', 'bundle', 'compress', 'concat']);

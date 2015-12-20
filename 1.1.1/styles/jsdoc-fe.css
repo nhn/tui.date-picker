@@ -61,7 +61,6 @@ a:active {
 
 .main {
     padding: 20px;
-    margin-left: 250px;
 }
 
 .main section header {
@@ -72,6 +71,7 @@ a:active {
 .main section header h2 {
     border-left: 5px solid #4a95e5;
     padding-left : 5px;
+    font-size:18px;
 }
 
 .main section article {

@@ -1,5 +1,5 @@
 body {
-    font-family: 'Open Sans', Helvetica, Arial, sans-serif, Dotum, '돋움', AppleSDGothicNeo;
+    font-family: Helvetica Neue, Helvetica, Arial, Malgun gothic, '돋움', AppleSDGothicNeo;
 }
 
 #wrap {
@@ -92,13 +92,11 @@ body {
 }
 
 .main {
-    padding: 20px;
-    margin-left: 250px;
+    padding: 0 20px;
     overflow: auto;
 }
 
 .main { min-width: 800px; }
-.body { min-width: 1090px; }
 
 .main h1,
 .main h2,
@@ -117,7 +115,8 @@ body {
 
 .main section header h2 {
     padding-left : 5px;
-    border-left: 5px solid #4a95e5;
+    border-left: 5px solid #dc9656;
+    font-size: 18px;
 }
 
 .main section article {
@@ -125,9 +124,9 @@ body {
 }
 
 .main section article .readme {
-    background-color: #f9f9f9;
+    /*background-color: #f9f9f9;
     border: 1px solid #428bca;
-    border-radius: 4px;
+    border-radius: 4px;*/
 }
 
 .main section article .readme h1 {
@@ -165,7 +164,7 @@ body {
 .main section article .container-overview {
     padding: 15px 15px 0 15px;
     border: 1px solid #dedede;
-    border-radius: 7px;
+    /*border-radius: 7px;*/
 }
 
 .main section article li {
@@ -193,6 +192,9 @@ body {
     font-weight: normal;
 }
 
+.main .main-detail {overflow:hidden;}
+.main .main-detail dt { float:left; clear:both; }
+.main .main-detail dd { float:left; padding:0; } 
 .main section article dl dt .name {
     padding: 3px 10px;
     background-color: #f4f7f8;

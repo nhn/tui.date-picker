@@ -2,38 +2,54 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
+
+    <link type="text/css" rel="stylesheet" href="../styles/prettify-jsdoc.css" />
+    <link type="text/css" rel="stylesheet" href="../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../styles/tui.css">
+
     <link href="css/calendar.css" rel="stylesheet">
     <link href="css/timepicker.css" rel="stylesheet">
     <title>데이트피커1</title>
 </head>
-<body style="height:350px;">
-<span><input id="picker1" type="text" size="25"/></span>
-<button type="button" id="opener1">open</button>
+<body>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<span><input id="picker2" type="text" size="25"/></span>
+<div class="wrap" style="height:350px;">
+    <span><input id="picker1" type="text" size="25"/></span>
+    <button type="button" id="opener1">open</button>
 
-<div id="layer" class="layer"></div>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <span><input id="picker2" type="text" size="25"/></span>
+
+    <div id="layer" class="layer"></div>
+</div>
+<div class="codeArea"></div>
 
 <script type="text/javascript" src="lib/jquery.min.js"></script>
 <script type="text/javascript" src="lib/code-snippet.min.js"></script>
 <script type="text/javascript" src="lib/calendar.min.js"></script>
 <script type="text/javascript" src="js/date-picker.min.js"></script>
 
-<script>
-    var calendar = new ne.component.Calendar({
+<script src="../scripts/prettify/prettify.js"></script>
+<script src="../scripts/prettify/lang-css.js"></script>
+<script src="../scripts/samplecode.js"></script>
+
+<script src="../scripts/prettify/prettify.js"></script>
+<script src="../scripts/prettify/lang-css.js"></script>
+<script src="../scripts/samplecode.js"></script>
+<script class="serviceCode">
+    var calendar = new tui.component.Calendar({
         element: '#layer',
         titleFormat: 'yyyy년 m월',
         todayFormat: 'yyyy년 mm월 dd일 (D)'
     });
 
-    var timePicker = new ne.component.TimePicker({
+    var timePicker = new tui.component.TimePicker({
         showMeridian: true,
         defaultHour: 13,
         defaultMinute: 24
     });
 
-    var picker1 = new ne.component.DatePicker({
+    var picker1 = new tui.component.DatePicker({
         element: '#picker1',
         dateForm: 'yyyy년 mm월 dd일 - ',
         date: {year: 2015, month: 1, date: 1 },
@@ -43,7 +59,7 @@
         timePicker: timePicker
     }, calendar);
 
-    var picker2 = new ne.component.DatePicker({
+    var picker2 = new tui.component.DatePicker({
         element: '#picker2'
     }, calendar);
 </script>

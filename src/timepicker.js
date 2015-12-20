@@ -1,5 +1,4 @@
 /**
- * Created by nhnent on 15. 4. 30..
  * @fileoverview TimePicker Component
  * @author NHN ent FE dev <dl_javascript@nhnent.com> <minkyu.yi@nhnent.com>
  * @dependency jquery-1.8.3, code-snippet-1.0.2, spinbox.js
@@ -18,7 +17,6 @@ var util = tui.util,
 
 /**
  * @constructor
- *
  * @param {Object} [option] - option for initialization
  *
  * @param {number} [option.defaultHour = 0] - initial setting value of hour
@@ -417,6 +415,7 @@ var TimePicker = util.defineClass(/** @lends TimePicker.prototype */ {
 
     /**
      * set time
+     * @api
      * @param {number} hour for time picker
      * @param {number} minute for time picker
      * @return {boolean} result of set time
@@ -558,6 +557,7 @@ var TimePicker = util.defineClass(/** @lends TimePicker.prototype */ {
 
     /**
      * get time
+     * @api
      * @returns {string} 'hh:mm (AM/PM)'
      */
     getTime: function() {

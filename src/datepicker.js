@@ -797,6 +797,7 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * Set position-left, top of calendar
+     * @api
      * @param {number} x - position-left
      * @param {number} y - position-top
      * @since 1.1.1
@@ -811,6 +812,7 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * Set z-index of calendar
+     * @api
      * @param {number} zIndex - z-index value
      * @since 1.1.1
      */
@@ -825,6 +827,7 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * add opener
+     * @api
      * @param {HTMLElement|jQuery} opener - element
      */
     addOpener: function(opener) {
@@ -836,6 +839,7 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * remove opener
+     * @api
      * @param {HTMLElement} opener - element
      */
     removeOpener: function(opener) {
@@ -849,6 +853,7 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * Open calendar with arranging position
+     * @api
      */
     open: function() {
         if (this.isOpened()) {
@@ -859,11 +864,21 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
         this._bindOnMousedownDocumnet();
         this._calendar.draw(this._date.year, this._date.month, false);
         this._$wrapperElement.show();
+
+        /**
+         * @api
+         * @event DatePicker#open
+         * @example
+         * datePicker.on('open', function() {
+         *     alert('open');
+         * });
+         */
         this.fire('open');
     },
 
     /**
      * Close calendar with unbinding some events
+     * @api
      */
     close: function() {
         if (!this.isOpened()) {
@@ -872,11 +887,21 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
         this._unbindCalendarCustomEvent();
         this._unbindOnMousedownDocument();
         this._$wrapperElement.hide();
+
+        /**
+         * @api
+         * @event DatePicker#close
+         * @example
+         * datePicker.on('close', function() {
+         *     alert('close');
+         * });
+         */
         this.fire('close');
     },
 
     /**
      * Get date-object of current DatePicker instance.
+     * @api
      * @returns {Object} - date-object having year, month and day-in-month
      */
     getDateObject: function() {
@@ -885,6 +910,7 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * Return year
+     * @api
      * @returns {number} - year
      */
     getYear: function() {
@@ -893,6 +919,7 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * Return month
+     * @api
      * @returns {number} - month
      */
     getMonth: function() {
@@ -901,6 +928,7 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * Return day-in-month
+     * @api
      * @returns {number} - day-in-month
      */
     getDayInMonth: function() {
@@ -909,6 +937,7 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * Set date from values(year, month, date) and then fire 'update' custom event
+     * @api
      * @param {string|number} [year] - year
      * @param {string|number} [month] - month
      * @param {string|number} [date] - day in month
@@ -932,6 +961,7 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * Set or update date-form
+     * @api
      * @param {String} [form] - date-format
      * @example
      *  datepicker.setDateForm('yyyy-mm-dd');
@@ -947,6 +977,7 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * Return whether the calendar is opened or not
+     * @api
      * @returns {boolean} - true if opened, false otherwise
      */
     isOpened: function() {
@@ -955,6 +986,7 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * Return TimePicker instance
+     * @api
      * @returns {TimePicker} - TimePicker instance
      */
     getTimePicker: function() {

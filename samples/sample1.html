@@ -2,13 +2,18 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
+
+    <link type="text/css" rel="stylesheet" href="../styles/prettify-jsdoc.css" />
+    <link type="text/css" rel="stylesheet" href="../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../styles/tui.css">
+
     <link href="css/calendar.css" rel="stylesheet">
     <link href="css/timepicker.css" rel="stylesheet">
     <title>데이트피커1</title>
 </head>
-<body style="height:350px;">
-Close calendar when select a date :
-<span><input id="picker" type="text" size="25"/></span>
+<body>
+<div class="wrap" style="height:350px;">
+<span>Close calendar when select a date: <input id="picker" type="text" size="25"/></span>
 <button type="button" id="opener">open</button>
 
 <div id="layer" class="layer" style="display:none;"> <!-- 기준 엘리먼트 -->
@@ -45,13 +50,18 @@ Close calendar when select a date :
         <p>오늘 <em class="calendar-today"></em></p>
     </div>
 </div>
+</div>
+<div class="codeArea"></div>
 
 <script type="text/javascript" src="lib/jquery.min.js"></script>
 <script type="text/javascript" src="lib/code-snippet.min.js"></script>
 <script type="text/javascript" src="lib/calendar.min.js"></script>
 <script type="text/javascript" src="js/date-picker.min.js"></script>
 
-<script>
+<script src="../scripts/prettify/prettify.js"></script>
+<script src="../scripts/prettify/lang-css.js"></script>
+<script src="../scripts/samplecode.js"></script>
+<script class="serviceCode">
     var calendar = new tui.component.Calendar({
         element: '#layer',
         titleFormat: 'yyyy년 m월',

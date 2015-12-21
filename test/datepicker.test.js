@@ -666,7 +666,7 @@ describe('Date Picker', function() {
         });
     });
 
-    describe('show/hide next-prev year btn', function() {
+    xdescribe('show/hide next-prev year btn', function() {
         it('tdd-1', function() {
             datepicker1.open();
             expect(datepicker1.hideNextMonthButton).toEqual(true);

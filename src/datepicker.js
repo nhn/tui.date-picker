@@ -858,6 +858,7 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * Set z-index of calendar
+     * @api
      * @param {number} zIndex - z-index value
      * @since 1.1.1
      */
@@ -872,6 +873,7 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * add opener
+     * @api
      * @param {HTMLElement|jQuery} opener - element
      */
     addOpener: function(opener) {
@@ -883,6 +885,7 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * remove opener
+     * @api
      * @param {HTMLElement} opener - element
      */
     removeOpener: function(opener) {
@@ -898,7 +901,7 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
      * Open calendar with arranging position
      * @api
      * @example
-     *  datepicker.open();
+     * datepicker.open();
      */
     open: function() {
         if (this.isOpened()) {
@@ -911,9 +914,12 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
         this._$wrapperElement.show();
 
         /**
-         * Open event - DatePicker
          * @api
          * @event DatePicker#open
+         * @example
+         * datePicker.on('open', function() {
+         *     alert('open');
+         * });
          */
         this.fire('open');
     },
@@ -922,7 +928,7 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
      * Close calendar with unbinding some events
      * @api
      * @exmaple
-     *  datepicker.close();
+     * datepicker.close();
      */
     close: function() {
         if (!this.isOpened()) {
@@ -936,6 +942,10 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
          * Close event - DatePicker
          * @api
          * @event DatePicker#close
+         * @example
+         * datePicker.on('close', function() {
+         *     alert('close');
+         * });
          */
         this.fire('close');
     },
@@ -945,8 +955,8 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
      * @api
      * @returns {Object} - date-object having year, month and day-in-month
      * @example
-     *  // 2015-04-13
-     *  datepicker.getDateObject(); // {year: 2015, month: 4, date: 13}
+     * // 2015-04-13
+     * datepicker.getDateObject(); // {year: 2015, month: 4, date: 13}
      */
     getDateObject: function() {
         return util.extend({}, this._date);
@@ -957,8 +967,8 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
      * @api
      * @returns {number} - year
      * @example
-     *  // 2015-04-13
-     *  datepicker.getYear(); // 2015
+     * // 2015-04-13
+     * datepicker.getYear(); // 2015
      */
     getYear: function() {
         return this._date.year;
@@ -969,8 +979,8 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
      * @api
      * @returns {number} - month
      * @example
-     *  // 2015-04-13
-     *  datepicker.getMonth(); // 4
+     * // 2015-04-13
+     * datepicker.getMonth(); // 4
      */
     getMonth: function() {
         return this._date.month;
@@ -981,8 +991,8 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
      * @api
      * @returns {number} - day-in-month
      * @example
-     *  // 2015-04-13
-     *  datepicker.getDayInMonth(); // 13
+     * // 2015-04-13
+     * datepicker.getDayInMonth(); // 13
      */
     getDayInMonth: function() {
         return this._date.date;
@@ -995,9 +1005,9 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
      * @param {string|number} [month] - month
      * @param {string|number} [date] - day in month
      * @example
-     *  datepicker.setDate(2014, 12, 3); // 2014-12- 03
-     *  datepicker.setDate(null, 11, 23); // 2014-11-23
-     *  datepicker.setDate('2015', '5', 3); // 2015-05-03
+     * datepicker.setDate(2014, 12, 3); // 2014-12- 03
+     * datepicker.setDate(null, 11, 23); // 2014-11-23
+     * datepicker.setDate('2015', '5', 3); // 2015-05-03
      */
     setDate: function(year, month, date) {
         var dateObj = this._date,
@@ -1026,10 +1036,10 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
      * @api
      * @param {String} [form] - date-format
      * @example
-     *  datepicker.setDateForm('yyyy-mm-dd');
-     *  datepicker.setDateForm('mm-dd, yyyy');
-     *  datepicker.setDateForm('y/m/d');
-     *  datepicker.setDateForm('yy/mm/dd');
+     * datepicker.setDateForm('yyyy-mm-dd');
+     * datepicker.setDateForm('mm-dd, yyyy');
+     * datepicker.setDateForm('y/m/d');
+     * datepicker.setDateForm('yy/mm/dd');
      */
     setDateForm: function(form) {
         this._dateForm = form || this._dateForm;
@@ -1042,11 +1052,11 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
      * @api
      * @returns {boolean} - true if opened, false otherwise
      * @example
-     *  datepicker.close();
-     *  datepicker.isOpened(); // false
+     * datepicker.close();
+     * datepicker.isOpened(); // false
      *
-     *  datepicker.open();
-     *  datepicker.isOpened(); // true
+     * datepicker.open();
+     * datepicker.isOpened(); // true
      */
     isOpened: function() {
         return (this._$wrapperElement.css('display') === 'block');
@@ -1057,7 +1067,7 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
      * @api
      * @returns {TimePicker} - TimePicker instance
      * @example
-     *  var timepicker = this.getTimepicker();
+     * var timepicker = this.getTimepicker();
      */
     getTimePicker: function() {
         return this._timePicker;

@@ -38,7 +38,7 @@
     "name": "Date Picker",
     "encoding": "utf8",
     "recurse": true,
-    "destination": "latest",
+    "destination": "doc",
     "tutorials": "samples"
   }
 }

@@ -3,6 +3,11 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>spinbox example</title>
+
+    <link type="text/css" rel="stylesheet" href="../styles/prettify-jsdoc.css" />
+    <link type="text/css" rel="stylesheet" href="../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../styles/tui.css">
+
     <style rel="stylesheet" type="text/css">
         .spinbox{width:100px; text-align:center;}
         .spinbox input{font-size:2em; text-align:center; border:transparent 0px;}
@@ -10,6 +15,7 @@
     </style>
 </head>
 <body>
+<div class="wrap">
     <h1>Default</h1>
     <div id="spinbox-default" style="height:145px;">
         <input type="text">
@@ -21,12 +27,19 @@
     <div id="spinbox-with-option" class="spinbox" style="height:145px;">
         <input type="text">
     </div>
+</div>
+
+<div class="codeArea"></div>
 
     <script type="text/javascript" src="lib/jquery.min.js"></script>
     <script type="text/javascript" src="lib/code-snippet.min.js"></script>
     <script type="text/javascript" src="lib/calendar.min.js"></script>
     <script type="text/javascript" src="js/date-picker.min.js"></script>
-    <script>
+
+    <script src="../scripts/prettify/prettify.js"></script>
+    <script src="../scripts/prettify/lang-css.js"></script>
+    <script src="../scripts/samplecode.js"></script>
+    <script class="serviceCode">
         /**
          * Default
          */

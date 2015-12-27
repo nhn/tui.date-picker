@@ -40,7 +40,7 @@ Component - DatePicker<br>It provides calendarUI for pick a date easily
 ## History
 | Version | Description | Date | Developer |
 | ---- | ---- | ---- | ---- |
-| <a href="http://nhnent.github.io/tui.component.date-picker/1.2.0/">1.1.1</a> | Ranges api | 2015.12 | NHNent. FE Dev team <dl_javascript@nhnent.com> |
+| <a href="http://nhnent.github.io/tui.component.date-picker/1.2.0/">1.2.0</a> | Ranges api | 2015.12 | NHNent. FE Dev team <dl_javascript@nhnent.com> |
 | <a href="http://nhnent.github.io/tui.component.date-picker/1.1.1/">1.1.1</a> | Namespace chagned | 2015.10 | NHNent. NHNent. FE Dev team <dl_javascript@nhnent.com> |
 | <a href="http://nhnent.github.io/tui.component.date-picker/1.1.1/">1.1.1</a> | Date-Time Picker | 2015.06 | NHNent. FE Dev team <dl_javascript@nhnent.com> |
 | <a href="http://nhnent.github.io/tui.component.date-picker/1.1.0/">1.1.0</a> | Date-Time Picker | 2015.05 | NHNent. FE Dev team <dl_javascript@nhnent.com> |

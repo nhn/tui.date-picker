@@ -73,30 +73,30 @@
     "1.2.0": {
       "content": "Date-Time Picker",
       "date": "2015.12",
-      "author": "NHNent. FE Dev team Minkyu.Yi<br><minkyu.yi@nhnent.com>",
+      "author": "NHNent. FE Dev team <dl_javascript@nhnent.com>",
       "hasAPI": true
     },
     "1.1.1": {
       "content": "Date-Time Picker",
       "date": "2015.06",
-      "author": "NHNent. FE Dev team Minkyu.Yi<br><minkyu.yi@nhnent.com>",
+      "author": "NHNent. FE Dev team <dl_javascript@nhnent.com>",
       "hasAPI": true
     },
     "1.1.0": {
       "content": "Date-Time Picker",
       "date": "2015.05",
-      "author": "NHNent. FE Dev team Minkyu.Yi<br><minkyu.yi@nhnent.com>",
+      "author": "NHNent. FE Dev team <dl_javascript@nhnent.com>",
       "hasAPI": true
     },
     "1.0.0": {
       "content": "Separate DatePicker",
       "date": "2015.05",
-      "author": "NHNent. FE Dev team Jein.Yi<br><jein.yi@nhnent.com>"
+      "author": "NHNent. FE Dev team <dl_javascript@nhnent.com>"
     },
     "0.1.0": {
       "content": "Develop",
       "date": "2014.11",
-      "author": "NHNent. FE Dev team Jein.Yi<br><jein.yi@nhnent.com>"
+      "author": "NHNent. FE Dev team <dl_javascript@nhnent.com>"
     }
   }
 }

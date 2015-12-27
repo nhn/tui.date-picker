@@ -259,8 +259,8 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
          * Whether the datepicker shows always
          * @api
          * @type {boolean}
-         * @exmaple
          * @since 1.2.0
+         * @example
          * datepicker.showAlways = true;
          * datepicker.open();
          * // The datepicker will be not closed if you click the outside of the datepicker
@@ -271,8 +271,8 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
          * Whether the datepicker use touch event.
          * @api
          * @type {boolean}
-         * @example
          * @since 1.2.0
+         * @example
          * datepicker.useTouchEvent = false;
          * // The datepicker will be use only 'click', 'mousedown' events
          */

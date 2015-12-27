@@ -1,3 +1,6 @@
+/**
+ * These test cases are not using "TouchEvent"
+ */
 'use strict';
 var DatePicker = require('../src/datePicker'),
     TimePicker = require('../src/timePicker');
@@ -11,10 +14,22 @@ describe('Date Picker', function() {
         calendar3,
         datepicker1,
         datepicker2,
-        datepicker3;
+        datepicker3,
+        selectableRange1 = [
+            {
+                year: 1994,
+                month: 5,
+                date: 9
+            },
+            {
+                year: 2090,
+                month: 5,
+                date: 11
+            }
+        ];
 
     jasmine.getFixtures().fixturesPath = 'base/test/fixtures';
-
+    // do not test touch event
     beforeEach(function() {
         loadFixtures('datepicker.html');
 
@@ -68,7 +83,7 @@ describe('Date Picker', function() {
             openers: [
                 document.getElementById('opener')
             ],
-            showOnlySelectableMonths: true
+            useTouchEvent: false
         }, calendar1);
 
         datepicker2 = new DatePicker({
@@ -79,17 +94,9 @@ describe('Date Picker', function() {
                 month: 5,
                 date: 10
             },
-            startDate: {
-                year: 1994,
-                month: 5,
-                date: 9
-            },
-            endDate: {
-                year: 2090,
-                month: 5,
-                date: 11
-            },
+            selectableRanges: [selectableRange1],
             selectableClass: 'mySelectable',
+            useTouchEvent: false,
             timePicker: new TimePicker({
                 showMeridian: true
             })
@@ -97,35 +104,18 @@ describe('Date Picker', function() {
 
         datepicker3 = new DatePicker({
             element: document.getElementById('datePick3'),
-            date: {}
+            date: {},
+            useTouchEvent: false
         }, calendar3);
     });
 
-    describe('생성자', function() {
-        it('opener test', function() {
-            var opener = document.getElementById('opener'),
-                openerSpan = document.getElementById('opener-span');
+    it('default date', function() {
+        var date = datepicker3.getDateObject();
 
-            expect(datepicker1.isOpened()).toEqual(false);
-
-            $(opener).click();
-            expect(datepicker1.isOpened()).toEqual(true);
-
-            datepicker1.close();
-            expect(datepicker1.isOpened()).toEqual(false);
-
-            $(openerSpan).click();
-            expect(datepicker1.isOpened()).toEqual(true);
-        });
-
-        it('default date', function() {
-            var date = datepicker3.getDateObject();
-
-            expect(date).toEqual({
-                year: 1970,
-                month: 1,
-                date: 1
-            });
+        expect(date).toEqual({
+            year: 1970,
+            month: 1,
+            date: 1
         });
     });
 
@@ -430,7 +420,7 @@ describe('Date Picker', function() {
             expect(res6.date).toBeUndefined();
         });
 
-        it('test _checkRestrict', function() {
+        it('test _isSelectable', function() {
             var date1 = {
                     year: 2014,
                     month: 9,
@@ -447,13 +437,11 @@ describe('Date Picker', function() {
                     date: 3
                 };
 
-            expect(datepicker2._isRestricted(date1)).toEqual(false);
-            expect(datepicker2._isRestricted(date2)).toEqual(true);
-            expect(datepicker2._isRestricted(date3)).toEqual(true);
+            expect(datepicker2._isSelectable(date1)).toEqual(true);
+            expect(datepicker2._isSelectable(date2)).toEqual(false);
+            expect(datepicker2._isSelectable(date3)).toEqual(false);
         });
 
-
-        //@todo
         it('test selectable date element count', function() {
             var selectableList;
             datepicker2.setDate(2014, 11);
@@ -576,7 +564,6 @@ describe('Date Picker', function() {
             expect(res1.date).toBe(1);
 
             // 제한된 날짜인 경우 엔터를 처도 날짜가 바뀌지 않는다.
-            // === restric데이터라 갱신되지 않는다.
             datepicker2.setDateForm('yy-mm-dd');
             datepicker2._$element.val('99-04-11');
             datepicker2._onKeydownElement(e2);
@@ -643,33 +630,88 @@ describe('Date Picker', function() {
             expect(value).toEqual(selection.date);
         });
     });
+});
 
-    describe('Set start/end date', function() {
-        it('"setStartDate" should set "_startEdge" as a little less time(ms)', function() {
-            datepicker1.setStartDate({
-                year: 2000,
-                month: 1,
-                date: 1
-            });
+describe('Version 1.2.0 apis', function() {
+    var datePicker, calendar, layer1;
 
-            expect(datepicker1._startEdge).toEqual(+new Date(2000, 0, 1) - 1);
+    beforeEach(function() {
+        calendar = new tui.component.Calendar({
+            element: '#layer1'
+        });
+        datePicker = new DatePicker({
+            dateForm: 'yyyy년 mm월 dd일',
+            selectableRanges: [
+                [{year: 2015, month: 11, date: 17}, {year: 2016, month: 2, date: 15}],
+                [{year: 2016, month: 4, date: 3}, {year: 2016, month:5, date: 1}],
+                [{year: 2016, month: 3, date: 5}, {year: 2016, month:3, date: 17}],
+                [{year: 2016, month: 2, date: 24}, {year: 2016, month:2, date: 26}],
+                [{year: 2017, month: 2, date: 24}, {year: 2017, month:2, date: 26}]
+            ],
+            showAlways: true,
+            useTouchEvent: false
+        }, calendar);
+    });
+
+    describe('showAlways option', function() {
+        it ('should bind the "mousedown-document" event if showAlways = false', function() {
+            spyOn(datePicker, '_bindOnMousedownDocument');
+            datePicker.showAlways = false;
+            datePicker.open();
+
+            expect(datePicker._bindOnMousedownDocument).toHaveBeenCalled();
         });
 
-        it('"setEndDate" should set "_endEdge" as a little more time(ms)', function() {
-            datepicker1.setEndDate({
-                year: 2000,
-                month: 1,
-                date: 1
-            });
+        it ('should not bind the "mousedown-document" event if showAlways = true', function() {
+            spyOn(datePicker, '_bindOnMousedownDocument');
+            datePicker.showAlways = true;
+            datePicker.open();
 
-            expect(datepicker1._endEdge).toEqual(+new Date(2000, 0, 1) + 1);
+            expect(datePicker._bindOnMousedownDocument).not.toHaveBeenCalled();
         });
     });
 
-    xdescribe('show/hide next-prev year btn', function() {
-        it('tdd-1', function() {
-            datepicker1.open();
-            expect(datepicker1.hideNextMonthButton).toEqual(true);
+    describe('add/remove a Range', function() {
+        it('add range', function() {
+            var start = {year: 2018, month: 2, date: 3},
+                end = {year: 2018, month: 3, date: 6};
+
+            datePicker.addRange(start, end);
+            expect(datePicker._ranges).toContain([start, end]);
+            expect(datePicker._startTimes).toContain(+new Date(2018, 1, 3));
+            expect(datePicker._endTimes).toContain(+new Date(2018, 2, 6));
+        });
+
+        it('remove range', function() {
+            var start = {year: 2015, month: 11, date: 17},
+                end = {year: 2016, month: 2, date: 15};
+
+            datePicker.removeRange(start, end);
+            expect(datePicker._ranges).not.toContain([start, end]);
+            expect(datePicker._startTimes).not.toContain(+new Date(2015, 10, 17));
+            expect(datePicker._endTimes).not.toContain(+new Date(2016, 1, 15));
+        });
+    });
+
+    describe('_isSelectable', function() {
+        it('the date is in ranges', function() {
+            var result = datePicker._isSelectable({
+                year: 2016,
+                month: 3,
+                date: 7
+            });
+
+            expect(result).toBe(true);
+        });
+
+        it('the date is not in ranges', function() {
+            var result = datePicker._isSelectable({
+                year: 2019,
+                month: 5,
+                date: 13
+            });
+
+            expect(result).toBe(false);
         });
     });
 });

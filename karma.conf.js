@@ -68,6 +68,10 @@ module.exports = function(config) {
             ]
         },
 
+        browserify: {
+            debug: true
+        },
+
         //junitReporter: {
         //    outputFile: 'report/junit-result.xml',
         //    suite: ''

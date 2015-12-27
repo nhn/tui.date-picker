@@ -47,7 +47,7 @@ body {font-size:12px; font-family:malgun gothic, verdana, consolas;min-width:700
 .layer table .calendar-sun span{background:none !important;color:#eca9a9 !important;}
 
 /* 커서 포인터 모양 CSS */
-.layer .selectable{cursor:pointer;}
+.layer .selectable{background-color:#f9f2f4; cursor:pointer;}
 /* 마우스 오버시 yellow 하이라이트 */
 .layer .selectable:hover{background-color:yellow;}
 /* 날짜 선택시 하이라이트 */

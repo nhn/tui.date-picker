@@ -34,6 +34,7 @@
   "devDependencies": {
     "browserify": "^11.2.0",
     "del": "^2.0.2",
+    "fedoc-template": "git+http://14bfd38a036366f7ca90355d202038126127bd01:x-oauth-basic@github.nhnent.com/fe/share-fedoc-template.git#test",
     "gulp": "latest",
     "gulp-concat": "^2.6.0",
     "gulp-connect": "^2.2.0",
@@ -55,6 +56,7 @@
     "karma-firefox-launcher": "latest",
     "karma-jasmine": "latest",
     "karma-junit-reporter": "latest",
+    "karma-mocha-reporter": "^1.1.3",
     "karma-phantomjs-launcher": "latest",
     "karma-requirejs": "latest",
     "karma-webdriver-launcher": "git+https://github.com/everedifice/karma-webdriver-launcher.git",
@@ -62,8 +64,7 @@
     "requirejs": "latest",
     "run-sequence": "latest",
     "vinyl-buffer": "latest",
-    "vinyl-source-stream": "latest",
-    "fedoc-template": "git+http://14bfd38a036366f7ca90355d202038126127bd01:x-oauth-basic@github.nhnent.com/fe/share-fedoc-template.git#test"
+    "vinyl-source-stream": "latest"
   },
   "scripts": {
     "doc": "./node_modules/.bin/jsdoc -c conf.json"

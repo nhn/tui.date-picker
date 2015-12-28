@@ -1,8 +1,8 @@
 {
   "name": "component-date-picker",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "authors": [
-    "이민규 <minkyu.yi@nhnent.com>"
+    "NHNent. FE Dev team <dl_javascript@nhnent.com>"
   ],
   "license": "MIT",
   "ignore": [
@@ -16,17 +16,19 @@
     "data.js",
     "Gruntfile.js",
     "gulpfile.js",
-    "karma.conf.remote.js",
+    "karma.*.js",
     "conf.json",
-    "karma.conf.js",
     "package.json",
     ".gitignore",
-    "samples"
+    "samples",
+    "index.js"
   ],
-  "devDependencies": {
+  "dependencies": {
     "jquery" : "~1.8.3",
-	"tui-code-snippet" : "~1.0.2",
-	"tui-component-calendar" : "~1.1.0",
+    "tui-code-snippet" : "~1.0.2",
+    "tui-component-calendar" : "~1.1.0"
+  },
+  "devDependencies": {
     "jasmine-jquery": "~2.1.0"
   },
   "resolutions": {

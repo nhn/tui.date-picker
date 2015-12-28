@@ -45,9 +45,15 @@ module.exports = function(config) {
         // available reporters: https://npmjs.org/browse/keyword/karma-reporter
         reporters: [
             'dots',
-            'coverage'
-            //,'junit'
+            'coverage',
+            'junit'
         ],
+
+        junitReporter: {
+            outputDir: 'report',
+            outputFile: 'report/junit-result.xml',
+            suite: ''
+        },
 
         coverageReporter: {
             dir: 'report/coverage/',
@@ -66,6 +72,10 @@ module.exports = function(config) {
                     file: 'cobertura.txt'
                 }
             ]
+        },
+
+        browserify: {
+            debug: true
         },
 
         //junitReporter: {

@@ -53,8 +53,9 @@
         element: '#picker1',
         dateForm: 'yyyy년 mm월 dd일 - ',
         date: {year: 2015, month: 1, date: 1 },
-        startDate: {year:2012, month:1, date:17},
-        endDate: {year: 2070, month:12, date:31},
+        selectableRanges: [
+            [{year:2012, month:1, date:17}, {year: 2070, month:12, date:31}]
+        ],
         openers: ['#opener1'],
         timePicker: timePicker
     }, calendar);

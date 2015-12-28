@@ -59,8 +59,8 @@ var utils = {
      * @memberof utils
      **/
     getWeeks: function(year, month) {
-        var firstDay = this.getFirstDay(year, month),
-            lastDate = this.getLastDate(year, month);
+        var firstDay = utils.getFirstDay(year, month),
+            lastDate = utils.getLastDate(year, month);
 
         return Math.ceil((firstDay + lastDate) / 7);
     },
@@ -78,7 +78,7 @@ var utils = {
      * utils.getTime({year:2010, month:5, date:12}); // 1273590000000
      **/
     getTime: function(date) {
-        return this.getDateObject(date).getTime();
+        return utils.getDateObject(date).getTime();
     },
 
     /**
@@ -154,6 +154,39 @@ var utils = {
             nDateObj = new Date(nYear, nMonth, nDate);
 
         return utils.getDateHashTable(nDateObj);
+    },
+
+    /**
+     * Binary search
+     * @param {Array} field - Search field
+     * @param {Array} value - Search target
+     * @returns {{found: boolean, index: number}} Result
+     * @private
+     */
+    search: function(field, value) {
+        var found = false,
+            low = 0,
+            high = field.length - 1,
+            end, index, fieldValue;
+
+        while (!found && !end) {
+            index = Math.floor((low + high) / 2);
+            fieldValue = field[index];
+
+            if (fieldValue === value) {
+                found = true;
+            } else if (fieldValue < value) {
+                low = index + 1;
+            } else {
+                high = index - 1;
+            }
+            end = (low > high);
+        }
+
+        return {
+            found: found,
+            index: (found || fieldValue > value) ? index : index + 1
+        }
     }
 };
 

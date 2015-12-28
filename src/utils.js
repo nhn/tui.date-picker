@@ -157,10 +157,10 @@ var utils = {
     },
 
     /**
-     *
-     * @param field
-     * @param value
-     * @returns {{found: boolean, index: *}}
+     * Binary search
+     * @param {Array} field - Search field
+     * @param {Array} value - Search target
+     * @returns {{found: boolean, index: number}} Result
      * @private
      */
     search: function(field, value) {

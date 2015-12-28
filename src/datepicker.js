@@ -934,7 +934,7 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
     },
 
     /**
-     * Bind a mousedown/touchstart event of documnet
+     * Bind a (mousedown|touchstart) event of document
      * @private
      */
     _bindOnMousedownDocument: function() {
@@ -943,7 +943,7 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
     },
 
     /**
-     * Unbind mousedown,touchstart events of documnet
+     * Unbind mousedown,touchstart events of document
      * @private
      */
     _unbindOnMousedownDocument: function() {

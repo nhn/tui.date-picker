@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+
+    <link type="text/css" rel="stylesheet" href="../styles/prettify-jsdoc.css" />
+    <link type="text/css" rel="stylesheet" href="../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../styles/tui.css">
+
+    <title>timepicker example</title>
+    <!--[if IE 7]>
+        <style>
+            html{margin:0; padding:0;}
+            body{margin:0; padding:0;}
+        </style>
+    <![endif]-->
+    <link href="css/calendar.css" rel="stylesheet">
+    <link href="css/timepicker.css" rel="stylesheet">
+    <style>
+        .example{height: 145px;}
+    </style>
+</head>
+<body>
+
+<div class="wrap">
+    <div class="example">
+        <h1>Timepicker-default</h1>
+        <input type="text" id="timepicker-default">
+    </div>
+
+    <div class="example">
+        <h1>Timepicker-option (AM/PM, default time, position)</h1>
+        <input type="text" id="timepicker-option">
+    </div>
+</div>
+
+<div class="codeArea"></div>
+
+    <script type="text/javascript" src="lib/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/code-snippet.min.js"></script>
+    <script type="text/javascript" src="lib/calendar.min.js"></script>
+    <script type="text/javascript" src="js/date-picker.min.js"></script>
+
+    <script src="../scripts/prettify/prettify.js"></script>
+    <script src="../scripts/prettify/lang-css.js"></script>
+    <script src="../scripts/samplecode.js"></script>
+    <script class="serviceCode">
+
+        var optionInput = document.getElementById('timepicker-option');
+
+        /**
+         * Default time string is '00:00' with 24hours-expression.
+         * CSS-Class of timepicker element is 'timepicker'.
+         * CSS-Class of up/down button elements is 'timepicker-btn'.
+         * If don't set position, it will be set lower end of left from input-box.
+         */
+        var timepicker1 = new tui.component.TimePicker({
+            inputElement: '#timepicker-default'
+        });
+
+        /**
+         * Option
+         * Default hour is 12. (defaultHour)
+         * Default minute is 34. (defaultMinute)
+         * Set meridian option for AM/PM expression. (showMeridian)
+         * Set position (x,y). (position)
+         */
+        var timepicker2 = new tui.component.TimePicker({
+            inputElement: '#timepicker-option',
+            defaultHour: 12,
+            defaultMinute: 34,
+            showMeridian: true,
+            position: {x: optionInput.offsetLeft + optionInput.offsetWidth + 3, y: optionInput.offsetTop}
+        });
+    </script>
+</body>
+</html>

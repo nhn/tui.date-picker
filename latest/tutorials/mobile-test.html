@@ -1,21 +1,19 @@
 <!DOCTYPE html>
-<html>
-<head lang="en">
+<html lang="en">
+<head>
     <meta charset="UTF-8">
-
-    <link type="text/css" rel="stylesheet" href="../styles/prettify-jsdoc.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MobileTest</title>
+    <link type="text/css" rel="stylesheet" href="../styles/prettify-jsdoc.css"/>
     <link type="text/css" rel="stylesheet" href="../styles/prettify-tomorrow.css">
     <link type="text/css" rel="stylesheet" href="../styles/tui.css">
 
     <link href="css/calendar.css" rel="stylesheet">
     <link href="css/timepicker.css" rel="stylesheet">
-    <title>데이트피커1</title>
 </head>
 <body>
 <div class="wrap" style="height:350px;">
-    <span>Close calendar when select a date: <input id="picker" type="text" size="25"/></span>
-    <button type="button" id="opener">open</button>
-
+    <!--<input id="picker" type="text" size="25"/>-->
     <div id="layer" class="layer" style="display:none;"> <!-- 기준 엘리먼트 -->
         <div class="calendar-header">
             <a href="#" class="rollover calendar-btn-prev-year">이전년도</a> <!-- 이전년 버튼 (생략가능) -->
@@ -69,34 +67,19 @@
         todayFormat: 'yyyy년 mm월 dd일 (D)'
     });
 
-    var timePicker = new tui.component.TimePicker({
-        showMeridian: true,
-        defaultHour: 13,
-        defaultMinute: 24
-    });
-
     var picker1 = new tui.component.DatePicker({
-        element: '#picker',
-        dateForm: 'yyyy년 mm월 dd일 - ',
-        date: {year: 2015, month: 11, date: 17 },
+        dateForm: 'yyyy년 mm월 dd일',
         selectableRanges: [
             [{year: 2015, month: 11, date: 17}, {year: 2016, month: 2, date: 15}],
             [{year: 2016, month: 4, date: 3}, {year: 2016, month:5, date: 1}],
             [{year: 2016, month: 3, date: 5}, {year: 2016, month:3, date: 17}],
             [{year: 2016, month: 2, date: 24}, {year: 2016, month:2, date: 26}]
         ],
-        openers: ['#opener'],
-        timePicker: timePicker
+        showAlways: true
     }, calendar);
 
-    /** Close calendar when select a date */
-    $('#layer').on('click', function(event) {
-        var $el = $(event.target);
-
-        if ($el.hasClass('selectable')) {
-            picker1.close();
-        }
-    });
+    picker1.open();
 </script>
 </body>
 </html>
+

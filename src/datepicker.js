@@ -32,7 +32,6 @@ var inArray = tui.util.inArray,
 
 /**
  * A number, or a string containing a number.
- * @api
  * @typedef {Object} dateHash
  * @property {number} year - 1970~2999
  * @property {number} month - 1~12
@@ -51,12 +50,12 @@ var inArray = tui.util.inArray,
  *      @param {string} [option.selectableClassName = 'selectable'] - for selectable date elements
  *      @param {string} [option.selectedClassName = 'selected'] - for selected date element
  *      @param {Array.<Array.<dateHash>>} [options.selectableRanges] - Selectable date ranges, See example
- *      @param {Object} [option.pos] - calendar position style vlaue
+ *      @param {Object} [option.pos] - calendar position style value
  *          @param {number} [option.pos.left] - position left of calendar
  *          @param {number} [option.pos.top] - position top of calendar
  *          @param {number} [option.pos.zIndex] - z-index of calendar
  *      @param {Object} [option.openers = [element]] - opener button list (example - icon, button, etc.)
- *      @param {boolean} [option.showAlways = false] - whether the datepicker shows always
+ *      @param {boolean} [option.showAlways = false] - whether the datepicker shows the calendar always
  *      @param {boolean} [option.useTouchEvent = true] - whether the datepicker uses touch events
  *      @param {tui.component.TimePicker} [option.timePicker] - TimePicker instance
  * @param {tui.component.Calendar} calendar - Calendar instance

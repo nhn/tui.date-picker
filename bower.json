@@ -2,7 +2,7 @@
   "name": "component-date-picker",
   "version": "1.2.0",
   "authors": [
-    "이민규 <minkyu.yi@nhnent.com>"
+    "NHNent. FE Dev team <dl_javascript@nhnent.com>"
   ],
   "license": "MIT",
   "ignore": [

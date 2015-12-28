@@ -2,8 +2,8 @@
  * These test cases are not using "TouchEvent"
  */
 'use strict';
-var DatePicker = require('../src/datePicker'),
-    TimePicker = require('../src/timePicker');
+var DatePicker = require('../src/datepicker'),
+    TimePicker = require('../src/timepicker');
 
 describe('Date Picker', function() {
     var layer1,

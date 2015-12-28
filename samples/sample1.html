@@ -78,9 +78,12 @@
     var picker1 = new tui.component.DatePicker({
         element: '#picker',
         dateForm: 'yyyy년 mm월 dd일 - ',
-        date: {year: 2015, month: 1, date: 1 },
+        date: {year: 2015, month: 11, date: 17 },
         selectableRanges: [
-            [{year:2012, month:1, date:17}, {year: 2070, month:12, date:31}]
+            [{year: 2015, month: 11, date: 17}, {year: 2016, month: 2, date: 15}],
+            [{year: 2016, month: 4, date: 3}, {year: 2016, month:5, date: 1}],
+            [{year: 2016, month: 3, date: 5}, {year: 2016, month:3, date: 17}],
+            [{year: 2016, month: 2, date: 24}, {year: 2016, month:2, date: 26}]
         ],
         openers: ['#opener'],
         timePicker: timePicker

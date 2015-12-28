@@ -164,11 +164,10 @@ var utils = {
      * @private
      */
     search: function(field, value) {
-        var end = false,
-            found = false,
+        var found = false,
             low = 0,
             high = field.length - 1,
-            index, fieldValue;
+            end, index, fieldValue;
 
         while (!found && !end) {
             index = Math.floor((low + high) / 2);

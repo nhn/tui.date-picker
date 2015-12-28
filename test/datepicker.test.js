@@ -110,7 +110,7 @@ describe('Date Picker', function() {
     });
 
     it('default date', function() {
-        var date = datepicker3.getDateObject();
+        var date = datepicker3.getDateHash();
 
         expect(date).toEqual({
             year: 1970,
@@ -135,7 +135,7 @@ describe('Date Picker', function() {
         });
 
         it('get date object', function() {
-            var obj = datepicker1.getDateObject();
+            var obj = datepicker1.getDateHash();
 
             expect(obj).toEqual({
                 year: 2014,
@@ -200,7 +200,7 @@ describe('Date Picker', function() {
         it('set date', function() {
             datepicker1.setDate('1111');
 
-            expect(datepicker1.getDateObject()).toEqual({
+            expect(datepicker1.getDateHash()).toEqual({
                 year: 2014,
                 month: 11,
                 date: 27
@@ -472,7 +472,7 @@ describe('Date Picker', function() {
                 },
                 outputDate;
             datepicker1.setDate(inputDate.year, inputDate.month, inputDate.date);
-            outputDate = datepicker1.getDateObject();
+            outputDate = datepicker1.getDateHash();
 
             expect(outputDate.year).toBe(inputDate.year);
             expect(outputDate.month).toBe(inputDate.month);
@@ -482,7 +482,7 @@ describe('Date Picker', function() {
         it('setDate - no value', function() {
             var notday;
             datepicker1.setDate();
-            notday = datepicker1.getDateObject();
+            notday = datepicker1.getDateHash();
 
             expect(notday.year).toBe(beforeYear);
             expect(notday.month).toBe(beforeMonth);
@@ -492,14 +492,14 @@ describe('Date Picker', function() {
         it('setDate - restrictive date', function() {
             var notday;
             datepicker1.setDate(1920);
-            notday = datepicker1.getDateObject();
+            notday = datepicker1.getDateHash();
 
             expect(notday.year).toBe(beforeYear);
             expect(notday.month).toBe(beforeMonth);
             expect(notday.date).toBe(beforeDate);
 
             datepicker1.setDate(1919, 7);
-            notday = datepicker1.getDateObject();
+            notday = datepicker1.getDateHash();
 
             expect(notday.year).toBe(beforeYear);
             expect(notday.month).toBe(beforeMonth);
@@ -514,11 +514,11 @@ describe('Date Picker', function() {
                 afterDate;
 
             calendar1.draw();
-            beforeDate = datepicker1.getDateObject();
+            beforeDate = datepicker1.getDateHash();
 
             datepicker1.open();
             calendar1.draw(2000, 12);
-            afterDate = datepicker1.getDateObject();
+            afterDate = datepicker1.getDateHash();
 
             expect(beforeDate).toEqual(afterDate);
         });
@@ -553,21 +553,21 @@ describe('Date Picker', function() {
             datepicker2.setDateForm('yy-mm-dd');
             datepicker2._$element.val('14-11-01');
             datepicker2._onKeydownElement(e1);
-            res1 = datepicker2.getDateObject();
+            res1 = datepicker2.getDateHash();
             expect(res1.date).not.toBe(1);
 
             // enter를 치면 동작
             datepicker2.setDateForm('yy-mm-dd');
             datepicker2._$element.val('14-11-01');
             datepicker2._onKeydownElement(e2);
-            res1 = datepicker2.getDateObject();
+            res1 = datepicker2.getDateHash();
             expect(res1.date).toBe(1);
 
             // 제한된 날짜인 경우 엔터를 처도 날짜가 바뀌지 않는다.
             datepicker2.setDateForm('yy-mm-dd');
             datepicker2._$element.val('99-04-11');
             datepicker2._onKeydownElement(e2);
-            res2 = datepicker2.getDateObject();
+            res2 = datepicker2.getDateHash();
 
             expect(res2.year).toBe(2014);
             expect(res2.month).toBe(11);
@@ -577,7 +577,7 @@ describe('Date Picker', function() {
             // 올바른 데이터는 정상적으로 동작한다.
             datepicker2._$element.val('2014-11-09');
             datepicker2._onKeydownElement(e2);
-            res3 = datepicker2.getDateObject();
+            res3 = datepicker2.getDateHash();
             expect(res3.year).toBe(2014);
             expect(res3.month).toBe(11);
             expect(res3.date).toBe(9);
@@ -591,7 +591,7 @@ describe('Date Picker', function() {
             datepicker1.open();
             prevMonthEl = datepicker1._$wrapperElement.find('.calendar-prev-month')[0];
             $(prevMonthEl).click();
-            dateObj = datepicker1.getDateObject();
+            dateObj = datepicker1.getDateHash();
 
             expect(dateObj).toEqual({
                 year: 2015,
@@ -608,7 +608,7 @@ describe('Date Picker', function() {
             datepicker1.open();
             nextMonthEl = datepicker1._$wrapperElement.find('.calendar-next-month')[0];
             $(nextMonthEl).click();
-            dateObj = datepicker1.getDateObject();
+            dateObj = datepicker1.getDateHash();
 
             expect(dateObj).toEqual({
                 year: 2015,

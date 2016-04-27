@@ -482,10 +482,10 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
         this.on('open', function() {
             this._timePicker.setTimeFromInputElement(this._$element);
             this._timePicker.on('change', onChangeTimePicker);
-        });
+        }, this);
         this.on('close', function() {
             this._timePicker.off('change', onChangeTimePicker);
-        });
+        }, this);
     },
 
     /**
@@ -1287,4 +1287,3 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
 tui.util.CustomEvents.mixin(DatePicker);
 
 module.exports = DatePicker;
-

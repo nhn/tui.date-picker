@@ -1,6 +1,6 @@
 {
   "name": "component-date-picker",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Component - DatePicker<br>It provides calendarUI for pick a date easily",
   "lincese": "MIT",
   "private": true,
@@ -34,7 +34,7 @@
   "devDependencies": {
     "browserify": "^11.2.0",
     "del": "^2.0.2",
-    "fedoc-template": "git+http://14bfd38a036366f7ca90355d202038126127bd01:x-oauth-basic@github.nhnent.com/fe/share-fedoc-template.git#develop",
+    "fedoc-template": "git+https://14bfd38a036366f7ca90355d202038126127bd01:x-oauth-basic@github.nhnent.com/fe/share-fedoc-template.git#develop",
     "gulp": "latest",
     "gulp-concat": "^2.6.0",
     "gulp-connect": "^2.2.0",
@@ -45,11 +45,10 @@
     "gulp-sourcemaps": "^1.5.2",
     "gulp-uglify": "^1.2.0",
     "gulp-util": "^3.0.7",
-    "handlebars": "^4.0.3",
     "hbsfy": "^2.4.1",
     "jasmine-core": "latest",
-    "karma": "^0.12.37",
-    "karma-browserify": "latest",
+    "karma": "^0.13.22",
+    "karma-browserify": "^5.0.4",
     "karma-browserstack-launcher": "^0.1.7",
     "karma-chrome-launcher": "latest",
     "karma-coverage": "latest",
@@ -57,46 +56,15 @@
     "karma-jasmine": "latest",
     "karma-junit-reporter": "latest",
     "karma-phantomjs-launcher": "latest",
-    "karma-requirejs": "latest",
     "karma-webdriver-launcher": "git+https://github.com/everedifice/karma-webdriver-launcher.git",
-    "phantomjs": "^1.9.19",
-    "requirejs": "latest",
+    "phantomjs-prebuilt": "latest",
     "run-sequence": "latest",
     "vinyl-buffer": "latest",
-    "vinyl-source-stream": "latest"
+    "vinyl-source-stream": "latest",
+    "watchify": "^3.7.0"
   },
   "scripts": {
-    "doc": "./node_modules/.bin/jsdoc -c conf.json"
+    "doc": "./node_modules/.bin/jsdoc -c jsdoc-conf.json"
   },
-  "author": "NHN ENTERTAINMENT - FE Dev",
-  "history": {
-    "1.2.0": {
-      "content": "Date-Time Picker",
-      "date": "2015.12",
-      "author": "NHNent. FE Dev team <dl_javascript@nhnent.com>",
-      "hasAPI": true
-    },
-    "1.1.1": {
-      "content": "Date-Time Picker",
-      "date": "2015.06",
-      "author": "NHNent. FE Dev team <dl_javascript@nhnent.com>",
-      "hasAPI": true
-    },
-    "1.1.0": {
-      "content": "Date-Time Picker",
-      "date": "2015.05",
-      "author": "NHNent. FE Dev team <dl_javascript@nhnent.com>",
-      "hasAPI": true
-    },
-    "1.0.0": {
-      "content": "Separate DatePicker",
-      "date": "2015.05",
-      "author": "NHNent. FE Dev team <dl_javascript@nhnent.com>"
-    },
-    "0.1.0": {
-      "content": "Develop",
-      "date": "2014.11",
-      "author": "NHNent. FE Dev team <dl_javascript@nhnent.com>"
-    }
-  }
+  "author": "NHN ENTERTAINMENT - FE Dev"
 }

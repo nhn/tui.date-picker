@@ -21,7 +21,7 @@ Component - DatePicker<br>It provides calendarUI for pick a date easily
 
 ## Dependency
 * jquery: ~1.8.3
-* tui-code-snippet: ~1.0.2
+* tui-code-snippet: ~1.0.4
 * tui-component-calendar: ~1.1.0
 
 ## Test environment
@@ -36,16 +36,6 @@ Component - DatePicker<br>It provides calendarUI for pick a date easily
    * Latest : `tui-component-date-picker"`
    * Each version : `tui-component-date-picker[#tag]"`
 * Download: https://github.com/nhnent/tui.component.date-picker
-
-## History
-| Version | Description | Date | Developer |
-| ---- | ---- | ---- | ---- |
-| <a href="http://nhnent.github.io/tui.component.date-picker/1.2.0/">1.2.0</a> | Ranges api | 2015.12 | NHNent. FE Dev team <dl_javascript@nhnent.com> |
-| <a href="http://nhnent.github.io/tui.component.date-picker/1.1.1/">1.1.1</a> | Namespace chagned | 2015.10 | NHNent. NHNent. FE Dev team <dl_javascript@nhnent.com> |
-| <a href="http://nhnent.github.io/tui.component.date-picker/1.1.1/">1.1.1</a> | Date-Time Picker | 2015.06 | NHNent. FE Dev team <dl_javascript@nhnent.com> |
-| <a href="http://nhnent.github.io/tui.component.date-picker/1.1.0/">1.1.0</a> | Date-Time Picker | 2015.05 | NHNent. FE Dev team <dl_javascript@nhnent.com> |
-| 1.0.0 | Separate DatePicker | 2015.05 | NHNent. FE Dev team <dl_javascript@nhnent.com>|
-| 0.1.0 | Develop | 2014.11 | NHNent. FE Dev team <dl_javascript@nhnent.com> |
 
 <br>
 ## License

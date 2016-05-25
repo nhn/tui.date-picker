@@ -294,11 +294,12 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
         }, this);
 
         this._setSelectableRanges();
-        this._setWrapperElement();
+        this._setWrapperElement(option.parentElement);
         this._setDefaultDate(option.date);
         this._setDefaultPosition(option.pos);
         this._setProxyHandlers();
-        this._bindOpenerEvent(option.openers);
+        this._setOpeners(option.openers);
+        this._bindKeydownEvent(this._$element);
         this._setTimePicker(option.timePicker);
         this.setDateForm();
         this._$wrapperElement.hide();
@@ -306,13 +307,18 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * Set wrapper element(= container)
+     * @param {HTMLElement|jQuery} [parentElement] - parent element
      * @private
      */
-    _setWrapperElement: function() {
+    _setWrapperElement: function(parentElement) {
         var $wrapperElement = this._$wrapperElement;
+        var $parentElement = $(parentElement);
 
         $wrapperElement.append(this._calendar.$element);
-        if (this._$element[0]) {
+
+        if ($parentElement[0]) {
+            $wrapperElement.appendTo($parentElement);
+        } else if (this._$element[0]) {
             $wrapperElement.insertAfter(this._$element);
         } else {
             $wrapperElement.appendTo(document.body);
@@ -917,13 +923,21 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
     },
 
     /**
-     * Bind opener-elements event
-     * @param {Array} opOpeners [option.openers] - list of opener elements
+     * Bind keydown event handler to the target element
+     * @param {jQuery} $targetEl - target element
      * @private
      */
-    _bindOpenerEvent: function(opOpeners) {
-        this._setOpeners(opOpeners);
-        this._$element.on('keydown', this._proxyHandlers.onKeydownElement);
+    _bindKeydownEvent: function($targetEl) {
+        $targetEl.on('keydown', this._proxyHandlers.onKeydownElement);
+    },
+
+    /**
+     * Unbind keydown event handler from the target element
+     * @param {jQuery} $targetEl - target element
+     * @private
+     */
+    _unbindKeydownEvent: function($targetEl) {
+        $targetEl.off('keydown', this._proxyHandlers.onKeydownElement);
     },
 
     /**
@@ -1281,6 +1295,24 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
      */
     getTimePicker: function() {
         return this._timePicker;
+    },
+
+    /**
+     * Set input element of this instance
+     * @param {HTMLElement|jQuery} element - input element
+     */
+    setElement: function(element) {
+        var $currentEl = this._$element;
+        var $newEl = $(element);
+
+        if ($currentEl[0]) {
+            this.removeOpener($currentEl);
+            this._unbindKeydownEvent($currentEl);
+        }
+
+        this.addOpener($newEl);
+        this._bindKeydownEvent($newEl);
+        this._$element = $newEl;
     }
 });
 

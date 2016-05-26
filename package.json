@@ -65,7 +65,9 @@
     "watchify": "^3.7.0"
   },
   "scripts": {
-    "doc": "./node_modules/.bin/jsdoc -c jsdoc-conf.json"
+    "doc": "./node_modules/.bin/jsdoc -c jsdoc-conf.json",
+    "test": "karma start karma.conf.js",
+    "test-remote": "karma start karma.conf.remote.js"
   },
   "author": "NHN ENTERTAINMENT - FE Dev"
 }

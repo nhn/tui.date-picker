@@ -43,12 +43,16 @@ var inArray = tui.util.inArray,
  * You can get a date from 'getYear', 'getMonth', 'getDayInMonth', 'getDateHash'
  * @constructor
  * @param {Object} option - options for DatePicker
- *      @param {HTMLElement|string} option.element - input element(or selector) of DatePicker
+ *      @param {HTMLElement|string|jQuery} option.element - input element(or selector) of DatePicker
  *      @param {dateHash} [option.date = today] - initial date object
  *      @param {string} [option.dateForm = 'yyyy-mm-dd'] - format of date string
  *      @param {string} [option.defaultCentury = 20] - if year-format is yy, this value is prepended automatically.
+ *      @param {HTMLElement|string|jQuery} [option.parentElement] - The wrapper element will be inserted into
+ *           this element. (since 1.3.0)
  *      @param {string} [option.selectableClassName = 'selectable'] - for selectable date elements
  *      @param {string} [option.selectedClassName = 'selected'] - for selected date element
+        @param {boolean} [option.enableSetDateByEnterKey = true] - Whether set date from the input value
+            when the 'Enter' key pressed (since 1.3.0)
  *      @param {Array.<Array.<dateHash>>} [options.selectableRanges] - Selectable date ranges, See example
  *      @param {Object} [option.pos] - calendar position style value
  *          @param {number} [option.pos.left] - position left of calendar
@@ -112,6 +116,7 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
             selectableClassName: 'selectable',
             selectedClassName: 'selected',
             selectableRanges: [],
+            enableSetDateByEnterKey: true,
             showAlways: false,
             useTouchEvent: true
         }, option);
@@ -198,6 +203,14 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
          * @private
          */
         this._selectedClassName = option.selectedClassName;
+
+        /**
+         * Whether set date from the input value when the 'Enter' key pressed
+         * @type {Boolean}
+         * @since 1.3.0
+         * @private
+         */
+        this._enableSetDateByEnterKey = option.enableSetDateByEnterKey;
 
         /**
          * It is start timestamps from this._ranges
@@ -289,9 +302,7 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
      * @private
      */
     _initializeDatePicker: function(option) {
-        this._ranges = tui.util.filter(this._ranges, function(range) {
-            return (this._isValidDate(range[0]) && this._isValidDate(range[1]));
-        }, this);
+        this._ranges = this._filterValidRanges(this._ranges);
 
         this._setSelectableRanges();
         this._setWrapperElement(option.parentElement);
@@ -303,6 +314,18 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
         this._setTimePicker(option.timePicker);
         this.setDateForm();
         this._$wrapperElement.hide();
+    },
+
+    /**
+     * Looks through each value in the ranges, returning an array of only valid ranges.
+     * @param {Array.<Array.<dateHash>>} ranges - ranges
+     * @returns {Array.<Array.<dateHash>>} filtered ranges
+     * @private
+     */
+    _filterValidRanges: function(ranges) {
+        return tui.util.filter(ranges, function(range) {
+            return (this._isValidDate(range[0]) && this._isValidDate(range[1]));
+        }, this);
     },
 
     /**
@@ -928,7 +951,9 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
      * @private
      */
     _bindKeydownEvent: function($targetEl) {
-        $targetEl.on('keydown', this._proxyHandlers.onKeydownElement);
+        if (this._enableSetDateByEnterKey) {
+            $targetEl.on('keydown', this._proxyHandlers.onKeydownElement);
+        }
     },
 
     /**
@@ -937,7 +962,9 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
      * @private
      */
     _unbindKeydownEvent: function($targetEl) {
-        $targetEl.off('keydown', this._proxyHandlers.onKeydownElement);
+        if (this._enableSetDateByEnterKey) {
+            $targetEl.off('keydown', this._proxyHandlers.onKeydownElement);
+        }
     },
 
     /**
@@ -1032,6 +1059,7 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * Remove a range
+     * @api
      * @param {dateHash} startHash - Start dateHash
      * @param {dateHash} endHash - End dateHash
      * @since 1.2.0
@@ -1054,6 +1082,17 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
         });
         this._setSelectableRanges();
         this._calendar.draw();
+    },
+
+    /**
+     * Set selectable ranges
+     * @api
+     * @param {Array.<Array.<dateHash>>} ranges - The same with the selectableRanges option values
+     * @since 1.3.0
+     */
+    setRanges: function(ranges) {
+        this._ranges = this._filterValidRanges(ranges);
+        this._setSelectableRanges();
     },
 
     /**
@@ -1299,7 +1338,9 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * Set input element of this instance
+     * @api
      * @param {HTMLElement|jQuery} element - input element
+     * @since 1.3.0
      */
     setElement: function(element) {
         var $currentEl = this._$element;
@@ -1312,6 +1353,7 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
 
         this.addOpener($newEl);
         this._bindKeydownEvent($newEl);
+        this._setDateFromString($newEl.val());
         this._$element = $newEl;
     }
 });

@@ -45,8 +45,6 @@
     "gulp-sourcemaps": "^1.5.2",
     "gulp-uglify": "^1.2.0",
     "gulp-util": "^3.0.7",
-    "handlebars": "^4.0.5",
-    "hbsfy": "^2.4.1",
     "jasmine-core": "latest",
     "karma": "^0.13.22",
     "karma-browserify": "^5.0.4",

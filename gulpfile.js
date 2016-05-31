@@ -7,7 +7,6 @@ var source = require('vinyl-source-stream');
 var sourceMap = require('gulp-sourcemaps');
 var buffer = require('vinyl-buffer');
 var KarmaServer = require('karma').Server;
-var hbsfy = require('hbsfy');
 var uglify = require('gulp-uglify');
 var gutil = require('gulp-util');
 var concat = require('gulp-concat');
@@ -33,8 +32,7 @@ gulp.task('bundle', function() {
         debug: true
     });
 
-    return b.transform(hbsfy)
-        .bundle()
+    return b.bundle()
         .on('error', function(err) {
             console.log(err.message);
             this.emit('end');

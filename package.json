@@ -45,7 +45,6 @@
     "gulp-sourcemaps": "^1.5.2",
     "gulp-uglify": "^1.2.0",
     "gulp-util": "^3.0.7",
-    "hbsfy": "^2.4.1",
     "jasmine-core": "latest",
     "karma": "^0.13.22",
     "karma-browserify": "^5.0.4",
@@ -64,7 +63,9 @@
     "watchify": "^3.7.0"
   },
   "scripts": {
-    "doc": "./node_modules/.bin/jsdoc -c jsdoc-conf.json"
+    "doc": "./node_modules/.bin/jsdoc -c jsdoc-conf.json",
+    "test": "karma start karma.conf.js",
+    "test-remote": "karma start karma.conf.remote.js"
   },
   "author": "NHN ENTERTAINMENT - FE Dev"
 }

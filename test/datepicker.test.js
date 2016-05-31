@@ -2,8 +2,8 @@
  * These test cases are not using "TouchEvent"
  */
 'use strict';
-var DatePicker = require('../src/datepicker'),
-    TimePicker = require('../src/timepicker');
+var DatePicker = require('../src/datepicker');
+var TimePicker = require('../src/timepicker');
 
 describe('Date Picker', function() {
     var layer1,
@@ -712,6 +712,138 @@ describe('Version 1.2.0 apis', function() {
             });
 
             expect(result).toBe(false);
+        });
+    });
+});
+
+describe('Version 1.3.0 APIs', function() {
+    var $inputEl, calendar;
+
+    beforeEach(function() {
+        $inputEl = setFixtures('<input type="text">');
+        calendar = new tui.component.Calendar({
+            element: $('<div>')
+        });
+    });
+
+    describe('option.parentElement: ', function() {
+        it('if does not exist, _$wrapperElement should be inserted to next to input element', function() {
+            var datePicker = new DatePicker({
+                element: $inputEl
+            }, calendar);
+
+            expect(datePicker._$wrapperElement.prev()[0]).toBe($inputEl[0]);
+        })
+
+        it('if exists, _$wrapperElement should be insered into the specified element', function() {
+            var $parentEl = setFixtures('<div>');
+            var datePicker = new DatePicker({
+                element: $inputEl,
+                parentElement: $parentEl
+            }, calendar);
+
+            expect(datePicker._$wrapperElement.parent()[0]).toBe($parentEl[0]);
+        })
+    });
+
+    describe('option.enableSetDateByEnterKey: ', function() {
+        var keydownEnterEvent = $.Event('keydown', {keyCode: 13}); // eslint-disable-line
+
+        it('if true(default), _setDateFromString() should be called when enter key pressed', function() {
+            var datePicker = new DatePicker({
+                element: $inputEl
+            }, calendar);
+            var setDateSpy = spyOn(datePicker, '_setDateFromString');
+
+            $inputEl.trigger(keydownEnterEvent);
+
+            expect(setDateSpy).toHaveBeenCalled();
+        });
+
+        it('if false, _setDateFromString() should not be called when enter key pressed', function() {
+            var datePicker = new DatePicker({
+                enableSetDateByEnterKey: false,
+                element: $inputEl
+            }, calendar);
+            var setDateSpy = spyOn(datePicker, '_setDateFromString');
+
+            $inputEl.trigger(keydownEnterEvent);
+
+            expect(setDateSpy).not.toHaveBeenCalled();
+        });
+    });
+
+    describe('setElement():', function() {
+        var datePicker, $newEl;
+
+        beforeEach(function() {
+            datePicker = new DatePicker({
+                element: $inputEl
+            }, calendar)
+            $newEl = $('<input type="text">');
+        });
+
+        it('current element should unbind keydown event and be removed from openers', function() {
+            var spyRemoveOpener = spyOn(datePicker, 'removeOpener');
+            var spyUnbindEvent = spyOn(datePicker, '_unbindKeydownEvent');
+
+            datePicker.setElement($newEl);
+
+            expect(spyRemoveOpener).toHaveBeenCalledWith($inputEl);
+            expect(spyUnbindEvent).toHaveBeenCalledWith($inputEl);
+        });
+
+        it('new element should bind keydown event and be added to openers', function() {
+            var spyAddOpener = spyOn(datePicker, 'addOpener');
+            var spyBindEvent = spyOn(datePicker, '_bindKeydownEvent');
+
+            datePicker.setElement($newEl);
+
+            expect(spyAddOpener).toHaveBeenCalledWith($newEl);
+            expect(spyBindEvent).toHaveBeenCalledWith($newEl);
+        });
+
+        it('date value should be set using the value of new element', function() {
+            var spySetDate = spyOn(datePicker, '_setDateFromString');
+
+            datePicker.setElement($newEl);
+
+            expect(spySetDate).toHaveBeenCalledWith($newEl.val());
+        });
+
+        it('this._$element should be changed to new element', function() {
+            datePicker.setElement($newEl);
+            expect(datePicker._$element[0]).toBe($newEl[0]);
+        });
+    });
+
+    describe('setRanges():', function() {
+        var datePicker;
+
+        beforeEach(function() {
+            datePicker = new DatePicker({
+                element: $inputEl
+            }, calendar)
+        });
+
+        it('filter given ranges with valid dates and set this._ranges', function() {
+            var validRanges = [[
+                {year: 2015, month: 1, date: 1},
+                {year: 2015, month: 2, date: 1}
+            ]];
+            var spyFilter = spyOn(datePicker, '_filterValidRanges').and.returnValue(validRanges);
+
+            datePicker.setRanges();
+
+            expect(datePicker._ranges).toBe(validRanges);
+        });
+
+        it('should call _setSelectableRanges', function() {
+            var spy = spyOn(datePicker, '_setSelectableRanges');
+
+            datePicker.setRanges([]);
+
+            expect(spy).toHaveBeenCalled();
         });
     });
 });

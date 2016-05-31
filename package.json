@@ -1,9 +1,8 @@
 {
-  "name": "component-date-picker",
-  "version": "1.2.1",
+  "name": "tui-component-date-picker",
+  "version": "1.3.0",
   "description": "Component - DatePicker<br>It provides calendarUI for pick a date easily",
   "lincese": "MIT",
-  "private": true,
   "featureList": [
     "Date Picker",
     "* It would be possible for picking a specific date & time",
@@ -46,6 +45,7 @@
     "gulp-uglify": "^1.2.0",
     "gulp-util": "^3.0.7",
     "jasmine-core": "latest",
+    "jsdoc": "git+https://github.com/jsdoc3/jsdoc.git",
     "karma": "^0.13.22",
     "karma-browserify": "^5.0.4",
     "karma-browserstack-launcher": "^0.1.7",

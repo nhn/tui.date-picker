@@ -1,6 +1,5 @@
 {
-  "name": "component-date-picker",
-  "version": "1.2.1",
+  "name": "tui-component-date-picker",
   "authors": [
     "NHNent. FE Dev team <dl_javascript@nhnent.com>"
   ],

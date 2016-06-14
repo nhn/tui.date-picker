@@ -24,8 +24,8 @@
   ],
   "dependencies": {
     "jquery" : "~1.8.3",
-    "tui-code-snippet" : "~1.0.4",
-    "tui-component-calendar" : "~1.1.0"
+    "tui-code-snippet" : "^1.2.0",
+    "tui-component-calendar" : "^1.1.2"
   },
   "devDependencies": {
     "jasmine-jquery": "~2.1.0"

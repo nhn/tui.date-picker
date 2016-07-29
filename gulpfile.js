@@ -28,8 +28,7 @@ gulp.task('connect', function() {
 
 gulp.task('bundle', function() {
     var b = browserify({
-        entries: 'index.js',
-        debug: true
+        entries: 'index.js'
     });
 
     return b.bundle()
@@ -52,7 +51,7 @@ gulp.task('compress', ['bundle'], function() {
 
 gulp.task('concat', ['compress'], function() {
     gulp.src(filename + '.js')
-        .pipe(concat(filename + '.min.js'))
+        .pipe(concat(filename + '.js'))
         .pipe(gulp.dest('./samples/js/'));
 });
 

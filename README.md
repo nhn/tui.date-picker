@@ -17,8 +17,6 @@ Component - DatePicker<br>It provides calendarUI for pick a date easily
 * Tutorial(English) : https://github.com/nhnent/tui.component.date-picker/wiki/How-to-use-DatePicker
 * Sample - https://nhnent.github.io/tui.component.date-picker/latest/tutorial-sample1.html
 
-
-
 ## Dependency
 * jquery: ~1.8.3
 * tui-code-snippet: ~1.2.0
@@ -30,13 +28,11 @@ Component - DatePicker<br>It provides calendarUI for pick a date easily
 	* Chrome
 	* Firefox
 
-
 ## Download/Install
 * Bower:
-   * Latest : `tui-component-date-picker`
-   * Each version : `tui-component-date-picker[#tag]`
+   * Latest : `bower install tui-component-date-picker`
+   * Each version : `bower install tui-component-date-picker[#tag]`
 * Download: https://github.com/nhnent/tui.component.date-picker
 
-<br>
 ## License
 [MIT](LICENSE)

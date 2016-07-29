@@ -46,7 +46,7 @@
     "gulp-util": "^3.0.7",
     "jasmine-core": "latest",
     "jsdoc": "git+https://github.com/jsdoc3/jsdoc.git",
-    "karma": "^0.13.22",
+    "karma": "latest",
     "karma-browserify": "^5.0.4",
     "karma-browserstack-launcher": "^0.1.7",
     "karma-chrome-launcher": "latest",

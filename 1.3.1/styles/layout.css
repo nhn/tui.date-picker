@@ -355,8 +355,9 @@ section article .readme {
     background-color: #f9f9f9;
     border: 1px solid #4b96e6;
     border-radius: 2px;
-    font-size:11px;
+    font-size:13px;
     margin-top:10px;
+    padding-top: 30px
 }
 
 section article .readme h1 {
@@ -368,7 +369,7 @@ section article .readme h1 {
 }
 
 section article .readme p {
-    padding: 5px 30px;
+    padding: 10px 30px 20px 30px;
     color: #0082c6;
 }
 
@@ -380,9 +381,15 @@ section article .readme h2 {
     margin: 5px 20px;
     padding-bottom: 3px;
     border-bottom: 1px solid #dedede;
-    font-size: 15px;
+    font-size: 20px;
 }
 
+section article .readme h3 {
+    font-size: 17px;
+    color: #666;
+    margin: 5px 32px;
+    padding-bottom: 3px;
+}
 section article .readme ul {
     padding: 5px 30px 20px;
 }

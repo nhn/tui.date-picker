@@ -13,5 +13,11 @@
   },
   "sample5": {
     "title": "Spinbox"
+  },
+  "sample6": {
+    "title": "DatePicker - Range (Default)"
+  },
+  "sample7": {
+    "title": "DatePicker - Range (Select start & end date)"
   }
 }

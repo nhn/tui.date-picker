@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title>datepicker</title>
+        <link type="text/css" rel="stylesheet" href="../styles/prettify-jsdoc.css" />
+        <link type="text/css" rel="stylesheet" href="../styles/prettify-tomorrow.css">
+        <link type="text/css" rel="stylesheet" href="../styles/tui.css">
+        <link href="css/calendar.css" rel="stylesheet">
+        <link href="css/timepicker.css" rel="stylesheet">
+    </head>
+
+    <body>
+        <div class="wrap" style="height:350px;">
+
+            <!-- Shared layer element -->
+            <div id="layer" class="layer"></div>
+
+            <h3>Pick Date</h3>
+            <!-- Draw default datepicker element -->
+            <input id="datepicker-picker" type="text" />
+            <button id="datepicker-opener" type="button">open</button>
+            <div id="datepicker-layer" class="layer" style="display:none;"></div>
+
+            <h3>Pick Month</h3>
+            <!-- Draw default monthpicker element -->
+            <input id="monthpicker-picker" type="text" />
+            <button id="monthpicker-opener" type="button">open</button>
+            <div id="monthpicker-layer" class="layer" style="display:none;"></div>
+
+            <h3>Pick Year</h3>
+            <!-- Draw default monthpicker element -->
+            <input id="yearpicker-picker" type="text" />
+            <button id="yearpicker-opener" type="button">open</button>
+            <div id="yearpicker-layer" class="layer" style="display:none;"></div>
+
+        </div>
+
+        <div class="codeArea"></div>
+
+        <script type="text/javascript" src="lib/jquery.min.js"></script>
+        <script type="text/javascript" src="lib/code-snippet.js"></script>
+        <script type="text/javascript" src="lib/calendar.min.js"></script>
+        <script type="text/javascript" src="js/date-picker.js"></script>
+
+        <script src="../scripts/prettify/prettify.js"></script>
+        <script src="../scripts/prettify/lang-css.js"></script>
+        <script src="../scripts/samplecode.js"></script>
+        <script class="serviceCode">
+
+            var calendar = new tui.component.Calendar({
+                element: '#layer'
+            });
+
+            var datepicker = new tui.component.DatePicker({
+                element: '#datepicker-picker',
+                dateForm: 'yyyy년 mm월 dd일',
+                selectableRanges: [
+                    [{year: 2016, month: 9, date: 1}, {year: 2016, month: 10, date: 3}],
+                    [{year: 2017, month: 2, date: 22}, {year: 2017, month: 3, date: 5}]
+                ],
+                openers: ['#datepicker-opener']
+            }, calendar);
+
+            var monthpicker = new tui.component.DatePicker({
+                element: '#monthpicker-picker',
+                dateForm: 'yyyy-mm',
+                selectableRanges: [
+                    [{year: 2015, month: 2}, {year: 2016, month: 2}],
+                    [{year: 2016, month: 5}, {year: 2016, month: 7}],
+                    [{year: 2018, month: 3}, {year: 2025, month: 10}]
+                ],
+                openers: ['#monthpicker-opener']
+            }, calendar);
+
+            var yearpicker = new tui.component.DatePicker({
+                element: '#yearpicker-picker',
+                dateForm: 'yyyy',
+                selectableRanges: [
+                    [{year: 2010}, {year: 2025}],
+                    [{year: 2030}, {year: 2035}]
+                ],
+                openers: ['#yearpicker-opener']
+            }, calendar);
+
+        </script>
+    </body>
+</html>

@@ -1,15 +1,20 @@
 /**
- * Created by nhnent on 15. 5. 14..
  * @fileoverview This component provides a calendar for picking a date & time.
  * @author NHN ent FE dev <dl_javascript@nhnent.com> <minkyu.yi@nhnent.com>
- * @dependency jquery-1.8.3, code-snippet-1.0.2, component-calendar-1.0.1, timePicker.js
  */
-
 'use strict';
 
 var utils = require('./utils');
 
-var inArray = tui.util.inArray,
+var util = tui.util;
+var extend = util.extend;
+var bind = util.bind;
+var forEach = util.forEach;
+var isUndefined = util.isUndefined;
+var isNumber = util.isNumber;
+var compareJSON = util.compareJSON;
+
+var inArray = util.inArray,
     formatRegExp = /yyyy|yy|mm|m|dd|d/gi,
     mapForConverting = {
         yyyy: {expression: '(\\d{4}|\\d{2})', type: 'year'},
@@ -25,9 +30,12 @@ var inArray = tui.util.inArray,
         MAX_YEAR: 2999,
         MONTH_DAYS: [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
         WRAPPER_TAG: '<div style="position:absolute;"></div>',
-        MIN_EDGE: +new Date(0),
-        MAX_EDGE: +new Date(2999, 11, 31),
-        YEAR_TO_MS: 31536000000
+        MIN_EDGE: Number(new Date(0)),
+        MAX_EDGE: Number(new Date(2999, 11, 31)),
+        YEAR_TO_MS: 31536000000,
+        LAYER: ['date', 'month', 'year'],
+        RELATIVE_MONTH_VALUE_KEY: 'relativeMonthValue',
+        CLICKABLE_CLASSNAME: 'clickable'
     };
 
 /**
@@ -107,10 +115,10 @@ var inArray = tui.util.inArray,
  *       }
  *   });
  */
-var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
+var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
     init: function(option, calendar) {
         // set defaults
-        option = tui.util.extend({
+        option = extend({
             dateForm: 'yyyy-mm-dd ',
             defaultCentury: '20',
             selectableClassName: 'selectable',
@@ -118,7 +126,11 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
             selectableRanges: [],
             enableSetDateByEnterKey: true,
             showAlways: false,
-            useTouchEvent: true
+            useTouchEvent: true,
+            disabledClassName: 'disabled',
+            useToggledOpener: false,
+            layerDepth: 'year',
+            useNavigatingDate: true
         }, option);
 
         /**
@@ -268,6 +280,44 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
         this._proxyHandlers = {};
 
         /**
+         * Index of shown layer
+         * @type {number}
+         */
+        this._shownLayerIdx = 0;
+
+        /**
+         * State of picker enable
+         * @type {boolean}
+         * @private
+         * @since 1.4.0
+         */
+        this._enabledState = true;
+
+        /**
+         * Class name for disabled date element
+         * @type {string}
+         * @private
+         * @since 1.4.0
+         */
+        this._disabledClassName = option.disabledClassName;
+
+        /**
+         * Whether using navigating date or not
+         * @type {boolean}
+         * @private
+         * @since 1.4.0
+         */
+        this._useNavigatingDate = option.useNavigatingDate;
+
+        /**
+         * Whether toggling opener or not
+         * @type {boolean}
+         * @private
+         * @since 1.4.0
+         */
+        this._useToggledOpener = option.useToggledOpener;
+
+        /**
          * Whether the datepicker shows always
          * @api
          * @type {boolean}
@@ -304,6 +354,7 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
     _initializeDatePicker: function(option) {
         this._ranges = this._filterValidRanges(this._ranges);
 
+        this._detachCalendarEvent();
         this._setSelectableRanges();
         this._setWrapperElement(option.parentElement);
         this._setDefaultDate(option.date);
@@ -323,9 +374,27 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
      * @private
      */
     _filterValidRanges: function(ranges) {
-        return tui.util.filter(ranges, function(range) {
-            return (this._isValidDate(range[0]) && this._isValidDate(range[1]));
+        var startHash, endHash;
+
+        return util.filter(ranges, function(range) {
+            startHash = range[0];
+            endHash = range[1];
+            this._setHashInRange(startHash, endHash);
+
+            return (this._isValidDate(startHash) && this._isValidDate(endHash));
         }, this);
+    },
+
+    /**
+     * Detach event on calendar
+     * @private
+     */
+    _detachCalendarEvent: function() {
+        this._calendar.detachEventToBody();
+
+        if (!this._useNavigatingDate) {
+            this._calendar.detachEventToTitle();
+        }
     },
 
     /**
@@ -354,7 +423,7 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
      * @private
      */
     _setDefaultDate: function(opDate) {
-        var isNumber = tui.util.isNumber;
+        var isNumber = util.isNumber;
 
         if (!opDate) {
             this._date = utils.getToday();
@@ -372,13 +441,17 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
      * @param {Object} opPos [option.pos] - user setting: position(left, top, zIndex)
      * @private
      */
+    /*eslint-disable complexity*/
     _setDefaultPosition: function(opPos) {
-        var pos = this._pos = opPos || {},
-            bound = this._getBoundingClientRect();
+        var pos = this._pos = opPos || {};
+        var bound = this._getBoundingClientRect();
 
-        pos.left = pos.left || bound.left || 0;
-        pos.top = pos.top || bound.bottom || 0;
-        pos.zIndex = pos.zIndex || 9999;
+        pos.left = (!isUndefined(pos.left) && isNumber(pos.left)) ?
+                    pos.left : (bound.left || 0);
+        pos.top = (!isUndefined(pos.top) && isNumber(pos.top)) ?
+                    pos.top : (bound.bottom || 0);
+        pos.zIndex = (!isUndefined(pos.zIndex) && isNumber(pos.zIndex)) ?
+                    pos.zIndex : 9999;
     },
 
     /**
@@ -389,7 +462,7 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
         this._startTimes = [];
         this._endTimes = [];
 
-        tui.util.forEach(this._ranges, function(range) {
+        forEach(this._ranges, function(range) {
             this._updateTimeRange({
                 start: utils.getTime(range[0]),
                 end: utils.getTime(range[1])
@@ -482,7 +555,7 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
      */
     _setOpeners: function(opOpeners) {
         this.addOpener(this._$element);
-        tui.util.forEach(opOpeners, function(opener) {
+        forEach(opOpeners, function(opener) {
             this.addOpener(opener);
         }, this);
     },
@@ -506,7 +579,7 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
      * @private
      */
     _bindCustomEventWithTimePicker: function() {
-        var onChangeTimePicker = tui.util.bind(this.setDate, this);
+        var onChangeTimePicker = bind(this.setDate, this);
 
         this.on('open', function() {
             this._timePicker.setTimeFromInputElement(this._$element);
@@ -524,7 +597,7 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
      * @private
      */
     _isValidYear: function(year) {
-        return tui.util.isNumber(year) && year > CONSTANTS.MIN_YEAR && year < CONSTANTS.MAX_YEAR;
+        return isNumber(year) && year > CONSTANTS.MIN_YEAR && year < CONSTANTS.MAX_YEAR;
     },
 
     /**
@@ -534,12 +607,12 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
      * @private
      */
     _isValidMonth: function(month) {
-        return tui.util.isNumber(month) && month > 0 && month < 13;
+        return isNumber(month) && month > 0 && month < 13;
     },
 
     /**
      * Check validation of values in a date object having year, month, day-in-month
-     * @param {dateHash} dateHash - dateHash
+     * @param {Object} datehash - datehash
      * @returns {boolean} - whether the date object is valid or not
      * @private
      */
@@ -550,19 +623,20 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
             return false;
         }
 
-        year = datehash.year;
-        month = datehash.month;
-        date = datehash.date;
+        year = datehash.year || this._date.year;
+        month = datehash.month || this._date.month;
+        date = datehash.date || this._date.date;
         isLeapYear = (year % 4 === 0) && (year % 100 !== 0) || (year % 400 === 0);
+
         if (!this._isValidYear(year) || !this._isValidMonth(month)) {
             return false;
         }
 
         lastDayInMonth = CONSTANTS.MONTH_DAYS[month];
         if (isLeapYear && month === 2) {
-                lastDayInMonth = 29;
+            lastDayInMonth = 29;
         }
-        isBetween = !!(tui.util.isNumber(date) && (date > 0) && (date <= lastDayInMonth));
+        isBetween = !!(isNumber(date) && (date > 0) && (date <= lastDayInMonth));
 
         return isBetween;
     },
@@ -576,12 +650,14 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
     _isOpener: function(target) {
         var result = false;
 
-        tui.util.forEach(this._openers, function(opener) {
+        forEach(this._openers, function(opener) {
             if (target === opener || $.contains(opener, target)) {
                 result = true;
-                return false;
+
+                return;
             }
         });
+
         return result;
     },
 
@@ -620,6 +696,7 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
 
         bound = el.getBoundingClientRect();
         ceil = Math.ceil;
+
         return {
             left: ceil(bound.left),
             top: ceil(bound.top),
@@ -636,6 +713,8 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
     _setDateFromString: function(str) {
         var date = this._extractDate(str);
 
+        date = extend({}, this._date, date);
+
         if (date && this._isSelectable(date)) {
             if (this._timePicker) {
                 this._timePicker.setTimeFromInputElement(this._$element);
@@ -648,7 +727,7 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * Return formed date-string from date object
-     * @return {string} - formed date-string
+     * @returns {string} - formed date-string
      * @private
      */
     _formed: function() {
@@ -692,9 +771,17 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
 
         regExp.lastIndex = 0;
         if (regExp.test(str)) {
-            resultDate[formOrder[0]] = Number(RegExp.$1);
-            resultDate[formOrder[1]] = Number(RegExp.$2);
-            resultDate[formOrder[2]] = Number(RegExp.$3);
+            if (formOrder[0]) {
+                resultDate[formOrder[0]] = Number(RegExp.$1);
+            }
+
+            if (formOrder[1]) {
+                resultDate[formOrder[1]] = Number(RegExp.$2);
+            }
+
+            if (formOrder[2]) {
+                resultDate[formOrder[2]] = Number(RegExp.$3);
+            }
         } else {
             return false;
         }
@@ -707,7 +794,7 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
     },
 
     /**
-     * Whether a dateHash is selectable
+     * Whether a dateHash is selectable for date
      * @param {dateHash} dateHash - dateHash
      * @returns {boolean} - Whether a dateHash is selectable
      * @private
@@ -721,9 +808,9 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
         }
 
         startTimes = this._startTimes;
-        timestamp = utils.getTime(dateHash);
 
         if (startTimes.length) {
+            timestamp = utils.getTime(dateHash);
             result = this._searchEndTime(timestamp);
             startTime = startTimes[result.index];
             inRange = result.found || (timestamp >= startTime);
@@ -733,13 +820,61 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
     },
 
     /**
+     * Whether a dateHash is selectable on year & month layer
+     * @param {dateHash} dateHash - dateHash
+     * @param {boolean} isYear - Whether year layer or not
+     * @returns {boolean} - Whether a dateHash is selectable
+     * @private
+     */
+    _isSelectableYearAndMonth: function(dateHash, isYear) {
+        var shownDateTime = utils.getTime(dateHash);
+        var cnt = 0;
+        var rangeStart, rangeEnd, startTime, endTime;
+
+        forEach(this._ranges, function(range) {
+            rangeStart = extend({}, range[0]);
+            rangeEnd = extend({}, range[1]);
+
+            rangeStart.date = 1;
+            rangeEnd.date = utils.getLastDate(rangeEnd.year, rangeEnd.month);
+
+            if (isYear) {
+                rangeStart.month = 1;
+                rangeEnd.month = 12;
+            }
+
+            startTime = utils.getTime(rangeStart);
+            endTime = utils.getTime(rangeEnd);
+
+            if ((startTime <= shownDateTime) &&
+                (shownDateTime <= endTime)) {
+                cnt += 1;
+            }
+        });
+
+        return !!(cnt);
+    },
+
+    /**
      * Set selectable-class-name to selectable date element.
      * @param {HTMLElement|jQuery} element - date element
      * @param {{year: number, month: number, date: number}} dateHash - date object
      * @private
      */
     _setSelectableClassName: function(element, dateHash) {
-        if (this._isSelectable(dateHash)) {
+        var className = element.attr('class');
+        var layer = CONSTANTS.LAYER;
+        var isSelectable;
+
+        if (className.indexOf(layer[0]) > -1) {
+            isSelectable = this._isSelectable(dateHash, element);
+        } else if (className.indexOf(layer[1]) > -1) {
+            isSelectable = this._isSelectableYearAndMonth(dateHash);
+        } else if (className.indexOf(layer[2]) > -1) {
+            isSelectable = this._isSelectableYearAndMonth(dateHash, true);
+        }
+
+        if (isSelectable) {
             $(element).addClass(this._selectableClassName);
         }
     },
@@ -772,6 +907,7 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
         if (this._timePicker) {
             timeString = this._timePicker.getTime();
         }
+
         this._$element.val(dateString + timeString);
     },
 
@@ -799,8 +935,7 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
      * @private
      */
     _setProxyHandlers: function() {
-        var proxies = this._proxyHandlers,
-            bind = tui.util.bind;
+        var proxies = this._proxyHandlers;
 
         // Event handlers for element
         proxies.onMousedownDocument = bind(this._onMousedownDocument, this);
@@ -847,27 +982,28 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
      * @private
      */
     _onClickCalendar: function(event) {
-        var target = event.target,
-            className = target.className,
-            value = Number((target.innerText || target.textContent || target.nodeValue)),
-            shownDate,
-            relativeMonth,
-            date;
+        var target = event.target;
+        var value = (target.innerText || target.textContent || target.nodeValue);
+        var shownLayerIdx = this._calendar.shownLayerIdx;
+        var relativeMonth = $(target).data(CONSTANTS.RELATIVE_MONTH_VALUE_KEY) || 0;
+        var shownDate = this._calendar.getDate();
+        var startLayerIdx = this._shownLayerIdx;
+        var dateHash;
 
-        if (value && !isNaN(value)) {
-            if (className.indexOf('prev-month') > -1) {
-                relativeMonth = -1;
-            } else if (className.indexOf('next-month') > -1) {
-                relativeMonth = 1;
-            } else {
-                relativeMonth = 0;
+        shownDate.date = this._date.date;
+        dateHash = utils.getRelativeDate(0, relativeMonth, 0, shownDate);
+
+        if (startLayerIdx === shownLayerIdx) {
+            if (!startLayerIdx) { // date layer
+                dateHash.date = Number(value);
             }
 
-            shownDate = this._calendar.getDate();
-            shownDate.date = value;
-            date = utils.getRelativeDate(0, relativeMonth, 0, shownDate);
-            this.setDate(date.year, date.month, date.date);
+            this.setDate(dateHash.year, dateHash.month, dateHash.date);
+        } else { // move previous layer
+            this._calendar.draw(dateHash.year, dateHash.month, false, shownLayerIdx - 1);
         }
+
+        console.log('?');
     },
 
     /**
@@ -875,7 +1011,11 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
      * @private
      */
     _onClickOpener: function() {
-        this.open();
+        if (this._useToggledOpener && this.isOpened()) {
+            this.close();
+        } else {
+            this.open();
+        }
     },
 
     /**
@@ -894,10 +1034,11 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
      * @see {tui.component.Calendar.draw}
      */
     _onDrawCalendar: function(eventData) {
+        var date = this._date;
         var dateHash = {
-            year: eventData.year,
-            month: eventData.month,
-            date: eventData.date
+            year: eventData.year || date.date,
+            month: eventData.month || date.month,
+            date: eventData.date || date.date
         };
         this._setSelectableClassName(eventData.$dateContainer, dateHash);
         this._setSelectedClassName(eventData.$dateContainer, dateHash);
@@ -911,6 +1052,7 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
     _onAfterDrawCalendar: function() {
         this._showOnlyValidButtons();
         this._bindOnClickCalendar();
+        this._removeClassNameOnTitle();
     },
 
     /**
@@ -918,30 +1060,17 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
      * @private
      */
     _showOnlyValidButtons: function() {
-        var $header = this._calendar.$header,
-            $prevYearBtn = $header.find('[class*="btn-prev-year"]').hide(),
-            $prevMonthBtn = $header.find('[class*="btn-prev-month"]').hide(),
-            $nextYearBtn = $header.find('[class*="btn-next-year"]').hide(),
-            $nextMonthBtn = $header.find('[class*="btn-next-month"]').hide(),
-            shownDateHash = this._calendar.getDate(),
-            shownDate = new Date(shownDateHash.year, shownDateHash.month - 1),
-            startDate = new Date(this._startTimes[0] || CONSTANTS.MIN_EDGE).setDate(1),
-            endDate = new Date(this._endTimes.slice(-1)[0] || CONSTANTS.MAX_EDGE).setDate(1),// arr.slice(-1)[0] === arr[arr.length - 1]
-            startDifference = shownDate - startDate,
-            endDifference = endDate - shownDate;
+        var $header = this._calendar.$header;
+        var $prevBtn = $header.find('[class*="btn-prev"]').hide();
+        var $nextBtn = $header.find('[class*="btn-next"]').hide();
+        var diffTime = this._getDiffTime();
 
-        if (startDifference > 0) {
-            $prevMonthBtn.show();
-            if (startDifference >= CONSTANTS.YEAR_TO_MS) {
-                $prevYearBtn.show();
-            }
+        if (diffTime.start > 0) {
+            $prevBtn.show();
         }
 
-        if (endDifference > 0) {
-            $nextMonthBtn.show();
-            if (endDifference >= CONSTANTS.YEAR_TO_MS) {
-                $nextYearBtn.show();
-            }
+        if (diffTime.end > 0) {
+            $nextBtn.show();
         }
     },
 
@@ -1020,21 +1149,107 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
         });
     },
 
-   /**
-    * Unbind custom event of calendar
-    * @private
-    */
+    /**
+     * Unbind custom event of calendar
+     * @private
+     */
     _unbindCalendarCustomEvent: function() {
-       var proxyHandlers = this._proxyHandlers,
-           onBeforeDraw = proxyHandlers.onBeforeDrawCalendar,
-           onDraw = proxyHandlers.onDrawCalendar,
-           onAfterDraw = proxyHandlers.onAfterDrawCalendar;
+        var proxyHandlers = this._proxyHandlers,
+            onBeforeDraw = proxyHandlers.onBeforeDrawCalendar,
+            onDraw = proxyHandlers.onDrawCalendar,
+            onAfterDraw = proxyHandlers.onAfterDrawCalendar;
 
-       this._calendar.off({
-           'beforeDraw': onBeforeDraw,
-           'draw': onDraw,
-           'afterDraw': onAfterDraw
-       });
+        this._calendar.off({
+            'beforeDraw': onBeforeDraw,
+            'draw': onDraw,
+            'afterDraw': onAfterDraw
+        });
+    },
+
+    /**
+     * Remove class name for click on title
+     * @private
+     */
+    _removeClassNameOnTitle: function() {
+        var $title = this._calendar.$title;
+        var className = CONSTANTS.CLICKABLE_CLASSNAME;
+
+        if (!this._useNavigatingDate) {
+            $title.removeClass(className);
+        }
+    },
+
+    /**
+     * Set shown layer by format
+     * @private
+     */
+    _setShownLayerIndexByForm: function() {
+        var form = this._dateForm;
+        var index = 0;
+        var layerIdx;
+
+        form.replace(formatRegExp, function() {
+            index += 1;
+        });
+
+        layerIdx = CONSTANTS.LAYER.length - index;
+
+        this._drawingLayerIdx = layerIdx;
+        this._shownLayerIdx = layerIdx;
+    },
+
+    /**
+     * Set hash date in range
+     * @param {Object} startHash - Start date
+     * @param {Object} endHash - End date
+     * @private
+     */
+    _setHashInRange: function(startHash, endHash) {
+        startHash.month = startHash.month || 1;
+        endHash.month = endHash.month || 12;
+
+        startHash.date = startHash.date || 1;
+        endHash.date = (endHash.date ||
+                        utils.getLastDate(endHash.year, endHash.month));
+    },
+
+    /**
+     * Get difference start to end time
+     * @returns {Object} Time difference value
+     */
+    _getDiffTime: function() {
+        var shownLayerIdx = this._calendar.shownLayerIdx;
+        var shownDateHash = this._calendar.getDate();
+        var shownDate = new Date(shownDateHash.year, shownDateHash.month - 1);
+        var startDate = new Date(this._startTimes[0] || CONSTANTS.MIN_EDGE).setDate(1);
+        var endDate = new Date(this._endTimes.slice(-1)[0] || CONSTANTS.MAX_EDGE).setDate(1);
+        var yearRange, shownStartDate, shownEndDate, startDifference, endDifference;
+
+        if (shownLayerIdx === 0) {
+            startDifference = shownDate - startDate;
+            endDifference = endDate - shownDate;
+        } else if (shownLayerIdx === 1) {
+            shownStartDate = new Date(shownDate).setMonth(0);
+            shownEndDate = new Date(shownDate).setMonth(11);
+
+            startDifference = shownStartDate - startDate;
+            endDifference = endDate - shownEndDate;
+        } else if (shownLayerIdx === 2) {
+            yearRange = this._calendar._getInfoOfYearRange(shownDateHash.year);
+            shownStartDate = Number(new Date(yearRange.startYear, 0));
+            shownEndDate = Number(new Date(yearRange.endYear, 0));
+
+            startDate = new Date(startDate).setMonth(0);
+            endDate = new Date(endDate).setMonth(0);
+
+            startDifference = shownStartDate - startDate;
+            endDifference = endDate - shownEndDate;
+        }
+
+        return {
+            start: startDifference,
+            end: endDifference
+        };
     },
 
     /**
@@ -1050,10 +1265,12 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
      * datepicker.addRange(start, end);
      */
     addRange: function(startHash, endHash) {
+        this._setHashInRange(startHash, endHash);
+
         if (this._isValidDate(startHash) && this._isValidDate(endHash)) {
             this._ranges.push([startHash, endHash]);
             this._setSelectableRanges();
-            this._calendar.draw();
+            this._calendar.draw(0, 0, false, this._shownLayerIdx);
         }
     },
 
@@ -1071,17 +1288,22 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
      * datepicker.removeRange(start, end);
      */
     removeRange: function(startHash, endHash) {
-        var ranges = this._ranges,
-            target = [startHash, endHash];
+        var ranges = this._ranges;
+        var target;
 
-        tui.util.forEach(ranges, function(range, index) {
-            if (tui.util.compareJSON(target, range)) {
+        this._setHashInRange(startHash, endHash);
+
+        target = [startHash, endHash];
+
+        forEach(ranges, function(range, index) {
+            if (compareJSON(target, range)) {
                 ranges.splice(index, 1);
-                return false;
+
+                return;
             }
         });
         this._setSelectableRanges();
-        this._calendar.draw();
+        this._calendar.draw(0, 0, false, this._shownLayerIdx);
     },
 
     /**
@@ -1103,8 +1325,7 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
      * @since 1.1.1
      */
     setXY: function(x, y) {
-        var pos = this._pos,
-            isNumber = tui.util.isNumber;
+        var pos = this._pos;
 
         pos.left = isNumber(x) ? x : pos.left;
         pos.top = isNumber(y) ? y : pos.top;
@@ -1118,7 +1339,7 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
      * @since 1.1.1
      */
     setZIndex: function(zIndex) {
-        if (!tui.util.isNumber(zIndex)) {
+        if (!isNumber(zIndex)) {
             return;
         }
 
@@ -1164,13 +1385,14 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
      * datepicker.open();
      */
     open: function() {
-        if (this.isOpened()) {
+        if (this.isOpened() ||
+            !this._enabledState) {
             return;
         }
 
         this._arrangeLayer();
         this._bindCalendarCustomEvent();
-        this._calendar.draw(this._date.year, this._date.month, false);
+        this._calendar.draw(this._date.year, this._date.month, false, this._shownLayerIdx);
         this._$wrapperElement.show();
         if (!this.showAlways) {
             this._bindOnMousedownDocument();
@@ -1222,7 +1444,20 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
      * datepicker.getDateHash(); // {year: 2015, month: 4, date: 13}
      */
     getDateHash: function() {
-        return tui.util.extend({}, this._date);
+        var dateHash = {};
+        var depthIdx = this._drawingLayerIdx;
+
+        extend(dateHash, this._date);
+
+        if (depthIdx > 1) {
+            delete dateHash.month;
+        }
+
+        if (depthIdx > 0) {
+            delete dateHash.date;
+        }
+
+        return dateHash;
     },
 
     /**
@@ -1273,18 +1508,25 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
      * datepicker.setDate('2015', '5', 3); // 2015-05-03
      */
     setDate: function(year, month, date) {
-        var dateObj = this._date,
-            newDateObj = {};
+        var dateObj = this._date;
+        var prevDateObj = extend({}, dateObj);
+        var newDateObj = {};
 
         newDateObj.year = year || dateObj.year;
         newDateObj.month = month || dateObj.month;
         newDateObj.date = date || dateObj.date;
 
         if (this._isSelectable(newDateObj)) {
-            tui.util.extend(dateObj, newDateObj);
+            extend(dateObj, newDateObj);
         }
+
         this._setValueToInputElement();
-        this._calendar.draw(dateObj.year, dateObj.month, false);
+
+        this._calendar.draw(dateObj.year, dateObj.month, false, this._shownLayerIdx);
+
+        if (compareJSON(prevDateObj, newDateObj)) {
+            return;
+        }
 
         /**
          * Update event
@@ -1306,6 +1548,8 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
      */
     setDateForm: function(form) {
         this._dateForm = form || this._dateForm;
+
+        this._setShownLayerIndexByForm();
         this._setRegExp();
         this.setDate();
     },
@@ -1338,7 +1582,6 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * Set input element of this instance
-     * @api
      * @param {HTMLElement|jQuery} element - input element
      * @since 1.3.0
      */
@@ -1355,9 +1598,72 @@ var DatePicker = tui.util.defineClass(/** @lends DatePicker.prototype */{
         this._bindKeydownEvent($newEl);
         this._setDateFromString($newEl.val());
         this._$element = $newEl;
+    },
+
+    /**
+     * Enable picker
+     * @api
+     * @since 1.4.0
+     */
+    enable: function() {
+        var eventType = (this.useTouchEvent) ? 'touchend' : 'click';
+        var $openerEl;
+
+        this._enabledState = true;
+
+        forEach(this._openers, function(openerEl, idx) {
+            $openerEl = $(openerEl);
+
+            $openerEl.removeAttr('disabled');
+            $openerEl.removeClass(this._disabledClassName);
+            $openerEl.on(eventType, this._proxyHandlers.onClickOpener);
+
+            if (!idx) {
+                this._bindKeydownEvent($openerEl);
+            }
+        }, this);
+    },
+
+    /**
+     * Disable picker
+     * @api
+     * @since 1.4.0
+     */
+    disable: function() {
+        var eventType = (this.useTouchEvent) ? 'touchend' : 'click';
+        var $openerEl;
+
+        this._enabledState = false;
+
+        this.close();
+
+        forEach(this._openers, function(openerEl, idx) {
+            $openerEl = $(openerEl);
+
+            $openerEl.addClass(this._disabledClassName);
+            $openerEl.attr('disabled', 'disabled');
+            $openerEl.off(eventType, this._proxyHandlers.onClickOpener);
+
+            if (!idx) {
+                this._unbindKeydownEvent($openerEl);
+            }
+        }, this);
+    },
+
+    /**
+     * Destroy - delete wrapper element and attach events
+     * @api
+     * @since 1.4.0
+     */
+    destroy: function() {
+        this._$wrapperElement.remove();
+        this._unbindKeydownEvent();
+        this._unbindOnMousedownDocument();
+        this._unbindOnClickCalendar();
+        this._unbindCalendarCustomEvent();
     }
 });
 
-tui.util.CustomEvents.mixin(DatePicker);
+util.CustomEvents.mixin(DatePicker);
 
 module.exports = DatePicker;

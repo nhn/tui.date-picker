@@ -422,8 +422,6 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
      * @private
      */
     _setDefaultDate: function(opDate) {
-        var isNumber = util.isNumber;
-
         if (!opDate) {
             this._date = utils.getToday();
         } else {
@@ -1001,8 +999,6 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
         } else { // move previous layer
             this._calendar.draw(dateHash.year, dateHash.month, false, shownLayerIdx - 1);
         }
-
-        console.log('?');
     },
 
     /**

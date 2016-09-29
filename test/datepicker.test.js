@@ -656,7 +656,7 @@ describe('Version 1.2.0 apis', function() {
     });
 
     describe('showAlways option', function() {
-        xit('should bind the "mousedown-document" event if showAlways = false', function() {
+        it('should bind the "mousedown-document" event if showAlways = false', function() {
             spyOn(datePicker, '_bindOnMousedownDocument');
             datePicker.showAlways = false;
             datePicker.open();
@@ -664,7 +664,7 @@ describe('Version 1.2.0 apis', function() {
             expect(datePicker._bindOnMousedownDocument).toHaveBeenCalled();
         });
 
-        xit('should not bind the "mousedown-document" event if showAlways = true', function() {
+        it('should not bind the "mousedown-document" event if showAlways = true', function() {
             spyOn(datePicker, '_bindOnMousedownDocument');
             datePicker.showAlways = true;
             datePicker.open();
@@ -674,7 +674,7 @@ describe('Version 1.2.0 apis', function() {
     });
 
     describe('add/remove a Range', function() {
-        xit('add range', function() {
+        it('add range', function() {
             var start = {year: 2018, month: 2, date: 3},
                 end = {year: 2018, month: 3, date: 6};
 
@@ -684,7 +684,7 @@ describe('Version 1.2.0 apis', function() {
             expect(datePicker._endTimes).toContain(+new Date(2018, 2, 6));
         });
 
-        xit('remove range', function() {
+        it('remove range', function() {
             var start = {year: 2015, month: 11, date: 17},
                 end = {year: 2016, month: 2, date: 15};
 
@@ -696,7 +696,7 @@ describe('Version 1.2.0 apis', function() {
     });
 
     describe('_isSelectable', function() {
-        xit('the date is in ranges', function() {
+        it('the date is in ranges', function() {
             var result = datePicker._isSelectable({
                 year: 2016,
                 month: 3,
@@ -706,7 +706,7 @@ describe('Version 1.2.0 apis', function() {
             expect(result).toBe(true);
         });
 
-        xit('the date is not in ranges', function() {
+        it('the date is not in ranges', function() {
             var result = datePicker._isSelectable({
                 year: 2019,
                 month: 5,

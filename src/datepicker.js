@@ -121,15 +121,14 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
         option = extend({
             dateForm: 'yyyy-mm-dd ',
             defaultCentury: '20',
+            disabledClassName: 'disabled',
             selectableClassName: 'selectable',
             selectedClassName: 'selected',
             selectableRanges: [],
             enableSetDateByEnterKey: true,
             showAlways: false,
             useTouchEvent: true,
-            disabledClassName: 'disabled',
             useToggledOpener: false,
-            layerDepth: 'year',
             useNavigatingDate: true
         }, option);
 

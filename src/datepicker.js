@@ -53,7 +53,7 @@ var inArray = util.inArray,
  * @param {Object} option - options for DatePicker
  *      @param {HTMLElement|string|jQuery} option.element - input element(or selector) of DatePicker
  *      @param {dateHash} [option.date = today] - initial date object
- *      @param {string} [option.dateForm = 'yyyy-mm-dd'] - format of date string
+ *      @param {string} [option.dateFormat = 'yyyy-mm-dd'] - format of date string
  *      @param {string} [option.defaultCentury = 20] - if year-format is yy, this value is prepended automatically.
  *      @param {HTMLElement|string|jQuery} [option.parentElement] - The wrapper element will be inserted into
  *           this element. (since 1.3.0)
@@ -100,10 +100,14 @@ var inArray = util.inArray,
  *   var picker1 = new tui.component.DatePicker({
  *       element: '#picker',
  *       dateForm: 'yyyy년 mm월 dd일 - ',
- *       date: {year: 2015, month: 1, date: 1 },
+ *       //dateForm: 'yyyy년 mm월',
+ *       //dateForm: 'yyyy년',
+ *       date: {year: 2015, month: 1, date: 1},
  *       selectableRanges: [range1, range2, range3],
  *       openers: ['#opener'],
- *       timePicker: timePicker
+ *       timePicker: timePicker,
+ *       useNavigatingDate: true,
+ *       useToggledOpener: true
  *   }, calendar);
  *
  *   // Close calendar when select a date
@@ -158,7 +162,7 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
          * @type {string}
          * @private
          */
-        this._dateForm = option.dateForm;
+        this._dateFormat = option.dateForm;
 
         /**
          * RegExp instance for format of date string
@@ -443,11 +447,11 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
         var pos = this._pos = opPos || {};
         var bound = this._getBoundingClientRect();
 
-        pos.left = (!isUndefined(pos.left) && isNumber(pos.left)) ?
+        pos.left = (!isUndefined(pos.left)) ?
                     pos.left : (bound.left || 0);
-        pos.top = (!isUndefined(pos.top) && isNumber(pos.top)) ?
+        pos.top = (!isUndefined(pos.top)) ?
                     pos.top : (bound.bottom || 0);
-        pos.zIndex = (!isUndefined(pos.zIndex) && isNumber(pos.zIndex)) ?
+        pos.zIndex = (!isUndefined(pos.zIndex)) ?
                     pos.zIndex : 9999;
     },
 
@@ -633,7 +637,7 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
         if (isLeapYear && month === 2) {
             lastDayInMonth = 29;
         }
-        isBetween = !!(isNumber(date) && (date > 0) && (date <= lastDayInMonth));
+        isBetween = (isNumber(date) && (date > 0) && (date <= lastDayInMonth));
 
         return isBetween;
     },
@@ -651,7 +655,7 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
             if (target === opener || $.contains(opener, target)) {
                 result = true;
 
-                return;
+                return false; /*eslint-disable complexity*/
             }
         });
 
@@ -731,7 +735,7 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
         var year = this._date.year,
             month = this._date.month,
             date = this._date.date,
-            form = this._dateForm,
+            format = this._dateFormat,
             replaceMap,
             dateString;
 
@@ -747,7 +751,7 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
             d: Number(date)
         };
 
-        dateString = form.replace(formatRegExp, function(key) {
+        dateString = format.replace(formatRegExp, function(key) {
             return replaceMap[key.toLowerCase()] || '';
         });
 
@@ -825,8 +829,7 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
      */
     _isSelectableYearAndMonth: function(dateHash, isYear) {
         var shownDateTime = utils.getTime(dateHash);
-        var cnt = 0;
-        var rangeStart, rangeEnd, startTime, endTime;
+        var inRange, rangeStart, rangeEnd, startTime, endTime;
 
         forEach(this._ranges, function(range) {
             rangeStart = extend({}, range[0]);
@@ -845,11 +848,12 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
 
             if ((startTime <= shownDateTime) &&
                 (shownDateTime <= endTime)) {
-                cnt += 1;
+                inRange = true;
+                return false;
             }
         });
 
-        return !!(cnt);
+        return inRange;
     },
 
     /**
@@ -917,7 +921,7 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
             index = 0,
             formOrder = this._formOrder;
 
-        this._dateForm.replace(formatRegExp, function(str) {
+        this._dateFormat.replace(formatRegExp, function(str) {
             var key = str.toLowerCase();
 
             regExpStr += (mapForConverting[key].expression + '[\\D\\s]*');
@@ -980,12 +984,20 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
      */
     _onClickCalendar: function(event) {
         var target = event.target;
+        var className = target.className;
         var value = (target.innerText || target.textContent || target.nodeValue);
         var shownLayerIdx = this._calendar.shownLayerIdx;
-        var relativeMonth = $(target).data(CONSTANTS.RELATIVE_MONTH_VALUE_KEY) || 0;
         var shownDate = this._calendar.getDate();
         var startLayerIdx = this._shownLayerIdx;
-        var dateHash;
+        var dateHash, relativeMonth;
+
+        if (className.indexOf('prev-month') > -1) {
+            relativeMonth = -1;
+        } else if (className.indexOf('next-month') > -1) {
+            relativeMonth = 1;
+        } else {
+            relativeMonth = $(target).data(CONSTANTS.RELATIVE_MONTH_VALUE_KEY) || 0;
+        }
 
         shownDate.date = this._date.date;
         dateHash = utils.getRelativeDate(0, relativeMonth, 0, shownDate);
@@ -994,11 +1006,12 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
             if (!startLayerIdx) { // date layer
                 dateHash.date = Number(value);
             }
-
             this.setDate(dateHash.year, dateHash.month, dateHash.date);
         } else { // move previous layer
             this._calendar.draw(dateHash.year, dateHash.month, false, shownLayerIdx - 1);
         }
+
+        this.close();
     },
 
     /**
@@ -1179,17 +1192,16 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
      * @private
      */
     _setShownLayerIndexByForm: function() {
-        var form = this._dateForm;
+        var format = this._dateFormat;
         var index = 0;
         var layerIdx;
 
-        form.replace(formatRegExp, function() {
+        format.replace(formatRegExp, function() {
             index += 1;
         });
 
         layerIdx = CONSTANTS.LAYER.length - index;
 
-        this._drawingLayerIdx = layerIdx;
         this._shownLayerIdx = layerIdx;
     },
 
@@ -1294,7 +1306,7 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
             if (compareJSON(target, range)) {
                 ranges.splice(index, 1);
 
-                return;
+                return false;
             }
         });
         this._setSelectableRanges();
@@ -1440,7 +1452,7 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
      */
     getDateHash: function() {
         var dateHash = {};
-        var depthIdx = this._drawingLayerIdx;
+        var depthIdx = this._shownLayerIdx;
 
         extend(dateHash, this._date);
 
@@ -1534,15 +1546,15 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
     /**
      * Set or update date-form
      * @api
-     * @param {String} [form] - date-format
+     * @param {String} [format] - date-format
      * @example
      * datepicker.setDateForm('yyyy-mm-dd');
      * datepicker.setDateForm('mm-dd, yyyy');
      * datepicker.setDateForm('y/m/d');
      * datepicker.setDateForm('yy/mm/dd');
      */
-    setDateForm: function(form) {
-        this._dateForm = form || this._dateForm;
+    setDateForm: function(format) {
+        this._dateFormat = format || this._dateFormat;
 
         this._setShownLayerIndexByForm();
         this._setRegExp();

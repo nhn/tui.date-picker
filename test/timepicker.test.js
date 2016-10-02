@@ -9,13 +9,11 @@ describe('Timepicker', function() {
         timepicker2;
 
     beforeEach(function() {
-        loadFixtures('timepicker.html');
-
         timepicker1 = new TimePicker({
-            inputElement: '#timepicker-default'
+            inputElement: $('<input id="timepicker-default">')
         });
         timepicker2 = new TimePicker({
-            inputElement: '#timepicker-option',
+            inputElement: $('<input id="timepicker-option">'),
             defaultHour: 12,
             defaultMinute: 34,
             showMeridian: true,
@@ -339,6 +337,4 @@ describe('Timepicker', function() {
             expect(timepicker1.getMinute()).not.toEqual(minute);
         });
     });
-
-
 });

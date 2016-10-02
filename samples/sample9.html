@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title>datepicker</title>
+        <link type="text/css" rel="stylesheet" href="../styles/prettify-jsdoc.css" />
+        <link type="text/css" rel="stylesheet" href="../styles/prettify-tomorrow.css">
+        <link type="text/css" rel="stylesheet" href="../styles/tui.css">
+        <link href="css/calendar.css" rel="stylesheet">
+        <link href="css/timepicker.css" rel="stylesheet">
+    </head>
+
+    <body>
+        <div class="wrap">
+
+            <h2>Default</h2>
+
+            <!-- Shared calendar layer for datepicker element -->
+            <div id="layer" class="layer" style="display:none;"></div>
+
+            <!-- Drawing default datepicker element -->
+            <input id="datepicker-default" type="text" />
+
+            <h2>Using Options</h2>
+
+            <!-- Drawing datepicker with option element -->
+            <input id="datepicker-options" type="text" /><button id="opener" type="button">open</button>
+
+            <!-- Control buttons for datepicker with option -->
+            <button id="enable">enable</button>
+            <button id="disable">disable</button>
+            <button id="add-range">add range</button>
+            <button id="remove-range">remove range</button>
+
+        </div>
+
+        <div class="codeArea"></div>
+
+        <script type="text/javascript" src="lib/jquery.min.js"></script>
+        <script type="text/javascript" src="lib/code-snippet.js"></script>
+        <script type="text/javascript" src="js/calendar.js"></script>
+        <script type="text/javascript" src="js/date-picker.js"></script>
+
+        <script src="../scripts/prettify/prettify.js"></script>
+        <script src="../scripts/prettify/lang-css.js"></script>
+        <script src="../scripts/samplecode.js"></script>
+        <script class="serviceCode">
+
+            var calendar = new tui.component.Calendar({
+                element: '#layer'
+            });
+
+            var timePicker = new tui.component.TimePicker({
+                showMeridian: true,
+                defaultHour: 13,
+                defaultMinute: 24
+            });
+
+            var datepicker1 = new tui.component.DatePicker({
+                element: '#datepicker-default'
+            }, calendar);
+
+            var datepicker2 = new tui.component.DatePicker({
+                element: '#datepicker-options',
+                dateForm: 'yyyy년 mm월 dd일 - ',
+                selectableRanges: [
+                    [{year: 2016, month: 9, date: 3}, {year: 2016, month: 9, date: 10}],
+                    [{year: 2016, month: 9, date: 8}, {year: 2016, month: 9, date: 18}],
+                    [{year: 2016, month: 10, date: 1}, {year: 2016, month: 10, date: 26}]
+                ],
+                openers: ['#opener'],
+                useToggledOpener: true,
+                closeLayerAfterPicking: false,
+                timePicker: timePicker
+            }, calendar);
+
+            $('#enable').on('click', function() {
+                datepicker2.enable();
+            });
+
+            $('#disable').on('click', function() {
+                datepicker2.disable();
+            });
+
+            $('#add-range').on('click', function() {
+                var startDate = {year: 2017, month: 8, date: 27};
+                var endDate = {year: 2017, month: 9, date: 28};
+
+                datepicker2.addRange(startDate, endDate);
+            });
+
+            $('#remove-range').on('click', function() {
+                var startDate = {year: 2016, month: 9, date: 8};
+                var endDate = {year: 2016, month: 9, date: 18};
+
+                datepicker2.removeRange(startDate, endDate);
+            });
+
+        </script>
+    </body>
+</html>

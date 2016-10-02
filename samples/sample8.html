@@ -8,39 +8,55 @@
         <link type="text/css" rel="stylesheet" href="../styles/tui.css">
         <link href="css/calendar.css" rel="stylesheet">
         <link href="css/timepicker.css" rel="stylesheet">
+        <style type="text/css">
+        .colorbox{display:inline-block;background-color:#bcea81;width:20px;height:20px;margin:5px;vertical-align:middle;*display:inline;}
+        .colorbox.green{background-color:#bcea81;}
+        .colorbox.blue{background-color:#add8e6;}
+        .colorbox.red{background-color:#f9f2f4;}
+        .colorbox.yellow{background-color:yellow;}
+        </style>
     </head>
 
     <body>
-        <div class="wrap" style="height:350px;">
+        <div class="wrap">
 
             <!-- Shared layer element -->
-            <div id="layer" class="layer"></div>
+            <div id="layer" class="layer" style="display:none;"></div>
 
-            <h3>Pick Date</h3>
-            <!-- Draw default datepicker element -->
-            <input id="datepicker-picker" type="text" />
-            <button id="datepicker-opener" type="button">open</button>
-            <div id="datepicker-layer" class="layer" style="display:none;"></div>
+            <h2>Pick Date</h2>
+            <!-- Drawing datepicker element -->
+            <input id="datepicker-picker" type="text" /><button id="datepicker-opener" type="button">open</button>
 
-            <h3>Pick Month</h3>
-            <!-- Draw default monthpicker element -->
-            <input id="monthpicker-picker" type="text" />
-            <button id="monthpicker-opener" type="button">open</button>
-            <div id="monthpicker-layer" class="layer" style="display:none;"></div>
+            <h2>Pick Month</h2>
+            <!-- Drawing monthpicker element -->
+            <input id="monthpicker-picker" type="text" /><button id="monthpicker-opener" type="button">open</button>
 
-            <h3>Pick Year</h3>
-            <!-- Draw default monthpicker element -->
-            <input id="yearpicker-picker" type="text" />
-            <button id="yearpicker-opener" type="button">open</button>
-            <div id="yearpicker-layer" class="layer" style="display:none;"></div>
+            <h2>Pick Year</h2>
+            <!-- Drawing yearpicker element -->
+            <input id="yearpicker-picker" type="text" /><button id="yearpicker-opener" type="button">open</button>
 
+
+            <div style="margin-top:20px;">
+                <div>
+                    <div class="colorbox blue"></div><span>today</span>
+                </div>
+                <div>
+                    <div class="colorbox green"></div><span>picked date</span>
+                </div>
+                <div>
+                    <div class="colorbox red"></div><span>selectable date</span>
+                </div>
+                <div>
+                    <div class="colorbox yellow"></div><span>to be selected date</span>
+                </div>
+            </div>
         </div>
 
         <div class="codeArea"></div>
 
         <script type="text/javascript" src="lib/jquery.min.js"></script>
         <script type="text/javascript" src="lib/code-snippet.js"></script>
-        <script type="text/javascript" src="lib/calendar.min.js"></script>
+        <script type="text/javascript" src="js/calendar.js"></script>
         <script type="text/javascript" src="js/date-picker.js"></script>
 
         <script src="../scripts/prettify/prettify.js"></script>

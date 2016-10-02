@@ -16,10 +16,12 @@ module.exports = function(config) {
             'bower_components/jquery/jquery.min.js',
             'bower_components/jasmine-jquery/lib/jasmine-jquery.js',
             'bower_components/tui-code-snippet/code-snippet.min.js',
-            'bower_components/tui-component-calendar/calendar.min.js',
+            //'bower_components/tui-component-calendar/calendar.min.js',
+            'samples/js/calendar.js',
 
-            'src/spinbox.js',
-            'src/timepicker.js',
+            //'src/spinbox.js',
+            //'src/timepicker.js',
+            //'src/datepicker.js',
             'src/datepicker.js',
 
             'test/fixtures/**/*.html',
@@ -103,7 +105,7 @@ module.exports = function(config) {
         // start these browsers
         // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
         browsers: [
-            'PhantomJS'
+            'Chrome'
         ],
 
         // Continuous Integration mode

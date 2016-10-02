@@ -99,9 +99,9 @@ var inArray = util.inArray,
  *
  *   var picker1 = new tui.component.DatePicker({
  *       element: '#picker',
- *       dateForm: 'yyyy년 mm월 dd일 - ',
- *       //dateForm: 'yyyy년 mm월',
- *       //dateForm: 'yyyy년',
+ *       dateFormat: 'yyyy년 mm월 dd일 - ',
+ *       //dateFormat: 'yyyy년 mm월',
+ *       //dateFormat: 'yyyy년',
  *       date: {year: 2015, month: 1, date: 1},
  *       selectableRanges: [range1, range2, range3],
  *       openers: ['#opener'],
@@ -123,7 +123,7 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
     init: function(option, calendar) {
         // set defaults
         option = extend({
-            dateForm: 'yyyy-mm-dd ',
+            dateFormat: 'yyyy-mm-dd ',
             defaultCentury: '20',
             disabledClassName: 'disabled',
             selectableClassName: 'selectable',
@@ -133,7 +133,8 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
             showAlways: false,
             useTouchEvent: true,
             useToggledOpener: false,
-            useNavigatingDate: true
+            useNavigatingDate: true,
+            closeLayerAfterPicking: true
         }, option);
 
         /**
@@ -162,7 +163,7 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
          * @type {string}
          * @private
          */
-        this._dateFormat = option.dateForm;
+        this._dateFormat = option.dateFormat || option.dateForm;
 
         /**
          * RegExp instance for format of date string
@@ -321,6 +322,14 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
         this._useToggledOpener = option.useToggledOpener;
 
         /**
+         * Whether closing layer
+         * @type {boolean}
+         * @private
+         * @since 1.4.0
+         */
+        this._closeLayerAfterPicking = option.closeLayerAfterPicking;
+
+        /**
          * Whether the datepicker shows always
          * @api
          * @type {boolean}
@@ -367,7 +376,9 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
         this._bindKeydownEvent(this._$element);
         this._setTimePicker(option.timePicker);
         this.setDateForm();
+
         this._$wrapperElement.hide();
+        this._calendar.$element.show();
     },
 
     /**
@@ -650,14 +661,16 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
      */
     _isOpener: function(target) {
         var result = false;
+        var openers = this._openers;
+        var i = 0;
+        var len = openers.length;
 
-        forEach(this._openers, function(opener) {
-            if (target === opener || $.contains(opener, target)) {
+        for (; i < len; i += 1) {
+            if (target === openers[i] || $.contains(openers[i], target)) {
                 result = true;
-
-                return false; /*eslint-disable complexity*/
+                break;
             }
-        });
+        }
 
         return result;
     },
@@ -829,11 +842,15 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
      */
     _isSelectableYearAndMonth: function(dateHash, isYear) {
         var shownDateTime = utils.getTime(dateHash);
-        var inRange, rangeStart, rangeEnd, startTime, endTime;
+        var inRange = false;
+        var ranges = this._ranges;
+        var i = 0;
+        var len = ranges.length;
+        var rangeStart, rangeEnd, startTime, endTime;
 
-        forEach(this._ranges, function(range) {
-            rangeStart = extend({}, range[0]);
-            rangeEnd = extend({}, range[1]);
+        for (; i < len; i += 1) {
+            rangeStart = extend({}, ranges[i][0]);
+            rangeEnd = extend({}, ranges[i][1]);
 
             rangeStart.date = 1;
             rangeEnd.date = utils.getLastDate(rangeEnd.year, rangeEnd.month);
@@ -849,11 +866,11 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
             if ((startTime <= shownDateTime) &&
                 (shownDateTime <= endTime)) {
                 inRange = true;
-                return false;
+                break;
             }
-        });
+        }
 
-        return inRange;
+        return (!len) ? true : inRange;
     },
 
     /**
@@ -1011,7 +1028,9 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
             this._calendar.draw(dateHash.year, dateHash.month, false, shownLayerIdx - 1);
         }
 
-        this.close();
+        if (this._closeLayerAfterPicking) {
+            this.close();
+        }
     },
 
     /**
@@ -1175,6 +1194,26 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
     },
 
     /**
+     * Bind click event of opener
+     * @param {HTMLElement|jQuery} element - Opener element
+     * @private
+     */
+    _bindOnClickOpener: function(element) {
+        var eventType = (this.useTouchEvent) ? 'touchend' : 'click';
+        $(element).on(eventType, this._proxyHandlers.onClickOpener);
+    },
+
+    /**
+     * Unbind click event of opener
+     * @param {jQuery} element - Opener element
+     * @private
+     */
+    _unbindOnClickOpener: function(element) {
+        var eventType = (this.useTouchEvent) ? 'touchend' : 'click';
+        $(element).on(eventType, this._proxyHandlers.onClickOpener);
+    },
+
+    /**
      * Remove class name for click on title
      * @private
      */
@@ -1296,19 +1335,21 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
      */
     removeRange: function(startHash, endHash) {
         var ranges = this._ranges;
+        var i = 0;
+        var len = ranges.length;
         var target;
 
         this._setHashInRange(startHash, endHash);
 
         target = [startHash, endHash];
 
-        forEach(ranges, function(range, index) {
-            if (compareJSON(target, range)) {
-                ranges.splice(index, 1);
-
-                return false;
+        for (; i < len; i += 1) {
+            if (compareJSON(target, ranges[i])) {
+                ranges.splice(i, 1);
+                break;
             }
-        });
+        }
+
         this._setSelectableRanges();
         this._calendar.draw(0, 0, false, this._shownLayerIdx);
     },
@@ -1611,19 +1652,23 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
      * Enable picker
      * @api
      * @since 1.4.0
+     * @example
+     * datepicker.disable();
+     * datepicker.enable();
      */
     enable: function() {
-        var eventType = (this.useTouchEvent) ? 'touchend' : 'click';
         var $openerEl;
 
+        if (this._enabledState) {
+            return;
+        }
         this._enabledState = true;
 
         forEach(this._openers, function(openerEl, idx) {
             $openerEl = $(openerEl);
-
             $openerEl.removeAttr('disabled');
             $openerEl.removeClass(this._disabledClassName);
-            $openerEl.on(eventType, this._proxyHandlers.onClickOpener);
+            this._bindOnClickOpener($openerEl);
 
             if (!idx) {
                 this._bindKeydownEvent($openerEl);
@@ -1635,22 +1680,25 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
      * Disable picker
      * @api
      * @since 1.4.0
+     * @example
+     * datepicker.enable();
+     * datepicker.disable();
      */
     disable: function() {
-        var eventType = (this.useTouchEvent) ? 'touchend' : 'click';
         var $openerEl;
 
-        this._enabledState = false;
+        if (!this._enabledState) {
+            return;
+        }
 
+        this._enabledState = false;
         this.close();
 
         forEach(this._openers, function(openerEl, idx) {
             $openerEl = $(openerEl);
-
             $openerEl.addClass(this._disabledClassName);
             $openerEl.attr('disabled', 'disabled');
-            $openerEl.off(eventType, this._proxyHandlers.onClickOpener);
-
+            this._unbindOnClickOpener($openerEl);
             if (!idx) {
                 this._unbindKeydownEvent($openerEl);
             }
@@ -1663,11 +1711,12 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
      * @since 1.4.0
      */
     destroy: function() {
-        this._$wrapperElement.remove();
         this._unbindKeydownEvent();
         this._unbindOnMousedownDocument();
         this._unbindOnClickCalendar();
         this._unbindCalendarCustomEvent();
+        this.disable();
+        this._$wrapperElement.remove();
     }
 });
 

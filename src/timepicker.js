@@ -6,12 +6,14 @@
 
 'use strict';
 
+var Spinbox = require('./spinbox');
+
 var util = tui.util,
-    Spinbox = require('./spinbox'),
     timeRegExp = /\s*(\d{1,2})\s*:\s*(\d{1,2})\s*([ap][m])?(?:[\s\S]*)/i,
     timePickerTag = '<table class="timepicker"><tr class="timepicker-row"></tr></table>',
     columnTag = '<td class="timepicker-column"></td>',
-    spinBoxTag = '<td class="timepicker-column timepicker-spinbox"><div><input type="text" class="timepicker-spinbox-input"></div></td>',
+    spinBoxTag = '<td class="timepicker-column timepicker-spinbox">' +
+                '<div><input type="text" class="timepicker-spinbox-input"></div></td>',
     upBtnTag = '<button type="button" class="timepicker-btn timepicker-btn-up"><b>+</b></button>',
     downBtnTag = '<button type="button" class="timepicker-btn timepicker-btn-down"><b>-</b></button>';
 
@@ -24,8 +26,10 @@ var util = tui.util,
  * @param {HTMLElement} [option.inputElement = null] - optional input element with timepicker
  * @param {number} [option.hourStep = 1] - step of hour spinbox. if step = 2, hour value 1 -> 3 -> 5 -> ...
  * @param {number} [option.minuteStep = 1] - step of minute spinbox. if step = 2, minute value 1 -> 3 -> 5 -> ...
- * @param {Array} [option.hourExclusion = null] - hour value to be excluded. if hour [1,3] is excluded, hour value 0 -> 2 -> 4 -> 5 -> ...
- * @param {Array} [option.minuteExclusion = null] - minute value to be excluded. if minute [1,3] is excluded, minute value 0 -> 2 -> 4 -> 5 -> ...
+ * @param {Array} [option.hourExclusion = null] - hour value to be excluded.
+ *                                                if hour [1,3] is excluded, hour value 0 -> 2 -> 4 -> 5 -> ...
+ * @param {Array} [option.minuteExclusion = null] - minute value to be excluded.
+ *                                                  if minute [1,3] is excluded, minute value 0 -> 2 -> 4 -> 5 -> ...
  * @param {boolean} [option.showMeridian = false] - is time expression-"hh:mm AM/PM"?
  * @param {Object} [option.position = {}] - left, top position of timepicker element
  */
@@ -277,6 +281,7 @@ var TimePicker = util.defineClass(/** @lends TimePicker.prototype */ {
 
         formattedHour = (hour < 10) ? '0' + hour : hour;
         formattedMinute = (minute < 10) ? '0' + minute : minute;
+
         return formattedHour + ':' + formattedMinute + postfix;
     },
 
@@ -299,6 +304,7 @@ var TimePicker = util.defineClass(/** @lends TimePicker.prototype */ {
         if (this._option.showMeridian) {
             postfix = (this._isPM) ? ' PM' : ' AM';
         }
+
         return postfix;
     },
 
@@ -400,17 +406,18 @@ var TimePicker = util.defineClass(/** @lends TimePicker.prototype */ {
     /**
      * set time from input element.
      * @param {HTMLElement|jQuery} [inputElement] jquery object (element)
-     * @return {boolean} result of set time
+     * @returns {boolean} result of set time
      */
     setTimeFromInputElement: function(inputElement) {
         var input = $(inputElement)[0] || this._$inputElement[0];
+
         return !!(input && this.setTimeFromString(input.value));
     },
 
     /**
      * set hour
      * @param {number} hour for time picker
-     * @return {boolean} result of set time
+     * @returns {boolean} result of set time
      */
     setHour: function(hour) {
         return this.setTime(hour, this._minute);
@@ -419,7 +426,7 @@ var TimePicker = util.defineClass(/** @lends TimePicker.prototype */ {
     /**
      * set minute
      * @param {number} minute for time picker
-     * @return {boolean} result of set time
+     * @returns {boolean} result of set time
      */
     setMinute: function(minute) {
         return this.setTime(this._hour, minute);
@@ -430,7 +437,7 @@ var TimePicker = util.defineClass(/** @lends TimePicker.prototype */ {
      * @api
      * @param {number} hour for time picker
      * @param {number} minute for time picker
-     * @return {boolean} result of set time
+     * @returns {boolean} result of set time
      */
     setTime: function(hour, minute) {
         var isNumber = (util.isNumber(hour) && util.isNumber(minute)),
@@ -454,13 +461,14 @@ var TimePicker = util.defineClass(/** @lends TimePicker.prototype */ {
          * @event TimePicker#change
          */
         this.fire('change');
+
         return true;
     },
 
     /**
      * set time from time-string
      * @param {string} timeString time-string
-     * @return {boolean} result of set time
+     * @returns {boolean} result of set time
      */
     setTimeFromString: function(timeString) {
         var hour,
@@ -487,6 +495,7 @@ var TimePicker = util.defineClass(/** @lends TimePicker.prototype */ {
                 }
             }
         }
+
         return this.setTime(hour, minute);
     },
 
@@ -584,4 +593,3 @@ var TimePicker = util.defineClass(/** @lends TimePicker.prototype */ {
 tui.util.CustomEvents.mixin(TimePicker);
 
 module.exports = TimePicker;
-

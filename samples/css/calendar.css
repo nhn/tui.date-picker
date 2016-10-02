@@ -6,19 +6,17 @@ body {font-size:12px; font-family:malgun gothic, verdana, consolas;min-width:700
 .layer div p em { font-style: normal; }
 .layer .calendar-header {border-bottom:1px solid #eee; }
 .layer .calendar-header .calendar-title {color:#888;}
-.layer div .calendar-btn-prev-year{position:absolute;top:10px;left:5px;height:18px; white-space:nowrap; letter-spacing:-1px;}
-.layer div .calendar-btn-prev-month{position:absolute;top:10px;left:45px;height:18px; white-space:nowrap; letter-spacing:-1px;}
-.layer div .calendar-title{float:none !important;font-family:verdana;font-size:15px;color:#383838;font-weight: normal;}
-.layer div .calendar-btn-next-month{position:absolute;top:10px;right:45px;height:18px; white-space:nowrap; letter-spacing:-1px;}
-.layer div .calendar-btn-next-year{position:absolute;top:10px;right:5px;height:18px; white-space:nowrap; letter-spacing:-1px;}
+.layer div .calendar-btn-prev{position:absolute;top:10px;left:5px;height:18px; white-space:nowrap; letter-spacing:-1px;}
+.layer div .calendar-title{float:none !important;font-family:verdana;font-size:15px;color:#383838;font-weight: normal;text-decoration:none !important;}
+.layer div .calendar-title.clickable{text-decoration:underline !important;background:none;cursor:pointer;}
+.layer div .calendar-btn-next{position:absolute;top:10px;right:5px;height:18px; white-space:nowrap; letter-spacing:-1px;}
 .layer table{width:245px;margin:0 auto;text-align:center;}
 .layer table *{font-family:tahoma !important;font-size:10px;}
 .layer table thead th {padding:10px 0;color:#888; }
 .layer table thead th.sun {color: #ff321b;}
 .layer table thead th.sat {color: #2433ff;}
 .layer table td{width:35px;height:25px;text-align:center;color:#888;}
-.layer table td a{display:block;height:15px;padding-top:1px;color:#888;}
-.layer table td a:hover{background:#edf4fe;color:#6d6d6d;text-decoration:none !important;font-family:tahoma !important;}
+.layer table td a{display:block;height:25px;padding-top:5px;color:#888;text-decoration:none !important;}
 .layer table td a:visited,
 .layer table td a:active{color:#000000;text-decoration:none !important;}
 .layer table .calendar-body .selected{background:#edf4fe;color:#6d6d6d;}

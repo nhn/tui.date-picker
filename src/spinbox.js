@@ -206,7 +206,8 @@ var Spinbox = util.defineClass(/** @lends Spinbox.prototype */ {
 
     /**
      * Set input value when user click a button.
-     * @param {boolean} isDown - If a user clicked a down-buttton, this value is true.  Else if a user clicked a up-button, this value is false.
+     * @param {boolean} isDown - If a user clicked a down-buttton, this value is true.
+     *                           Else if a user clicked a up-button, this value is false.
      * @private
      */
     _setNextValue: function(isDown) {
@@ -344,7 +345,7 @@ var Spinbox = util.defineClass(/** @lends Spinbox.prototype */ {
 
     /**
      * get container element
-     * @return {HTMLElement} element
+     * @returns {HTMLElement} element
      */
     getContainerElement: function() {
         return this._$containerElement[0];

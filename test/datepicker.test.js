@@ -2,68 +2,19 @@
  * These test cases are not using "TouchEvent"
  */
 'use strict';
+
 var DatePicker = require('../src/datepicker');
 var TimePicker = require('../src/timepicker');
 
 jasmine.getFixtures().fixturesPath = 'base/test/fixtures';
 
 describe('Date Picker', function() {
-    var layer1,
-        layer2,
-        layer3,
-        calendar1,
-        calendar2,
-        calendar3,
-        datepicker1,
-        datepicker2,
-        datepicker3,
-        selectableRange1 = [
-            {
-                year: 1994,
-                month: 5,
-                date: 9
-            },
-            {
-                year: 2090,
-                month: 5,
-                date: 11
-            }
-        ];
+    var calendar1, datepicker1;
 
     // do not test touch event
     beforeEach(function() {
-        loadFixtures('datepicker.html');
-
-        layer1 = $('#layer1');
-        layer2 = $('#layer2');
-        layer3 = $('#layer3');
-
         calendar1 = new tui.component.Calendar({
-            element: layer1,
-            year: 1983,
-            month: 5,
-            todayFormat: 'yyyy\/ mm\/ dd (D)',
-            titleFormat: 'yyyy\/mm',
-            yearTitleFormat: 'yyyy',
-            monthTitleFormat: 'mm',
-            monthTitle: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-            dayTitles: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-        });
-
-        calendar2 = new tui.component.Calendar({
-            element: layer2,
-            year: 1983,
-            month: 5,
-            todayFormat: 'yyyy\/ mm\/ dd (D)',
-            titleFormat: 'yyyy\/mm',
-            yearTitleFormat: 'yyyy',
-            monthTitleFormat: 'mm',
-            monthTitle: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-            dayTitles: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-        });
-
-        calendar3 = new tui.component.Calendar({
-            element: layer3,
+            element: $('<div></div>'),
             year: 1983,
             month: 5,
             todayFormat: 'yyyy\/ mm\/ dd (D)',
@@ -80,44 +31,12 @@ describe('Date Picker', function() {
                 month: 11,
                 date: 27
             },
-            element: document.getElementById('datePick1'),
+            element: $('<input id="datePick1">'),
             openers: [
-                document.getElementById('opener')
+                $('<button id="opener"></button>')
             ],
             useTouchEvent: false
         }, calendar1);
-
-        datepicker2 = new DatePicker({
-            element: document.getElementById('datePick2'),
-            dateForm: 'yy년 mm월 dd일, ',
-            date: {
-                year: 2015,
-                month: 5,
-                date: 10
-            },
-            selectableRanges: [selectableRange1],
-            selectableClass: 'mySelectable',
-            useTouchEvent: false,
-            timePicker: new TimePicker({
-                showMeridian: true
-            })
-        }, calendar2);
-
-        datepicker3 = new DatePicker({
-            element: document.getElementById('datePick3'),
-            date: {},
-            useTouchEvent: false
-        }, calendar3);
-    });
-
-    it('default date', function() {
-        var date = datepicker3.getDateHash();
-
-        expect(date).toEqual({
-            year: 1970,
-            month: 1,
-            date: 1
-        });
     });
 
     describe('api 호출', function() {
@@ -164,6 +83,12 @@ describe('Date Picker', function() {
         });
 
         it('get timepicker', function() {
+            var datepicker2 = new DatePicker({
+                element: $('<input id="datePick2">'),
+                timePicker: new TimePicker({
+                    showMeridian: true
+                })
+            }, calendar1);
             var tp = datepicker1.getTimePicker();
 
             expect(tp).toBeNull();
@@ -209,6 +134,12 @@ describe('Date Picker', function() {
         });
 
         it('timepicker set time', function() {
+            var datepicker2 = new DatePicker({
+                element: $('<input id="datePick2">'),
+                timePicker: new TimePicker({
+                    showMeridian: true
+                })
+            }, calendar1);
             var preInputValue = datepicker2._$element.val(),
                 nextInputValue,
                 tp = datepicker2.getTimePicker();
@@ -422,6 +353,19 @@ describe('Date Picker', function() {
         });
 
         it('test _isSelectable', function() {
+            var datepicker2 = new DatePicker({
+                element: $('<input id="datePick2">'),
+                dateForm: 'yy년 mm월 dd일, ',
+                date: {
+                    year: 2015,
+                    month: 5,
+                    date: 10
+                },
+                selectableRanges: [
+                    [{year: 1994, month: 5, date: 9}, {year: 2090, month: 5, date: 11}]
+                ],
+                selectableClass: 'mySelectable'
+            }, calendar1);
             var date1 = {
                     year: 2014,
                     month: 9,
@@ -437,20 +381,16 @@ describe('Date Picker', function() {
                     month: 11,
                     date: 3
                 };
+            var selectableList;
 
             expect(datepicker2._isSelectable(date1)).toEqual(true);
             expect(datepicker2._isSelectable(date2)).toEqual(false);
             expect(datepicker2._isSelectable(date3)).toEqual(false);
-        });
 
-        it('test selectable date element count', function() {
-            var selectableList;
             datepicker2.setDate(2014, 11);
 
             selectableList = datepicker2._$wrapperElement.find('.mySelectable');
-            // 10/30~11/10(12)
-            expect(selectableList.length);
-            expect(selectableList.length).not.toBe(12);
+            expect(selectableList.length).not.toBe(12); // 10/30~11/10(12)
         });
     });
 
@@ -492,7 +432,6 @@ describe('Date Picker', function() {
 
         it('setDate - restrictive date', function() {
             var notday;
-
             datepicker1.setDate(1920);
             notday = datepicker1.getDateHash();
 
@@ -540,6 +479,23 @@ describe('Date Picker', function() {
         });
 
         it('_onKeydownPicker 엔터를 쳤을때와 아닐때, 동작테스트', function() {
+            var datepicker2 = new DatePicker({
+                element: $('<input id="datePick2">'),
+                dateForm: 'yy년 mm월 dd일, ',
+                date: {
+                    year: 2015,
+                    month: 5,
+                    date: 10
+                },
+                selectableRanges: [
+                    [{year: 1994, month: 5, date: 9}, {year: 2090, month: 5, date: 11}]
+                ],
+                selectableClass: 'mySelectable',
+                useTouchEvent: false,
+                timePicker: new TimePicker({
+                    showMeridian: true
+                })
+            }, calendar1);
             var e1 = {
                     keyCode: 10
                 },
@@ -591,7 +547,7 @@ describe('Date Picker', function() {
 
             datepicker1.setDate(2015, 4, 1);
             datepicker1.open();
-            prevMonthEl = datepicker1._$wrapperElement.find('.calendar-prev')[0];
+            prevMonthEl = datepicker1._$wrapperElement.find('.calendar-prev-month')[0];
             $(prevMonthEl).click();
             dateObj = datepicker1.getDateHash();
 
@@ -608,7 +564,7 @@ describe('Date Picker', function() {
 
             datepicker1.setDate(2015, 4, 1);
             datepicker1.open();
-            nextMonthEl = datepicker1._$wrapperElement.find('.calendar-next')[0];
+            nextMonthEl = datepicker1._$wrapperElement.find('.calendar-next-month')[0];
             $(nextMonthEl).click();
             dateObj = datepicker1.getDateHash();
 
@@ -634,14 +590,16 @@ describe('Date Picker', function() {
     });
 });
 
-describe('Version 1.2.0 apis', function() {
-    var datePicker, calendar, layer1;
+describe('Version 1.2.0 & 1.3.0 apis', function() {
+    var datePicker, calendar, $inputEl;
 
     beforeEach(function() {
+        $inputEl = setFixtures('<input type="text">');
         calendar = new tui.component.Calendar({
-            element: '#layer1'
+            element: $('<div>')
         });
         datePicker = new DatePicker({
+            element: $inputEl,
             dateForm: 'yyyy년 mm월 dd일',
             selectableRanges: [
                 [{year: 2015, month: 11, date: 17}, {year: 2016, month: 2, date: 15}],
@@ -656,7 +614,7 @@ describe('Version 1.2.0 apis', function() {
     });
 
     describe('showAlways option', function() {
-        it('should bind the "mousedown-document" event if showAlways = false', function() {
+        it ('should bind the "mousedown-document" event if showAlways = false', function() {
             spyOn(datePicker, '_bindOnMousedownDocument');
             datePicker.showAlways = false;
             datePicker.open();
@@ -664,7 +622,7 @@ describe('Version 1.2.0 apis', function() {
             expect(datePicker._bindOnMousedownDocument).toHaveBeenCalled();
         });
 
-        it('should not bind the "mousedown-document" event if showAlways = true', function() {
+        it ('should not bind the "mousedown-document" event if showAlways = true', function() {
             spyOn(datePicker, '_bindOnMousedownDocument');
             datePicker.showAlways = true;
             datePicker.open();
@@ -673,78 +631,19 @@ describe('Version 1.2.0 apis', function() {
         });
     });
 
-    describe('add/remove a Range', function() {
-        it('add range', function() {
-            var start = {year: 2018, month: 2, date: 3},
-                end = {year: 2018, month: 3, date: 6};
-
-            datePicker.addRange(start, end);
-            expect(datePicker._ranges).toContain([start, end]);
-            expect(datePicker._startTimes).toContain(+new Date(2018, 1, 3));
-            expect(datePicker._endTimes).toContain(+new Date(2018, 2, 6));
-        });
-
-        it('remove range', function() {
-            var start = {year: 2015, month: 11, date: 17},
-                end = {year: 2016, month: 2, date: 15};
-
-            datePicker.removeRange(start, end);
-            expect(datePicker._ranges).not.toContain([start, end]);
-            expect(datePicker._startTimes).not.toContain(+new Date(2015, 10, 17));
-            expect(datePicker._endTimes).not.toContain(+new Date(2016, 1, 15));
-        });
-    });
-
-    describe('_isSelectable', function() {
-        it('the date is in ranges', function() {
-            var result = datePicker._isSelectable({
-                year: 2016,
-                month: 3,
-                date: 7
-            });
-
-            expect(result).toBe(true);
-        });
-
-        it('the date is not in ranges', function() {
-            var result = datePicker._isSelectable({
-                year: 2019,
-                month: 5,
-                date: 13
-            });
-
-            expect(result).toBe(false);
-        });
-    });
-});
-
-describe('Version 1.3.0 APIs', function() {
-    var $inputEl, calendar;
-
-    beforeEach(function() {
-        $inputEl = setFixtures('<input type="text">');
-        calendar = new tui.component.Calendar({
-            element: $('<div>')
-        });
-    });
-
     describe('option.parentElement: ', function() {
         it('if does not exist, _$wrapperElement should be inserted to next to input element', function() {
-            var datePicker = new DatePicker({
-                element: $inputEl
-            }, calendar);
-
             expect(datePicker._$wrapperElement.prev()[0]).toBe($inputEl[0]);
-        })
+        });
 
         it('if exists, _$wrapperElement should be insered into the specified element', function() {
             var $parentEl = setFixtures('<div>');
-            var datePicker = new DatePicker({
+            var datePicker2 = new DatePicker({
                 element: $inputEl,
                 parentElement: $parentEl
             }, calendar);
 
-            expect(datePicker._$wrapperElement.parent()[0]).toBe($parentEl[0]);
+            expect(datePicker2._$wrapperElement.parent()[0]).toBe($parentEl[0]);
         })
     });
 
@@ -752,9 +651,6 @@ describe('Version 1.3.0 APIs', function() {
         var keydownEnterEvent = $.Event('keydown', {keyCode: 13}); // eslint-disable-line
 
         it('if true(default), _setDateFromString() should be called when enter key pressed', function() {
-            var datePicker = new DatePicker({
-                element: $inputEl
-            }, calendar);
             var setDateSpy = spyOn(datePicker, '_setDateFromString');
 
             $inputEl.trigger(keydownEnterEvent);
@@ -775,59 +671,7 @@ describe('Version 1.3.0 APIs', function() {
         });
     });
 
-    describe('setElement():', function() {
-        var datePicker, $newEl;
-
-        beforeEach(function() {
-            datePicker = new DatePicker({
-                element: $inputEl
-            }, calendar)
-            $newEl = $('<input type="text">');
-        });
-
-        it('current element should unbind keydown event and be removed from openers', function() {
-            var spyRemoveOpener = spyOn(datePicker, 'removeOpener');
-            var spyUnbindEvent = spyOn(datePicker, '_unbindKeydownEvent');
-
-            datePicker.setElement($newEl);
-
-            expect(spyRemoveOpener).toHaveBeenCalledWith($inputEl);
-            expect(spyUnbindEvent).toHaveBeenCalledWith($inputEl);
-        });
-
-        it('new element should bind keydown event and be added to openers', function() {
-            var spyAddOpener = spyOn(datePicker, 'addOpener');
-            var spyBindEvent = spyOn(datePicker, '_bindKeydownEvent');
-
-            datePicker.setElement($newEl);
-
-            expect(spyAddOpener).toHaveBeenCalledWith($newEl);
-            expect(spyBindEvent).toHaveBeenCalledWith($newEl);
-        });
-
-        it('date value should be set using the value of new element', function() {
-            var spySetDate = spyOn(datePicker, '_setDateFromString');
-
-            datePicker.setElement($newEl);
-
-            expect(spySetDate).toHaveBeenCalledWith($newEl.val());
-        });
-
-        it('this._$element should be changed to new element', function() {
-            datePicker.setElement($newEl);
-            expect(datePicker._$element[0]).toBe($newEl[0]);
-        });
-    });
-
     describe('setRanges():', function() {
-        var datePicker;
-
-        beforeEach(function() {
-            datePicker = new DatePicker({
-                element: $inputEl
-            }, calendar)
-        });
-
         it('filter given ranges with valid dates and set this._ranges', function() {
             var validRanges = [[
                 {year: 2015, month: 1, date: 1},
@@ -856,8 +700,6 @@ describe('Version 1.4.0', function() {
     var bodySelector = '.calendar-body';
 
     beforeEach(function() {
-        loadFixtures('datepicker.html');
-
         $calendarEl = $('<div>');
         $inputEl = $('<input type="text">');
         $openerEl = $('<button>open</button>');
@@ -868,18 +710,16 @@ describe('Version 1.4.0', function() {
 
         picker = new DatePicker({
             element: $inputEl,
+            date: {},
             openers: [$openerEl],
-            useToggledOpener: true,
-            layerDepth: 'month'
+            useToggledOpener: true
         }, calendar);
     });
 
-    describe('View -', function() {
-        it('When picker is created with calendar option, 3 layers of calendar is created.', function() {
-            var $layers = $calendarEl.find(bodySelector);
+    it('When picker is created with calendar option, 3 layers of calendar is created.', function() {
+        var $layers = $calendarEl.find(bodySelector);
 
-            expect($layers.length).toBe(3);
-        });
+        expect($layers.length).toBe(3);
     });
 
     describe('Options -', function() {
@@ -942,10 +782,6 @@ describe('Version 1.4.0', function() {
 
             expect(openHandler).not.toHaveBeenCalled();
             expect(closeHandler).toHaveBeenCalled();
-        });
-
-        it('"layerDepth" option set ', function() {
-
         });
     });
 

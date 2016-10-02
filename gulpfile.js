@@ -1,58 +1,118 @@
+'use strict';
 /*eslint-disable*/
 var path = require('path');
-var gulp = require('gulp');
-var connect = require('gulp-connect');
+var browserSync = require('browser-sync').create();
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
-var sourceMap = require('gulp-sourcemaps');
 var buffer = require('vinyl-buffer');
+var watchify = require('watchify');
 var KarmaServer = require('karma').Server;
-var uglify = require('gulp-uglify');
+
+var gulp = require('gulp');
 var gutil = require('gulp-util');
+var gulpif = require('gulp-if');
+var connect = require('gulp-connect');
+var uglify = require('gulp-uglify');
 var concat = require('gulp-concat');
+var eslint = require('gulp-eslint');
 var filename = require('./package.json').name.replace('tui-component-', '');
 
-gulp.task('test', function(done) {
-    new KarmaServer({
-        configFile: path.join(__dirname, 'karma.conf.js'),
-        singleRun: true
-    }, done).start();
-});
+/**
+ * Paths
+ */
+var SOURCE_DIR = './src/**/*',
+    ENTRY = 'index.js',
+    DIST = './',
+    SAMPLE_DIST = './samples/js';
 
-gulp.task('connect', function() {
-    connect.server({
-        livereload: true
-    });
-    gulp.watch(['./src/**/*.js', './index.js', './demo/**/*.html'], ['bundle']);
-});
+/**
+ * Configuration
+ */
+var config = {};
+config.browserify = {
+    entries: ENTRY
+};
+config.browserSync = {
+    server: {
+        index: './sample9.html',
+        baseDir: './samples'
+    },
+    port: 3000,
+    ui: {
+        port: 3001
+    }
+};
+config.browserSyncStream = {
+    once: true
+};
+config.watchify = Object.assign({}, watchify.args, config.browserify);
 
-gulp.task('bundle', function() {
-    var b = browserify({
-        entries: 'index.js'
-    });
-
-    return b.bundle()
+/**
+ * Bundle function
+ */
+function bundle(bundler) {
+    return bundler
+        .bundle()
         .on('error', function(err) {
             console.log(err.message);
+            browserSync.notify('Browserify Error');
             this.emit('end');
         })
         .pipe(source(filename + '.js'))
         .pipe(buffer())
-        .pipe(gulp.dest('./'));
+        .pipe(gulp.dest(DIST))
+        .pipe(gulp.dest(SAMPLE_DIST))
+        .pipe(gulpif(
+            browserSync.active,
+            browserSync.stream(config.browserSyncStream))
+        );
+}
+
+/**
+ * Tasks
+ */
+gulp.task('watch', function() {
+    var bundler = watchify(browserify(config.watchify)),
+        watcher = function() {
+            bundle(bundler);
+        };
+
+    browserSync.init(config.browserSync);
+    bundler.on('update', watcher);
+    bundler.on('log', gutil.log);
+
+    watcher();
 });
 
-gulp.task('compress', ['bundle'], function() {
+gulp.task('connect', function() {
+    connect.server();
+    gulp.watch(SOURCE_DIR, ['bundle']);
+});
+
+gulp.task('eslint', function() {
+    return gulp.src([SOURCE_DIR])
+        .pipe(eslint())
+        .pipe(eslint.format())
+        .pipe(eslint.failAfterError());
+});
+
+gulp.task('karma', ['eslint'], function(done) {
+    new KarmaServer({
+        configFile: path.join(__dirname, 'karma.conf.js'),
+        singleRun: true,
+        logLevel: 'error'
+    }, done).start();
+});
+
+gulp.task('bundle', ['eslint', 'karma'], function() {
+    return bundle(browserify(config.browserify));
+});
+
+gulp.task('compress', ['eslint', 'karma', 'bundle'], function() {
     gulp.src(filename + '.js')
         .pipe(uglify())
         .pipe(concat(filename + '.min.js'))
-        .pipe(gulp.dest('./'));
-
+        .pipe(gulp.dest(DIST));
 });
 
-gulp.task('concat', ['compress'], function() {
-    gulp.src(filename + '.js')
-        .pipe(concat(filename + '.js'))
-        .pipe(gulp.dest('./samples/js/'));
-});
-
-gulp.task('default', ['bundle', 'compress', 'concat']);
+gulp.task('default', ['eslint', 'karma', 'bundle', 'compress']);

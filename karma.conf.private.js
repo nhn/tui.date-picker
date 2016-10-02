@@ -15,7 +15,7 @@ module.exports = function(config) {
 
         // frameworks to use
         // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-        frameworks: ['browserify','jasmine'],
+        frameworks: ['browserify', 'jasmine'],
 
 
         // list of files / patterns to load in the browser
@@ -23,14 +23,15 @@ module.exports = function(config) {
             'bower_components/jquery/jquery.min.js',
             'bower_components/jasmine-jquery/lib/jasmine-jquery.js',
             'bower_components/tui-code-snippet/code-snippet.min.js',
-            'bower_components/tui-component-calendar/calendar.min.js',
+            //'bower_components/tui-component-calendar/calendar.min.js',
+            'samples/js/calendar.js',
 
             'src/spinbox.js',
             'src/timepicker.js',
             'src/datepicker.js',
 
-            'test/fixtures/**/*.html',
-            'test/css/**/*.css',
+            'test/fixtures/*.html',
+            'test/css/*.css',
             'test/**/*.test.js'
         ],
 

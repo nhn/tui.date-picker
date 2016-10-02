@@ -291,5 +291,3 @@ describe('Spinbox', function() {
         });
     });
 });
-
-

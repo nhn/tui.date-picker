@@ -28,7 +28,7 @@ var extend = util.extend;
  *     @param {string} [option.todayFormat = "yyyy Year mm Month dd Day (D)"] A today format.
  *                     This component find today element by className '[prefix]today'
  *     @param {string} [option.yearTitleFormat = "yyyy"] A year title formant.
- *                     This component find year title element by className '[prefix]year'
+ *                      This component find year title element by className '[prefix]year'
  *     @param {string} [option.monthTitleFormat = "m"] A month title format.
  *                     This component find month title element by className이 '[prefix]month'
  *     @param {Array} [option.monthTitles = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"]]
@@ -180,6 +180,12 @@ var Calendar = util.defineClass(/** @lends Calendar.prototype */ {
         this.dataOfYearLayer = {};
 
         /**
+         * Whether title is clicable or not
+         * @type {Boolean}
+         */
+        this.isClickableTitle = false;
+
+        /**
          * Handlers binding context
          * @type {Object}
          */
@@ -273,6 +279,10 @@ var Calendar = util.defineClass(/** @lends Calendar.prototype */ {
         this.$titleMonth = $header.find(classSelector + 'title-month');
 
         this.$header = $header;
+
+        if (this.$title.hasClass(this._option.classPrefix + CONSTANTS.clickable)) {
+            this.isClickableTitle = true;
+        }
     },
 
     /**
@@ -395,7 +405,9 @@ var Calendar = util.defineClass(/** @lends Calendar.prototype */ {
             clickMonthLayer: bind(this._onClickMonthLayer, this)
         });
 
-        this.attachEventToTitle();
+        if (this.isClickableTitle) {
+            this.attachEventToTitle();
+        }
         this.attachEventToBody();
     },
 
@@ -855,7 +867,11 @@ var Calendar = util.defineClass(/** @lends Calendar.prototype */ {
      * @param {number} shownLayerIdx - Year
      */
     _setClassNameOnTitle: function(shownLayerIdx) {
-        var className = CONSTANTS.clickable;
+        var className = this._option.classPrefix + CONSTANTS.clickable;
+
+        if (!this.isClickableTitle) {
+            return;
+        }
 
         if (shownLayerIdx !== 2) {
             this.$title.addClass(className);
@@ -1023,7 +1039,8 @@ var Calendar = util.defineClass(/** @lends Calendar.prototype */ {
                 $dateContainer: $buttonEl,
                 year: dateForDrawing.year,
                 month: month,
-                date: 0
+                date: 0,
+                html: title
             };
 
             this.fire('draw', eventData);
@@ -1085,7 +1102,8 @@ var Calendar = util.defineClass(/** @lends Calendar.prototype */ {
                 $dateContainer: $buttonEl,
                 year: startYear,
                 month: 0,
-                date: 0
+                date: 0,
+                html: startYear
             };
 
             this.fire('draw', eventData);
@@ -1203,7 +1221,7 @@ var CONSTANTS = {
     nextMonth: 'next-month',
     selected: 'selected',
     today: 'today',
-    clickable: 'clickable',
+    clickable: 'clickable-title',
     calendarHeader: null,
     calendarBody: null,
     calendarFooter: null,
@@ -1220,7 +1238,7 @@ var CONSTANTS = {
 CONSTANTS.calendarHeader = [
     '<div class="calendar-header">',
         '<a href="#" class="calendar-rollover calendar-btn-' + CONSTANTS.prev + '">Prev</a>',
-        '<strong class="calendar-title"></strong>',
+        '<strong class="calendar-title calendar-clickable-title"></strong>',
         '<a href="#" class="calendar-rollover calendar-btn-' + CONSTANTS.next + '">Next</a>',
     '</div>'].join('');
 

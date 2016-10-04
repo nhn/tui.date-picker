@@ -2,7 +2,7 @@
 <html>
     <head lang="en">
         <meta charset="UTF-8">
-        <title>Selectable ranges on month layer</title>
+        <title>Selectable ranges on date layer</title>
         <link type="text/css" rel="stylesheet" href="../styles/prettify-jsdoc.css" />
         <link type="text/css" rel="stylesheet" href="../styles/prettify-tomorrow.css">
         <link type="text/css" rel="stylesheet" href="../styles/tui.css">
@@ -30,8 +30,8 @@
 
         <div class="codeArea"></div>
 
-        <script type="text/javascript" src="lib/jquery.min.js"></script>
-        <script type="text/javascript" src="lib/code-snippet.js"></script>
+        <script type="text/javascript" src="js/jquery.min.js"></script>
+        <script type="text/javascript" src="js/code-snippet.js"></script>
         <script type="text/javascript" src="js/calendar.js"></script>
         <script type="text/javascript" src="js/date-picker.js"></script>
 
@@ -45,30 +45,33 @@
 
                 return {
                     year: today.getFullYear(),
-                    month: today.getMonth() + 1
+                    month: today.getMonth() + 1,
+                    date: today.getDate()
                 };
             }
 
-            function getRelativeDateHash(dateObj, month) {
-                var relativeDate = new Date(dateObj.year, dateObj.month - 1 + month, 1);
+            function getRelativeDateHash(dateObj, date) {
+                var relativeDate = new Date(dateObj.year, dateObj.month - 1, dateObj.date + date);
 
                 return {
                     year: relativeDate.getFullYear(),
-                    month: relativeDate.getMonth() + 1
+                    month: relativeDate.getMonth() + 1,
+                    date: relativeDate.getDate()
                 };
             }
 
             function getUnlimitedDateHash() {
                 return {
                     year: 2099,
-                    month: 12
+                    month: 12,
+                    date: 31
                 };
             }
 
             // Step 1: Init date for setting datepicker
             var startDate1 = getTodayHash();
             var endDate1 = getUnlimitedDateHash();
-            var startDate2 = getRelativeDateHash(startDate1, 2);
+            var startDate2 = getRelativeDateHash(startDate1, 7);
             var endDate2 = getUnlimitedDateHash();
 
             // Step 2: Create each component
@@ -78,7 +81,7 @@
 
             var startDatepicker = new tui.component.DatePicker({
                 element: '#datepicker-start',
-                dateForm: 'yyyy년 mm월',
+                dateForm: 'yyyy년 mm월 dd일',
                 selectableRanges: [
                     [startDate1, endDate1]
                 ]
@@ -86,7 +89,7 @@
 
             var endDatepicker = new tui.component.DatePicker({
                 element: '#datepicker-end',
-                dateFormat: 'yyyy년 mm월',
+                dateFormat: 'yyyy년 mm월 dd일',
                 date: startDate2,
                 selectableRanges: [
                     [startDate2, endDate2]
@@ -96,7 +99,7 @@
             // Step 3: Pick start date
             startDatepicker.on('pick', function() {
                 var pickedDate = startDatepicker.getDateHash();
-                var newStartDate = getRelativeDateHash(pickedDate, 2); // after 2 months
+                var newStartDate = getRelativeDateHash(pickedDate, 7); // after 7 days
                 var newEndDate = getUnlimitedDateHash();
 
                 // Step 3-1: Change ranges each datepicker
@@ -104,13 +107,13 @@
                 endDatepicker.setRanges([[pickedDate, newEndDate]]);
 
                 // Step 3-2: Change picked end date
-                endDatepicker.setDate(newStartDate.year, newStartDate.month);
+                endDatepicker.setDate(newStartDate.year, newStartDate.month, newStartDate.date);
             });
 
             // Step 4: Pick end date
             endDatepicker.on('pick', function() {
                 var pickedDate = endDatepicker.getDateHash();
-                var newStartDate = getRelativeDateHash(pickedDate, -2); // before 2 months
+                var newStartDate = getRelativeDateHash(pickedDate, -7); // before 7 days
                 var newEndDate = getUnlimitedDateHash();
 
                 // Step 4-1: Change ranges each datepicker
@@ -118,7 +121,7 @@
                 startDatepicker.setRanges([[newStartDate, newEndDate]]);
 
                 // Step 4-2: Change picked start date
-                startDatepicker.setDate(newStartDate.year, newStartDate.month);
+                startDatepicker.setDate(newStartDate.year, newStartDate.month, newStartDate.date );
             });
 
         </script>

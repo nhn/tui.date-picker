@@ -69,9 +69,6 @@ var inArray = util.inArray,
  *      @param {Object} [option.openers = [element]] - opener button list (example - icon, button, etc.)
  *      @param {boolean} [option.showAlways = false] - whether the datepicker shows the calendar always
  *      @param {boolean} [option.useTouchEvent = true] - whether the datepicker uses touch events
- *      @param {boolean} [option.useToggledOpener = true] - whether openers are toggling or not
- *      @param {boolean} [option.useNavigatingDate = true] - whether the datepicker can navigate other layer or not
- *      @param {boolean} [option.closeLayerAfterPicking = true] - whether the datepicker is closed or not after picking
  *      @param {tui.component.TimePicker} [option.timePicker] - TimePicker instance
  * @param {tui.component.Calendar} calendar - Calendar instance
  * @example
@@ -108,11 +105,7 @@ var inArray = util.inArray,
  *       date: {year: 2015, month: 1, date: 1},
  *       selectableRanges: [range1, range2, range3],
  *       openers: ['#opener'],
- *       timePicker: timePicker,
- *       useNavigatingDate: true,
- *       useToggledOpener: true,
- *       useNavigatingDate: true,
- *       closeLayerAfterPicking: true
+ *       timePicker: timePicker
  *   }, calendar);
  *
  *   // Close calendar when select a date
@@ -136,10 +129,7 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
             selectableRanges: [],
             enableSetDateByEnterKey: true,
             showAlways: false,
-            useTouchEvent: true,
-            useToggledOpener: false,
-            useNavigatingDate: true,
-            closeLayerAfterPicking: true
+            useTouchEvent: true
         }, option);
 
         /**
@@ -311,30 +301,6 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
         this._disabledClassName = option.disabledClassName;
 
         /**
-         * Whether using navigating date or not
-         * @type {boolean}
-         * @private
-         * @since 1.4.0
-         */
-        this._useNavigatingDate = option.useNavigatingDate;
-
-        /**
-         * Whether toggling opener or not
-         * @type {boolean}
-         * @private
-         * @since 1.4.0
-         */
-        this._useToggledOpener = option.useToggledOpener;
-
-        /**
-         * Whether closing layer
-         * @type {boolean}
-         * @private
-         * @since 1.4.0
-         */
-        this._closeLayerAfterPicking = option.closeLayerAfterPicking;
-
-        /**
          * Whether the datepicker shows always
          * @api
          * @type {boolean}
@@ -410,10 +376,6 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
      */
     _detachCalendarEvent: function() {
         this._calendar.detachEventToBody();
-
-        if (!this._useNavigatingDate) {
-            this._calendar.detachEventToTitle();
-        }
     },
 
     /**
@@ -1029,20 +991,27 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
                 dateHash.date = Number(value);
             }
             this.setDate(dateHash.year, dateHash.month, dateHash.date);
+
+            /**
+             * Pick event
+             * @api
+             * @event DatePicker#pick
+             * @example
+             * datepicker.on('pick', function() {
+             *      return false; // Cancel to close layer
+             *      // return true; // Layer is closed
+             * });
+             */
+            if (!this.invoke('pick')) {
+                return;
+            }
+
+            if (!this.showAlways) {
+                this.close();
+            }
         } else { // move previous layer
             this._calendar.draw(dateHash.year, dateHash.month, false, shownLayerIdx - 1);
         }
-
-        if (this._closeLayerAfterPicking) {
-            this.close();
-        }
-
-        /**
-         * Pick event
-         * @api
-         * @event DatePicker#pick
-         */
-        this.fire('pick');
     },
 
     /**
@@ -1050,7 +1019,9 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
      * @private
      */
     _onClickOpener: function() {
-        if (this._useToggledOpener && this.isOpened()) {
+        var isOpened = this.isOpened();
+
+        if (isOpened) {
             this.close();
         } else {
             this.open();
@@ -1091,7 +1062,6 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
     _onAfterDrawCalendar: function() {
         this._showOnlyValidButtons();
         this._bindOnClickCalendar();
-        this._removeClassNameOnTitle();
     },
 
     /**
@@ -1223,18 +1193,6 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
     _unbindOnClickOpener: function(element) {
         var eventType = (this.useTouchEvent) ? 'touchend' : 'click';
         $(element).on(eventType, this._proxyHandlers.onClickOpener);
-    },
-
-    /**
-     * Remove class name for click on title
-     * @private
-     */
-    _removeClassNameOnTitle: function() {
-        var $title = this._calendar.$title;
-
-        if (!this._useNavigatingDate) {
-            $title.removeClass(CONSTANTS.CLICKABLE_CLASSNAME);
-        }
     },
 
     /**

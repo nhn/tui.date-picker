@@ -2,35 +2,30 @@
 <html>
     <head lang="en">
         <meta charset="UTF-8">
+        <title>spinbox example</title>
 
         <link type="text/css" rel="stylesheet" href="../styles/prettify-jsdoc.css" />
         <link type="text/css" rel="stylesheet" href="../styles/prettify-tomorrow.css">
         <link type="text/css" rel="stylesheet" href="../styles/tui.css">
 
-        <title>timepicker example</title>
-        <!--[if IE 7]>
-            <style>
-                html{margin:0; padding:0;}
-                body{margin:0; padding:0;}
-            </style>
-        <![endif]-->
-        <link href="css/calendar.css" rel="stylesheet">
-        <link href="css/timepicker.css" rel="stylesheet">
-        <style>
-            .example{height: 145px;}
+        <style rel="stylesheet" type="text/css">
+            .spinbox{width:100px; text-align:center;}
+            .spinbox input{font-size:2em; text-align:center; border:transparent 0px;}
+            .spinbox .btn-lg{width:100%; font-size:1.5em; background-color:transparent; border:solid 1px black;}
         </style>
     </head>
     <body>
-
     <div class="wrap">
-        <div class="example">
-            <h1>Timepicker-default</h1>
-            <input type="text" id="timepicker-default">
+        <h1>Default</h1>
+        <div id="spinbox-default" style="height:145px;">
+            <input type="text">
         </div>
 
-        <div class="example">
-            <h1>Timepicker-option (AM/PM, default time, position)</h1>
-            <input type="text" id="timepicker-option">
+        <hr>
+
+        <h1>Custom option</h1>
+        <div id="spinbox-with-option" class="spinbox" style="height:145px;">
+            <input type="text">
         </div>
     </div>
 
@@ -45,35 +40,30 @@
     <script src="../scripts/prettify/lang-css.js"></script>
     <script src="../scripts/samplecode.js"></script>
     <script class="serviceCode">
-
-        var optionInput = document.getElementById('timepicker-option');
-
         /**
-         * Default time string is '00:00' with 24hours-expression.
-         * CSS-Class of timepicker element is 'timepicker'.
-         * CSS-Class of up/down button elements is 'timepicker-btn'.
-         * If don't set position, it will be set lower end of left from input-box.
+         * Default
          */
-        var timepicker1 = new tui.component.TimePicker({
-            inputElement: '#timepicker-default',
-            defaultHour: 10,
-            defaultMinute: 34
-        });
+        var spinboxDefault = new tui.component.Spinbox('#spinbox-default');
 
         /**
          * Option
-         * Default hour is 12. (defaultHour)
-         * Default minute is 34. (defaultMinute)
-         * Set meridian option for AM/PM expression. (showMeridian)
-         * Set position (x,y). (position)
+         *
+         * Default value is 10. (defaultValue)
+         * Step value is 2. (step)
+         * Minimum value is 0. (min)
+         * Maximum value is 59. (max)
+         * Exclude values 16, 18. (exclusion, ex] 14 -> 20)
+         * Up/down button tag. (upBtnTag, downBtnTag)
          */
-        var timepicker2 = new tui.component.TimePicker({
-            inputElement: '#timepicker-option',
-            defaultHour: 12,
-            defaultMinute: 34,
-            showMeridian: true,
-            position: {x: optionInput.offsetLeft + optionInput.offsetWidth + 3, y: optionInput.offsetTop}
-        });
+        var spinboxWithOption = new tui.component.Spinbox('#spinbox-with-option', {
+                defaultValue: 10,
+                step: 2,
+                min: 0,
+                max: 59,
+                exclusion: [16, 18],
+                upBtnTag: '<button class="btn-lg">UP</button>',
+                downBtnTag: '<button class="btn-lg">DOWN</button>'
+            });
     </script>
 </body>
 </html>

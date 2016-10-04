@@ -22,7 +22,7 @@ var filename = require('./package.json').name.replace('tui-component-', '');
  */
 var SOURCE_DIR = './src/**/*',
     ENTRY = 'index.js',
-    DIST = './',
+    DIST = './dist',
     SAMPLE_DIST = './samples/js';
 
 /**
@@ -34,7 +34,7 @@ config.browserify = {
 };
 config.browserSync = {
     server: {
-        index: './sample9.html',
+        index: './sample10.html',
         baseDir: './samples'
     },
     port: 3000,

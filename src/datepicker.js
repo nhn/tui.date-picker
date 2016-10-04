@@ -69,6 +69,9 @@ var inArray = util.inArray,
  *      @param {Object} [option.openers = [element]] - opener button list (example - icon, button, etc.)
  *      @param {boolean} [option.showAlways = false] - whether the datepicker shows the calendar always
  *      @param {boolean} [option.useTouchEvent = true] - whether the datepicker uses touch events
+ *      @param {boolean} [option.useToggledOpener = true] - whether openers are toggling or not
+ *      @param {boolean} [option.useNavigatingDate = true] - whether the datepicker can navigate other layer or not
+ *      @param {boolean} [option.closeLayerAfterPicking = true] - whether the datepicker is closed or not after picking
  *      @param {tui.component.TimePicker} [option.timePicker] - TimePicker instance
  * @param {tui.component.Calendar} calendar - Calendar instance
  * @example
@@ -107,7 +110,9 @@ var inArray = util.inArray,
  *       openers: ['#opener'],
  *       timePicker: timePicker,
  *       useNavigatingDate: true,
- *       useToggledOpener: true
+ *       useToggledOpener: true,
+ *       useNavigatingDate: true,
+ *       closeLayerAfterPicking: true
  *   }, calendar);
  *
  *   // Close calendar when select a date
@@ -163,7 +168,7 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
          * @type {string}
          * @private
          */
-        this._dateFormat = option.dateFormat || option.dateForm;
+        this._dateFormat = option.dateForm || option.dateFormat;
 
         /**
          * RegExp instance for format of date string
@@ -875,7 +880,7 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * Set selectable-class-name to selectable date element.
-     * @param {HTMLElement|jQuery} element - date element
+     * @param {jQuery} element - date element
      * @param {{year: number, month: number, date: number}} dateHash - date object
      * @private
      */
@@ -1031,6 +1036,13 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
         if (this._closeLayerAfterPicking) {
             this.close();
         }
+
+        /**
+         * Pick event
+         * @api
+         * @event DatePicker#pick
+         */
+        this.fire('pick');
     },
 
     /**
@@ -1219,10 +1231,9 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
      */
     _removeClassNameOnTitle: function() {
         var $title = this._calendar.$title;
-        var className = CONSTANTS.CLICKABLE_CLASSNAME;
 
         if (!this._useNavigatingDate) {
-            $title.removeClass(className);
+            $title.removeClass(CONSTANTS.CLICKABLE_CLASSNAME);
         }
     },
 
@@ -1311,6 +1322,9 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
      * datepicker.addRange(start, end);
      */
     addRange: function(startHash, endHash) {
+        startHash = extend({}, startHash);
+        endHash = extend({}, endHash);
+
         this._setHashInRange(startHash, endHash);
 
         if (this._isValidDate(startHash) && this._isValidDate(endHash)) {
@@ -1338,6 +1352,9 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
         var i = 0;
         var len = ranges.length;
         var target;
+
+        startHash = extend({}, startHash);
+        endHash = extend({}, endHash);
 
         this._setHashInRange(startHash, endHash);
 
@@ -1554,6 +1571,8 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
      * datepicker.setDate(2014, 12, 3); // 2014-12- 03
      * datepicker.setDate(null, 11, 23); // 2014-11-23
      * datepicker.setDate('2015', '5', 3); // 2015-05-03
+     * datepicker.setDate(2016, 10); // 2016-10
+     * datepicker.setDate(2017); // 2017
      */
     setDate: function(year, month, date) {
         var dateObj = this._date;
@@ -1697,7 +1716,7 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
         forEach(this._openers, function(openerEl, idx) {
             $openerEl = $(openerEl);
             $openerEl.addClass(this._disabledClassName);
-            $openerEl.attr('disabled', 'disabled');
+            $openerEl.prop('disabled', true);
             this._unbindOnClickOpener($openerEl);
             if (!idx) {
                 this._unbindKeydownEvent($openerEl);

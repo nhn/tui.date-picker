@@ -1,23 +1,20 @@
 {
   "sample1": {
-    "title": "DatePicker - Basic"
+    "title": "DatePicker - Enable picking year, month, date"
   },
   "sample2": {
-    "title": "DatePicker - Share Calendar instance"
+    "title": "DatePicker - Customizing with options"
   },
   "sample3": {
-    "title": "DatePicker - Share TimePicker instance"
-  },
-  "sample4": {
     "title": "TimePicker"
   },
-  "sample5": {
+  "sample4": {
     "title": "Spinbox"
   },
-  "sample6": {
-    "title": "DatePicker - Range (Default)"
+  "sample5": {
+    "title": "DatePicker - Selectable ranges on date layer"
   },
-  "sample7": {
-    "title": "DatePicker - Range (Select start & end date)"
+  "sample6": {
+    "title": "DatePicker - Selectable ranges on month layer"
   }
 }

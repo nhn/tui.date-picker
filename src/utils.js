@@ -188,6 +188,21 @@ var utils = {
             found: found,
             index: (found || fieldValue > value) ? index : index + 1
         };
+    },
+
+    /**
+     * Get meridiem hour
+     * @param {number} hour - Original hour
+     * @returns {number} Converted meridiem hour
+     */
+    getMeridiemHour: function(hour) {
+        hour %= 12;
+
+        if (hour === 0) {
+            hour = 12;
+        }
+
+        return hour;
     }
 };
 

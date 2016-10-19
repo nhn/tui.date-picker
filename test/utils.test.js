@@ -44,3 +44,15 @@ describe('search', function() {
         });
     });
 });
+
+describe('getMeridiemHour()', function() {
+    it('When "hour" is midnight(00:00), meridiem hour is 12.', function() {
+        expect(utils.getMeridiemHour(0)).toEqual(12);
+    });
+
+    it('When "hour" is over noon(12:00), meridiem hour is between 1~12.', function() {
+        expect(utils.getMeridiemHour(12)).toEqual(12);
+        expect(utils.getMeridiemHour(13)).toEqual(1);
+        expect(utils.getMeridiemHour(23)).toEqual(11);
+    });
+});

@@ -1,19 +1,22 @@
 /**
  * Created by nhnent on 15. 4. 28..
  */
-var TimePicker = require('../src/timepicker');
-describe('Timepicker', function() {
+'use strict';
 
-    jasmine.getFixtures().fixturesPath = 'base/test/fixtures';
+var TimePicker = require('../src/timepicker');
+
+jasmine.getFixtures().fixturesPath = 'base/test/fixtures';
+
+describe('Timepicker', function() {
     var timepicker1,
         timepicker2;
 
     beforeEach(function() {
         timepicker1 = new TimePicker({
-            inputElement: $('<input id="timepicker-default">')
+            inputElement: $('<input id="timepicker-default" />')[0]
         });
         timepicker2 = new TimePicker({
-            inputElement: $('<input id="timepicker-option">'),
+            inputElement: $('<input id="timepicker-option" />')[0],
             defaultHour: 12,
             defaultMinute: 34,
             showMeridian: true,
@@ -45,7 +48,7 @@ describe('Timepicker', function() {
                 position = opt.position;
 
             expect(showMeridian).toEqual(true);
-            expect(timepicker2.getTime()).toEqual('00:34 PM');
+            expect(timepicker2.getTime()).toEqual('12:34 PM');
             expect(position).toEqual({x:10, y:10});
         });
 
@@ -56,7 +59,7 @@ describe('Timepicker', function() {
                 minuteStep: 2,
                 hourExclusion: [8, 12],
                 minuteExclusion: [14, 16],
-                showMeridian: true
+                showMeridian: true // 03:00 PM
             });
 
             expect(tp).toBeDefined();
@@ -82,8 +85,8 @@ describe('Timepicker', function() {
             originMinute2;
 
         beforeEach(function() {
-            originTime1 = timepicker1.getTime();
-            originTime2 = timepicker2.getTime();
+            originTime1 = timepicker1.getTime(); // current time (use meridiam)
+            originTime2 = timepicker2.getTime(); // 12:34 PM (don't use meridiam)
             originHour1 = timepicker1.getHour();
             originHour2 = timepicker2.getHour();
             originMinute1 = timepicker1.getMinute();
@@ -115,6 +118,12 @@ describe('Timepicker', function() {
             timepicker1.setHour(1);
             timepicker1.setMinute(1);
             expect(timepicker1.getTime()).toEqual('01:01');
+
+            timepicker2.setTimeFromString('13:33 PM');
+            expect(timepicker2.getTime()).toEqual('01:33 PM');
+
+            timepicker2.setTimeFromString('15:22 DD');
+            expect(timepicker2.getTime()).toEqual('03:22 PM');
         });
 
         it('set time from string - invalid', function() {
@@ -122,14 +131,8 @@ describe('Timepicker', function() {
             timepicker1.setTimeFromString('24:33 PM');
             expect(timepicker1.getTime()).toEqual(originTime1);
 
-            timepicker2.setTimeFromString('13:33 PM');
-            expect(timepicker2.getTime()).toEqual(originTime2);
-
             timepicker1.setTimeFromString('34:34 CC');
             expect(timepicker1.getTime()).toEqual(originTime1);
-
-            timepicker2.setTimeFromString('15:22 DD');
-            expect(timepicker2.getTime()).toEqual(originTime2);
         });
 
         it('set invalid value to input element', function() {
@@ -271,12 +274,12 @@ describe('Timepicker', function() {
         it('up to AM', function() {
             timepicker2.setHour(23);
             timepicker2._hourSpinbox._$upButton.click();
-            expect(timepicker2.getTime()).toEqual('00:34 AM');
+            expect(timepicker2.getTime()).toEqual('12:34 AM');
         });
 
         it('down to PM', function() {
             timepicker2.setHour(0);
-            expect(timepicker2.getTime()).toEqual('00:34 AM');
+            expect(timepicker2.getTime()).toEqual('12:34 AM');
             timepicker2._hourSpinbox._$downButton.click();
             expect(timepicker2.getTime()).toEqual('11:34 PM');
         });
@@ -286,11 +289,11 @@ describe('Timepicker', function() {
             expect(timepicker2.getTime()).toEqual('11:34 AM');
 
             timepicker2._hourSpinbox._$upButton.click();
-            expect(timepicker2.getTime()).toEqual('00:34 PM');
+            expect(timepicker2.getTime()).toEqual('12:34 PM');
         });
 
-        it('if option.ampm is ture and value is "13:34 AM",' +
-            ' getTime() will return "01:34 PM"',  function() {
+        it('if option.showMeridian is true and value is "13:34 AM",' +
+            ' getTime() will return "01:34 PM"', function() {
             timepicker2._$inputElement.val('13:34 AM').change();
 
             expect(timepicker2.getTime()).toEqual('01:34 PM');

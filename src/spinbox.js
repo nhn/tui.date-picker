@@ -62,6 +62,12 @@ var Spinbox = util.defineClass(/** @lends Spinbox.prototype */ {
          */
         this._$downButton = null;
 
+        /**
+         * @type {string}
+         * @private
+         */
+        this._changeType = 'default';
+
         this._initialize(option);
     },
 
@@ -202,6 +208,9 @@ var Spinbox = util.defineClass(/** @lends Spinbox.prototype */ {
         this._$downButton.on('click', {isDown: true}, onClick);
         this._$inputElement.on('keydown', onKeyDown);
         this._$inputElement.on('change', util.bind(this._onChangeInput, this));
+        this._$inputElement.on('focus', util.bind(function() {
+            this._changeType = 'default';
+        }, this));
     },
 
     /**
@@ -230,6 +239,8 @@ var Spinbox = util.defineClass(/** @lends Spinbox.prototype */ {
                 nextValue = max;
             }
         } while (inArray(nextValue, exclusion) > -1);
+
+        this._changeType = isDown ? 'down' : 'up';
 
         this.setValue(nextValue);
     },
@@ -271,6 +282,8 @@ var Spinbox = util.defineClass(/** @lends Spinbox.prototype */ {
 
         this._value = nextValue;
         this._$inputElement.val(nextValue);
+
+        this.fire('change', this._changeType);
     },
 
     /**
@@ -351,5 +364,7 @@ var Spinbox = util.defineClass(/** @lends Spinbox.prototype */ {
         return this._$containerElement[0];
     }
 });
+
+tui.util.CustomEvents.mixin(Spinbox);
 
 module.exports = Spinbox;

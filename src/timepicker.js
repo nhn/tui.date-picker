@@ -7,15 +7,17 @@
 'use strict';
 
 var Spinbox = require('./spinbox');
+var utils = require('./utils');
 
-var util = tui.util,
-    timeRegExp = /\s*(\d{1,2})\s*:\s*(\d{1,2})\s*([ap][m])?(?:[\s\S]*)/i,
-    timePickerTag = '<table class="timepicker"><tr class="timepicker-row"></tr></table>',
-    columnTag = '<td class="timepicker-column"></td>',
-    spinBoxTag = '<td class="timepicker-column timepicker-spinbox">' +
-                '<div><input type="text" class="timepicker-spinbox-input"></div></td>',
-    upBtnTag = '<button type="button" class="timepicker-btn timepicker-btn-up"><b>+</b></button>',
-    downBtnTag = '<button type="button" class="timepicker-btn timepicker-btn-down"><b>-</b></button>';
+var util = tui.util;
+var timeRegExp = /\s*(\d{1,2})\s*:\s*(\d{1,2})\s*([ap][m])?(?:[\s\S]*)/i;
+var timePickerTag = '<table class="timepicker"><tr class="timepicker-row"></tr></table>';
+var columnTag = '<td class="timepicker-column"></td>';
+var spinBoxTag = '<td class="timepicker-column timepicker-spinbox">' +
+                '<div><input type="text" class="timepicker-spinbox-input"></div></td>';
+var upBtnTag = '<button type="button" class="timepicker-btn timepicker-btn-up"><b>+</b></button>';
+var downBtnTag = '<button type="button" class="timepicker-btn timepicker-btn-down"><b>-</b></button>';
+var meridiemTag = '<select><option value="AM">AM</option><option value="PM">PM</option></select>';
 
 /**
  * @constructor
@@ -102,7 +104,7 @@ var TimePicker = util.defineClass(/** @lends TimePicker.prototype */ {
         this._makeSpinboxes();
         this._makeTimePickerElement();
         this._assignDefaultEvents();
-        this.fromSpinboxes();
+        this.setTime(this._option.defaultHour, this._option.defaultMinute, false);
     },
 
     /**
@@ -132,11 +134,16 @@ var TimePicker = util.defineClass(/** @lends TimePicker.prototype */ {
      */
     _makeSpinboxes: function() {
         var opt = this._option;
+        var defaultHour = opt.defaultHour;
+
+        if (opt.showMeridian) {
+            defaultHour = utils.getMeridiemHour(defaultHour);
+        }
 
         this._hourSpinbox = new Spinbox(spinBoxTag, {
-            defaultValue: opt.defaultHour,
-            min: 0,
-            max: 23,
+            defaultValue: defaultHour,
+            min: (opt.showMeridian) ? 1 : 0,
+            max: (opt.showMeridian) ? 12 : 23,
             step: opt.hourStep,
             upBtnTag: upBtnTag,
             downBtnTag: downBtnTag,
@@ -159,22 +166,19 @@ var TimePicker = util.defineClass(/** @lends TimePicker.prototype */ {
      * @private
      */
     _makeTimePickerElement: function() {
-        var opt = this._option,
-            $tp = $(timePickerTag),
-            $tpRow = $tp.find('.timepicker-row'),
-            $meridian,
-            $colon = $(columnTag)
-                .addClass('colon')
-                .append(':');
-
+        var opt = this._option;
+        var $tp = $(timePickerTag);
+        var $tpRow = $tp.find('.timepicker-row');
+        var $colon = $(columnTag).addClass('colon').append(':');
+        var $meridian;
 
         $tpRow.append(this._hourSpinbox.getContainerElement(), $colon, this._minuteSpinbox.getContainerElement());
 
         if (opt.showMeridian) {
             $meridian = $(columnTag)
                 .addClass('meridian')
-                .append(this._isPM ? 'PM' : 'AM');
-            this._$meridianElement = $meridian;
+                .append(meridiemTag);
+            this._$meridianElement = $meridian.find('select').eq(0);
             $tpRow.append($meridian);
         }
 
@@ -195,10 +199,10 @@ var TimePicker = util.defineClass(/** @lends TimePicker.prototype */ {
      * @private
      */
     _setDefaultPosition: function($input) {
-        var inputEl = $input[0],
-            position = this._option.position,
-            x = position.x,
-            y = position.y;
+        var inputEl = $input[0];
+        var position = this._option.position;
+        var x = position.x;
+        var y = position.y;
 
         if (!util.isNumber(x) || !util.isNumber(y)) {
             x = inputEl.offsetLeft;
@@ -216,11 +220,14 @@ var TimePicker = util.defineClass(/** @lends TimePicker.prototype */ {
 
         if ($input) {
             this._assignEventsToInputElement();
-            this.on('change', function() {
-                $input.val(this.getTime());
-            }, this);
         }
-        this.$timePickerElement.on('change', util.bind(this._onChangeTimePicker, this));
+
+        this.on('change', util.bind(this._onChangeInputElement, this));
+
+        this._hourSpinbox.on('change', util.bind(this._onChangeTimePicker, this));
+        this._minuteSpinbox.on('change', util.bind(this._onChangeTimePicker, this));
+
+        this.$timePickerElement.on('change', 'select', util.bind(this._onChangeMeridiem, this));
     },
 
     /**
@@ -228,8 +235,8 @@ var TimePicker = util.defineClass(/** @lends TimePicker.prototype */ {
      * @private
      */
     _assignEventsToInputElement: function() {
-        var self = this,
-            $input = this._$inputElement;
+        var self = this;
+        var $input = this._$inputElement;
 
         $input.on('click', function(event) {
             self.open(event);
@@ -243,11 +250,48 @@ var TimePicker = util.defineClass(/** @lends TimePicker.prototype */ {
     },
 
     /**
-     * dom event handler (timepicker)
+     * Custom event handler
+     * @param {boolean} isSetSpinbox - Whether spinbox set or not
      * @private
      */
-    _onChangeTimePicker: function() {
-        this.fromSpinboxes();
+    _onChangeInputElement: function(isSetSpinbox) {
+        var $input = this._$inputElement;
+        var postfix;
+
+        if (isSetSpinbox) {
+            this.toSpinboxes();
+        }
+
+        if (this._$meridianElement) {
+            postfix = this._getPostfix().replace(/\s+/, '');
+            this._$meridianElement.val(postfix);
+        }
+
+        if ($input) {
+            $input.val(this.getTime());
+        }
+    },
+
+    /**
+     * Custom event handler
+     * @param {string} type - Change type on spinbox
+     * @private
+     */
+    _onChangeTimePicker: function(type) {
+        this.fromSpinboxes(type);
+    },
+
+    /**
+     * DOM event handler
+     * @param {Event} event - Change event on meridiem element
+     * @private
+     */
+    _onChangeMeridiem: function(event) {
+        var isPM = (event.target.value === 'PM');
+        var currentHour = this._hour;
+        var hour = isPM ? (currentHour + 12) : (currentHour % 12);
+
+        this.setTime(hour, this._minuteSpinbox.getValue(), false);
     },
 
     /**
@@ -257,8 +301,9 @@ var TimePicker = util.defineClass(/** @lends TimePicker.prototype */ {
      * @private
      */
     _isClickedInside: function(event) {
-        var isContains = $.contains(this.$timePickerElement[0], event.target),
-            isInputElement = (this._$inputElement && this._$inputElement[0] === event.target);
+        var isContains = $.contains(this.$timePickerElement[0], event.target);
+        var isInputElement = (this._$inputElement &&
+                            this._$inputElement[0] === event.target);
 
         return isContains || isInputElement;
     },
@@ -269,14 +314,13 @@ var TimePicker = util.defineClass(/** @lends TimePicker.prototype */ {
      * @private
      */
     _formToTimeFormat: function() {
-        var hour = this._hour,
-            minute = this._minute,
-            postfix = this._getPostfix(),
-            formattedHour,
-            formattedMinute;
+        var hour = this._hour;
+        var minute = this._minute;
+        var postfix = this._getPostfix();
+        var formattedHour, formattedMinute;
 
         if (this._option.showMeridian) {
-            hour %= 12;
+            hour = utils.getMeridiemHour(hour);
         }
 
         formattedHour = (hour < 10) ? '0' + hour : hour;
@@ -386,8 +430,12 @@ var TimePicker = util.defineClass(/** @lends TimePicker.prototype */ {
      * set values in spinboxes from time
      */
     toSpinboxes: function() {
-        var hour = this._hour,
-            minute = this._minute;
+        var hour = this._hour;
+        var minute = this._minute;
+
+        if (this._option.showMeridian) {
+            hour = utils.getMeridiemHour(hour);
+        }
 
         this._hourSpinbox.setValue(hour);
         this._minuteSpinbox.setValue(minute);
@@ -395,12 +443,38 @@ var TimePicker = util.defineClass(/** @lends TimePicker.prototype */ {
 
     /**
      * set time from spinboxes values
+     * @param {string} type - Change type on $timePickerElement
      */
-    fromSpinboxes: function() {
-        var hour = this._hourSpinbox.getValue(),
-            minute = this._minuteSpinbox.getValue();
+    fromSpinboxes: function(type) {
+        var hour = this._hourSpinbox.getValue();
+        var minute = this._minuteSpinbox.getValue();
 
-        this.setTime(hour, minute);
+        if (this._option.showMeridian) {
+            if ((type === 'up' && hour === 12) ||
+                (type === 'down' && hour === 11)) {
+                this._isPM = !this._isPM;
+            }
+            hour = this._getOriginalHour(hour);
+        }
+
+        this.setTime(hour, minute, false);
+    },
+
+    /**
+     * Get original hour from meridiem hour
+     * @param {hour} hour - Meridiem hour
+     * @returns {number} Original hour
+     */
+    _getOriginalHour: function(hour) {
+        var isPM = this._isPM;
+
+        if (isPM) {
+            hour = (hour < 12) ? (hour + 12) : 12;
+        } else {
+            hour = (hour < 12) ? (hour % 12) : 0;
+        }
+
+        return hour;
     },
 
     /**
@@ -420,7 +494,7 @@ var TimePicker = util.defineClass(/** @lends TimePicker.prototype */ {
      * @returns {boolean} result of set time
      */
     setHour: function(hour) {
-        return this.setTime(hour, this._minute);
+        return this.setTime(hour, this._minute, true);
     },
 
     /**
@@ -429,9 +503,13 @@ var TimePicker = util.defineClass(/** @lends TimePicker.prototype */ {
      * @returns {boolean} result of set time
      */
     setMinute: function(minute) {
-        return this.setTime(this._hour, minute);
+        return this.setTime(this._hour, minute, true);
     },
 
+    /* eslint-disable valid-jsdoc
+        Ignore "isSetSpinbox" parameter annotation for API page
+        "timepicker.setTime(hour, minute)"
+     */
     /**
      * set time
      * @api
@@ -439,28 +517,27 @@ var TimePicker = util.defineClass(/** @lends TimePicker.prototype */ {
      * @param {number} minute for time picker
      * @returns {boolean} result of set time
      */
-    setTime: function(hour, minute) {
-        var isNumber = (util.isNumber(hour) && util.isNumber(minute)),
-            isChange = (this._hour !== hour || this._minute !== minute),
-            isValid = (hour < 24 && minute < 60);
+    /* eslint-enable valid-jsdoc */
+    setTime: function(hour, minute, isSetSpinbox) {
+        var isNumber = (util.isNumber(hour) && util.isNumber(minute));
+        var isValid = (hour < 24 && minute < 60);
 
-        if (!isNumber || !isChange || !isValid) {
+        isSetSpinbox = (tui.util.isUndefined(isSetSpinbox)) ? true : isSetSpinbox;
+
+        if (!isNumber || !isValid) {
             return false;
         }
 
         this._hour = hour;
         this._minute = minute;
+
         this._setIsPM();
-        this.toSpinboxes();
-        if (this._$meridianElement) {
-            this._$meridianElement.html(this._getPostfix());
-        }
 
         /**
          * Change event - TimePicker
          * @event TimePicker#change
          */
-        this.fire('change');
+        this.fire('change', isSetSpinbox);
 
         return true;
     },
@@ -471,10 +548,7 @@ var TimePicker = util.defineClass(/** @lends TimePicker.prototype */ {
      * @returns {boolean} result of set time
      */
     setTimeFromString: function(timeString) {
-        var hour,
-            minute,
-            postfix,
-            isPM;
+        var hour, minute, postfix, isPM;
 
         if (timeRegExp.test(timeString)) {
             hour = Number(RegExp.$1);
@@ -485,18 +559,20 @@ var TimePicker = util.defineClass(/** @lends TimePicker.prototype */ {
                 if (postfix === 'PM') {
                     isPM = true;
                 } else if (postfix === 'AM') {
-                    isPM = false;
+                    isPM = (hour > 12);
                 } else {
                     isPM = this._isPM;
                 }
 
-                if (isPM) {
+                if (isPM && hour < 12) {
                     hour += 12;
+                } else if (!isPM && hour === 12) {
+                    hour = 0;
                 }
             }
         }
 
-        return this.setTime(hour, minute);
+        return this.setTime(hour, minute, true);
     },
 
     /**

@@ -85,8 +85,8 @@ describe('Timepicker', function() {
             originMinute2;
 
         beforeEach(function() {
-            originTime1 = timepicker1.getTime(); // current time (use meridiam)
-            originTime2 = timepicker2.getTime(); // 12:34 PM (don't use meridiam)
+            originTime1 = timepicker1.getTime(); // current time (use meridiem)
+            originTime2 = timepicker2.getTime(); // 12:34 PM (don't use meridiem)
             originHour1 = timepicker1.getHour();
             originHour2 = timepicker2.getHour();
             originMinute1 = timepicker1.getMinute();

@@ -252,34 +252,22 @@ var TimePicker = util.defineClass(/** @lends TimePicker.prototype */ {
 
     /**
      * Custom event handler
-     * @param {boolean} isSetSpinbox - Whether spinbox set or not
-     * @private
-     */
-    _onChangeInputElement: function(isSetSpinbox) {
-        var $input = this._$inputElement;
-        var postfix;
-
-        if (isSetSpinbox) {
-            this.toSpinboxes();
-        }
-
-        if (this._$meridianElement) {
-            postfix = this._getPostfix().replace(/\s+/, '');
-            this._$meridianElement.val(postfix);
-        }
-
-        if ($input) {
-            $input.val(this.getTime());
-        }
-    },
-
-    /**
-     * Custom event handler
-     * @param {string} type - Change type on spinbox
+     * @param {string} type - Change type on spinbox (type: up, down, defualt)
      * @private
      */
     _onChangeSpinbox: function(type) {
-        this.fromSpinboxes(type);
+        var hour = this._hourSpinbox.getValue();
+        var minute = this._minuteSpinbox.getValue();
+
+        if (this._option.showMeridian) {
+            if ((type === 'up' && hour === 12) ||
+                (type === 'down' && hour === 11)) {
+                this._isPM = !this._isPM;
+            }
+            hour = this._getOriginalHour(hour);
+        }
+
+        this._setTime(hour, minute, false);
     },
 
     /**
@@ -440,25 +428,6 @@ var TimePicker = util.defineClass(/** @lends TimePicker.prototype */ {
 
         this._hourSpinbox.setValue(hour);
         this._minuteSpinbox.setValue(minute);
-    },
-
-    /**
-     * set time from spinboxes values
-     * @param {string} type - Change type on $timePickerElement (up, down, default)
-     */
-    fromSpinboxes: function(type) {
-        var hour = this._hourSpinbox.getValue();
-        var minute = this._minuteSpinbox.getValue();
-
-        if (this._option.showMeridian) {
-            if ((type === 'up' && hour === 12) ||
-                (type === 'down' && hour === 11)) {
-                this._isPM = !this._isPM;
-            }
-            hour = this._getOriginalHour(hour);
-        }
-
-        this._setTime(hour, minute, false);
     },
 
     /**

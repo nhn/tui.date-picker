@@ -11,6 +11,7 @@ var utils = require('./utils');
 
 var util = tui.util;
 var timeRegExp = /\s*(\d{1,2})\s*:\s*(\d{1,2})\s*([ap][m])?(?:[\s\S]*)/i;
+var timeSeperator = /\s+|:/g;
 var timePickerTag = '<table class="timepicker"><tr class="timepicker-row"></tr></table>';
 var columnTag = '<td class="timepicker-column"></td>';
 var spinBoxTag = '<td class="timepicker-column timepicker-spinbox">' +
@@ -491,7 +492,7 @@ var TimePicker = util.defineClass(/** @lends TimePicker.prototype */ {
      * set time
      * @param {number} hour for time picker
      * @param {number} minute for time picker
-     * @param {boolean} isSetSpinbox Whether spinbox set or not
+     * @param {boolean} isSetSpinbox whether spinbox set or not
      * @returns {boolean} result of set time
      * @private
      */
@@ -533,14 +534,16 @@ var TimePicker = util.defineClass(/** @lends TimePicker.prototype */ {
      * @returns {boolean} result of set time
      */
     setTimeFromString: function(timeString) {
-        var hour, minute, postfix, isPM;
+        var time, hour, minute, postfix, isPM;
 
         if (timeRegExp.test(timeString)) {
-            hour = Number(RegExp.$1);
-            minute = Number(RegExp.$2);
-            postfix = RegExp.$3.toUpperCase();
+            time = timeString.split(timeSeperator);
+            hour = Number(time[0]);
+            minute = Number(time[1]);
 
             if (hour < 24 && this._option.showMeridian) {
+                postfix = time[2].toUpperCase();
+
                 if (postfix === 'PM') {
                     isPM = true;
                 } else if (postfix === 'AM') {

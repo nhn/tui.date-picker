@@ -1,0 +1,20 @@
+{
+  "sample1": {
+    "title": "DatePicker - Enable picking year, month, date"
+  },
+  "sample2": {
+    "title": "DatePicker - Customizing with options"
+  },
+  "sample3": {
+    "title": "TimePicker"
+  },
+  "sample4": {
+    "title": "Spinbox"
+  },
+  "sample5": {
+    "title": "DatePicker - Selectable ranges on date layer"
+  },
+  "sample6": {
+    "title": "DatePicker - Selectable ranges on month layer"
+  }
+}

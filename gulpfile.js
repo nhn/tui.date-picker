@@ -15,7 +15,17 @@ var connect = require('gulp-connect');
 var uglify = require('gulp-uglify');
 var concat = require('gulp-concat');
 var eslint = require('gulp-eslint');
-var filename = require('./package.json').name.replace('tui-component-', '');
+var header = require('gulp-header');
+
+var pkg = require('./package.json');
+var filename = pkg.name.replace('tui-component-', '');
+var banner = ['/**',
+    ' * <%= pkg.name %>',
+    ' * @author <%= pkg.author %>',
+    ' * @version v<%= pkg.version %>',
+    ' * @license <%= pkg.license %>',
+    ' */',
+    ''].join('\n');
 
 /**
  * Paths
@@ -34,7 +44,7 @@ config.browserify = {
 };
 config.browserSync = {
     server: {
-        index: './sample1.html',
+        index: './sample3.html',
         baseDir: './samples'
     },
     port: 3000,
@@ -60,6 +70,7 @@ function bundle(bundler) {
         })
         .pipe(source(filename + '.js'))
         .pipe(buffer())
+        .pipe(header(banner, {pkg : pkg}))
         .pipe(gulp.dest(DIST))
         .pipe(gulp.dest(SAMPLE_DIST))
         .pipe(gulpif(
@@ -111,6 +122,7 @@ gulp.task('bundle', ['eslint', 'karma'], function() {
 gulp.task('compress', ['eslint', 'karma', 'bundle'], function() {
     gulp.src(filename + '.js')
         .pipe(uglify())
+        .pipe(header(banner, {pkg : pkg}))
         .pipe(concat(filename + '.min.js'))
         .pipe(gulp.dest(DIST));
 });

@@ -17,26 +17,29 @@ module.exports = function(config) {
             'bower_components/jasmine-jquery/lib/jasmine-jquery.js',
             'bower_components/tui-code-snippet/code-snippet.min.js',
             'bower_components/tui-component-calendar/dist/calendar.min.js',
-
-            'src/spinbox.js',
-            'src/timepicker.js',
-            'src/datepicker.js',
-
-            'test/fixtures/*.html',
-            'test/css/*.css',
-            'test/**/*.test.js'
+            'src/*.js',
+            'test/*.spec.js',
+            {
+                pattern: 'test/fixtures/*.html',
+                included: false
+            },
+            {
+                pattern: 'test/css/*.css',
+                included: false
+            }
         ],
 
 
         // list of files to exclude
-        exclude: [],
+        exclude: [
+        ],
 
 
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
-            'test/**/*.test.js': ['browserify'],
-            'src/**/*.js': ['browserify', 'coverage']
+            'test/*.js': ['browserify'],
+            'src/*.js': ['browserify', 'coverage']
         },
 
 

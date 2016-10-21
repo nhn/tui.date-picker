@@ -141,7 +141,7 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
 
         /**
          * Element for displaying a date value
-         * @type {HTMLElement}
+         * @type {:HTMLElement}
          * @private
          */
         this._$element = $(option.element);
@@ -1688,11 +1688,15 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
      * @since 1.4.0
      */
     destroy: function() {
-        this._unbindKeydownEvent();
+        var $currentEl = this._$element;
+
+        if ($currentEl[0]) {
+            this._unbindKeydownEvent($currentEl);
+        }
+
         this._unbindOnMousedownDocument();
         this._unbindOnClickCalendar();
         this._unbindCalendarCustomEvent();
-        this.disable();
         this._$wrapperElement.remove();
     }
 });

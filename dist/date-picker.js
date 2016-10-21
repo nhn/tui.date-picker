@@ -153,7 +153,7 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
 
         /**
          * Element for displaying a date value
-         * @type {:HTMLElement}
+         * @type {HTMLElement}
          * @private
          */
         this._$element = $(option.element);
@@ -2625,6 +2625,7 @@ var TimePicker = util.defineClass(/** @lends TimePicker.prototype */ {
      * @param {string} timeString time-string
      * @returns {boolean} result of set time
      */
+     /*eslint-disable complexity*/
     setTimeFromString: function(timeString) {
         var time, hour, minute, postfix, isPM;
 

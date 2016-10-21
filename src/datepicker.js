@@ -141,7 +141,7 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
 
         /**
          * Element for displaying a date value
-         * @type {:HTMLElement}
+         * @type {HTMLElement}
          * @private
          */
         this._$element = $(option.element);

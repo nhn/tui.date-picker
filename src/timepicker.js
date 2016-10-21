@@ -533,6 +533,7 @@ var TimePicker = util.defineClass(/** @lends TimePicker.prototype */ {
      * @param {string} timeString time-string
      * @returns {boolean} result of set time
      */
+     /*eslint-disable complexity*/
     setTimeFromString: function(timeString) {
         var time, hour, minute, postfix, isPM;
 

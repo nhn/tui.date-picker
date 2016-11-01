@@ -983,13 +983,10 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
             relativeMonth = $(target).data(CONSTANTS.RELATIVE_MONTH_VALUE_KEY) || 0;
         }
 
-        shownDate.date = this._date.date;
+        shownDate.date = (!shownLayerIdx) ? Number(value) : 1;
         dateHash = utils.getRelativeDate(0, relativeMonth, 0, shownDate);
 
         if (startLayerIdx === shownLayerIdx) {
-            if (!startLayerIdx) { // date layer
-                dateHash.date = Number(value);
-            }
             this.setDate(dateHash.year, dateHash.month, dateHash.date);
 
             /**

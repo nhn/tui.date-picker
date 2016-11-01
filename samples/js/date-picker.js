@@ -1,7 +1,7 @@
 /**
  * tui-component-date-picker
  * @author NHNEnt FE Development Team <dl_javascript@nhnent.com>
- * @version v1.5.0
+ * @version v1.5.1
  * @license MIT
  */
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
@@ -995,13 +995,10 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
             relativeMonth = $(target).data(CONSTANTS.RELATIVE_MONTH_VALUE_KEY) || 0;
         }
 
-        shownDate.date = this._date.date;
+        shownDate.date = (!shownLayerIdx) ? Number(value) : 1;
         dateHash = utils.getRelativeDate(0, relativeMonth, 0, shownDate);
 
         if (startLayerIdx === shownLayerIdx) {
-            if (!startLayerIdx) { // date layer
-                dateHash.date = Number(value);
-            }
             this.setDate(dateHash.year, dateHash.month, dateHash.date);
 
             /**

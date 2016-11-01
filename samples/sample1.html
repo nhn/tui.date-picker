@@ -70,8 +70,13 @@
             var datepicker = new tui.component.DatePicker({
                 element: '#datepicker-picker',
                 dateFormat: 'yyyy년 mm월 dd일',
+                date: {
+                    year: 2016,
+                    month: 10,
+                    date: 31
+                },
                 selectableRanges: [
-                    [{year: 2016, month: 9, date: 1}, {year: 2016, month: 10, date: 3}],
+                    [{year: 2015, month: 9, date: 1}, {year: 2016, month: 10, date: 3}],
                     [{year: 2017, month: 2, date: 22}, {year: 2017, month: 3, date: 5}]
                 ],
                 openers: ['#datepicker-opener']
@@ -80,6 +85,10 @@
             var monthpicker = new tui.component.DatePicker({
                 element: '#monthpicker-picker',
                 dateFormat: 'yyyy-mm',
+                date: {
+                    year: 2016,
+                    month: 10
+                },
                 selectableRanges: [
                     [{year: 2015, month: 2}, {year: 2016, month: 2}],
                     [{year: 2016, month: 5}, {year: 2016, month: 7}],
@@ -91,6 +100,9 @@
             var yearpicker = new tui.component.DatePicker({
                 element: '#yearpicker-picker',
                 dateFormat: 'yyyy',
+                date: {
+                    year: 2016
+                },
                 selectableRanges: [
                     [{year: 2010}, {year: 2025}],
                     [{year: 2030}, {year: 2035}]

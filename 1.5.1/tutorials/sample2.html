@@ -2,13 +2,14 @@
 <html>
     <head lang="en">
         <meta charset="UTF-8">
-        <title>Default datepicker sample</title>
+        <title>Customized datepicker sample with options and API</title>
         <link type="text/css" rel="stylesheet" href="../styles/prettify-jsdoc.css" />
         <link type="text/css" rel="stylesheet" href="../styles/prettify-tomorrow.css">
         <link type="text/css" rel="stylesheet" href="../styles/tui.css">
         <link href="css/calendar.css" rel="stylesheet">
         <link href="css/timepicker.css" rel="stylesheet">
         <style type="text/css">
+            #datepicker-options{width:180px;}
             h2{margin-top:20px;margin-bottom:5px;}
             .colorbox{display:inline-block;background-color:#bcea81;width:10px;height:10px;margin:5px;vertical-align:middle;*display:inline;}
             .colorbox.green{background-color:#bcea81;}
@@ -35,20 +36,25 @@
         </div>
         <div class="wrap" style="height:300px;">
 
-            <!-- Shared calendar layer element -->
+            <h2>Default</h2>
+
+            <!-- Shared calendar layer for datepicker element -->
             <div id="layer" class="layer" style="display:none;"></div>
 
-            <h2>Pick date</h2>
-            <!-- Drawing datepicker element -->
-            <input id="datepicker-picker" type="text" /><button id="datepicker-opener" type="button">open</button>
+            <!-- Drawing default datepicker element -->
+            <input id="datepicker-default" type="text" />
 
-            <h2>Pick month</h2>
-            <!-- Drawing monthpicker element -->
-            <input id="monthpicker-picker" type="text" /><button id="monthpicker-opener" type="button">open</button>
+            <h2>Using options</h2>
 
-            <h2>Pick year</h2>
-            <!-- Drawing yearpicker element -->
-            <input id="yearpicker-picker" type="text" /><button id="yearpicker-opener" type="button">open</button>
+            <!-- Drawing datepicker with option element -->
+            <input id="datepicker-options" type="text" /><button id="opener" type="button">open</button>
+
+            <!-- Control buttons for datepicker with option -->
+            <button id="disable">disable</button>
+            <button id="enable">enable</button>
+            <button id="add-range">add range</button>
+            <button id="remove-range">remove range</button>
+
         </div>
 
         <div class="codeArea"></div>
@@ -67,48 +73,53 @@
                 element: '#layer'
             });
 
-            var datepicker = new tui.component.DatePicker({
-                element: '#datepicker-picker',
-                dateFormat: 'yyyy년 mm월 dd일',
-                date: {
-                    year: 2016,
-                    month: 10,
-                    date: 31
-                },
-                selectableRanges: [
-                    [{year: 2015, month: 9, date: 1}, {year: 2016, month: 10, date: 3}],
-                    [{year: 2017, month: 2, date: 22}, {year: 2017, month: 3, date: 5}]
-                ],
-                openers: ['#datepicker-opener']
+            var timePicker = new tui.component.TimePicker({
+                showMeridian: true,
+                defaultHour: 13,
+                defaultMinute: 24
+            });
+
+            var datepicker1 = new tui.component.DatePicker({
+                element: '#datepicker-default'
             }, calendar);
 
-            var monthpicker = new tui.component.DatePicker({
-                element: '#monthpicker-picker',
-                dateFormat: 'yyyy-mm',
-                date: {
-                    year: 2016,
-                    month: 10
-                },
+            var datepicker2 = new tui.component.DatePicker({
+                element: '#datepicker-options',
+                dateFormat: 'yyyy년 mm월 dd일 - ',
                 selectableRanges: [
-                    [{year: 2015, month: 2}, {year: 2016, month: 2}],
-                    [{year: 2016, month: 5}, {year: 2016, month: 7}],
-                    [{year: 2018, month: 3}, {year: 2025, month: 10}]
+                    [{year: 2016, month: 9, date: 3}, {year: 2016, month: 9, date: 10}],
+                    [{year: 2016, month: 9, date: 8}, {year: 2016, month: 9, date: 18}],
+                    [{year: 2016, month: 10, date: 1}, {year: 2016, month: 10, date: 26}]
                 ],
-                openers: ['#monthpicker-opener']
+                openers: ['#opener'],
+                timePicker: timePicker
             }, calendar);
 
-            var yearpicker = new tui.component.DatePicker({
-                element: '#yearpicker-picker',
-                dateFormat: 'yyyy',
-                date: {
-                    year: 2016
-                },
-                selectableRanges: [
-                    [{year: 2010}, {year: 2025}],
-                    [{year: 2030}, {year: 2035}]
-                ],
-                openers: ['#yearpicker-opener']
-            }, calendar);
+            $('#disable').on('click', function() {
+                datepicker2.disable();
+            });
+
+            $('#enable').on('click', function() {
+                datepicker2.enable();
+            });
+
+            $('#add-range').on('click', function() {
+                var startDate = {year: 2017, month: 8, date: 27};
+                var endDate = {year: 2017, month: 9, date: 28};
+
+                datepicker2.addRange(startDate, endDate);
+            });
+
+            $('#remove-range').on('click', function() {
+                var startDate = {year: 2016, month: 9, date: 8};
+                var endDate = {year: 2016, month: 9, date: 18};
+
+                datepicker2.removeRange(startDate, endDate);
+            });
+
+            datepicker2.on('update', function() {
+                console.log('?');
+            });
 
         </script>
     </body>

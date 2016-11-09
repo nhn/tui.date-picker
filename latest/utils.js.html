@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,125 +44,227 @@
 <div class="main" id="main">
     
 
-<section>
-    <header>
-        
 
-        <h2>TimePicker</h2>
-    </header>
 
-    <ul id="example-nav" class="nav nav-tabs">
-        <li role="presentation" id="example-result-btn" class="active" onclick="showResult()">
-            <a href="#">Result</a>
-        </li>
-        <li role="presentation" id="example-js-btn" class="" onclick="showJs()">
-            <a href="#">JS</a>
-        </li>
-        <li role="presentation" id="example-html-btn" class="" onclick="showHtml()">
-            <a href="#">HTML</a>
-        </li>
-    </ul>
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @fileoverview Utils for calendar component
+ * @author NHN Net. FE dev Lab. &lt;dl_javascript@nhnent.com>
+ * @dependency tui-code-snippet ~1.0.2
+ */
 
-    <article>
-        
-        <iframe id="example-result" width="100%" height="800" frameborder="0" src=tutorials/sample3.html></iframe>
-        <div id="example-js" class="hidden"><pre class="prettyprint source">
-        var optionInput = document.getElementById('timepicker-option');
-        /**
-         * Default time: '00:00' with 24hours-expression.
-         * Timepicker CSS-Class: 'timepicker'.
-         * Up/Down button CSS-Class: 'timepicker-btn'.
-         * If no position, it will be set below the end of left of the input-box.
-         */
-        var timepicker1 = new tui.component.TimePicker({
-            inputElement: '#timepicker-default',
-            defaultHour: 10,
-            defaultMinute: 34
-        });
+'use strict';
 
-        /**
-         * Option
-         * Default hour is 12. (defaultHour)
-         * Default minute is 34. (defaultMinute)
-         * Set meridian(meridiem) option for AM/PM expression. (showMeridian)
-         * Set position (x,y). (position)
-         */
-        var timepicker2 = new tui.component.TimePicker({
-            inputElement: '#timepicker-option',
-            defaultHour: 12,
-            defaultMinute: 34,
-            showMeridian: true,
-            position: {x: optionInput.offsetLeft + optionInput.offsetWidth + 3, y: optionInput.offsetTop}
-        });
-    </pre></div>
-        <div id="example-html" class="hidden"><pre class="prettyprint source">
-        &lt;div class="example">
-            &lt;h1>Timepicker-default&lt;/h1>
-            &lt;input type="text" id="timepicker-default">
-        &lt;/div>
+/**
+ * Utils of calendar
+ * @ignore
+ * @namespace utils
+ */
+var utils = {
+    /**
+     * Return date hash by parameter.
+     *  if there are 3 parameter, the parameter is corgnized Date object
+     *  if there are no parameter, return today's hash date
+     * @function getDateHashTable
+     * @memberof utils
+     * @param {Date|number} [year] A date instance or year
+     * @param {number} [month] A month
+     * @param {number} [date] A date
+     * @returns {{year: *, month: *, date: *}}
+     */
+    getDateHashTable: function(year, month, date) {
+        var nDate;
 
-        &lt;div class="example">
-            &lt;h1>Timepicker-option (AM/PM, default time, position)&lt;/h1>
-            &lt;input type="text" id="timepicker-option">
-        &lt;/div>
-    </pre></div>
-    </article>
-</section>
+        if (arguments.length &lt; 3) {
+            nDate = arguments[0] || new Date();
 
-<script>
-    var exampleResult = document.getElementById('example-result');
-    var exampleJs = document.getElementById('example-js');
-    var exampleHtml = document.getElementById('example-html');
-    var exampleResultBtn = document.getElementById('example-result-btn');
-    var exampleJsBtn = document.getElementById('example-js-btn');
-    var exampleHtmlBtn = document.getElementById('example-html-btn');
+            year = nDate.getFullYear();
+            month = nDate.getMonth() + 1;
+            date = nDate.getDate();
+        }
 
-    function setActive(el) {
-        el.className += ' active';
+        return {
+            year: year,
+            month: month,
+            date: date
+        };
+    },
+
+    /**
+     * Return today that saved on component or create new date.
+     * @function getToday
+     * @returns {{year: *, month: *, date: *}}
+     * @memberof utils
+     */
+    getToday: function() {
+        return utils.getDateHashTable();
+    },
+
+    /**
+     * Get weeks count by paramenter
+     * @function getWeeks
+     * @param {number} year A year
+     * @param {number} month A month
+     * @returns {number} 주 (4~6)
+     * @memberof utils
+     */
+    getWeeks: function(year, month) {
+        var firstDay = utils.getFirstDay(year, month),
+            lastDate = utils.getLastDate(year, month);
+
+        return Math.ceil((firstDay + lastDate) / 7);
+    },
+
+    /**
+     * Get unix time from date hash
+     * @function getTime
+     * @param {Object} date A date hash
+     * @param {number} date.year A year
+     * @param {number} date.month A month
+     * @param {number} date.date A date
+     * @returns {number}
+     * @memberof utils
+     * @example
+     * utils.getTime({year:2010, month:5, date:12}); // 1273590000000
+     */
+    getTime: function(date) {
+        return utils.getDateObject(date).getTime();
+    },
+
+    /**
+     * Get which day is first by parameters that include year and month information.
+     * @function getFirstDay
+     * @param {number} year A year
+     * @param {number} month A month
+     * @returns {number} (0~6)
+     * @memberof utils
+     */
+    getFirstDay: function(year, month) {
+        return new Date(year, month - 1, 1).getDay();
+    },
+
+    /**
+     * Get which day is last by parameters that include year and month information.
+     * @function getLastDay
+     * @param {number} year A year
+     * @param {number} month A month
+     * @returns {number} (0~6)
+     * @memberof utils
+     */
+    getLastDay: function(year, month) {
+        return new Date(year, month, 0).getDay();
+    },
+
+    /**
+     * Get last date by parameters that include year and month information.
+     * @function
+     * @param {number} year A year
+     * @param {number} month A month
+     * @returns {number} (1~31)
+     * @memberof utils
+     */
+    getLastDate: function(year, month) {
+        return new Date(year, month, 0).getDate();
+    },
+
+    /**
+     * Get date instance.
+     * @function getDateObject
+     * @param {Object} date A date hash
+     * @returns {Date} Date
+     * @memberof utils
+     * @example
+     *  utils.getDateObject({year:2010, month:5, date:12});
+     *  utils.getDateObject(2010, 5, 12); //year,month,date
+     */
+    getDateObject: function(date) {
+        if (arguments.length === 3) {
+            return new Date(arguments[0], arguments[1] - 1, arguments[2]);
+        }
+
+        return new Date(date.year, date.month - 1, date.date);
+    },
+
+    /**
+     * Get related date hash with parameters that include date information.
+     * @function getRelativeDate
+     * @param {number} year A related value for year(you can use +/-)
+     * @param {number} month A related value for month (you can use +/-)
+     * @param {number} date A related value for day (you can use +/-)
+     * @param {Object} dateObj standard date hash
+     * @returns {Object} dateObj
+     * @memberof utils
+     * @example
+     *  utils.getRelativeDate(1, 0, 0, {year:2000, month:1, date:1}); // {year:2001, month:1, date:1}
+     *  utils.getRelativeDate(0, 0, -1, {year:2010, month:1, date:1}); // {year:2009, month:12, date:31}
+     */
+    getRelativeDate: function(year, month, date, dateObj) {
+        var nYear = (dateObj.year + year),
+            nMonth = (dateObj.month + month - 1),
+            nDate = (dateObj.date + date),
+            nDateObj = new Date(nYear, nMonth, nDate);
+
+        return utils.getDateHashTable(nDateObj);
+    },
+
+    /**
+     * Binary search
+     * @param {Array} field - Search field
+     * @param {Array} value - Search target
+     * @returns {{found: boolean, index: number}} Result
+     * @private
+     */
+    search: function(field, value) {
+        var found = false,
+            low = 0,
+            high = field.length - 1,
+            end, index, fieldValue;
+
+        while (!found &amp;&amp; !end) {
+            index = Math.floor((low + high) / 2);
+            fieldValue = field[index];
+
+            if (fieldValue === value) {
+                found = true;
+            } else if (fieldValue &lt; value) {
+                low = index + 1;
+            } else {
+                high = index - 1;
+            }
+            end = (low > high);
+        }
+
+        return {
+            found: found,
+            index: (found || fieldValue > value) ? index : index + 1
+        };
+    },
+
+    /**
+     * Get meridiem hour
+     * @param {number} hour - Original hour
+     * @returns {number} Converted meridiem hour
+     */
+    getMeridiemHour: function(hour) {
+        hour %= 12;
+
+        if (hour === 0) {
+            hour = 12;
+        }
+
+        return hour;
     }
+};
 
-    function setInactive(el) {
-        el.className = el.className.replace(/\s*active\s*/g, '');
-    }
+module.exports = utils;
+</code></pre>
+        </article>
+    </section>
 
-    function show(el) {
-        el.className = el.className.replace(/\s*hidden\s*/g, '');
-    }
 
-    function hide(el) {
-        el.className += ' hidden';
-    }
 
-    function showJs() {
-        hide(exampleHtml);
-        hide(exampleResult);
-        setInactive(exampleHtmlBtn);
-        setInactive(exampleResultBtn);
-
-        show(exampleJs);
-        setActive(exampleJsBtn);
-    }
-
-    function showHtml() {
-        hide(exampleJs);
-        hide(exampleResult);
-        setInactive(exampleJsBtn);
-        setInactive(exampleResultBtn);
-
-        show(exampleHtml);
-        setActive(exampleHtmlBtn);
-    }
-
-    function showResult() {
-        hide(exampleJs);
-        hide(exampleHtml);
-        setInactive(exampleJsBtn);
-        setInactive(exampleHtmlBtn);
-
-        show(exampleResult);
-        setActive(exampleResultBtn);
-    }
-</script>
 
 </div>
 
@@ -174,7 +278,11 @@
 <script src="scripts/linenumber.js"></script>
 
     <script>
-        showLnbExamples();
+        var id = '_sub'.replace(/"/g, '_');
+        var element = document.getElementById(id); // do not use jquery selector
+
+        $(element).removeClass('hidden');
+        showLnbApi();
     </script>
 
 </body>

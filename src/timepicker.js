@@ -1,6 +1,6 @@
 /**
  * @fileoverview TimePicker Component
- * @author NHN ent FE dev <dl_javascript@nhnent.com> <minkyu.yi@nhnent.com>
+ * @author NHN ent FE Lab <dl_javascript@nhnent.com> <minkyu.yi@nhnent.com>
  * @dependency jquery-1.8.3, code-snippet-1.0.2, spinbox.js
  */
 
@@ -35,6 +35,8 @@ var meridiemTag = '<select><option value="AM">AM</option><option value="PM">PM</
  *                                                  if minute [1,3] is excluded, minute value 0 -> 2 -> 4 -> 5 -> ...
  * @param {boolean} [option.showMeridian = false] - is time expression-"hh:mm AM/PM"?
  * @param {Object} [option.position = {}] - left, top position of timepicker element
+ *
+ * @tutorial sample3
  */
 var TimePicker = util.defineClass(/** @lends TimePicker.prototype */ {
     init: function(option) {
@@ -433,6 +435,7 @@ var TimePicker = util.defineClass(/** @lends TimePicker.prototype */ {
 
     /**
      * Get original hour from meridiem hour
+     * @private
      * @param {hour} hour - Meridiem hour
      * @returns {number} Original hour
      */

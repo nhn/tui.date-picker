@@ -1,7 +1,7 @@
 {
   "name": "tui-component-date-picker",
   "authors": [
-    "NHNent. FE Dev team <dl_javascript@nhnent.com>"
+    "NHNent. FE Development Lab <dl_javascript@nhnent.com>"
   ],
   "license": "MIT",
   "ignore": [
@@ -16,7 +16,7 @@
     "Gruntfile.js",
     "gulpfile.js",
     "karma.*.js",
-    "conf.json",
+    "jsdoc-conf.json",
     "package.json",
     ".gitignore",
     "samples",

@@ -1,7 +1,7 @@
 /**
  * Created by nhnent on 15. 4. 28..
  * @fileoverview Spinbox Component
- * @author NHN ent FE dev <dl_javascript@nhnent.com> <minkyu.yi@nhnent.com>
+ * @author NHN ent FE dev Lab <dl_javascript@nhnent.com>
  * @dependency jquery-1.8.3, code-snippet-1.0.2
  */
 
@@ -12,7 +12,6 @@ var util = tui.util,
 
 /**
  * @constructor
- *
  * @param {String|HTMLElement} container - container of spinbox
  * @param {Object} [option] - option for initialization
  *
@@ -23,6 +22,8 @@ var util = tui.util,
  * @param {string} [option.upBtnTag = button HTML] - up button html string
  * @param {string} [option.downBtnTag = button HTML] - down button html string
  * @param {Array}  [option.exclusion = []] - value to be excluded. if this is [1,3], 0 -> 2 -> 4 -> 5 ->....
+ *
+ * @tutorial sample4
  */
 var Spinbox = util.defineClass(/** @lends Spinbox.prototype */ {
     init: function(container, option) {

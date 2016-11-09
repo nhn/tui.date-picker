@@ -1,7 +1,3 @@
-'use strict';
-
-var istanbul = require('browserify-istanbul');
-
 module.exports = function(config) {
     config.set({
         basePath: './',
@@ -11,7 +7,7 @@ module.exports = function(config) {
         files: [
             'bower_components/jquery/jquery.min.js',
             'bower_components/jasmine-jquery/lib/jasmine-jquery.js',
-            'bower_components/tui-code-snippet/code-snippet.min.js',
+            'bower_components/tui-code-snippet/code-snippet.js',
             'bower_components/tui-component-calendar/dist/calendar.min.js',
             'src/*.js',
             'test/*.spec.js',
@@ -34,10 +30,7 @@ module.exports = function(config) {
         },
 
         browserify: {
-            debug: true,
-            transform: [istanbul({
-                ignore: ['bower_components/**', 'test/**/*']
-            })]
+            debug: true
         },
 
         reporters: [
@@ -66,7 +59,7 @@ module.exports = function(config) {
         },
 
         junitReporter: {
-            outputDir: 'report/junit',
+            outputDir: 'report',
             suite: ''
         },
 
@@ -86,51 +79,59 @@ module.exports = function(config) {
 
         // define browsers
         customLaunchers: {
-            'bs_ie9': {
-                'base': 'BrowserStack',
-                'os': 'Windows',
-                'os_version': '7',
-                'browser_version': '9.0',
-                'browser': 'ie'
+            bs_ie8: {
+                base: 'BrowserStack',
+                os: 'Windows',
+                os_version: 'XP',
+                browser_version: '8.0',
+                browser: 'ie'
             },
-            'bs_ie10': {
-                'base': 'BrowserStack',
-                'os': 'Windows',
-                'os_version': '7',
-                'browser_version': '10.0',
-                'browser': 'ie'
+            bs_ie9: {
+                base: 'BrowserStack',
+                os: 'Windows',
+                os_version: '7',
+                browser_version: '9.0',
+                browser: 'ie'
             },
-            'bs_ie11': {
-                'base': 'BrowserStack',
-                'os': 'Windows',
-                'os_version': '7',
-                'browser_version': '11.0',
-                'browser': 'ie'
+            bs_ie10: {
+                base: 'BrowserStack',
+                os: 'Windows',
+                os_version: '7',
+                browser_version: '10.0',
+                browser: 'ie'
             },
-            'bs_edge': {
-                'base': 'BrowserStack',
-                'os': 'Windows',
-                'os_version': '10',
-                'browser': 'edge',
-                'browser_version': 'latest'
+            bs_ie11: {
+                base: 'BrowserStack',
+                os: 'Windows',
+                os_version: '7',
+                browser_version: '11.0',
+                browser: 'ie'
             },
-            'bs_chrome_mac': {
-                'base': 'BrowserStack',
-                'os': 'OS X',
-                'os_version': 'El Capitan',
-                'browser': 'chrome',
-                'browser_version': 'latest'
+            bs_edge: {
+                base: 'BrowserStack',
+                os: 'Windows',
+                os_version: '10',
+                browser: 'edge',
+                browser_version: 'latest'
             },
-            'bs_firefox_mac': {
-                'base': 'BrowserStack',
-                'os': 'OS X',
-                'os_version': 'El Capitan',
-                'browser': 'firefox',
-                'browser_version': 'latest'
+            bs_chrome_mac: {
+                base: 'BrowserStack',
+                os: 'OS X',
+                os_version: 'sierra',
+                browser: 'chrome',
+                browser_version: 'latest'
+            },
+            bs_firefox_mac: {
+                base: 'BrowserStack',
+                os: 'OS X',
+                os_version: 'sierra',
+                browser: 'firefox',
+                browser_version: 'latest'
             }
         },
 
         browsers: [
+            'bs_ie8',
             'bs_ie9',
             'bs_ie10',
             'bs_ie11',
@@ -138,6 +139,8 @@ module.exports = function(config) {
             'bs_chrome_mac',
             'bs_firefox_mac'
         ],
+
+        browserNoActivityTimeout: 30000,
 
         singleRun: true
     });

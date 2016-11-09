@@ -7,36 +7,18 @@
     },
     "plugins": ["plugins/markdown"],
     "templates": {
-        "cleverLinks": true,
-        "monospaceLinks": true,
-        "default": {
-            "outputSourceFiles" : true
-        },
-        "applicationName": "tui-component-date-picker",
-        "disqus": "",
-        "googleAnalytics": "",
-        "openGraph": {
-            "title": "",
-            "type": "website",
-            "image": "",
-            "site_name": "",
-            "url": ""
-        },
-        "meta": {
-            "title": "",
-            "description": "",
-            "keyword": ""
-        },
-        "linenums": false
-    },
-    "markdown": {
-        "parser": "gfm",
-        "hardwrap": true
+        "name": "Date Picker",
+        "logo": {
+            "url": "https://cloud.githubusercontent.com/assets/12269563/20029815/01133928-a39a-11e6-80f3-12500a91c755.png",
+            "width": "150px"
+        }
     },
     "opts": {
+        "private": false,
         "recurse": true,
         "destination": "doc",
         "tutorials": "samples",
-        "name": "DatePicker"
+        "name": "DatePicker",
+        "template": "./node_modules/tui-jsdoc-template"
     }
 }

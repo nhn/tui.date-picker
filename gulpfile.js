@@ -6,19 +6,18 @@ var browserify = require('browserify');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var watchify = require('watchify');
-var KarmaServer = require('karma').Server;
 
 var gulp = require('gulp');
 var gutil = require('gulp-util');
 var gulpif = require('gulp-if');
 var connect = require('gulp-connect');
 var uglify = require('gulp-uglify');
-var concat = require('gulp-concat');
 var eslint = require('gulp-eslint');
 var header = require('gulp-header');
+var rename = require('gulp-rename');
 
 var pkg = require('./package.json');
-var filename = pkg.name.replace('tui-component-', '');
+var NAME = pkg.name;
 var banner = ['/**',
     ' * <%= pkg.name %>',
     ' * @author <%= pkg.author %>',
@@ -32,8 +31,7 @@ var banner = ['/**',
  */
 var SOURCE_DIR = './src/**/*',
     ENTRY = 'index.js',
-    DIST = './dist',
-    SAMPLE_DIST = './samples/js';
+    DIST = './dist';
 
 /**
  * Configuration
@@ -68,15 +66,18 @@ function bundle(bundler) {
             browserSync.notify('Browserify Error');
             this.emit('end');
         })
-        .pipe(source(filename + '.js'))
+        .pipe(source(NAME + '.js'))
         .pipe(buffer())
         .pipe(header(banner, {pkg : pkg}))
         .pipe(gulp.dest(DIST))
-        .pipe(gulp.dest(SAMPLE_DIST))
         .pipe(gulpif(
             browserSync.active,
             browserSync.stream(config.browserSyncStream))
-        );
+        )
+        .pipe(uglify())
+        .pipe(rename(NAME + '.min.js'))
+        .pipe(header(banner, {pkg : pkg}))
+        .pipe(gulp.dest(DIST));
 }
 
 /**
@@ -107,24 +108,6 @@ gulp.task('eslint', function() {
         .pipe(eslint.failAfterError());
 });
 
-gulp.task('karma', ['eslint'], function(done) {
-    new KarmaServer({
-        configFile: path.join(__dirname, 'karma.conf.js'),
-        singleRun: true,
-        logLevel: 'error'
-    }, done).start();
-});
-
-gulp.task('bundle', ['eslint', 'karma'], function() {
+gulp.task('bundle', function() {
     return bundle(browserify(config.browserify));
 });
-
-gulp.task('compress', ['eslint', 'karma', 'bundle'], function() {
-    gulp.src(filename + '.js')
-        .pipe(uglify())
-        .pipe(header(banner, {pkg : pkg}))
-        .pipe(concat(filename + '.min.js'))
-        .pipe(gulp.dest(DIST));
-});
-
-gulp.task('default', ['eslint', 'karma', 'bundle', 'compress']);

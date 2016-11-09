@@ -1,6 +1,6 @@
 /**
  * @fileoverview This component provides a calendar for picking a date & time.
- * @author NHN ent FE dev <dl_javascript@nhnent.com> <minkyu.yi@nhnent.com>
+ * @author NHN ent FE dev Lab <dl_javascript@nhnent.com>
  */
 'use strict';
 
@@ -47,6 +47,11 @@ var inArray = util.inArray,
  */
 
 /**
+ * @typedef {Function} Calendar
+ * @see {@link https://github.com/nhnent/tui.component.calendar}
+ */
+
+/**
  * Create DatePicker<br>
  * You can get a date from 'getYear', 'getMonth', 'getDayInMonth', 'getDateHash'
  * @constructor
@@ -69,8 +74,8 @@ var inArray = util.inArray,
  *      @param {Object} [option.openers = [element]] - opener button list (example - icon, button, etc.)
  *      @param {boolean} [option.showAlways = false] - whether the datepicker shows the calendar always
  *      @param {boolean} [option.useTouchEvent = true] - whether the datepicker uses touch events
- *      @param {tui.component.TimePicker} [option.timePicker] - TimePicker instance
- * @param {tui.component.Calendar} calendar - Calendar instance
+ *      @param {TimePicker} [option.timePicker] - TimePicker instance
+ * @param {Calendar} calendar - Calendar instance
  * @example
  *   var calendar = new tui.component.Calendar({
  *       element: '#layer',
@@ -116,6 +121,11 @@ var inArray = util.inArray,
  *           picker1.close();
  *       }
  *   });
+ *
+ * @tutorial sample1
+ * @tutorial sample2
+ * @tutorial sample5
+ * @tutorial sample6
  */
 var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
     init: function(option, calendar) {
@@ -171,7 +181,7 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
          * Array saving a order of format
          * @type {Array}
          * @private
-         * @see {tui.component.DatePicker.prototype.setDateForm}
+         * @see {DatePicker.prototype.setDateForm}
          * @example
          * // If the format is a 'mm-dd, yyyy'
          * // `this._formOrder` is ['month', 'date', 'year']
@@ -281,6 +291,7 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
         /**
          * Index of shown layer
          * @type {number}
+         * @private
          */
         this._shownLayerIdx = 0;
 
@@ -302,7 +313,6 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
 
         /**
          * Whether the datepicker shows always
-         * @api
          * @type {boolean}
          * @since 1.2.0
          * @example
@@ -314,7 +324,6 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
 
         /**
          * Whether the datepicker use touch event.
-         * @api
          * @type {boolean}
          * @since 1.2.0
          * @example
@@ -520,6 +529,7 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * Search timestamp in endTimes
+     * @private
      * @param {number} timestamp - timestamp
      * @returns {{found: boolean, index: number}} result
      */
@@ -1227,6 +1237,7 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * Get difference start to end time
+     * @private
      * @returns {Object} Time difference value
      */
     _getDiffTime: function() {

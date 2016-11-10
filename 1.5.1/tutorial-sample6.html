@@ -1,90 +1,239 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>DatePicker - Selectable ranges on month layer</title>
-<script type="text/javascript" src="js/jquery.js"></script>
-<script type="text/javascript" src="js/code-snippet.js"></script>
-<script type="text/javascript" src="js/list.js"></script>
-<link type="text/css" rel="stylesheet" href="styles/prettify-jsdoc.css" />
-<link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-<link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
-<link type="text/css" rel="stylesheet" href="styles/layout.css">
-<style>
-    html, body {height:100%;}
-</style>
+    <meta charset="utf-8">
+    <title>Date Picker</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-jsdoc.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/tui-doc.css">
 </head>
-<body class="sampleWrap tutorialDetail">
+<body>
+<nav class="lnb" id="lnb">
+    <div class="logo" style="width: 150px">
+        <img src="https://cloud.githubusercontent.com/assets/12269563/20029815/01133928-a39a-11e6-80f3-12500a91c755.png" width="100%" height="100%">
+    </div>
+    <div class="title">
+        <h1><a href="index.html" class="link">Date Picker</a></h1>
+        
+    </div>
+    <div class="search-container" id="search-container">
+        <input type="text" placeholder="Search">
+        <ul></ul>
+    </div>
+    <ol class="lnb-tab">
+        <li id="api-tab">
+            <a href="#"><h4>API</h4></a>
+        </li>
+        <li id="examples-tab">
+            <a href="#"><h4>Examples</h4></a>
+        </li>
+    </ol>
+    <div class="lnb-examples hidden"><h3>Examples</h3><ul><li><a href="tutorial-sample1.html">DatePicker - Enable picking year, month, date</a><div class="hidden" id="sample1_sub"></div></li><li><a href="tutorial-sample2.html">DatePicker - Customizing with options</a><div class="hidden" id="sample2_sub"></div></li><li><a href="tutorial-sample3.html">TimePicker</a><div class="hidden" id="sample3_sub"></div></li><li><a href="tutorial-sample4.html">Spinbox</a><div class="hidden" id="sample4_sub"></div></li><li><a href="tutorial-sample5.html">DatePicker - Selectable ranges on date layer</a><div class="hidden" id="sample5_sub"></div></li><li><a href="tutorial-sample6.html">DatePicker - Selectable ranges on month layer</a><div class="hidden" id="sample6_sub"></div></li></ul></div><div class="lnb-api hidden"><h3>Classes</h3><ul><li><a href="DatePicker.html">DatePicker</a><div class="hidden" id="DatePicker_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="DatePicker.html#showAlways">showAlways</a></li><li><a href="DatePicker.html#useTouchEvent">useTouchEvent</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="DatePicker.html#addOpener">addOpener</a></li><li><a href="DatePicker.html#addRange">addRange</a></li><li><a href="DatePicker.html#close">close</a></li><li><a href="DatePicker.html#destroy">destroy</a></li><li><a href="DatePicker.html#disable">disable</a></li><li><a href="DatePicker.html#enable">enable</a></li><li><a href="DatePicker.html#getDateHash">getDateHash</a></li><li><a href="DatePicker.html#getDayInMonth">getDayInMonth</a></li><li><a href="DatePicker.html#getMonth">getMonth</a></li><li><a href="DatePicker.html#getTimePicker">getTimePicker</a></li><li><a href="DatePicker.html#getYear">getYear</a></li><li><a href="DatePicker.html#isOpened">isOpened</a></li><li><a href="DatePicker.html#open">open</a></li><li><a href="DatePicker.html#removeOpener">removeOpener</a></li><li><a href="DatePicker.html#removeRange">removeRange</a></li><li><a href="DatePicker.html#setDate">setDate</a></li><li><a href="DatePicker.html#setDateForm">setDateForm</a></li><li><a href="DatePicker.html#setElement">setElement</a></li><li><a href="DatePicker.html#setRanges">setRanges</a></li><li><a href="DatePicker.html#setXY">setXY</a></li><li><a href="DatePicker.html#setZIndex">setZIndex</a></li></ul><div class="member-type">Events</div><ul class="inner"><li><a href="DatePicker.html#event:close">close</a></li><li><a href="DatePicker.html#event:open">open</a></li><li><a href="DatePicker.html#event:pick">pick</a></li><li><a href="DatePicker.html#event:update">update</a></li></ul></div></li><li><a href="Spinbox.html">Spinbox</a><div class="hidden" id="Spinbox_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Spinbox.html#addExclusion">addExclusion</a></li><li><a href="Spinbox.html#getContainerElement">getContainerElement</a></li><li><a href="Spinbox.html#getOption">getOption</a></li><li><a href="Spinbox.html#getStep">getStep</a></li><li><a href="Spinbox.html#getValue">getValue</a></li><li><a href="Spinbox.html#removeExclusion">removeExclusion</a></li><li><a href="Spinbox.html#setStep">setStep</a></li><li><a href="Spinbox.html#setValue">setValue</a></li></ul></div></li><li><a href="TimePicker.html">TimePicker</a><div class="hidden" id="TimePicker_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="TimePicker.html#$timePickerElement">$timePickerElement</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="TimePicker.html#addHourExclusion">addHourExclusion</a></li><li><a href="TimePicker.html#addMinuteExclusion">addMinuteExclusion</a></li><li><a href="TimePicker.html#close">close</a></li><li><a href="TimePicker.html#getHour">getHour</a></li><li><a href="TimePicker.html#getHourStep">getHourStep</a></li><li><a href="TimePicker.html#getMinute">getMinute</a></li><li><a href="TimePicker.html#getMinuteStep">getMinuteStep</a></li><li><a href="TimePicker.html#getTime">getTime</a></li><li><a href="TimePicker.html#hide">hide</a></li><li><a href="TimePicker.html#open">open</a></li><li><a href="TimePicker.html#removeHourExclusion">removeHourExclusion</a></li><li><a href="TimePicker.html#removeMinuteExclusion">removeMinuteExclusion</a></li><li><a href="TimePicker.html#setHour">setHour</a></li><li><a href="TimePicker.html#setHourStep">setHourStep</a></li><li><a href="TimePicker.html#setMinute">setMinute</a></li><li><a href="TimePicker.html#setMinuteStep">setMinuteStep</a></li><li><a href="TimePicker.html#setTime">setTime</a></li><li><a href="TimePicker.html#setTimeFromInputElement">setTimeFromInputElement</a></li><li><a href="TimePicker.html#setTimeFromString">setTimeFromString</a></li><li><a href="TimePicker.html#setXYPosition">setXYPosition</a></li><li><a href="TimePicker.html#show">show</a></li><li><a href="TimePicker.html#toSpinboxes">toSpinboxes</a></li></ul><div class="member-type">Events</div><ul class="inner"><li><a href="TimePicker.html#event:change">change</a></li><li><a href="TimePicker.html#event:close">close</a></li><li><a href="TimePicker.html#event:open">open</a></li></ul></div></li></ul></div><div class="lnb-api hidden"><h3><a href="global.html">Global</a></h3></div>
+</nav>
+<div id="resizer"></div>
+
+<div class="main" id="main">
+    
+
 <section>
-<header>
-    <h2 class="sampleHeader">DatePicker - Selectable ranges on month layer</h2>
-    <a href="" target="_blank" class="newWindow">Open this sample in New Tab</a>
-</header>
-<div class="buttons">
-<a href="tutorial.html" class="back">Return to list</a>
-</div>
-<article class="frame">
-	
+    <header>
+        
 
-    <iframe id="exampleFrame" width="100%" height="100%" frameborder="0" scrolling="auto" src=tutorials/sample6.html onload="onIframeLoad()"></iframe>
-    <br/>
-    <div id='codeArea'></div>
-</article>
+        <h2>DatePicker - Selectable ranges on month layer</h2>
+    </header>
+
+    <ul id="example-nav" class="nav nav-tabs">
+        <li role="presentation" id="example-result-btn" class="active" onclick="showResult()">
+            <a href="#">Result</a>
+        </li>
+        <li role="presentation" id="example-js-btn" class="" onclick="showJs()">
+            <a href="#">JS</a>
+        </li>
+        <li role="presentation" id="example-html-btn" class="" onclick="showHtml()">
+            <a href="#">HTML</a>
+        </li>
+    </ul>
+
+    <article>
+        
+        <iframe id="example-result" width="100%" height="800" frameborder="0" src=tutorials/sample6.html></iframe>
+        <div id="example-js" class="hidden"><pre class="prettyprint source">
+
+            function getTodayHash() {
+                var today = new Date();
+
+                return {
+                    year: today.getFullYear(),
+                    month: today.getMonth() + 1
+                };
+            }
+
+            function getRelativeDateHash(dateObj, month) {
+                var relativeDate = new Date(dateObj.year, dateObj.month - 1 + month, 1);
+
+                return {
+                    year: relativeDate.getFullYear(),
+                    month: relativeDate.getMonth() + 1
+                };
+            }
+
+            function getUnlimitedDateHash() {
+                return {
+                    year: 2099,
+                    month: 12
+                };
+            }
+
+            // Step 1: Init date for setting datepicker
+            var startDate1 = getTodayHash();
+            var endDate1 = getUnlimitedDateHash();
+            var startDate2 = getRelativeDateHash(startDate1, 2);
+            var endDate2 = getUnlimitedDateHash();
+
+            // Step 2: Create each component
+            var calendar = new tui.component.Calendar({
+                element: '#layer'
+            });
+
+            var startDatepicker = new tui.component.DatePicker({
+                element: '#datepicker-start',
+                dateForm: 'yyyy년 mm월',
+                selectableRanges: [
+                    [startDate1, endDate1]
+                ]
+            }, calendar);
+
+            var endDatepicker = new tui.component.DatePicker({
+                element: '#datepicker-end',
+                dateFormat: 'yyyy년 mm월',
+                date: startDate2,
+                selectableRanges: [
+                    [startDate2, endDate2]
+                ]
+            }, calendar);
+
+            // Step 3: Pick start date
+            startDatepicker.on('pick', function() {
+                var pickedDate = startDatepicker.getDateHash();
+                var newStartDate = getRelativeDateHash(pickedDate, 2); // after 2 months
+                var newEndDate = getUnlimitedDateHash();
+
+                // Step 3-1: Change ranges each datepicker
+                startDatepicker.setRanges([[pickedDate, newEndDate]]);
+                endDatepicker.setRanges([[pickedDate, newEndDate]]);
+
+                // Step 3-2: Change picked end date
+                endDatepicker.setDate(newStartDate.year, newStartDate.month);
+            });
+
+            // Step 4: Pick end date
+            endDatepicker.on('pick', function() {
+                var pickedDate = endDatepicker.getDateHash();
+                var newStartDate = getRelativeDateHash(pickedDate, -2); // before 2 months
+                var newEndDate = getUnlimitedDateHash();
+
+                // Step 4-1: Change ranges each datepicker
+                endDatepicker.setRanges([[newStartDate, newEndDate]]);
+                startDatepicker.setRanges([[newStartDate, newEndDate]]);
+
+                // Step 4-2: Change picked start date
+                startDatepicker.setDate(newStartDate.year, newStartDate.month);
+            });
+
+        </pre></div>
+        <div id="example-html" class="hidden"><pre class="prettyprint source">
+            &lt;!-- Shared calendar layer for datepicker element -->
+            &lt;div id="layer" class="layer" style="display:none;">&lt;/div>
+
+            &lt;label>Start:&lt;/label>
+
+            &lt;!-- Drawing datepicker for start date -->
+            &lt;input id="datepicker-start" type="text">
+
+            &lt;label>End:&lt;/label>
+
+            &lt;!-- Drawing datepicker for end date -->
+            &lt;input id="datepicker-end" type="text">
+        </pre></div>
+    </article>
+</section>
+
 <script>
-//  prettify
-/**
- * iframe load 이벤트 핸들러
- */
-function onIframeLoad() {
-//    generateCode();
-    autoResize();
-}
+    var exampleResult = document.getElementById('example-result');
+    var exampleJs = document.getElementById('example-js');
+    var exampleHtml = document.getElementById('example-html');
+    var exampleResultBtn = document.getElementById('example-result-btn');
+    var exampleJsBtn = document.getElementById('example-js-btn');
+    var exampleHtmlBtn = document.getElementById('example-html-btn');
 
-
-/**
- * iframe 의 너비/높이를 resize 한다.
- */
-function autoResize() {
-    var ef = document.getElementById('exampleFrame');
-    ef.width = document.body.clientWidth - 80;
-    ef.height = document.body.clientHeight - 250;
-}
-
-/**
- * iframe 의 document 를 반환한다.
- * @returns {HTMLDocument|Document}
- */
-function getIframeDocument() {
-    var ef = document.getElementById('exampleFrame');
-    return ef.contentDocument || ef.contentWindow.document;
-}
-
-/**
- * iframe 마지막 script code 를 div 에 할당한다.
- */
-function generateCode() {
-    var codeArea = document.getElementById('codeArea'),
-        doc = getIframeDocument(),
-        scripts;
-
-    if (doc) {
-        scripts = doc.getElementsByTagName('script');
-        codeArea.innerHTML = '<pre>' + encodeHTMLEntity(scripts[scripts.length-1].innerHTML) + '</pre>';
+    function setActive(el) {
+        el.className += ' active';
     }
-}
 
-/**
- * html entity 로 인코딩한다.
- * @param html
- * @returns {XML|string|void}
- */
-function encodeHTMLEntity(html) {
-    var entities = {'"': 'quot', '&': 'amp', '<': 'lt', '>': 'gt', '\'': '#39'};
-    return html.replace(/[<>&"']/g, function(m0) {
-        return entities[m0] ? '&' + entities[m0] + ';' : m0;
-    });
-}
+    function setInactive(el) {
+        el.className = el.className.replace(/\s*active\s*/g, '');
+    }
+
+    function show(el) {
+        el.className = el.className.replace(/\s*hidden\s*/g, '');
+    }
+
+    function hide(el) {
+        el.className += ' hidden';
+    }
+
+    function showJs() {
+        hide(exampleHtml);
+        hide(exampleResult);
+        setInactive(exampleHtmlBtn);
+        setInactive(exampleResultBtn);
+
+        show(exampleJs);
+        setActive(exampleJsBtn);
+    }
+
+    function showHtml() {
+        hide(exampleJs);
+        hide(exampleResult);
+        setInactive(exampleJsBtn);
+        setInactive(exampleResultBtn);
+
+        show(exampleHtml);
+        setActive(exampleHtmlBtn);
+    }
+
+    function showResult() {
+        hide(exampleJs);
+        hide(exampleHtml);
+        setInactive(exampleJsBtn);
+        setInactive(exampleHtmlBtn);
+
+        show(exampleResult);
+        setActive(exampleResultBtn);
+    }
 </script>
 
-</section>
+</div>
+
+<footer>
+    <img class="logo" src="https://cloud.githubusercontent.com/assets/12269563/20029815/01133928-a39a-11e6-80f3-12500a91c755.png" style="width: 150px">
+    <div class="footer-text">NHN Entertainment. Frontend Development Lab</div>
+</footer>
+<script>prettyPrint();</script>
+<script src="scripts/jquery.min.js"></script>
+<script src="scripts/tui-doc.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+    <script>
+        showLnbExamples();
+    </script>
+
 </body>
 </html>

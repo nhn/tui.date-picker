@@ -1,18 +1,20 @@
 /**
  * tui-component-date-picker
- * @author NHNEnt FE Development Team <dl_javascript@nhnent.com>
+ * @author NHNEnt FE Development Lab <dl_javascript@nhnent.com>
  * @version v1.5.1
  * @license MIT
  */
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-tui.util.defineNamespace('tui.component.Spinbox', require('./src/spinbox'), true);
-tui.util.defineNamespace('tui.component.TimePicker', require('./src/timepicker'), true);
-tui.util.defineNamespace('tui.component.DatePicker', require('./src/datepicker'), true);
+tui.util.defineNamespace('tui.component', {
+    DatePicker: require('./src/datepicker'),
+    TimePicker: require('./src/timepicker'),
+    Spinbox: require('./src/spinbox')
+});
 
 },{"./src/datepicker":2,"./src/spinbox":3,"./src/timepicker":4}],2:[function(require,module,exports){
 /**
  * @fileoverview This component provides a calendar for picking a date & time.
- * @author NHN ent FE dev <dl_javascript@nhnent.com> <minkyu.yi@nhnent.com>
+ * @author NHN ent FE dev Lab <dl_javascript@nhnent.com>
  */
 'use strict';
 
@@ -59,6 +61,11 @@ var inArray = util.inArray,
  */
 
 /**
+ * @typedef {Function} Calendar
+ * @see {@link https://github.com/nhnent/tui.component.calendar}
+ */
+
+/**
  * Create DatePicker<br>
  * You can get a date from 'getYear', 'getMonth', 'getDayInMonth', 'getDateHash'
  * @constructor
@@ -81,8 +88,8 @@ var inArray = util.inArray,
  *      @param {Object} [option.openers = [element]] - opener button list (example - icon, button, etc.)
  *      @param {boolean} [option.showAlways = false] - whether the datepicker shows the calendar always
  *      @param {boolean} [option.useTouchEvent = true] - whether the datepicker uses touch events
- *      @param {tui.component.TimePicker} [option.timePicker] - TimePicker instance
- * @param {tui.component.Calendar} calendar - Calendar instance
+ *      @param {TimePicker} [option.timePicker] - TimePicker instance
+ * @param {Calendar} calendar - Calendar instance
  * @example
  *   var calendar = new tui.component.Calendar({
  *       element: '#layer',
@@ -128,6 +135,11 @@ var inArray = util.inArray,
  *           picker1.close();
  *       }
  *   });
+ *
+ * @tutorial sample1
+ * @tutorial sample2
+ * @tutorial sample5
+ * @tutorial sample6
  */
 var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
     init: function(option, calendar) {
@@ -183,7 +195,7 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
          * Array saving a order of format
          * @type {Array}
          * @private
-         * @see {tui.component.DatePicker.prototype.setDateForm}
+         * @see {DatePicker.prototype.setDateForm}
          * @example
          * // If the format is a 'mm-dd, yyyy'
          * // `this._formOrder` is ['month', 'date', 'year']
@@ -293,6 +305,7 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
         /**
          * Index of shown layer
          * @type {number}
+         * @private
          */
         this._shownLayerIdx = 0;
 
@@ -314,7 +327,6 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
 
         /**
          * Whether the datepicker shows always
-         * @api
          * @type {boolean}
          * @since 1.2.0
          * @example
@@ -326,7 +338,6 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
 
         /**
          * Whether the datepicker use touch event.
-         * @api
          * @type {boolean}
          * @since 1.2.0
          * @example
@@ -532,6 +543,7 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * Search timestamp in endTimes
+     * @private
      * @param {number} timestamp - timestamp
      * @returns {{found: boolean, index: number}} result
      */
@@ -1239,6 +1251,7 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * Get difference start to end time
+     * @private
      * @returns {Object} Time difference value
      */
     _getDiffTime: function() {
@@ -1718,7 +1731,7 @@ module.exports = DatePicker;
 /**
  * Created by nhnent on 15. 4. 28..
  * @fileoverview Spinbox Component
- * @author NHN ent FE dev <dl_javascript@nhnent.com> <minkyu.yi@nhnent.com>
+ * @author NHN ent FE dev Lab <dl_javascript@nhnent.com>
  * @dependency jquery-1.8.3, code-snippet-1.0.2
  */
 
@@ -1729,7 +1742,6 @@ var util = tui.util,
 
 /**
  * @constructor
- *
  * @param {String|HTMLElement} container - container of spinbox
  * @param {Object} [option] - option for initialization
  *
@@ -1740,6 +1752,8 @@ var util = tui.util,
  * @param {string} [option.upBtnTag = button HTML] - up button html string
  * @param {string} [option.downBtnTag = button HTML] - down button html string
  * @param {Array}  [option.exclusion = []] - value to be excluded. if this is [1,3], 0 -> 2 -> 4 -> 5 ->....
+ *
+ * @tutorial sample4
  */
 var Spinbox = util.defineClass(/** @lends Spinbox.prototype */ {
     init: function(container, option) {
@@ -2089,7 +2103,7 @@ module.exports = Spinbox;
 },{}],4:[function(require,module,exports){
 /**
  * @fileoverview TimePicker Component
- * @author NHN ent FE dev <dl_javascript@nhnent.com> <minkyu.yi@nhnent.com>
+ * @author NHN ent FE Lab <dl_javascript@nhnent.com> <minkyu.yi@nhnent.com>
  * @dependency jquery-1.8.3, code-snippet-1.0.2, spinbox.js
  */
 
@@ -2124,6 +2138,8 @@ var meridiemTag = '<select><option value="AM">AM</option><option value="PM">PM</
  *                                                  if minute [1,3] is excluded, minute value 0 -> 2 -> 4 -> 5 -> ...
  * @param {boolean} [option.showMeridian = false] - is time expression-"hh:mm AM/PM"?
  * @param {Object} [option.position = {}] - left, top position of timepicker element
+ *
+ * @tutorial sample3
  */
 var TimePicker = util.defineClass(/** @lends TimePicker.prototype */ {
     init: function(option) {
@@ -2522,6 +2538,7 @@ var TimePicker = util.defineClass(/** @lends TimePicker.prototype */ {
 
     /**
      * Get original hour from meridiem hour
+     * @private
      * @param {hour} hour - Meridiem hour
      * @returns {number} Original hour
      */
@@ -2751,14 +2768,15 @@ module.exports = TimePicker;
 },{"./spinbox":3,"./utils":5}],5:[function(require,module,exports){
 /**
  * @fileoverview Utils for calendar component
- * @author NHN Net. FE dev team. <dl_javascript@nhnent.com>
- * @dependency ne-code-snippet ~1.0.2
+ * @author NHN Net. FE dev Lab. <dl_javascript@nhnent.com>
+ * @dependency tui-code-snippet ~1.0.2
  */
 
 'use strict';
 
 /**
  * Utils of calendar
+ * @ignore
  * @namespace utils
  */
 var utils = {

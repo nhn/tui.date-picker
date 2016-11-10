@@ -42,125 +42,362 @@
 <div class="main" id="main">
     
 
+
+
+
 <section>
-    <header>
+
+<header>
+    
+        <h2></h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
         
 
-        <h2>TimePicker</h2>
-    </header>
-
-    <ul id="example-nav" class="nav nav-tabs">
-        <li role="presentation" id="example-result-btn" class="active" onclick="showResult()">
-            <a href="#">Result</a>
-        </li>
-        <li role="presentation" id="example-js-btn" class="" onclick="showJs()">
-            <a href="#">JS</a>
-        </li>
-        <li role="presentation" id="example-html-btn" class="" onclick="showHtml()">
-            <a href="#">HTML</a>
-        </li>
-    </ul>
-
-    <article>
         
-        <iframe id="example-result" width="100%" height="800" frameborder="0" src=tutorials/sample3.html></iframe>
-        <div id="example-js" class="hidden"><pre class="prettyprint source">
-        var optionInput = document.getElementById('timepicker-option');
-        /**
-         * Default time: '00:00' with 24hours-expression.
-         * Timepicker CSS-Class: 'timepicker'.
-         * Up/Down button CSS-Class: 'timepicker-btn'.
-         * If no position, it will be set below the end of left of the input-box.
-         */
-        var timepicker1 = new tui.component.TimePicker({
-            inputElement: '#timepicker-default',
-            defaultHour: 10,
-            defaultMinute: 34
-        });
 
-        /**
-         * Option
-         * Default hour is 12. (defaultHour)
-         * Default minute is 34. (defaultMinute)
-         * Set meridian(meridiem) option for AM/PM expression. (showMeridian)
-         * Set position (x,y). (position)
-         */
-        var timepicker2 = new tui.component.TimePicker({
-            inputElement: '#timepicker-option',
-            defaultHour: 12,
-            defaultMinute: 34,
-            showMeridian: true,
-            position: {x: optionInput.offsetLeft + optionInput.offsetWidth + 3, y: optionInput.offsetTop}
-        });
-    </pre></div>
-        <div id="example-html" class="hidden"><pre class="prettyprint source">
-        &lt;div class="example">
-            &lt;h1>Timepicker-default&lt;/h1>
-            &lt;input type="text" id="timepicker-default">
-        &lt;/div>
 
-        &lt;div class="example">
-            &lt;h1>Timepicker-option (AM/PM, default time, position)&lt;/h1>
-            &lt;input type="text" id="timepicker-option">
-        &lt;/div>
-    </pre></div>
-    </article>
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Type Definitions</h3>
+
+        <dl>
+                
+
+<dt>
+
+    
+        
+
+        <h4 class="name" id="Calendar">
+            <span class="type-signature"></span>Calendar<span class="signature">()</span><span class="type-signature"></span>
+            
+            <div class="container-source members">
+                <code><a href="datepicker.js.html">datepicker.js</a></code>,
+                <code><a href="datepicker.js.html#line49">line 49</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+
+</dt>
+<dd>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="https://github.com/nhnent/tui.component.calendar">https://github.com/nhnent/tui.component.calendar</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+<h4 class="name" id="dateHash">
+    dateHash
+    
+    <div class="container-source members">
+        <code><a href="datepicker.js.html">datepicker.js</a></code>,
+        <code><a href="datepicker.js.html#line41">line 41</a></code>
+    </div>
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>A number, or a string containing a number.</p>
+    </div>
+    
+
+    <!--
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Object</span>
+
+
+            </li>
+        </ul>
+    
+    -->
+
+    
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>year</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>1970~2999</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>month</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>1~12</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>date</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>1~31</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+            </dl>
+    
+
+    
+</article>
+
 </section>
 
-<script>
-    var exampleResult = document.getElementById('example-result');
-    var exampleJs = document.getElementById('example-js');
-    var exampleHtml = document.getElementById('example-html');
-    var exampleResultBtn = document.getElementById('example-result-btn');
-    var exampleJsBtn = document.getElementById('example-js-btn');
-    var exampleHtmlBtn = document.getElementById('example-html-btn');
 
-    function setActive(el) {
-        el.className += ' active';
-    }
 
-    function setInactive(el) {
-        el.className = el.className.replace(/\s*active\s*/g, '');
-    }
-
-    function show(el) {
-        el.className = el.className.replace(/\s*hidden\s*/g, '');
-    }
-
-    function hide(el) {
-        el.className += ' hidden';
-    }
-
-    function showJs() {
-        hide(exampleHtml);
-        hide(exampleResult);
-        setInactive(exampleHtmlBtn);
-        setInactive(exampleResultBtn);
-
-        show(exampleJs);
-        setActive(exampleJsBtn);
-    }
-
-    function showHtml() {
-        hide(exampleJs);
-        hide(exampleResult);
-        setInactive(exampleJsBtn);
-        setInactive(exampleResultBtn);
-
-        show(exampleHtml);
-        setActive(exampleHtmlBtn);
-    }
-
-    function showResult() {
-        hide(exampleJs);
-        hide(exampleHtml);
-        setInactive(exampleJsBtn);
-        setInactive(exampleHtmlBtn);
-
-        show(exampleResult);
-        setActive(exampleResultBtn);
-    }
-</script>
 
 </div>
 
@@ -174,7 +411,11 @@
 <script src="scripts/linenumber.js"></script>
 
     <script>
-        showLnbExamples();
+        var id = '_sub'.replace(/"/g, '_');
+        var element = document.getElementById(id); // do not use jquery selector
+
+        $(element).removeClass('hidden');
+        showLnbApi();
     </script>
 
 </body>

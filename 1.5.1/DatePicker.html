@@ -1,0 +1,4482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Date Picker</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-jsdoc.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/tui-doc.css">
+</head>
+<body>
+<nav class="lnb" id="lnb">
+    <div class="logo" style="width: 150px">
+        <img src="https://cloud.githubusercontent.com/assets/12269563/20029815/01133928-a39a-11e6-80f3-12500a91c755.png" width="100%" height="100%">
+    </div>
+    <div class="title">
+        <h1><a href="index.html" class="link">Date Picker</a></h1>
+        
+    </div>
+    <div class="search-container" id="search-container">
+        <input type="text" placeholder="Search">
+        <ul></ul>
+    </div>
+    <ol class="lnb-tab">
+        <li id="api-tab">
+            <a href="#"><h4>API</h4></a>
+        </li>
+        <li id="examples-tab">
+            <a href="#"><h4>Examples</h4></a>
+        </li>
+    </ol>
+    <div class="lnb-examples hidden"><h3>Examples</h3><ul><li><a href="tutorial-sample1.html">DatePicker - Enable picking year, month, date</a><div class="hidden" id="sample1_sub"></div></li><li><a href="tutorial-sample2.html">DatePicker - Customizing with options</a><div class="hidden" id="sample2_sub"></div></li><li><a href="tutorial-sample3.html">TimePicker</a><div class="hidden" id="sample3_sub"></div></li><li><a href="tutorial-sample4.html">Spinbox</a><div class="hidden" id="sample4_sub"></div></li><li><a href="tutorial-sample5.html">DatePicker - Selectable ranges on date layer</a><div class="hidden" id="sample5_sub"></div></li><li><a href="tutorial-sample6.html">DatePicker - Selectable ranges on month layer</a><div class="hidden" id="sample6_sub"></div></li></ul></div><div class="lnb-api hidden"><h3>Classes</h3><ul><li><a href="DatePicker.html">DatePicker</a><div class="hidden" id="DatePicker_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="DatePicker.html#showAlways">showAlways</a></li><li><a href="DatePicker.html#useTouchEvent">useTouchEvent</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="DatePicker.html#addOpener">addOpener</a></li><li><a href="DatePicker.html#addRange">addRange</a></li><li><a href="DatePicker.html#close">close</a></li><li><a href="DatePicker.html#destroy">destroy</a></li><li><a href="DatePicker.html#disable">disable</a></li><li><a href="DatePicker.html#enable">enable</a></li><li><a href="DatePicker.html#getDateHash">getDateHash</a></li><li><a href="DatePicker.html#getDayInMonth">getDayInMonth</a></li><li><a href="DatePicker.html#getMonth">getMonth</a></li><li><a href="DatePicker.html#getTimePicker">getTimePicker</a></li><li><a href="DatePicker.html#getYear">getYear</a></li><li><a href="DatePicker.html#isOpened">isOpened</a></li><li><a href="DatePicker.html#open">open</a></li><li><a href="DatePicker.html#removeOpener">removeOpener</a></li><li><a href="DatePicker.html#removeRange">removeRange</a></li><li><a href="DatePicker.html#setDate">setDate</a></li><li><a href="DatePicker.html#setDateForm">setDateForm</a></li><li><a href="DatePicker.html#setElement">setElement</a></li><li><a href="DatePicker.html#setRanges">setRanges</a></li><li><a href="DatePicker.html#setXY">setXY</a></li><li><a href="DatePicker.html#setZIndex">setZIndex</a></li></ul><div class="member-type">Events</div><ul class="inner"><li><a href="DatePicker.html#event:close">close</a></li><li><a href="DatePicker.html#event:open">open</a></li><li><a href="DatePicker.html#event:pick">pick</a></li><li><a href="DatePicker.html#event:update">update</a></li></ul></div></li><li><a href="Spinbox.html">Spinbox</a><div class="hidden" id="Spinbox_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Spinbox.html#addExclusion">addExclusion</a></li><li><a href="Spinbox.html#getContainerElement">getContainerElement</a></li><li><a href="Spinbox.html#getOption">getOption</a></li><li><a href="Spinbox.html#getStep">getStep</a></li><li><a href="Spinbox.html#getValue">getValue</a></li><li><a href="Spinbox.html#removeExclusion">removeExclusion</a></li><li><a href="Spinbox.html#setStep">setStep</a></li><li><a href="Spinbox.html#setValue">setValue</a></li></ul></div></li><li><a href="TimePicker.html">TimePicker</a><div class="hidden" id="TimePicker_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="TimePicker.html#$timePickerElement">$timePickerElement</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="TimePicker.html#addHourExclusion">addHourExclusion</a></li><li><a href="TimePicker.html#addMinuteExclusion">addMinuteExclusion</a></li><li><a href="TimePicker.html#close">close</a></li><li><a href="TimePicker.html#getHour">getHour</a></li><li><a href="TimePicker.html#getHourStep">getHourStep</a></li><li><a href="TimePicker.html#getMinute">getMinute</a></li><li><a href="TimePicker.html#getMinuteStep">getMinuteStep</a></li><li><a href="TimePicker.html#getTime">getTime</a></li><li><a href="TimePicker.html#hide">hide</a></li><li><a href="TimePicker.html#open">open</a></li><li><a href="TimePicker.html#removeHourExclusion">removeHourExclusion</a></li><li><a href="TimePicker.html#removeMinuteExclusion">removeMinuteExclusion</a></li><li><a href="TimePicker.html#setHour">setHour</a></li><li><a href="TimePicker.html#setHourStep">setHourStep</a></li><li><a href="TimePicker.html#setMinute">setMinute</a></li><li><a href="TimePicker.html#setMinuteStep">setMinuteStep</a></li><li><a href="TimePicker.html#setTime">setTime</a></li><li><a href="TimePicker.html#setTimeFromInputElement">setTimeFromInputElement</a></li><li><a href="TimePicker.html#setTimeFromString">setTimeFromString</a></li><li><a href="TimePicker.html#setXYPosition">setXYPosition</a></li><li><a href="TimePicker.html#show">show</a></li><li><a href="TimePicker.html#toSpinboxes">toSpinboxes</a></li></ul><div class="member-type">Events</div><ul class="inner"><li><a href="TimePicker.html#event:change">change</a></li><li><a href="TimePicker.html#event:close">close</a></li><li><a href="TimePicker.html#event:open">open</a></li></ul></div></li></ul></div><div class="lnb-api hidden"><h3><a href="global.html">Global</a></h3></div>
+</nav>
+<div id="resizer"></div>
+
+<div class="main" id="main">
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>DatePicker</h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+<dt>
+
+    
+        
+
+        <h4 class="name" id="DatePicker">
+            <span class="type-signature"></span>new DatePicker<span class="signature">(option, calendar)</span><span class="type-signature"></span>
+            
+            <div class="container-source members">
+                <code><a href="datepicker.js.html">datepicker.js</a></code>,
+                <code><a href="datepicker.js.html#line130">line 130</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Create DatePicker<br>
+You can get a date from 'getYear', 'getMonth', 'getDayInMonth', 'getDateHash'</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>option</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>options for DatePicker</p>
+                <h6>Properties</h6>
+                
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>element</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">HTMLElement</span>
+|
+
+<span class="param-type">string</span>
+|
+
+<span class="param-type">jQuery</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>input element(or selector) of DatePicker</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>date</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#dateHash">dateHash</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    today
+                
+                </td>
+            
+
+            <td class="description last"><p>initial date object</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>dateFormat</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    'yyyy-mm-dd'
+                
+                </td>
+            
+
+            <td class="description last"><p>format of date string</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>defaultCentury</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    20
+                
+                </td>
+            
+
+            <td class="description last"><p>if year-format is yy, this value is prepended automatically.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>parentElement</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">HTMLElement</span>
+|
+
+<span class="param-type">string</span>
+|
+
+<span class="param-type">jQuery</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>The wrapper element will be inserted into
+          this element. (since 1.3.0)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>selectableClassName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    'selectable'
+                
+                </td>
+            
+
+            <td class="description last"><p>for selectable date elements</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>selectedClassName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    'selected'
+                
+                </td>
+            
+
+            <td class="description last"><p>for selected date element</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>enableSetDateByEnterKey</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    true
+                
+                </td>
+            
+
+            <td class="description last"><p>Whether set date from the input value
+            when the 'Enter' key pressed (since 1.3.0)</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options.selectableRanges</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;Array.&lt;<a href="global.html#dateHash">dateHash</a>>></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Selectable date ranges, See example</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>option.pos</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>calendar position style value</p>
+                <h6>Properties</h6>
+                
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>left</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>position left of calendar</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>top</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>position top of calendar</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>zIndex</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>z-index of calendar</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>option.openers</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    [element]
+                
+                </td>
+            
+
+            <td class="description last"><p>opener button list (example - icon, button, etc.)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>option.showAlways</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+
+            <td class="description last"><p>whether the datepicker shows the calendar always</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>option.useTouchEvent</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    true
+                
+                </td>
+            
+
+            <td class="description last"><p>whether the datepicker uses touch events</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>option.timePicker</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="TimePicker.html">TimePicker</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>TimePicker instance</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>calendar</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#Calendar">Calendar</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Calendar instance</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-tutorial">Tutorials:</dt>
+    <dd class="tag-tutorial">
+        <ul>
+            <li><a href="tutorial-sample1.html">DatePicker - Enable picking year, month, date</a></li>
+        
+            <li><a href="tutorial-sample2.html">DatePicker - Customizing with options</a></li>
+        
+            <li><a href="tutorial-sample5.html">DatePicker - Selectable ranges on date layer</a></li>
+        
+            <li><a href="tutorial-sample6.html">DatePicker - Selectable ranges on month layer</a></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+</dl>
+
+
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>var calendar = new tui.component.Calendar({
+      element: '#layer',
+      titleFormat: 'yyyy년 m월',
+      todayFormat: 'yyyy년 mm월 dd일 (D)'
+  });
+
+  var timePicker = new tui.component.TimePicker({
+      showMeridian: true,
+      defaultHour: 13,
+      defaultMinute: 24
+  });
+
+  var range1 = [
+         {year: 2015, month:1, date: 1},
+         {year: 2015, month:2, date: 1}
+     ],
+     range2 = [
+         {year: 2015, month:3, date: 1},
+         {year: 2015, month:4, date: 1}
+     ],
+     range3 = [
+         {year: 2015, month:6, date: 1},
+         {year: 2015, month:7, date: 1}
+     ];
+
+  var picker1 = new tui.component.DatePicker({
+      element: '#picker',
+      dateFormat: 'yyyy년 mm월 dd일 - ',
+      //dateFormat: 'yyyy년 mm월',
+      //dateFormat: 'yyyy년',
+      date: {year: 2015, month: 1, date: 1},
+      selectableRanges: [range1, range2, range3],
+      openers: ['#opener'],
+      timePicker: timePicker
+  }, calendar);
+
+  // Close calendar when select a date
+  $('#layer').on('click', function(event) {
+      var $el = $(event.target);
+
+      if ($el.hasClass('selectable')) {
+          picker1.close();
+      }
+  });</code></pre>
+
+    
+
+</dd>
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        <dl>
+            
+
+<dt>
+<h4 class="name" id="showAlways">
+    <span class="type-signature"></span>showAlways<span class="type-signature"> :boolean</span>
+    
+    <div class="container-source members">
+        <code><a href="datepicker.js.html">datepicker.js</a></code>,
+        <code><a href="datepicker.js.html#line323">line 323</a></code>
+    </div>
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Whether the datepicker shows always</p>
+    </div>
+    
+
+    <!--
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">boolean</span>
+
+
+            </li>
+        </ul>
+    
+    -->
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>1.2.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>datepicker.showAlways = true;
+datepicker.open();
+// The datepicker will be not closed if you click the outside of the datepicker</code></pre>
+
+    
+</dd>
+
+        
+            
+
+<dt>
+<h4 class="name" id="useTouchEvent">
+    <span class="type-signature"></span>useTouchEvent<span class="type-signature"> :boolean</span>
+    
+    <div class="container-source members">
+        <code><a href="datepicker.js.html">datepicker.js</a></code>,
+        <code><a href="datepicker.js.html#line333">line 333</a></code>
+    </div>
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Whether the datepicker use touch event.</p>
+    </div>
+    
+
+    <!--
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">boolean</span>
+
+
+            </li>
+        </ul>
+    
+    -->
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>1.2.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>datepicker.useTouchEvent = false;
+// The datepicker will be use only 'click', 'mousedown' events</code></pre>
+
+    
+</dd>
+
+        </dl>
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        <dl>
+                
+
+<dt>
+
+    
+        
+
+        <h4 class="name" id="addOpener">
+            <span class="type-signature"></span>addOpener<span class="signature">(opener)</span><span class="type-signature"></span>
+            
+            <div class="container-source members">
+                <code><a href="datepicker.js.html">datepicker.js</a></code>,
+                <code><a href="datepicker.js.html#line1386">line 1386</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>add opener</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>opener</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">HTMLElement</span>
+|
+
+<span class="param-type">jQuery</span>
+|
+
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>element or selector</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+
+    
+        
+
+        <h4 class="name" id="addRange">
+            <span class="type-signature"></span>addRange<span class="signature">(startHash, endHash)</span><span class="type-signature"></span>
+            
+            <div class="container-source members">
+                <code><a href="datepicker.js.html">datepicker.js</a></code>,
+                <code><a href="datepicker.js.html#line1290">line 1290</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Add a range</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>startHash</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#dateHash">dateHash</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Start dateHash</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>endHash</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#dateHash">dateHash</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>End dateHash</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>1.2.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>var start = {year: 2015, month: 2, date: 3},
+    end = {year: 2015, month: 3, date: 6};
+
+datepicker.addRange(start, end);</code></pre>
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+
+    
+        
+
+        <h4 class="name" id="close">
+            <span class="type-signature"></span>close<span class="signature">()</span><span class="type-signature"></span>
+            
+            <div class="container-source members">
+                <code><a href="datepicker.js.html">datepicker.js</a></code>,
+                <code><a href="datepicker.js.html#line1449">line 1449</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Close calendar with unbinding some events</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+
+    
+        
+
+        <h4 class="name" id="destroy">
+            <span class="type-signature"></span>destroy<span class="signature">()</span><span class="type-signature"></span>
+            
+            <div class="container-source members">
+                <code><a href="datepicker.js.html">datepicker.js</a></code>,
+                <code><a href="datepicker.js.html#line1698">line 1698</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Destroy - delete wrapper element and attach events</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>1.4.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+
+    
+        
+
+        <h4 class="name" id="disable">
+            <span class="type-signature"></span>disable<span class="signature">()</span><span class="type-signature"></span>
+            
+            <div class="container-source members">
+                <code><a href="datepicker.js.html">datepicker.js</a></code>,
+                <code><a href="datepicker.js.html#line1672">line 1672</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Disable picker</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>1.4.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>datepicker.enable();
+datepicker.disable();</code></pre>
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+
+    
+        
+
+        <h4 class="name" id="enable">
+            <span class="type-signature"></span>enable<span class="signature">()</span><span class="type-signature"></span>
+            
+            <div class="container-source members">
+                <code><a href="datepicker.js.html">datepicker.js</a></code>,
+                <code><a href="datepicker.js.html#line1644">line 1644</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Enable picker</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>1.4.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>datepicker.disable();
+datepicker.enable();</code></pre>
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+
+    
+        
+
+        <h4 class="name" id="getDateHash">
+            <span class="type-signature"></span>getDateHash<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="global.html#dateHash">dateHash</a>}</span>
+            
+            <div class="container-source members">
+                <code><a href="datepicker.js.html">datepicker.js</a></code>,
+                <code><a href="datepicker.js.html#line1477">line 1477</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Get date-object of current DatePicker instance.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type"><a href="global.html#dateHash">dateHash</a></span>
+
+
+
+
+
+- <ul>
+<li>dateHash having year, month and day-in-month</li>
+</ul>
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>// 2015-04-13
+datepicker.getDateHash(); // {year: 2015, month: 4, date: 13}</code></pre>
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+
+    
+        
+
+        <h4 class="name" id="getDayInMonth">
+            <span class="type-signature"></span>getDayInMonth<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span>
+            
+            <div class="container-source members">
+                <code><a href="datepicker.js.html">datepicker.js</a></code>,
+                <code><a href="datepicker.js.html#line1526">line 1526</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Return day-in-month</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type">number</span>
+
+
+
+
+
+- <ul>
+<li>day-in-month</li>
+</ul>
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>// 2015-04-13
+datepicker.getDayInMonth(); // 13</code></pre>
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+
+    
+        
+
+        <h4 class="name" id="getMonth">
+            <span class="type-signature"></span>getMonth<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span>
+            
+            <div class="container-source members">
+                <code><a href="datepicker.js.html">datepicker.js</a></code>,
+                <code><a href="datepicker.js.html#line1514">line 1514</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Return month</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type">number</span>
+
+
+
+
+
+- <ul>
+<li>month</li>
+</ul>
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>// 2015-04-13
+datepicker.getMonth(); // 4</code></pre>
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+
+    
+        
+
+        <h4 class="name" id="getTimePicker">
+            <span class="type-signature"></span>getTimePicker<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="TimePicker.html">TimePicker</a>}</span>
+            
+            <div class="container-source members">
+                <code><a href="datepicker.js.html">datepicker.js</a></code>,
+                <code><a href="datepicker.js.html#line1612">line 1612</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Return TimePicker instance</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type"><a href="TimePicker.html">TimePicker</a></span>
+
+
+
+
+
+- <ul>
+<li>TimePicker instance</li>
+</ul>
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>var timepicker = this.getTimepicker();</code></pre>
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+
+    
+        
+
+        <h4 class="name" id="getYear">
+            <span class="type-signature"></span>getYear<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span>
+            
+            <div class="container-source members">
+                <code><a href="datepicker.js.html">datepicker.js</a></code>,
+                <code><a href="datepicker.js.html#line1502">line 1502</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Return year</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type">number</span>
+
+
+
+
+
+- <ul>
+<li>year</li>
+</ul>
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>// 2015-04-13
+datepicker.getYear(); // 2015</code></pre>
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+
+    
+        
+
+        <h4 class="name" id="isOpened">
+            <span class="type-signature"></span>isOpened<span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span>
+            
+            <div class="container-source members">
+                <code><a href="datepicker.js.html">datepicker.js</a></code>,
+                <code><a href="datepicker.js.html#line1601">line 1601</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Return whether the calendar is opened or not</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type">boolean</span>
+
+
+
+
+
+- <ul>
+<li>true if opened, false otherwise</li>
+</ul>
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>datepicker.close();
+datepicker.isOpened(); // false
+
+datepicker.open();
+datepicker.isOpened(); // true</code></pre>
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+
+    
+        
+
+        <h4 class="name" id="open">
+            <span class="type-signature"></span>open<span class="signature">()</span><span class="type-signature"></span>
+            
+            <div class="container-source members">
+                <code><a href="datepicker.js.html">datepicker.js</a></code>,
+                <code><a href="datepicker.js.html#line1418">line 1418</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Open calendar with arranging position</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>datepicker.open();</code></pre>
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+
+    
+        
+
+        <h4 class="name" id="removeOpener">
+            <span class="type-signature"></span>removeOpener<span class="signature">(opener)</span><span class="type-signature"></span>
+            
+            <div class="container-source members">
+                <code><a href="datepicker.js.html">datepicker.js</a></code>,
+                <code><a href="datepicker.js.html#line1402">line 1402</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>remove opener</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>opener</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">HTMLElement</span>
+|
+
+<span class="param-type">jQuery</span>
+|
+
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>element or selector</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+
+    
+        
+
+        <h4 class="name" id="removeRange">
+            <span class="type-signature"></span>removeRange<span class="signature">(startHash, endHash)</span><span class="type-signature"></span>
+            
+            <div class="container-source members">
+                <code><a href="datepicker.js.html">datepicker.js</a></code>,
+                <code><a href="datepicker.js.html#line1316">line 1316</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Remove a range</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>startHash</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#dateHash">dateHash</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Start dateHash</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>endHash</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#dateHash">dateHash</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>End dateHash</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>1.2.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>var start = {year: 2015, month: 2, date: 3},
+    end = {year: 2015, month: 3, date: 6};
+
+datepicker.addRange(start, end);
+datepicker.removeRange(start, end);</code></pre>
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+
+    
+        
+
+        <h4 class="name" id="setDate">
+            <span class="type-signature"></span>setDate<span class="signature">(year<span class="signature-attributes">opt</span>, month<span class="signature-attributes">opt</span>, date<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span>
+            
+            <div class="container-source members">
+                <code><a href="datepicker.js.html">datepicker.js</a></code>,
+                <code><a href="datepicker.js.html#line1543">line 1543</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Set date from values(year, month, date) and then fire 'update' custom event</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>year</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>year</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>month</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>month</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>date</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>day in month</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>datepicker.setDate(2014, 12, 3); // 2014-12- 03
+datepicker.setDate(null, 11, 23); // 2014-11-23
+datepicker.setDate('2015', '5', 3); // 2015-05-03
+datepicker.setDate(2016, 10); // 2016-10
+datepicker.setDate(2017); // 2017</code></pre>
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+
+    
+        
+
+        <h4 class="name" id="setDateForm">
+            <span class="type-signature"></span>setDateForm<span class="signature">(format<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span>
+            
+            <div class="container-source members">
+                <code><a href="datepicker.js.html">datepicker.js</a></code>,
+                <code><a href="datepicker.js.html#line1582">line 1582</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Set or update date-form</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>format</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>date-format</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>datepicker.setDateForm('yyyy-mm-dd');
+datepicker.setDateForm('mm-dd, yyyy');
+datepicker.setDateForm('y/m/d');
+datepicker.setDateForm('yy/mm/dd');</code></pre>
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+
+    
+        
+
+        <h4 class="name" id="setElement">
+            <span class="type-signature"></span>setElement<span class="signature">(element)</span><span class="type-signature"></span>
+            
+            <div class="container-source members">
+                <code><a href="datepicker.js.html">datepicker.js</a></code>,
+                <code><a href="datepicker.js.html#line1621">line 1621</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Set input element of this instance</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>element</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">HTMLElement</span>
+|
+
+<span class="param-type">jQuery</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>input element</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>1.3.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+
+    
+        
+
+        <h4 class="name" id="setRanges">
+            <span class="type-signature"></span>setRanges<span class="signature">(ranges)</span><span class="type-signature"></span>
+            
+            <div class="container-source members">
+                <code><a href="datepicker.js.html">datepicker.js</a></code>,
+                <code><a href="datepicker.js.html#line1346">line 1346</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Set selectable ranges</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>ranges</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;Array.&lt;<a href="global.html#dateHash">dateHash</a>>></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The same with the selectableRanges option values</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>1.3.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+
+    
+        
+
+        <h4 class="name" id="setXY">
+            <span class="type-signature"></span>setXY<span class="signature">(x, y)</span><span class="type-signature"></span>
+            
+            <div class="container-source members">
+                <code><a href="datepicker.js.html">datepicker.js</a></code>,
+                <code><a href="datepicker.js.html#line1358">line 1358</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Set position-left, top of calendar</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>position-left</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>y</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>position-top</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>1.1.1</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+
+    
+        
+
+        <h4 class="name" id="setZIndex">
+            <span class="type-signature"></span>setZIndex<span class="signature">(zIndex)</span><span class="type-signature"></span>
+            
+            <div class="container-source members">
+                <code><a href="datepicker.js.html">datepicker.js</a></code>,
+                <code><a href="datepicker.js.html#line1372">line 1372</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Set z-index of calendar</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>zIndex</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>z-index value</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>1.1.1</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            </dl>
+    
+
+    
+
+    
+        <h3 class="subsection-title">Events</h3>
+
+        <dl>
+            
+
+<dt>
+
+    
+        
+
+        <h4 class="name" id="event:close">
+            close
+            
+            <div class="container-source members">
+                <code><a href="datepicker.js.html">datepicker.js</a></code>,
+                <code><a href="datepicker.js.html#line1457">line 1457</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Close event - DatePicker</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>datePicker.on('close', function() {
+    alert('close');
+});</code></pre>
+
+    
+
+</dd>
+
+        
+            
+
+<dt>
+
+    
+        
+
+        <h4 class="name" id="event:open">
+            open
+            
+            <div class="container-source members">
+                <code><a href="datepicker.js.html">datepicker.js</a></code>,
+                <code><a href="datepicker.js.html#line1432">line 1432</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+
+</dt>
+<dd>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>datePicker.on('open', function() {
+    alert('open');
+});</code></pre>
+
+    
+
+</dd>
+
+        
+            
+
+<dt>
+
+    
+        
+
+        <h4 class="name" id="event:pick">
+            pick
+            
+            <div class="container-source members">
+                <code><a href="datepicker.js.html">datepicker.js</a></code>,
+                <code><a href="datepicker.js.html#line1002">line 1002</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Pick event</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>datepicker.on('pick', function() {
+     return false; // Cancel to close layer
+     // return true; // Layer is closed
+});</code></pre>
+
+    
+
+</dd>
+
+        
+            
+
+<dt>
+
+    
+        
+
+        <h4 class="name" id="event:update">
+            update
+            
+            <div class="container-source members">
+                <code><a href="datepicker.js.html">datepicker.js</a></code>,
+                <code><a href="datepicker.js.html#line1564">line 1564</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Update event</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+        </dl>
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<footer>
+    <img class="logo" src="https://cloud.githubusercontent.com/assets/12269563/20029815/01133928-a39a-11e6-80f3-12500a91c755.png" style="width: 150px">
+    <div class="footer-text">NHN Entertainment. Frontend Development Lab</div>
+</footer>
+<script>prettyPrint();</script>
+<script src="scripts/jquery.min.js"></script>
+<script src="scripts/tui-doc.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+    <script>
+        var id = 'DatePicker_sub'.replace(/"/g, '_');
+        var element = document.getElementById(id); // do not use jquery selector
+
+        $(element).removeClass('hidden');
+        showLnbApi();
+    </script>
+
+</body>
+</html>

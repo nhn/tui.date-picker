@@ -4,39 +4,72 @@
  */
 'use strict';
 
-var utils = require('./utils');
+var dateUtil = require('./utils');
 
 var util = tui.util;
 var extend = util.extend;
 var bind = util.bind;
 var forEach = util.forEach;
-var isUndefined = util.isUndefined;
 var isNumber = util.isNumber;
 var compareJSON = util.compareJSON;
+var isGreaterThanOrEqualTo = function(a, b, comparingLevel) {
+    comparingLevel = comparingLevel || 1;
 
-var inArray = util.inArray,
-    formatRegExp = /yyyy|yy|mm|m|dd|d/gi,
-    mapForConverting = {
-        yyyy: {expression: '(\\d{4}|\\d{2})', type: 'year'},
-        yy: {expression: '(\\d{4}|\\d{2})', type: 'year'},
-        y: {expression: '(\\d{4}|\\d{2})', type: 'year'},
-        mm: {expression: '(1[012]|0[1-9]|[1-9]\\b)', type: 'month'},
-        m: {expression: '(1[012]|0[1-9]|[1-9]\\b)', type: 'month'},
-        dd: {expression: '([12]\\d{1}|3[01]|0[1-9]|[1-9]\\b)', type: 'date'},
-        d: {expression: '([12]\\d{1}|3[01]|0[1-9]|[1-9]\\b)', type: 'date'}
+    return Math.floor((a / comparingLevel)) >= Math.floor((b / comparingLevel));
+};
+
+var inArray = util.inArray;
+var formatRegExp = /yyyy|yy|mm|m|dd|d/gi;
+var mapForConverting = {
+    yyyy: {
+        expression: '(\\d{4}|\\d{2})',
+        type: 'year'
     },
-    CONSTANTS = {
-        MIN_YEAR: 1970,
-        MAX_YEAR: 2999,
-        MONTH_DAYS: [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
-        WRAPPER_TAG: '<div style="position:absolute;"></div>',
-        MIN_EDGE: Number(new Date(0)),
-        MAX_EDGE: Number(new Date(2999, 11, 31)),
-        YEAR_TO_MS: 31536000000,
-        LAYER: ['date', 'month', 'year'],
-        RELATIVE_MONTH_VALUE_KEY: 'relativeMonthValue',
-        CLICKABLE_CLASSNAME: 'clickable'
-    };
+    yy: {
+        expression: '(\\d{4}|\\d{2})',
+        type: 'year'
+    },
+    y: {
+        expression: '(\\d{4}|\\d{2})',
+        type: 'year'
+    },
+    mm: {
+        expression: '(1[012]|0[1-9]|[1-9]\\b)',
+        type: 'month'
+    },
+    m: {
+        expression: '(1[012]|0[1-9]|[1-9]\\b)',
+        type: 'month'
+    },
+    dd: {
+        expression: '([12]\\d{1}|3[01]|0[1-9]|[1-9]\\b)',
+        type: 'date'
+    },
+    d: {
+        expression: '([12]\\d{1}|3[01]|0[1-9]|[1-9]\\b)',
+        type: 'date'
+    }
+};
+var DATE_LAYER = 'date';
+var MONTH_LAYER = 'month';
+var YEAR_LAYER = 'year';
+var MIN_YEAR = 1900;
+var MAX_YEAR = 2999;
+var WRAPPER_TAG = '<div style="position:absolute;"></div>';
+var MIN_EDGE = Number(new Date(0));
+var MAX_EDGE = Number(new Date(2999, 11, 31));
+var YEAR_TO_MS = 31536000000;
+var MONTH_TO_MS = 2628000000;
+var RELATIVE_MONTH_VALUE_KEY = 'relativeMonthValue';
+
+var layers = [DATE_LAYER, MONTH_LAYER, YEAR_LAYER];
+var positionFromBoundingKeyMapper = {
+    left: 'left',
+    top: 'bottom'
+};
+var dateKeys = ['dd', 'd'];
+var monthKeys = ['mm', 'm'];
+var yearKeys = ['yyyy', 'yy', 'y'];
 
 /**
  * A number, or a string containing a number.
@@ -55,18 +88,18 @@ var inArray = util.inArray,
  * Create DatePicker<br>
  * You can get a date from 'getYear', 'getMonth', 'getDayInMonth', 'getDateHash'
  * @constructor
- * @param {Object} option - options for DatePicker
- *      @param {HTMLElement|string|jQuery} option.element - input element(or selector) of DatePicker
- *      @param {dateHash} [option.date = today] - initial date object
- *      @param {string} [option.dateFormat = 'yyyy-mm-dd'] - format of date string
- *      @param {string} [option.defaultCentury = 20] - if year-format is yy, this value is prepended automatically.
+ * @param {Object} option - Options
+ *      @param {HTMLElement|string|jQuery} option.element - Input element(or selector) of DatePicker
+ *      @param {dateHash|'blank'} [option.date = today] - Initial date object. If no want initial datetime, type "blank"
+ *      @param {string} [option.dateFormat = 'yyyy-mm-dd'] - Date string format
+ *      @param {string} [option.defaultCentury = 20] - Default century for 'yy' format.
  *      @param {HTMLElement|string|jQuery} [option.parentElement] - The wrapper element will be inserted into
  *           this element. (since 1.3.0)
- *      @param {string} [option.selectableClassName = 'selectable'] - for selectable date elements
- *      @param {string} [option.selectedClassName = 'selected'] - for selected date element
-        @param {boolean} [option.enableSetDateByEnterKey = true] - Whether set date from the input value
-            when the 'Enter' key pressed (since 1.3.0)
- *      @param {Array.<Array.<dateHash>>} [options.selectableRanges] - Selectable date ranges, See example
+ *      @param {string} [option.selectableClassName = 'selectable'] - For selectable date elements
+ *      @param {string} [option.selectedClassName = 'selected'] - For selected date element
+ *      @param {boolean} [option.enableSetDateByEnterKey = true] - Set date when the 'Enter' key pressed (since 1.3.0)
+ *      @param {Array.<Array.<dateHash>>} [options.selectableRanges] - Selectable date ranges.
+ *                                                                      See this example "{@tutorial sample5}"
  *      @param {Object} [option.pos] - calendar position style value
  *          @param {number} [option.pos.left] - position left of calendar
  *          @param {number} [option.pos.top] - position top of calendar
@@ -107,7 +140,7 @@ var inArray = util.inArray,
  *       dateFormat: 'yyyy년 mm월 dd일 - ',
  *       //dateFormat: 'yyyy년 mm월',
  *       //dateFormat: 'yyyy년',
- *       date: {year: 2015, month: 1, date: 1},
+ *       date: {year: 2015, month: 1, date: 1}, // or string literal 'blank' without default date assign
  *       selectableRanges: [range1, range2, range3],
  *       openers: ['#opener'],
  *       timePicker: timePicker
@@ -161,7 +194,7 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
          * @type {HTMLElement}
          * @private
          */
-        this._$wrapperElement = $(CONSTANTS.WRAPPER_TAG);
+        this._$wrapperElement = $(WRAPPER_TAG);
 
         /**
          * Format of date string
@@ -375,7 +408,7 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
             endHash = range[1];
             this._setHashInRange(startHash, endHash);
 
-            return (this._isValidDate(startHash) && this._isValidDate(endHash));
+            return (this._isValidDateHash(startHash) && this._isValidDateHash(endHash));
         }, this);
     },
 
@@ -409,18 +442,28 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * Set default date
-     * @param {{year: number, month: number, date: number}|Date} opDate [option.date] - user setting: date
+     * @param {dateHash|string} opDate - user setting: date
      * @private
+     * @todo Refactor: Integrate with "setDate" method.
      */
     _setDefaultDate: function(opDate) {
+        if (/^blank$/i.test(opDate)) {
+            return;
+        }
+
         if (!opDate) {
-            this._date = utils.getToday();
+            opDate = dateUtil.getToday();
         } else {
-            this._date = {
-                year: isNumber(opDate.year) ? opDate.year : CONSTANTS.MIN_YEAR,
-                month: isNumber(opDate.month) ? opDate.month : 1,
-                date: isNumber(opDate.date) ? opDate.date : 1
+            opDate = {
+                year: dateUtil.getSafeNumber(opDate.year, MIN_YEAR),
+                month: dateUtil.getSafeNumber(opDate.month, 1),
+                date: dateUtil.getSafeNumber(opDate.date, 1)
             };
+        }
+
+        this._setShownLayerIndexByForm();
+        if (this._isSelectable(opDate, this._getCurrentLayer())) {
+            this._date = opDate;
         }
     },
 
@@ -429,17 +472,19 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
      * @param {Object} opPos [option.pos] - user setting: position(left, top, zIndex)
      * @private
      */
-    /*eslint-disable complexity*/
     _setDefaultPosition: function(opPos) {
         var pos = this._pos = opPos || {};
         var bound = this._getBoundingClientRect();
 
-        pos.left = (!isUndefined(pos.left)) ?
-                    pos.left : (bound.left || 0);
-        pos.top = (!isUndefined(pos.top)) ?
-                    pos.top : (bound.bottom || 0);
-        pos.zIndex = (!isUndefined(pos.zIndex)) ?
-                    pos.zIndex : 9999;
+        if (!isNumber(pos.zIndex)) {
+            pos.zIndex = 9999;
+        }
+
+        util.forEach(positionFromBoundingKeyMapper, function(boundingKey, posKey) {
+            if (!isNumber(pos[posKey])) {
+                pos[posKey] = bound[boundingKey] || 0;
+            }
+        });
     },
 
     /**
@@ -452,8 +497,8 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
 
         forEach(this._ranges, function(range) {
             this._updateTimeRange({
-                start: utils.getTime(range[0]),
-                end: utils.getTime(range[1])
+                start: dateUtil.getTime(range[0]),
+                end: dateUtil.getTime(range[1])
             });
         }, this);
     },
@@ -524,7 +569,7 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
      * @private
      */
     _searchStartTime: function(timestamp) {
-        return utils.search(this._startTimes, timestamp);
+        return dateUtil.search(this._startTimes, timestamp);
     },
 
     /**
@@ -534,7 +579,7 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
      * @returns {{found: boolean, index: number}} result
      */
     _searchEndTime: function(timestamp) {
-        return utils.search(this._endTimes, timestamp);
+        return dateUtil.search(this._endTimes, timestamp);
     },
 
     /**
@@ -551,7 +596,7 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * Set TimePicker instance
-     * @param {tui.component.TimePicker} [opTimePicker] - TimePicker instance
+     * @param {TimePicker} [opTimePicker] - TimePicker instance
      * @private
      */
     _setTimePicker: function(opTimePicker) {
@@ -586,7 +631,7 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
      * @private
      */
     _isValidYear: function(year) {
-        return isNumber(year) && year > CONSTANTS.MIN_YEAR && year < CONSTANTS.MAX_YEAR;
+        return isNumber(year) && year >= MIN_YEAR && year <= MAX_YEAR;
     },
 
     /**
@@ -600,34 +645,35 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
     },
 
     /**
-     * Check validation of values in a date object having year, month, day-in-month
-     * @param {Object} datehash - datehash
-     * @returns {boolean} - whether the date object is valid or not
+     * Whether the day-in-month is valid
+     * @param {number} year - year
+     * @param {number} month - month
+     * @param {number} date - date
+     * @returns {boolean}
      * @private
      */
-    _isValidDate: function(datehash) {
-        var year, month, date, isLeapYear, lastDayInMonth, isBetween;
+    _isValidDayInMonth: function(year, month, date) {
+        return isNumber(date) && (date > 0) && (date <= dateUtil.getLastDayInMonth(year, month));
+    },
 
-        if (!datehash) {
+    /**
+     * Whether the values in a dateHash are valid
+     * @param {dateHash} dateHash - dateHash
+     * @returns {boolean}
+     * @private
+     */
+    _isValidDateHash: function(dateHash) {
+        var year, month, date;
+
+        if (!dateHash) {
             return false;
         }
 
-        year = datehash.year || this._date.year;
-        month = datehash.month || this._date.month;
-        date = datehash.date || this._date.date;
-        isLeapYear = (year % 4 === 0) && (year % 100 !== 0) || (year % 400 === 0);
+        year = dateHash.year || this._date.year;
+        month = dateHash.month || this._date.month;
+        date = dateHash.date || this._date.date;
 
-        if (!this._isValidYear(year) || !this._isValidMonth(month)) {
-            return false;
-        }
-
-        lastDayInMonth = CONSTANTS.MONTH_DAYS[month];
-        if (isLeapYear && month === 2) {
-            lastDayInMonth = 29;
-        }
-        isBetween = (isNumber(date) && (date > 0) && (date <= lastDayInMonth));
-
-        return isBetween;
+        return this._isValidYear(year) && this._isValidMonth(month) && this._isValidDayInMonth(year, month, date);
     },
 
     /**
@@ -721,7 +767,7 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
      * @returns {string} - formed date-string
      * @private
      */
-    _formed: function() {
+    _makeDateString: function() {
         var year = this._date.year,
             month = this._date.month,
             date = this._date.date,
@@ -785,92 +831,55 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
     },
 
     /**
-     * Whether a dateHash is selectable for date
+     * Whether a dateHash is selectable
      * @param {dateHash} dateHash - dateHash
+     * @param {string} [layerType = DATE_LAYER] - YEAR_LAYER | MONTH_LAYER | default
      * @returns {boolean} - Whether a dateHash is selectable
      * @private
      */
-    _isSelectable: function(dateHash) {
-        var inRange = true,
-            startTimes, startTime, result, timestamp;
+    _isSelectable: function(dateHash, layerType) {
+        var startTimes = this._startTimes;
+        var startTime, searchResult, timestamp, comparingLevel;
 
-        if (!this._isValidDate(dateHash)) {
+        dateHash = extend({}, dateHash);
+        switch (layerType) {
+            case YEAR_LAYER:
+                dateHash.month = 1;
+                dateHash.date = 1;
+                comparingLevel = YEAR_TO_MS;
+                break;
+            case MONTH_LAYER:
+                dateHash.date = 1;
+                comparingLevel = MONTH_TO_MS;
+                break;
+            default:
+                break;
+        }
+
+        if (!this._isValidDateHash(dateHash)) {
             return false;
         }
-
-        startTimes = this._startTimes;
-
-        if (startTimes.length) {
-            timestamp = utils.getTime(dateHash);
-            result = this._searchEndTime(timestamp);
-            startTime = startTimes[result.index];
-            inRange = result.found || (timestamp >= startTime);
+        if (!startTimes.length) { // No ranges. All dates are selectable.
+            return true;
         }
 
-        return inRange;
-    },
+        timestamp = dateUtil.getTime(dateHash);
+        searchResult = this._searchEndTime(timestamp);
+        startTime = startTimes[searchResult.index];
 
-    /**
-     * Whether a dateHash is selectable on year & month layer
-     * @param {dateHash} dateHash - dateHash
-     * @param {boolean} isYear - Whether year layer or not
-     * @returns {boolean} - Whether a dateHash is selectable
-     * @private
-     */
-    _isSelectableYearAndMonth: function(dateHash, isYear) {
-        var shownDateTime = utils.getTime(dateHash);
-        var inRange = false;
-        var ranges = this._ranges;
-        var i = 0;
-        var len = ranges.length;
-        var rangeStart, rangeEnd, startTime, endTime;
-
-        for (; i < len; i += 1) {
-            rangeStart = extend({}, ranges[i][0]);
-            rangeEnd = extend({}, ranges[i][1]);
-
-            rangeStart.date = 1;
-            rangeEnd.date = utils.getLastDate(rangeEnd.year, rangeEnd.month);
-
-            if (isYear) {
-                rangeStart.month = 1;
-                rangeEnd.month = 12;
-            }
-
-            startTime = utils.getTime(rangeStart);
-            endTime = utils.getTime(rangeEnd);
-
-            if ((startTime <= shownDateTime) &&
-                (shownDateTime <= endTime)) {
-                inRange = true;
-                break;
-            }
-        }
-
-        return (!len) ? true : inRange;
+        return searchResult.found || isGreaterThanOrEqualTo(timestamp, startTime, comparingLevel);
     },
 
     /**
      * Set selectable-class-name to selectable date element.
-     * @param {jQuery} element - date element
-     * @param {{year: number, month: number, date: number}} dateHash - date object
+     * @param {jQuery} $element - date element
+     * @param {dateHash} dateHash - date object
+     * @param {string} layerType - YEAR_LAYER | MONTH_LAYER | DATE_LAYER
      * @private
      */
-    _setSelectableClassName: function(element, dateHash) {
-        var className = element.attr('class');
-        var layer = CONSTANTS.LAYER;
-        var isSelectable;
-
-        if (className.indexOf(layer[0]) > -1) {
-            isSelectable = this._isSelectable(dateHash, element);
-        } else if (className.indexOf(layer[1]) > -1) {
-            isSelectable = this._isSelectableYearAndMonth(dateHash);
-        } else if (className.indexOf(layer[2]) > -1) {
-            isSelectable = this._isSelectableYearAndMonth(dateHash, true);
-        }
-
-        if (isSelectable) {
-            $(element).addClass(this._selectableClassName);
+    _setSelectableClassName: function($element, dateHash, layerType) {
+        if (this._isSelectable(dateHash, layerType)) {
+            $element.addClass(this._selectableClassName);
         }
     },
 
@@ -878,14 +887,26 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
      * Set selected-class-name to selected date element
      * @param {HTMLElement|jQuery} element - date element
      * @param {{year: number, month: number, date: number}} dateHash - date object
+     * @param {string} layerType - YEAR_LAYER | MONTH_LAYER | DATE_LAYER
      * @private
      */
-    _setSelectedClassName: function(element, dateHash) {
-        var year = this._date.year,
-            month = this._date.month,
-            date = this._date.date,
-            isSelected = (year === dateHash.year) && (month === dateHash.month) && (date === dateHash.date);
+    _setSelectedClassName: function(element, dateHash, layerType) {
+        var curDateHash = this._date;
+        var isSelected;
 
+        switch (layerType) {
+            case MONTH_LAYER:
+                dateHash.date = curDateHash.date;
+                break;
+            case YEAR_LAYER:
+                dateHash.date = curDateHash.date;
+                dateHash.month = curDateHash.month;
+                break;
+            default:
+                break;
+        }
+
+        isSelected = dateUtil.isEqualDateHash(curDateHash, dateHash);
         if (isSelected) {
             $(element).addClass(this._selectedClassName);
         }
@@ -896,8 +917,14 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
      * @private
      */
     _setValueToInputElement: function() {
-        var dateString = this._formed(),
-            timeString = '';
+        var dateString, timeString;
+
+        if (!this._date) {
+            return;
+        }
+
+        dateString = this._makeDateString();
+        timeString = '';
 
         if (this._timePicker) {
             timeString = this._timePicker.getTime();
@@ -911,17 +938,16 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
      * @private
      */
     _setRegExp: function() {
-        var regExpStr = '^',
-            index = 0,
-            formOrder = this._formOrder;
+        var regExpStr = '^';
+        var formOrder = this._formOrder;
 
-        this._dateFormat.replace(formatRegExp, function(str) {
-            var key = str.toLowerCase();
-
+        var matchedKeys = this._dateFormat.match(formatRegExp);
+        util.forEach(matchedKeys, function(key, index) {
+            key = key.toLowerCase();
             regExpStr += (mapForConverting[key].expression + '[\\D\\s]*');
             formOrder[index] = mapForConverting[key].type;
-            index += 1;
         });
+
         this._regExp = new RegExp(regExpStr, 'gi');
     },
 
@@ -974,6 +1000,7 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
      * Event handler for click of calendar<br>
      * - Update date form event-target
      * @param {Event} event - event object
+     * @todo refactor - complexity
      * @private
      */
     _onClickCalendar: function(event) {
@@ -990,18 +1017,17 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
         } else if (className.indexOf('next-month') > -1) {
             relativeMonth = 1;
         } else {
-            relativeMonth = $(target).data(CONSTANTS.RELATIVE_MONTH_VALUE_KEY) || 0;
+            relativeMonth = $(target).data(RELATIVE_MONTH_VALUE_KEY) || 0;
         }
 
         shownDate.date = (!shownLayerIdx) ? Number(value) : 1;
-        dateHash = utils.getRelativeDate(0, relativeMonth, 0, shownDate);
+        dateHash = dateUtil.getRelativeDate(0, relativeMonth, 0, shownDate);
 
         if (startLayerIdx === shownLayerIdx) {
             this.setDate(dateHash.year, dateHash.month, dateHash.date);
 
             /**
              * Pick event
-             * @api
              * @event DatePicker#pick
              * @example
              * datepicker.on('pick', function() {
@@ -1049,16 +1075,32 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
      * @param {Object} eventData - custom event data
      * @private
      * @see {tui.component.Calendar.draw}
+     * @todo The eventData of calendar-'draw' should have a property indicating what is a being drawn layer.
      */
     _onDrawCalendar: function(eventData) {
-        var date = this._date;
+        var $dateContainer = eventData.$dateContainer;
+        var classNames = $dateContainer.attr('class');
         var dateHash = {
-            year: eventData.year || date.date,
-            month: eventData.month || date.month,
-            date: eventData.date || date.date
+            year: eventData.year,
+            month: eventData.month || 1,
+            date: eventData.date || 1
         };
-        this._setSelectableClassName(eventData.$dateContainer, dateHash);
-        this._setSelectedClassName(eventData.$dateContainer, dateHash);
+        var layerType;
+
+        // 'date' and 'month' classNames can be duplicated (ex-'calendar-date.calendar-prev-month').
+        // If the above 'todo' is resolved, this conditional statements are unnecessary.
+        if (classNames.indexOf(DATE_LAYER) > -1) {
+            layerType = DATE_LAYER;
+        } else if (classNames.indexOf(MONTH_LAYER) > -1) {
+            layerType = MONTH_LAYER;
+        } else if (classNames.indexOf(YEAR_LAYER) > -1) {
+            layerType = YEAR_LAYER;
+        }
+
+        this._setSelectableClassName($dateContainer, dateHash, layerType);
+        if (this._date) {
+            this._setSelectedClassName($dateContainer, dateHash, layerType);
+        }
     },
 
     /**
@@ -1203,19 +1245,60 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
     },
 
     /**
+     * Get current layer type
+     * @returns {string}
+     * @private
+     */
+    _getCurrentLayer: function() {
+        return layers[this._shownLayerIdx];
+    },
+
+    /**
+     * Whether the layer-type should be shown.
+     * @param {string} type - layer type (YEAR_LAYER, MONTH_LAYER, DATE_LAYER)
+     * @returns {boolean}
+     * @private
+     */
+    _shouldShowLayer: function(type) {
+        var matchedLayers = this._dateFormat.match(formatRegExp);
+        var functor = function(val) {
+            return matchedLayers.indexOf(val) > -1;
+        };
+        var candidates;
+
+        switch (type) {
+            case DATE_LAYER:
+                candidates = dateKeys;
+                break;
+            case MONTH_LAYER:
+                candidates = monthKeys;
+                break;
+            case YEAR_LAYER:
+                candidates = yearKeys;
+                break;
+            default:
+                return false;
+        }
+
+        return !!util.filter(candidates, functor).length;
+    },
+
+    /**
      * Set shown layer by format
      * @private
      */
     _setShownLayerIndexByForm: function() {
-        var format = this._dateFormat;
-        var index = 0;
-        var layerIdx;
+        var layerIdx = 0;
 
-        format.replace(formatRegExp, function() {
-            index += 1;
-        });
-
-        layerIdx = CONSTANTS.LAYER.length - index;
+        if (this._shouldShowLayer(YEAR_LAYER)) {
+            layerIdx = layers.indexOf(YEAR_LAYER);
+        }
+        if (this._shouldShowLayer(MONTH_LAYER)) {
+            layerIdx = layers.indexOf(MONTH_LAYER);
+        }
+        if (this._shouldShowLayer(DATE_LAYER)) {
+            layerIdx = layers.indexOf(DATE_LAYER);
+        }
 
         this._shownLayerIdx = layerIdx;
     },
@@ -1231,8 +1314,7 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
         endHash.month = endHash.month || 12;
 
         startHash.date = startHash.date || 1;
-        endHash.date = (endHash.date ||
-                        utils.getLastDate(endHash.year, endHash.month));
+        endHash.date = endHash.date || dateUtil.getLastDayInMonth(endHash.year, endHash.month);
     },
 
     /**
@@ -1244,8 +1326,8 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
         var shownLayerIdx = this._calendar.shownLayerIdx;
         var shownDateHash = this._calendar.getDate();
         var shownDate = new Date(shownDateHash.year, shownDateHash.month - 1);
-        var startDate = new Date(this._startTimes[0] || CONSTANTS.MIN_EDGE).setDate(1);
-        var endDate = new Date(this._endTimes.slice(-1)[0] || CONSTANTS.MAX_EDGE).setDate(1);
+        var startDate = new Date(this._startTimes[0] || MIN_EDGE).setDate(1);
+        var endDate = new Date(this._endTimes.slice(-1)[0] || MAX_EDGE).setDate(1);
         var yearRange, shownStartDate, shownEndDate, startDifference, endDifference;
 
         if (shownLayerIdx === 0) {
@@ -1277,7 +1359,6 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * Add a range
-     * @api
      * @param {dateHash} startHash - Start dateHash
      * @param {dateHash} endHash - End dateHash
      * @since 1.2.0
@@ -1293,7 +1374,7 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
 
         this._setHashInRange(startHash, endHash);
 
-        if (this._isValidDate(startHash) && this._isValidDate(endHash)) {
+        if (this._isValidDateHash(startHash) && this._isValidDateHash(endHash)) {
             this._ranges.push([startHash, endHash]);
             this._setSelectableRanges();
             this._calendar.draw(0, 0, false, this._shownLayerIdx);
@@ -1302,7 +1383,6 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * Remove a range
-     * @api
      * @param {dateHash} startHash - Start dateHash
      * @param {dateHash} endHash - End dateHash
      * @since 1.2.0
@@ -1339,7 +1419,6 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * Set selectable ranges
-     * @api
      * @param {Array.<Array.<dateHash>>} ranges - The same with the selectableRanges option values
      * @since 1.3.0
      */
@@ -1350,7 +1429,6 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * Set position-left, top of calendar
-     * @api
      * @param {number} x - position-left
      * @param {number} y - position-top
      * @since 1.1.1
@@ -1365,7 +1443,6 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * Set z-index of calendar
-     * @api
      * @param {number} zIndex - z-index value
      * @since 1.1.1
      */
@@ -1380,7 +1457,6 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * add opener
-     * @api
      * @param {HTMLElement|jQuery|string} opener - element or selector
      */
     addOpener: function(opener) {
@@ -1396,7 +1472,6 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * remove opener
-     * @api
      * @param {HTMLElement|jQuery|string} opener - element or selector
      */
     removeOpener: function(opener) {
@@ -1411,26 +1486,27 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * Open calendar with arranging position
-     * @api
      * @example
      * datepicker.open();
      */
     open: function() {
-        if (this.isOpened() ||
-            !this._enabledState) {
+        var date;
+
+        if (this.isOpened() || !this._enabledState) {
             return;
         }
 
+        date = this._date || dateUtil.getToday();
+
         this._arrangeLayer();
         this._bindCalendarCustomEvent();
-        this._calendar.draw(this._date.year, this._date.month, false, this._shownLayerIdx);
+        this._calendar.draw(date.year, date.month, false, this._shownLayerIdx);
         this._$wrapperElement.show();
         if (!this.showAlways) {
             this._bindOnMousedownDocument();
         }
 
         /**
-         * @api
          * @event DatePicker#open
          * @example
          * datePicker.on('open', function() {
@@ -1442,7 +1518,6 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * Close calendar with unbinding some events
-     * @api
      * @exmaple
      * datepicker.close();
      */
@@ -1456,7 +1531,6 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
 
         /**
          * Close event - DatePicker
-         * @api
          * @event DatePicker#close
          * @example
          * datePicker.on('close', function() {
@@ -1468,15 +1542,20 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * Get date-object of current DatePicker instance.
-     * @api
-     * @returns {dateHash} - dateHash having year, month and day-in-month
+     * @returns {?dateHash} - dateHash having year, month and day-in-month
      * @example
      * // 2015-04-13
      * datepicker.getDateHash(); // {year: 2015, month: 4, date: 13}
      */
     getDateHash: function() {
-        var dateHash = {};
-        var depthIdx = this._shownLayerIdx;
+        var dateHash, depthIdx;
+
+        if (!this._date) {
+            return null;
+        }
+
+        dateHash = {};
+        depthIdx = this._shownLayerIdx;
 
         extend(dateHash, this._date);
 
@@ -1493,7 +1572,6 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * Return year
-     * @api
      * @returns {number} - year
      * @example
      * // 2015-04-13
@@ -1505,7 +1583,6 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * Return month
-     * @api
      * @returns {number} - month
      * @example
      * // 2015-04-13
@@ -1517,7 +1594,6 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * Return day-in-month
-     * @api
      * @returns {number} - day-in-month
      * @example
      * // 2015-04-13
@@ -1529,7 +1605,6 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * Set date from values(year, month, date) and then fire 'update' custom event
-     * @api
      * @param {string|number} [year] - year
      * @param {string|number} [month] - month
      * @param {string|number} [date] - day in month
@@ -1541,37 +1616,35 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
      * datepicker.setDate(2017); // 2017
      */
     setDate: function(year, month, date) {
-        var dateObj = this._date;
-        var prevDateObj = extend({}, dateObj);
-        var newDateObj = {};
+        var dateObj = this._date || dateUtil.getToday();
+        var prevDateObj = extend({}, this._date);
+        var currentLayer = this._getCurrentLayer();
+        var newDateObj = {
+            year: year || dateObj.year,
+            month: month || dateObj.month,
+            date: date || dateObj.date
+        };
+        var shouldUpdate = (
+            this._isSelectable(newDateObj, currentLayer)
+            && !dateUtil.isEqualDateHash(prevDateObj, newDateObj)
+        );
 
-        newDateObj.year = year || dateObj.year;
-        newDateObj.month = month || dateObj.month;
-        newDateObj.date = date || dateObj.date;
-
-        if (this._isSelectable(newDateObj)) {
-            extend(dateObj, newDateObj);
+        if (shouldUpdate) {
+            this._date = newDateObj;
+            this._setValueToInputElement();
+            this._calendar.draw(newDateObj.year, newDateObj.month, false, currentLayer);
+            /**
+             * Update event
+             * @event DatePicker#update
+             */
+            this.fire('update');
+        } else {
+            this._setValueToInputElement();
         }
-
-        this._setValueToInputElement();
-
-        this._calendar.draw(dateObj.year, dateObj.month, false, this._shownLayerIdx);
-
-        if (compareJSON(prevDateObj, newDateObj)) {
-            return;
-        }
-
-        /**
-         * Update event
-         * @api
-         * @event DatePicker#update
-         */
-        this.fire('update');
     },
 
     /**
      * Set or update date-form
-     * @api
      * @param {String} [format] - date-format
      * @example
      * datepicker.setDateForm('yyyy-mm-dd');
@@ -1584,12 +1657,13 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
 
         this._setShownLayerIndexByForm();
         this._setRegExp();
-        this.setDate();
+        if (this._date) {
+            this.setDate();
+        }
     },
 
     /**
      * Return whether the calendar is opened or not
-     * @api
      * @returns {boolean} - true if opened, false otherwise
      * @example
      * datepicker.close();
@@ -1604,7 +1678,6 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * Return TimePicker instance
-     * @api
      * @returns {TimePicker} - TimePicker instance
      * @example
      * var timepicker = this.getTimepicker();
@@ -1635,7 +1708,6 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * Enable picker
-     * @api
      * @since 1.4.0
      * @example
      * datepicker.disable();
@@ -1663,7 +1735,6 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * Disable picker
-     * @api
      * @since 1.4.0
      * @example
      * datepicker.enable();
@@ -1692,7 +1763,6 @@ var DatePicker = util.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * Destroy - delete wrapper element and attach events
-     * @api
      * @since 1.4.0
      */
     destroy: function() {

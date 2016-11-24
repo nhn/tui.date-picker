@@ -7,8 +7,8 @@
 
 'use strict';
 
-var util = tui.util,
-    inArray = util.inArray;
+var util = tui.util;
+var inArray = util.inArray;
 
 /**
  * @constructor
@@ -261,11 +261,16 @@ var Spinbox = util.defineClass(/** @lends Spinbox.prototype */ {
      * @private
      */
     _onKeyDownInputElement: function(event) {
-        var keyCode = event.which || event.keyCode,
-            isDown;
+        var keyCode = event.which || event.keyCode;
+        var isDown;
+
         switch (keyCode) {
-            case 38: isDown = false; break;
-            case 40: isDown = true; break;
+            case 38:
+                isDown = false;
+                break;
+            case 40:
+                isDown = true;
+                break;
             default: return;
         }
 

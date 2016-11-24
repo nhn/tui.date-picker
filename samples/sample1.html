@@ -35,7 +35,7 @@
             <!-- Shared calendar layer element -->
             <div id="layer" class="layer" style="display:none;"></div>
 
-            <h2>Pick date</h2>
+            <h2>Pick date - No initial date (date: 'Blank')</h2>
             <!-- Drawing datepicker element -->
             <input id="datepicker-picker" type="text" /><button id="datepicker-opener" type="button">open</button>
 
@@ -58,12 +58,8 @@
 
             var datepicker = new tui.component.DatePicker({
                 element: '#datepicker-picker',
-                dateFormat: 'yyyy년 mm월 dd일',
-                date: {
-                    year: 2016,
-                    month: 10,
-                    date: 31
-                },
+                dateFormat: 'yyyy-mm-dd',
+                date: 'blank',
                 selectableRanges: [
                     [{year: 2015, month: 9, date: 1}, {year: 2016, month: 10, date: 3}],
                     [{year: 2017, month: 2, date: 22}, {year: 2017, month: 3, date: 5}]
@@ -74,12 +70,10 @@
             var monthpicker = new tui.component.DatePicker({
                 element: '#monthpicker-picker',
                 dateFormat: 'yyyy-mm',
-                date: {
-                    year: 2016,
-                    month: 10
-                },
+                date: {year: 2015, month: 2, date: 5},
                 selectableRanges: [
-                    [{year: 2015, month: 2}, {year: 2016, month: 2}],
+                    [{year: 2015, month: 2, date: 3}, {year: 2015, month: 2, date: 28}],
+                    [{year: 2015, month: 5, date: 3}, {year: 2015, month: 7, date: 21}],
                     [{year: 2016, month: 5}, {year: 2016, month: 7}],
                     [{year: 2018, month: 3}, {year: 2025, month: 10}]
                 ],

@@ -350,16 +350,18 @@ var TimePicker = util.defineClass(/** @lends TimePicker.prototype */ {
      * @param {number} y - it will be offsetTop of element
      */
     setXYPosition: function(x, y) {
-        var position;
-
         if (!util.isNumber(x) || !util.isNumber(y)) {
             return;
         }
 
-        position = this._option.position;
-        position.x = x;
-        position.y = y;
-        this.$timePickerElement.css({left: x, top: y});
+        util.extend(this._option.position, {
+            x: x,
+            y: y
+        });
+        this.$timePickerElement.css({
+            left: x,
+            top: y
+        });
     },
 
     /**
@@ -482,7 +484,6 @@ var TimePicker = util.defineClass(/** @lends TimePicker.prototype */ {
 
     /**
      * set time for extenal call
-     * @api
      * @param {number} hour for time picker
      * @param {number} minute for time picker
      * @returns {boolean} result of set time
@@ -535,8 +536,8 @@ var TimePicker = util.defineClass(/** @lends TimePicker.prototype */ {
      * set time from time-string
      * @param {string} timeString time-string
      * @returns {boolean} result of set time
+     * @todo Refactor: function complexity
      */
-     /*eslint-disable complexity*/
     setTimeFromString: function(timeString) {
         var time, hour, minute, postfix, isPM;
 
@@ -651,7 +652,6 @@ var TimePicker = util.defineClass(/** @lends TimePicker.prototype */ {
 
     /**
      * get time
-     * @api
      * @returns {string} 'hh:mm (AM/PM)'
      */
     getTime: function() {

@@ -271,30 +271,30 @@ describe('Date Picker', function() {
     });
 
     describe('private 테스트', function() {
-        it('_formed "yy-mm-dd" get 2014/11/28', function() {
+        it('_makeDateString "yy-mm-dd" get 2014/11/28', function() {
             var str;
             datepicker1.setDate(2014, 11, 28);
             datepicker1.setDateForm('yy/mm/dd');
 
-            str = datepicker1._formed();
+            str = datepicker1._makeDateString();
             expect(str).toBe('14/11/28');
         });
 
-        it('_formed "yyyy-mm-dd" get 1984-04-15', function() {
+        it('_makeDateString "yyyy-mm-dd" get 1984-04-15', function() {
             var str;
             datepicker1.setDate(1984, 4, 15);
             datepicker1.setDateForm('yyyy-mm-dd');
 
-            str = datepicker1._formed();
+            str = datepicker1._makeDateString();
             expect(str).toBe('1984-04-15');
         });
 
-        it('_formed "yy-m-d" get 84-4-2', function() {
+        it('_makeDateString "yy-m-d" get 84-4-2', function() {
             var str;
             datepicker1.setDateForm('yy-m-dd');
             datepicker1.setDate(1984, 4, 2);
 
-            str = datepicker1._formed();
+            str = datepicker1._makeDateString();
             expect(str).toBe('84-4-02');
         });
 
@@ -432,14 +432,14 @@ describe('Date Picker', function() {
 
         it('setDate - restrictive date', function() {
             var notday;
-            datepicker1.setDate(1920);
+            datepicker1.setDate(1820);
             notday = datepicker1.getDateHash();
 
             expect(notday.year).toBe(beforeYear);
             expect(notday.month).toBe(beforeMonth);
             expect(notday.date).toBe(beforeDate);
 
-            datepicker1.setDate(1919, 7);
+            datepicker1.setDate(1899, 7);
             notday = datepicker1.getDateHash();
 
             expect(notday.year).toBe(beforeYear);
@@ -594,7 +594,7 @@ describe('Version 1.2.0 & 1.3.0 apis', function() {
     var datePicker, calendar, $inputEl;
 
     beforeEach(function() {
-        $inputEl = setFixtures('<input type="text">');
+        $inputEl = $('<div><input type="text"></div>').find('input');
         calendar = new tui.component.Calendar({
             element: $('<div>')
         });
@@ -614,7 +614,7 @@ describe('Version 1.2.0 & 1.3.0 apis', function() {
     });
 
     describe('showAlways option', function() {
-        it ('should bind the "mousedown-document" event if showAlways = false', function() {
+        it('should bind the "mousedown-document" event if showAlways = false', function() {
             spyOn(datePicker, '_bindOnMousedownDocument');
             datePicker.showAlways = false;
             datePicker.open();
@@ -622,7 +622,7 @@ describe('Version 1.2.0 & 1.3.0 apis', function() {
             expect(datePicker._bindOnMousedownDocument).toHaveBeenCalled();
         });
 
-        it ('should not bind the "mousedown-document" event if showAlways = true', function() {
+        it('should not bind the "mousedown-document" event if showAlways = true', function() {
             spyOn(datePicker, '_bindOnMousedownDocument');
             datePicker.showAlways = true;
             datePicker.open();
@@ -636,15 +636,15 @@ describe('Version 1.2.0 & 1.3.0 apis', function() {
             expect(datePicker._$wrapperElement.prev()[0]).toBe($inputEl[0]);
         });
 
-        it('if exists, _$wrapperElement should be insered into the specified element', function() {
-            var $parentEl = setFixtures('<div>');
+        it('if exists, _$wrapperElement should be inserted into the specified element', function() {
+            var $parentEl = $('<div>');
             var datePicker2 = new DatePicker({
                 element: $inputEl,
                 parentElement: $parentEl
             }, calendar);
 
             expect(datePicker2._$wrapperElement.parent()[0]).toBe($parentEl[0]);
-        })
+        });
     });
 
     describe('option.enableSetDateByEnterKey: ', function() {
@@ -659,15 +659,15 @@ describe('Version 1.2.0 & 1.3.0 apis', function() {
         });
 
         it('if false, _setDateFromString() should not be called when enter key pressed', function() {
-            var datePicker = new DatePicker({
+            datePicker = new DatePicker({
                 enableSetDateByEnterKey: false,
                 element: $inputEl
             }, calendar);
-            var setDateSpy = spyOn(datePicker, '_setDateFromString');
 
+            spyOn(datePicker, '_setDateFromString');
             $inputEl.trigger(keydownEnterEvent);
 
-            expect(setDateSpy).not.toHaveBeenCalled();
+            expect(datePicker._setDateFromString).not.toHaveBeenCalled();
         });
     });
 
@@ -677,19 +677,18 @@ describe('Version 1.2.0 & 1.3.0 apis', function() {
                 {year: 2015, month: 1, date: 1},
                 {year: 2015, month: 2, date: 1}
             ]];
-            var spyFilter = spyOn(datePicker, '_filterValidRanges').and.returnValue(validRanges);
 
+            spyOn(datePicker, '_filterValidRanges').and.returnValue(validRanges);
             datePicker.setRanges();
 
             expect(datePicker._ranges).toBe(validRanges);
         });
 
         it('should call _setSelectableRanges', function() {
-            var spy = spyOn(datePicker, '_setSelectableRanges');
-
+            spyOn(datePicker, '_setSelectableRanges');
             datePicker.setRanges([]);
 
-            expect(spy).toHaveBeenCalled();
+            expect(datePicker._setSelectableRanges).toHaveBeenCalled();
         });
     });
 });
@@ -723,50 +722,27 @@ describe('Version 1.4.0', function() {
     });
 
     describe('Options -', function() {
-        var $layers;
-
-        beforeEach(function() {
-            $layers = $calendarEl.find(bodySelector);
-        });
-
         it('If "dateForm" options set default or not, shown layer is until date.', function() {
-            expect($layers.eq(0).css('display')).not.toBe('none'); // date
-            expect($layers.eq(1).css('display')).toBe('none'); // month
-            expect($layers.eq(2).css('display')).toBe('none'); // year
+            expect(picker._shownLayerIdx).toBe(0); // LAYER_DATE
         });
 
         it('If "dateForm" options set format of year & month, shown layer is until month.', function() {
             picker.setDateForm('yyyy-mm');
-
-            expect($layers.eq(0).css('display')).toBe('none'); // date
-            expect($layers.eq(1).css('display')).not.toBe('none'); // month
-            expect($layers.eq(2).css('display')).toBe('none'); // year
+            expect(picker._shownLayerIdx).toBe(1); // LAYER_MONTH
 
             picker.setDateForm('yy-mm');
-
-            expect($layers.eq(0).css('display')).toBe('none'); // date
-            expect($layers.eq(1).css('display')).not.toBe('none'); // month
-            expect($layers.eq(2).css('display')).toBe('none'); // year
+            expect(picker._shownLayerIdx).toBe(1);
 
             picker.setDateForm('mm, yyyy');
-
-            expect($layers.eq(0).css('display')).toBe('none'); // date
-            expect($layers.eq(1).css('display')).not.toBe('none'); // month
-            expect($layers.eq(2).css('display')).toBe('none'); // year
+            expect(picker._shownLayerIdx).toBe(1);
         });
 
         it('If "dateForm" options set format of year, shown layer is until year.', function() {
             picker.setDateForm('yyyy');
-
-            expect($layers.eq(0).css('display')).toBe('none'); // date
-            expect($layers.eq(1).css('display')).toBe('none'); // month
-            expect($layers.eq(2).css('display')).not.toBe('none'); // year
+            expect(picker._shownLayerIdx).toBe(2); // LAYER_YAER
 
             picker.setDateForm('yy');
-
-            expect($layers.eq(0).css('display')).toBe('none'); // date
-            expect($layers.eq(1).css('display')).toBe('none'); // month
-            expect($layers.eq(2).css('display')).not.toBe('none'); // year
+            expect(picker._shownLayerIdx).toBe(2);
         });
 
         it('If "useToggledOpener" option set and click opener, aleady opened layer is closed.', function() {
@@ -787,23 +763,16 @@ describe('Version 1.4.0', function() {
 
     describe('Public APIs -', function() {
         it('When "setDateForm() is called, calendar layer is changed by date format." ', function() {
-            var $layers = $calendarEl.find('.calendar-body');
-
-            expect($layers.eq(0).css('display')).not.toBe('none'); // date
-            expect($layers.eq(1).css('display')).toBe('none'); // month
-            expect($layers.eq(2).css('display')).toBe('none'); // year
+            expect(picker._shownLayerIdx).toBe(0); // DATE_LAYER
 
             picker.setDateForm('yyyy');
+            expect(picker._shownLayerIdx).toBe(2); // YAER_LAYER
 
-            expect($layers.eq(0).css('display')).toBe('none'); // date
-            expect($layers.eq(1).css('display')).toBe('none'); // month
-            expect($layers.eq(2).css('display')).not.toBe('none'); // year
+            picker.setDateForm('yy-mm');
+            expect(picker._shownLayerIdx).toBe(1); // MONTH_LAYER
 
-            picker.setDateForm('yy-dd');
-
-            expect($layers.eq(0).css('display')).toBe('none'); // date
-            expect($layers.eq(1).css('display')).not.toBe('none'); // month
-            expect($layers.eq(2).css('display')).toBe('none'); // year
+            picker.setDateForm('mm-dd');
+            expect(picker._shownLayerIdx).toBe(0); // DATE_LAYER
         });
 
         it('When "disable()" is called, picker is disabled. (#18)', function() {
@@ -897,6 +866,92 @@ describe('Version 1.4.0', function() {
 
             picker._setDefaultPosition();
             expect(picker._pos).toEqual({left: 100, top: 20, zIndex: 9999});
+        });
+    });
+});
+
+describe('Version 1.6.0 - Blank initial date ', function() {
+    var $calendarEl, $inputEl;
+    var calendar, picker;
+
+    beforeEach(function() {
+        $calendarEl = $('<div>');
+        $inputEl = $('<input type="text">');
+
+        calendar = new tui.component.Calendar({
+            element: $calendarEl
+        });
+
+        picker = new DatePicker({
+            element: $inputEl,
+            date: 'blank'
+        }, calendar);
+    });
+
+    it('should be blank', function() {
+        expect($inputEl.val()).toEqual('');
+        expect(picker.getDateHash()).toBeNull();
+    });
+
+    it('should open today calendar', function() {
+        var today = new Date();
+
+        picker.open();
+        expect(calendar.getDate()).toEqual({
+            year: today.getFullYear(),
+            month: today.getMonth() + 1
+        });
+    });
+
+    it('should set today if selectable', function() {
+        var today = new Date();
+        var eventSpy = jasmine.createSpy();
+
+        picker.on('update', eventSpy);
+        picker.setDate();
+        expect(eventSpy).toHaveBeenCalled();
+        expect(picker.getDateHash()).toEqual({
+            year: today.getFullYear(),
+            month: today.getMonth() + 1,
+            date: today.getDate()
+        });
+
+        eventSpy.calls.reset();
+        picker.setDate();
+        expect(eventSpy).not.toHaveBeenCalled();
+    });
+
+    it('should set new date if selectable', function() {
+        picker.setDate(2016, 12, 3);
+        expect(picker.getDateHash()).toEqual({
+            year: 2016,
+            month: 12,
+            date: 3
+        });
+    });
+
+    it('should set new year and today-month, today-date if selectable', function() {
+        var today = new Date();
+
+        picker.setDate(2014);
+        expect(picker.getDateHash()).toEqual({
+            year: 2014,
+            month: today.getMonth() + 1,
+            date: today.getDate()
+        });
+    });
+
+    it('should set new month with today-year, today-date if selectable', function() {
+        var today = new Date();
+        var eventSpy = jasmine.createSpy();
+
+        picker.on('update', eventSpy);
+        picker.setDate(null, 3);
+        expect(eventSpy).toHaveBeenCalled();
+        expect(picker.getDateHash()).toEqual({
+            year: today.getFullYear(),
+            month: 3,
+            date: today.getDate()
         });
     });
 });

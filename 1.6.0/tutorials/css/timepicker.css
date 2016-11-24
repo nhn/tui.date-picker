@@ -1,0 +1,28 @@
+* {
+    -webkit-box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    box-sizing:border-box;
+}
+
+.timepicker input {
+    font-size: 12px;
+    text-align: center;
+    border: transparent;
+}
+
+.timepicker {
+    width: 245px;
+    font-weight: bold;
+    padding: 3px 30px 3px 30px;
+    border: 1px solid #eaeaea;
+    border-top: 0px;
+    background: white;
+    text-align: center;
+}
+
+.timepicker .timepicker-btn {
+    width: 3em;
+    margin:0 1em 0 1em;
+    background-color: transparent;
+    border: 1px solid #eaeaea;
+}

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title>Default calendar sample (no markup & option)</title>
+        <meta http-equiv="Pragma" content="no-cache">
+        <meta http-equiv="Expires" content="-1">
+        <link href="../dist/tui-component-date-picker.css" rel="stylesheet">
+    </head>
+
+    <body>
+    <div class="code-html">
+        <table>
+            <tbody>
+                <tr>
+                    <td><div id="layer-date-en"></div></td>
+                    <td><div id="layer-month-en"></div></td>
+                    <td><div id="layer-year-en"></div></td>
+                </tr>
+                <tr>
+                    <td><div id="layer-date-ko"></div></td>
+                    <td><div id="layer-month-ko"></div></td>
+                    <td><div id="layer-year-ko"></div></td>
+                </tr>
+                <tr>
+                    <td><div id="layer-date-no-todaybox"></div></td>
+                    <td><div id="layer-date-has-jump-buttons"></div></td>
+                    <td><div id="layer-date-custom-format"></div></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div id="dropdown"></div>
+    </div>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/nhnent/tui.code-snippet/1.2.1/code-snippet.js"></script>
+    <script type="text/javascript" src="../dist/tui-component-date-picker.js"></script>
+    <script type="text/javascript" class="code-js">
+        tui.component.Calendar.localeTexts['custom'] = {
+            titles: {
+                DD: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Firday', 'Saturday'],
+                D: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+                MMM: ['January', 'February', 'March', 'April', 'May', 'June',
+                    'July', 'August', 'September', 'October', 'November', 'December'],
+                MMMM: ['January', 'February', 'March', 'April', 'May', 'June',
+                    'July', 'August', 'September', 'October', 'November', 'December']
+            },
+            titleFormat: 'MMM yyyy',
+            todayFormat: 'DD, MMMM d, yyyy'
+        };
+
+        var calDateEn = new tui.component.Calendar('#layer-date-en', {language: 'en'});
+        var calDateKo = new tui.component.Calendar('#layer-date-ko', {language: 'ko'});
+        var calMonthEn = new tui.component.Calendar('#layer-month-en', {language: 'en', layerType: 'month'});
+        var calMonthKo = new tui.component.Calendar('#layer-month-ko', {language: 'ko', layerType: 'month'});
+        var calYearEn = new tui.component.Calendar('#layer-year-en', {language: 'en', layerType: 'year'});
+        var calYearKo = new tui.component.Calendar('#layer-year-ko', {language: 'ko', layerType: 'year'});
+        var calNoTodaybox = new tui.component.Calendar('#layer-date-no-todaybox', {language: 'ko', hasTodayBox: false});
+        var calNoJumpButtons = new tui.component.Calendar('#layer-date-has-jump-buttons', {language: 'ko', hasJumpButtons: true});
+        var calCustomFormat = new tui.component.Calendar('#layer-date-custom-format', {language: 'custom', layerType: 'month'});
+    </script>
+    </body>
+</html>

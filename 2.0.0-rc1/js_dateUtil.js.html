@@ -1,0 +1,408 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Date Picker</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-jsdoc.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/tui-doc.css">
+</head>
+<body>
+<nav class="lnb" id="lnb">
+    <div class="logo" style="width: 150px">
+        <img src="https://cloud.githubusercontent.com/assets/12269563/20029815/01133928-a39a-11e6-80f3-12500a91c755.png" width="100%" height="100%">
+    </div>
+    <div class="title">
+        <h1><a href="index.html" class="link">Date Picker</a></h1>
+        
+            <span class="version">v1.6.0</span>
+        
+    </div>
+    <div class="search-container" id="search-container">
+        <input type="text" placeholder="Search">
+        <ul></ul>
+    </div>
+    
+        <ol class="lnb-tab">
+            <li id="api-tab">
+                <a href="#"><h4>API</h4></a>
+            </li>
+            <li id="examples-tab">
+                <a href="#"><h4>Examples</h4></a>
+            </li>
+        </ol>
+    
+    <div class="lnb-examples hidden"><h3>Examples</h3><ul><li><a href="tutorial-calendar-draw-event.html">Calendar with "darw" event</a><div class="hidden" id="calendar-draw-event_sub"></div></li><li><a href="tutorial-calendar_.html">Calendar examples</a><div class="hidden" id="calendar_sub"></div></li><li><a href="tutorial-datepicker_.html">Datepicker examples</a><div class="hidden" id="datepicker_sub"></div></li></ul></div><div class="lnb-api hidden"><h3>Classes</h3><ul><li><a href="Calendar.html">Calendar</a><div class="hidden" id="Calendar_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Calendar.html#changeLanguage">changeLanguage</a></li><li><a href="Calendar.html#destroy">destroy</a></li><li><a href="Calendar.html#draw">draw</a></li><li><a href="Calendar.html#drawNext">drawNext</a></li><li><a href="Calendar.html#drawPrev">drawPrev</a></li><li><a href="Calendar.html#getDate">getDate</a></li><li><a href="Calendar.html#getDateElements">getDateElements</a></li><li><a href="Calendar.html#getLayerType">getLayerType</a></li><li><a href="Calendar.html#hide">hide</a></li><li><a href="Calendar.html#show">show</a></li></ul></div></li><li><a href="DatePicker.html">DatePicker</a><div class="hidden" id="DatePicker_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="DatePicker.html#_formatter">_formatter</a></li><li><a href="DatePicker.html#_id">_id</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="DatePicker.html#addOpener">addOpener</a></li><li><a href="DatePicker.html#addRange">addRange</a></li><li><a href="DatePicker.html#close">close</a></li><li><a href="DatePicker.html#destroy">destroy</a></li><li><a href="DatePicker.html#disable">disable</a></li><li><a href="DatePicker.html#enable">enable</a></li><li><a href="DatePicker.html#getCurrentLayerType">getCurrentLayerType</a></li><li><a href="DatePicker.html#getDate">getDate</a></li><li><a href="DatePicker.html#getTimepicker">getTimepicker</a></li><li><a href="DatePicker.html#isOpened">isOpened</a></li><li><a href="DatePicker.html#open">open</a></li><li><a href="DatePicker.html#removeOpener">removeOpener</a></li><li><a href="DatePicker.html#removeRange">removeRange</a></li><li><a href="DatePicker.html#setDate">setDate</a></li><li><a href="DatePicker.html#setDateFormat">setDateFormat</a></li><li><a href="DatePicker.html#setInput">setInput</a></li><li><a href="DatePicker.html#toggle">toggle</a></li></ul><div class="member-type">Events</div><ul class="inner"><li><a href="DatePicker.html#event:change">change</a></li><li><a href="DatePicker.html#event:close">close</a></li><li><a href="DatePicker.html#event:open">open</a></li><li><a href="DatePicker.html#event:pick">pick</a></li></ul></div></li><li><a href="DateTimeFormatter.html">DateTimeFormatter</a><div class="hidden" id="DateTimeFormatter_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="DateTimeFormatter.html#format">format</a></li><li><a href="DateTimeFormatter.html#parse">parse</a></li></ul></div></li><li><a href="Dropdown.html">Dropdown</a><div class="hidden" id="Dropdown_sub"></div></li><li><a href="Selectbox.html">Selectbox</a><div class="hidden" id="Selectbox_sub"></div></li><li><a href="Spinbox.html">Spinbox</a><div class="hidden" id="Spinbox_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Spinbox.html#destroy">destroy</a></li><li><a href="Spinbox.html#getValue">getValue</a></li><li><a href="Spinbox.html#setValue">setValue</a></li></ul></div></li><li><a href="TimePicker.html">TimePicker</a><div class="hidden" id="TimePicker_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="TimePicker.html#_syncToSelectors">_syncToSelectors</a></li><li><a href="TimePicker.html#destroy">destroy</a></li><li><a href="TimePicker.html#getHour">getHour</a></li><li><a href="TimePicker.html#getMinute">getMinute</a></li><li><a href="TimePicker.html#hide">hide</a></li><li><a href="TimePicker.html#setHour">setHour</a></li><li><a href="TimePicker.html#setMinute">setMinute</a></li><li><a href="TimePicker.html#setTime">setTime</a></li><li><a href="TimePicker.html#show">show</a></li></ul><div class="member-type">Events</div><ul class="inner"><li><a href="TimePicker.html#event:change">change</a></li></ul></div></li></ul></div><div class="lnb-api hidden"><h3>Global</h3><ul><li><a href="global.html#_$element">_$element</a></li><li><a href="global.html#_items">_items</a></li><li><a href="global.html#_render">_render</a></li><li><a href="global.html#_valueMap">_valueMap</a></li><li><a href="global.html#appendTo">appendTo</a></li><li><a href="global.html#changeLanguage">changeLanguage</a></li><li><a href="global.html#close">close</a></li><li><a href="global.html#destroy">destroy</a></li><li><a href="global.html#getDateElements">getDateElements</a></li><li><a href="global.html#getType">getType</a></li><li><a href="global.html#getValue">getValue</a></li><li><a href="global.html#mergeDefaultOption">mergeDefaultOption</a></li><li><a href="global.html#open">open</a></li><li><a href="global.html#remove">remove</a></li><li><a href="global.html#render">render</a></li><li><a href="global.html#select">select</a></li><li><a href="global.html#setValue">setValue</a></li><li><a href="global.html#throwOverrideError">throwOverrideError</a></li><li><a href="global.html#toggle">toggle</a></li></ul></div>
+</nav>
+<div id="resizer"></div>
+
+<div class="main" id="main">
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @fileoverview Utils for calendar component
+ * @author NHN Net. FE dev Lab. &lt;dl_javascript@nhnent.com>
+ * @dependency tui-code-snippet ^1.0.2
+ */
+'use strict';
+var constants = require('./datepicker/constants');
+
+var isNumber = tui.util.isNumber;
+
+/**
+ * Utils of calendar
+ * @namespace dateUtil
+ * @ignore
+ */
+var utils = {
+    /**
+     * Return date hash by parameter.
+     *  if there are 3 parameter, the parameter is corgnized Date object
+     *  if there are no parameter, return today's hash date
+     * @param {Date|number} [year] A date instance or year
+     * @param {number} [month] A month
+     * @param {number} [date] A date
+     * @returns {{year: *, month: *, date: *}}
+     */
+    getDateHash: function(year, month, date) {
+        var nDate;
+
+        if (arguments.length &lt; 3) {
+            nDate = arguments[0] || new Date();
+
+            year = nDate.getFullYear();
+            month = nDate.getMonth() + 1;
+            date = nDate.getDate();
+        }
+
+        return {
+            year: year,
+            month: month,
+            date: date
+        };
+    },
+
+    /**
+     * Return today that saved on component or create new date.
+     * @returns {{year: *, month: *, date: *}}
+     */
+    getToday: function() {
+        return utils.getDateHash();
+    },
+
+    /**
+     * Get weeks count by paramenter
+     * @param {number} year A year
+     * @param {number} month A month
+     * @returns {number} Weeks count (4~6)
+     **/
+    getWeeksCount: function(year, month) {
+        var firstDay = this.getFirstDay(year, month),
+            lastDate = this.getLastDayInMonth(year, month);
+
+        return Math.ceil((firstDay + lastDate) / 7);
+    },
+
+    /**
+     * Get unix time from date hash
+     * @param {Object|Date} date - dateHash or Date object
+     * @param {number} [date.year] - year in dateHash
+     * @param {number} [date.month] - month in dateHash
+     * @param {number} [date.date] - date in dateHash
+     * @returns {number}
+     * @example
+     * dateUtil.getTime({year:2010, month:5, date:12}); // 1273590000000
+     */
+    getTime: function(date) {
+        return tui.util.isDate(date) ? date.getTime() : utils.getDateObject(date).getTime();
+    },
+
+    /**
+     * Get which day is first by parameters that include year and month information.
+     * @param {number} year A year
+     * @param {number} month A month
+     * @returns {number} (0~6)
+     */
+    getFirstDay: function(year, month) {
+        return new Date(year, month - 1, 1).getDay();
+    },
+
+    /**
+     * Get which day is last by parameters that include year and month information.
+     * @param {number} year A year
+     * @param {number} month A month
+     * @returns {number} (0~6)
+     */
+    getLastDay: function(year, month) {
+        return new Date(year, month, 0).getDay();
+    },
+
+    /**
+     * Get last date by parameters that include year and month information.
+     * @param {number} year A year
+     * @param {number} month A month
+     * @returns {number} (1~31)
+     */
+    getLastDayInMonth: function(year, month) {
+        return new Date(year, month, 0).getDate();
+    },
+
+    /**
+     * Get date instance.
+     * @param {dateHash} dateHash A date hash
+     * @returns {Date} Date
+     * @example
+     *  dateUtil.getDateObject({year:2010, month:5, date:12});
+     *  dateUtil.getDateObject(2010, 5, 12); //year,month,date
+     */
+    getDateObject: function(dateHash) {
+        if (arguments.length === 3) {
+            return new Date(arguments[0], arguments[1] - 1, arguments[2]);
+        }
+
+        return new Date(dateHash.year, dateHash.month - 1, dateHash.date);
+    },
+
+    /**
+     * Get related date hash with parameters that include date information.
+     * @param {number} year A related value for year(you can use +/-)
+     * @param {number} month A related value for month (you can use +/-)
+     * @param {number} date A related value for day (you can use +/-)
+     * @param {Object} dateObj standard date hash
+     * @returns {Object} dateObj
+     * @example
+     *  dateUtil.getRelativeDate(1, 0, 0, {year:2000, month:1, date:1}); // {year:2001, month:1, date:1}
+     *  dateUtil.getRelativeDate(0, 0, -1, {year:2010, month:1, date:1}); // {year:2009, month:12, date:31}
+     */
+    getRelativeDate: function(year, month, date, dateObj) {
+        var nYear = (dateObj.year + year),
+            nMonth = (dateObj.month + month - 1),
+            nDate = (dateObj.date + date),
+            nDateObj = new Date(nYear, nMonth, nDate);
+
+        return utils.getDateHash(nDateObj);
+    },
+
+    /**
+     * Chagne number 0~9 to '00~09'
+     * @param {number} number number
+     * @returns {string}
+     * @example
+     *  dateUtil.prependLeadingZero(0); //  '00'
+     *  dateUtil.prependLeadingZero(9); //  '09'
+     *  dateUtil.prependLeadingZero(12); //  '12'
+     */
+    prependLeadingZero: function(number) {
+        var prefix = '';
+
+        if (number &lt; 10) {
+            prefix = '0';
+        }
+
+        return prefix + number;
+    },
+
+    /**
+     * Get meridiem hour
+     * @param {number} hour - Original hour
+     * @returns {number} Converted meridiem hour
+     */
+    getMeridiemHour: function(hour) {
+        hour %= 12;
+
+        if (hour === 0) {
+            hour = 12;
+        }
+
+        return hour;
+    },
+
+    /**
+     * Whether the two dateHash objects are equal
+     * @param {dateHash} a - dateHash
+     * @param {dateHash} b - dateHash
+     * @returns {boolean}
+     */
+    isEqualDateHash: function(a, b) {
+        return a.year === b.year
+            &amp;&amp; a.month === b.month
+            &amp;&amp; a.date === b.date;
+    },
+
+    /**
+     * Returns number or default
+     * @param {*} any - Any value
+     * @param {number} defaultNumber - Default number
+     * @throws Will throw an error if the defaultNumber is invalid.
+     * @returns {number}
+     */
+    getSafeNumber: function(any, defaultNumber) {
+        if (isNaN(defaultNumber) || !tui.util.isNumber(defaultNumber)) {
+            throw Error('The defaultNumber must be a valid number.');
+        }
+        if (isNaN(any)) {
+            return defaultNumber;
+        }
+
+        return Number(any);
+    },
+
+    /**
+     * Returns dateHash existing all properties
+     * @param {dateHash} dateHash - Input dateHash
+     * @param {dateHash} fallback - Fallback dateHash
+     * @returns {dateHash}
+     */
+    getSafeDateHash: function(dateHash, fallback) {
+        return tui.util.extend({
+            year: constants.MIN_YEAR,
+            month: 1,
+            date: 1
+        }, fallback, dateHash);
+    },
+
+    /**
+     * Change text and return.
+     * @param {string} str A text to change
+     * @param {Object} map A change key, value set
+     * @param {RegExp} reg A regExp to change
+     * @returns {string}
+     */
+    getConvertedTitle: function(str, map, reg) {
+        str = str.replace(reg, function(matchedString) {
+            return map[matchedString] || '';
+        });
+
+        return str;
+    },
+
+    /**
+     * Check validation of a year
+     * @param {number} year - year
+     * @returns {boolean} - whether the year is valid or not
+     */
+    isValidYear: function(year) {
+        return isNumber(year) &amp;&amp; year >= constants.MIN_YEAR &amp;&amp; year &lt;= constants.MAX_YEAR;
+    },
+
+    /**
+     * Check validation of a month
+     * @param {number} month - month
+     * @returns {boolean} - whether the month is valid or not
+     */
+    isValidMonth: function(month) {
+        return isNumber(month) &amp;&amp; month > 0 &amp;&amp; month &lt; 13;
+    },
+
+    /**
+     * Whether the day-in-month is valid
+     * @param {number} year - year
+     * @param {number} month - month
+     * @param {number} date - date
+     * @returns {boolean}
+     */
+    isValidDayInMonth: function(year, month, date) {
+        return isNumber(date) &amp;&amp; (date > 0) &amp;&amp; (date &lt;= this.getLastDayInMonth(year, month));
+    },
+
+    /**
+     * Whether the values in a dateHash are valid
+     * @param {dateHash} dateHash - dateHash
+     * @returns {boolean}
+     */
+    isValidDateHash: function(dateHash) {
+        var year, month, date;
+
+        if (!dateHash) {
+            return false;
+        }
+
+        year = dateHash.year;
+        month = dateHash.month;
+        date = dateHash.date;
+
+        return this.isValidYear(year) &amp;&amp; this.isValidMonth(month) &amp;&amp; this.isValidDayInMonth(year, month, date);
+    },
+
+    /**
+     * Return date of the week
+     * @param {number} year - Year
+     * @param {number} month - Month
+     * @param {number} weekNumber - Week number (0~5)
+     * @param {number} dayNumber - Day number (0: sunday, 1: monday, ....)
+     * @returns {number}
+     */
+    getDateOfWeek: function(year, month, weekNumber, dayNumber) {
+        var firstDayOfMonth = new Date(year, month - 1).getDay();
+        var dateOffset = firstDayOfMonth - dayNumber - 1;
+
+        return new Date(year, month - 1, (weekNumber * 7) - dateOffset);
+    },
+
+    /**
+     * Returns range arr
+     * @param {number} start - Start value
+     * @param {number} end - End value
+     * @returns {Array}
+     */
+    getRangeArr: function(start, end) {
+        var arr = [];
+        var i;
+
+        if (start > end) {
+            for (i = end; i >= start; i -= 1) {
+                arr.push(i);
+            }
+        } else {
+            for (i = start; i &lt;= end; i += 1) {
+                arr.push(i);
+            }
+        }
+
+        return arr;
+    }
+};
+
+module.exports = utils;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<footer>
+    <img class="logo" src="https://cloud.githubusercontent.com/assets/12269563/20029815/01133928-a39a-11e6-80f3-12500a91c755.png" style="width: 150px">
+    <div class="footer-text">NHN Entertainment. Frontend Development Lab</div>
+</footer>
+<script>prettyPrint();</script>
+<script src="scripts/jquery.min.js"></script>
+<script src="scripts/tui-doc.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+    <script>
+        var id = '_sub'.replace(/"/g, '_');
+        var element = document.getElementById(id); // do not use jquery selector
+
+        $(element).removeClass('hidden');
+        showLnbApi();
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "calendar": {
+    "title": "Calendar examples"
+  },
+  "calendar-draw-event": {
+    "title": "Calendar with \"darw\" event"
+  },
+  "datepicker": {
+    "title": "Datepicker examples"
+  },
+  "timepicker": {
+    "title": "Timepicker examples"
+  }
+}

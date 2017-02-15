@@ -1,0 +1,55 @@
+<div class="tui-timepicker">
+    <div class="tui-timepicker-body">
+        <div class="tui-timepicker-row">
+            {{#if ([../helpers/equals] inputType 'spinbox')}}
+                <div class="tui-timepicker-column tui-timepicker-spinbox tui-timepicker-hour"></div>
+                <span class="tui-timepicker-column tui-timepicker-colon"><span class="tui-ico-colon">:</span></span>
+                <div class="tui-timepicker-column tui-timepicker-spinbox tui-timepicker-minute"></div>
+                {{#if showMeridiem}} {{#with ([../helpers/uniqueId]) as |radioId|}}
+                    <div class="tui-timepicker-column tui-timepicker-checkbox tui-timepicker-meridiem">
+                        <div class="tui-timepicker-check-area">
+                            <ul class="tui-timepicker-check-lst">
+                                <li class="tui-timepicker-check">
+                                    <div class="tui-timepicker-radio">
+                                        <input type="radio"
+                                               name="optionsRadios-{{radioId}}"
+                                               value="AM"
+                                               class="tui-timepicker-radio-am"
+                                               id="tui-timepicker-radio-am-{{radioId}}">
+                                        <label for="tui-timepicker-radio-am-{{radioId}}" class="tui-timepicker-radio-label">
+                                            <span class="tui-timepicker-input-radio"></span>AM
+                                        </label>
+                                    </div>
+                                </li>
+                                <li class="tui-timepicker-check">
+                                    <div class="tui-timepicker-radio">
+                                        <input type="radio"
+                                               name="optionsRadios-{{radioId}}"
+                                               value="PM"
+                                               class="tui-timepicker-radio-pm"
+                                               id="tui-timepicker-radio-pm-{{radioId}}">
+                                        <label for="tui-timepicker-radio-pm-{{radioId}}" class="tui-timepicker-radio-label">
+                                            <span class="tui-timepicker-input-radio"></span>PM
+                                        </label>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                {{/with}} {{/if}}
+            {{else}}
+                <div class="tui-timepicker-column tui-timepicker-selectbox tui-timepicker-hour"></div>
+                <span class="tui-timepicker-column tui-timepicker-colon"><span class="tui-ico-colon">:</span></span>
+                <div class="tui-timepicker-column tui-timepicker-selectbox tui-timepicker-minute"></div>
+                {{#if showMeridiem}}
+                    <div class="tui-timepicker-column tui-timepicker-selectbox tui-is-add-picker tui-timepicker-meridiem">
+                        <select class="tui-timepicker-select" aria-label="AM/PM">
+                            <option value="AM">AM</option>
+                            <option value="PM">PM</option>
+                        </select>
+                    </div>
+                {{/if}}
+            {{/if}}
+        </div>
+    </div>
+</div>

@@ -1,0 +1,29 @@
+{{#if isDateCalendar}}
+    {{#if showJumpButtons}}
+        <div class="tui-calendar-header-inner tui-calendar-has-btns">
+            <a href="#" class="tui-calendar-btn-prev-year">Prev year</a>
+            <a href="#" class="tui-calendar-btn-prev-month">Prev month</a>
+            <em class="tui-calendar-title {{titleClass}}">{{title}}</em>
+            <a href="#" class="tui-calendar-btn-next-month">Next month</a>
+            <a href="#" class="tui-calendar-btn-next-year">Next year</a>
+        </div>
+    {{else}}
+        <div class="tui-calendar-header-inner">
+            <a href="#" class="tui-calendar-btn-prev-month">Prev month</a>
+            <em class="tui-calendar-title {{titleClass}}">{{title}}</em>
+            <a href="#" class="tui-calendar-btn-next-month">Next month</a>
+        </div>
+    {{/if}}
+{{else}}
+    <div class="tui-calendar-header-inner">
+        <a href="#" class="tui-calendar-btn-prev-year">Prev year</a>
+        <em class="tui-calendar-title {{titleClass}}">{{title}}</em>
+        <a href="#" class="tui-calendar-btn-next-year">Next year</a>
+    </div>
+{{/if}}
+
+{{#if showToday}}
+    <div class="tui-calendar-header-info">
+        <p class="tui-calendar-title-today">{{todayText}}</p>
+    </div>
+{{/if}}

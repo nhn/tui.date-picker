@@ -1,0 +1,114 @@
+@charset "utf-8";
+
+.tui-calendar{position:relative;background-color:#fff;border:1px solid #aaa;width: 274px;}
+.tui-calendar div{text-align:center}
+.tui-calendar caption{padding:0}
+.tui-calendar caption span{overflow:hidden;position:absolute;clip:rect(0 0 0 0);width:1px;height:1px;margin:-1px;padding:0}
+.tui-calendar button,.tui-datepicker-dropdown button,.tui-datepicker-selector button{-webkit-appearance:none;-moz-appearance:none;appearance:none}
+.tui-ico-date,.tui-ico-time,.tui-datepicker-dropdown .tui-ico-check,.tui-ico-caret{overflow:hidden;display:inline-block;width:1px;height:1px;line-height:300px;background:url(../img/sp_tui_ico.png) no-repeat}
+.tui-ico-date{width:12px;height:12px;background-position:-17px 0}
+.tui-ico-time{width:12px;height:12px;background-position:0 -30px}
+.tui-ico-caret{width:7px;height:4px;background-position:0 -58px}
+
+.tui-datepicker-container{border:1px solid #aaa; background-color: white; position: absolute;}
+.tui-datepicker-type-date{width: 274px;}
+
+.tui-calendar-month, .tui-calendar-year{width:auto;}
+.tui-calendar-month .tui-calendar-body,.tui-calendar-year .tui-calendar-body{width:202px;margin:0 auto;}
+.tui-calendar .tui-calendar-header{position:relative;border-bottom:1px solid #efefef}
+.tui-calendar .tui-calendar-header-inner{padding:17px 50px 15px;height:50px}
+.tui-calendar .tui-calendar-title-today{height:30px;margin:0;font-size:12px;line-height:34px;color:#777;background-color:#f4f4f4}
+.tui-calendar .tui-calendar-title{display:inline-block;font-size:18px;font-weight:normal;font-style:normal;line-height:1;color:#333;cursor:default;vertical-align:top}
+.tui-calendar .tui-calendar-btn-prev-month,
+.tui-calendar .tui-calendar-btn-next-month,
+.tui-calendar .tui-calendar-btn-prev-year,
+.tui-calendar .tui-calendar-btn-next-year{overflow:hidden;position:absolute;top:0;width:32px;height:50px;line-height:400px;z-index:10}
+.tui-calendar .tui-calendar-btn-prev-month{left:0}
+.tui-calendar .tui-calendar-btn-next-month{right:0}
+.tui-calendar .tui-calendar-btn-prev-year{left:0}
+.tui-calendar .tui-calendar-btn-next-year{right:0}
+.tui-calendar .tui-calendar-btn-prev-month:after,
+.tui-calendar .tui-calendar-btn-next-month:after,
+.tui-calendar .tui-calendar-btn-prev-year:after,
+.tui-calendar .tui-calendar-btn-next-year:after{overflow:hidden;position:absolute;top:50%;margin-top:-5px;line-height:400px;background:url(../img/sp_tui_ico.png) no-repeat;content:''}
+.tui-calendar .tui-calendar-btn-prev-month:after,.tui-calendar.tui-calendar-month .tui-calendar-btn-prev-year:after{width:6px;height:11px;left:50%;margin-left:-3px;background-position:0 0}
+.tui-calendar .tui-calendar-btn-next-month:after,.tui-calendar.tui-calendar-month .tui-calendar-btn-next-year:after{width:6px;height:11px;right:50%;margin-right:-3px;background-position:-8px 0}
+.tui-calendar .tui-calendar-btn-prev-year:after{width:11px;height:10px;left:50%;margin-left:-6px;background-position:-16px -36px}
+.tui-calendar .tui-calendar-btn-next-year:after{width:11px;height:10px;right:50%;margin-right:-6px;background-position:-16px -49px}
+.tui-calendar.tui-calendar-month .tui-calendar-btn-prev-year,
+.tui-calendar.tui-calendar-month .tui-calendar-btn-next-year{width:50px}
+
+.tui-calendar .tui-calendar-has-btns .tui-calendar-btn-prev-year{left:10px}
+.tui-calendar .tui-calendar-has-btns .tui-calendar-btn-next-year{right:10px}
+.tui-calendar .tui-calendar-has-btns .tui-calendar-btn-prev-month{left:44px}
+.tui-calendar .tui-calendar-has-btns .tui-calendar-btn-next-month{right:44px}
+
+.tui-calendar .tui-calendar-body-header th{color:#777}
+.tui-calendar .tui-calendar-body-inner{width:100%;margin:0 auto;table-layout:fixed;border-collapse:collapse;text-align:center;font-size:12px}
+.tui-calendar th{font-weight:normal;cursor:default}
+.tui-calendar th,.tui-calendar td{height:39px;text-align:center;color:#999}
+.tui-calendar .tui-is-blocked:hover{background-color:#fff;cursor:default}
+.tui-calendar .tui-calendar-month{width:25%;height:50px}
+
+.tui-calendar .tui-calendar-body .tui-is-selected{background:#edf4fe;color:#FFFFFF}
+.tui-calendar .tui-calendar-today{color:#4b96e6}
+
+.tui-calendar .tui-calendar-prev-month,
+.tui-calendar .tui-calendar-next-month{color:#ccc}
+.tui-calendar .tui-calendar-prev-month.tui-calendar-date,
+.tui-calendar .tui-calendar-next-month.tui-calendar-date{visibility:hidden}
+.tui-calendar .tui-calendar-btn-choice{background-color:#4b96e6}
+.tui-calendar .tui-calendar-btn-close{background-color:#777}
+.tui-datepicker-body .tui-timepicker,.tui-datepicker-footer .tui-timepicker{width: 274px;position:static;padding:20px 46px 20px 47px;border:0}
+.tui-datepicker-footer .tui-timepicker{border-top:1px solid #eee}
+
+.tui-calendar .tui-is-selectable:hover{background-color:#edf4fc;cursor:pointer;color:#333}
+.tui-calendar .tui-is-selectable.tui-is-selected{background-color:#4b96e6;color:#fff}
+.tui-calendar .tui-is-blocked{cursor:default;color:#ddd}
+.tui-calendar .tui-is-valid{color:#999}
+
+.tui-rangepicker .tui-is-selectable.tui-is-selected-start,.tui-rangepicker .tui-is-selectable.tui-is-selected-end{background-color:#4b96e6;color:#fff}
+.tui-rangepicker .tui-is-selectable{color:#777}
+.tui-rangepicker .tui-is-selected-start:hover,.tui-rangepicker .tui-is-selected-end:hover{background-color:#4b96e6;color:#fff}
+.tui-rangepicker .tui-is-selected-range:hover{background-color:#4b96e6;color:#fff;opacity:.9}
+
+.tui-datepicker-selector{padding:10px;font-size:0;text-align:center;border-bottom:1px solid #eee}
+.tui-datepicker-selector-button{width:50%;height:26px;font-size:12px;line-height:23px;border:1px solid #ddd;background-color:#fff;color:#777;outline:none;cursor:pointer}
+.tui-datepicker-selector-button.tui-is-checked{background-color:#eee;color:#333}
+.tui-datepicker-selector-button+.tui-datepicker-selector-button{margin-left:-1px}
+.tui-datepicker-selector-button [class^=tui-ico-]{margin:5px 9px 0 0;vertical-align:top;}
+.tui-datepicker-selector-button.tui-is-checked .tui-ico-date,.tui-datepicker-input.tui-has-focus .tui-ico-date{background-position:-17px -14px}
+.tui-datepicker-selector-button.tui-is-checked .tui-ico-time{background-position:0 -44px}
+
+.tui-datepicker-area{position:relative}
+.tui-datepicker-input{position:relative;display:inline-block;width:120px;height:28px;vertical-align:top;border:1px solid #ddd}
+.tui-datepicker-input input{width:100%;height:100%;padding:6px 27px 6px 10px;font-size:12px;line-height:14px;vertical-align:top;border:0;color:#333}
+.tui-datepicker-input .tui-ico-date{position:absolute;top:50%;right:8px;margin:-6px 0 0 0}
+.tui-datepicker-input.tui-has-focus{border-color:#aaa}
+.tui-datetime-input{width:170px}
+
+.tui-datepicker-dropdown{display:inline-block;width:120px}
+.tui-datepicker-dropdown .tui-dropdown-button{width:100%;height:28px;padding:0 10px;font-size:12px;line-height:20px;border:1px solid #ddd;padding:0 30px 0 10px;text-align:left;background:#fff;cursor:pointer}
+.tui-datepicker-dropdown{position:relative}
+.tui-datepicker-dropdown .tui-ico-caret{position:absolute;top:12px;right:10px}
+.tui-datepicker-dropdown .tui-dropdown-menu{display:none;position:absolute;top:27px;left:0;right:0;width:100%;padding:5px 0;margin:0;overflow-y:auto;min-width:0;max-height:198px;font-size:12px;border:1px solid #ddd;border-top-color:#fff;z-index:10;box-sizing:border-box;box-shadow:none;border-radius:0}
+.tui-datepicker-dropdown.tui-is-open .tui-dropdown-button{display:block}
+.tui-datepicker-dropdown.tui-is-open .tui-dropdown-menu,.tui-datepicker-dropdown.tui-is-open .tui-dropdown-button{display:block;border-color:#aaa}
+.tui-datepicker-dropdown.tui-is-open .tui-ico-caret{background-position:-21px -28px}
+.tui-datepicker-dropdown .tui-menu-item{position:relative;overflow:hidden;position:relative;height:28px;line-height:28px;background-color:#fff;z-index:10}
+.tui-datepicker-dropdown .tui-menu-item-btn{position:relative;width:100%;font-size:12px;font-weight:normal;line-height:28px;padding:0 10px 0 30px;text-align:left;color:#333;background-color:#fff;border:0;cursor:pointer;z-index:9}
+.tui-datepicker-dropdown .tui-menu-item-btn:hover,.tui-menu-item-btn:focus,.tui-menu-item-btn:active{color:#333;background-color:#f4f4f4}
+.tui-datepicker-dropdown .tui-menu-item .tui-ico-check{display:none;overflow:hidden;position:absolute;width:10px;height:8px;top:10px;left:10px;background-position:-31px -54px;z-index:10;content:'aaa'}
+.tui-datepicker-dropdown .tui-menu-item.tui-is-selected .tui-ico-check{display:block}
+.tui-datepicker-dropdown .tui-menu-item.tui-is-selected .tui-menu-item-btn{font-weight:bold}
+.tui-dropdown-area{font-size:0}
+.tui-dropdown-area .tui-datepicker-dropdown+.tui-datepicker-dropdown{margin-left:5px}
+
+.tui-datepicker-container .tui-calendar{border: 0;}
+.tui-datepicker-container .tui-calendar-title, .tui-rangepicker-container .tui-calendar-title{cursor:pointer;}
+.tui-datepicker-container .tui-calendar-title.tui-calendar-title-year-to-year{cursor: auto;}
+.tui-calendar .tui-calendar-year{width:25%;height:50px}
+.tui-calendar.tui-calendar-year .tui-calendar-btn-prev-year:after{width:6px;height:11px;left:50%;margin-left:-3px;background-position:0 0}
+.tui-calendar.tui-calendar-year .tui-calendar-btn-next-year:after{width:6px;height:11px;right:50%;margin-right:-3px;background-position:-8px 0}
+.tui-calendar.tui-calendar-year .tui-calendar-btn-prev-year,
+.tui-calendar.tui-calendar-year .tui-calendar-btn-next-year{width:50px}

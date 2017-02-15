@@ -1,0 +1,250 @@
+@charset 'utf-8';
+
+* {
+	-webkit-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	box-sizing:border-box;
+}
+
+.tui-timepicker input,.tui-timepicker select{
+	font-weight:normal;
+}
+
+.tui-ico-t-btn,.tui-timepicker-input-radio,.tui-ico-colon,.tui-ico-time{
+	overflow: hidden;
+	display:inline-block;
+	width:1px;
+	height:1px;
+	line-height:300px;
+	background:url(../img/sp_tui_ico.png) no-repeat;
+}
+
+.tui-timepicker .tui-timepicker-select {
+	-webkit-appearance:none;
+	-moz-appearance:none;
+	-o-appearance:none;
+	appearance:none;
+	border-radius:0;
+}
+
+.tui-timepicker .tui-timepicker-select::-ms-expand{
+	display:none;
+}
+
+.tui-calendar-select-content .tui-timepicker{
+	border:0;
+	margin:0 auto;
+}
+
+.tui-timepicker input {
+	font-size: 16px;
+	text-align: center;
+	font-weight: normal;
+}
+
+.tui-timepicker {
+	position: relative;
+	top:-1px;
+	padding: 30px 20px;
+	font-weight: bold;
+	border: 1px solid #aaa;
+	background: white;
+	text-align: center;
+}
+
+.tui-timepicker-row {
+	width:100%;
+	font-size: 0;
+}
+.tui-timepicker-column {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.tui-timepicker-btn-area {
+	position: relative;
+	height: 88px;
+	padding: 19px 0
+}
+
+.tui-timepicker-spinbox{
+	width:52px;
+}
+
+.tui-timepicker-selectbox + .tui-timepicker-selectbox {
+	padding-left:5px;
+}
+
+.tui-timepicker-btn-area .tui-timepicker-spinbox-input {
+	width: 100%;
+	height: 100%;
+	line-height: 46px;
+	border: 1px solid #ddd;
+}
+
+.tui-timepicker-btn {
+	position: absolute;
+	left: 0;
+	width: 100%;
+	height:20px;
+	background-color: transparent;
+	border: 1px solid #ddd;
+	cursor: pointer;
+}
+
+.tui-timepicker-btn:hover,
+.tui-timepicker-btn:focus,
+.tui-timepicker-btn:active{
+	background-color: #f4f4f4;
+}
+
+.tui-timepicker-btn-up{
+	top:0;
+}
+
+.tui-timepicker-btn-down{
+	bottom:0
+}
+
+.tui-timepicker-btn .tui-ico-t-btn{
+	width:13px;
+	height:7px;
+}
+
+.tui-timepicker-btn-up .tui-ico-t-btn{
+	background-position: 0 -12px;
+}
+
+.tui-timepicker-btn-down .tui-ico-t-btn{
+	background-position: 0 -21px;
+}
+
+.tui-timepicker-colon {
+	width: 22px;
+}
+
+.tui-datepicker-body .tui-timepicker-colon, .tui-datepicker-footer .tui-timepicker-colon {
+	width: 18px;
+}
+
+.tui-ico-colon {
+	width: 2px;
+	height: 7px;
+	background-position: -17px -28px;
+}
+
+.tui-timepicker-select{
+	width: 52px;
+	height: 28px;
+	padding:5px 0 5px 9px;
+	font-size:12px;
+	border:1px solid #ddd;
+	background: url(../img/ico_tui_select.png) no-repeat;
+	background-position: 100% 50%;
+	cursor: pointer;
+}
+
+.tui-timepicker-check-lst{
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.tui-timepicker-check{
+	margin-top:11px;
+}
+.tui-timepicker-check:first-child{
+	margin-top:0;
+}
+
+.tui-timepicker-checkbox{
+	padding-left: 16px;
+}
+
+.tui-timepicker-radio{
+	overflow: hidden;
+	position: relative;
+	text-align: left;
+}
+
+.tui-timepicker-radio input{
+	position: absolute;
+	left:-9999px;
+	width:1px;
+	height:1px;
+}
+
+.tui-timepicker-radio-label{
+	display: inline-block;
+	padding-left:20px;
+	font-size:12px;
+	line-height:16px;
+	vertical-align: top;
+	color:#777;
+	cursor:pointer
+}
+
+.tui-timepicker-input-radio{
+	position: absolute;
+	display: block;
+	top:0;
+	left:0;
+	width: 16px;
+	height: 16px;
+	vertical-align: middle;
+	background-position:-31px 0;
+}
+
+.tui-timepicker-radio input:checked + .tui-timepicker-radio-label .tui-timepicker-input-radio{
+	background-position: -31px -18px;
+}
+
+.tui-timepicker-radio input:disabled + .tui-timepicker-radio-label .tui-timepicker-input-radio{
+	background-position: -31px -36px;
+}
+
+.tui-ico-time {
+	width:12px;
+	height:12px;
+	background-position:0 -30px
+}
+
+.tui-timepicker-area {
+	position:relative
+}
+
+.tui-time-input {
+	position:relative;
+	display:inline-block;
+	width:120px;
+	height:28px;
+	border:1px solid #ddd
+}
+
+.tui-time-input input {
+	width:100%;
+	height:100%;
+	padding:0 27px 0 10px;
+	font-size:12px;
+	border:0;
+	color:#333
+}
+
+.tui-time-input .tui-ico-time {
+	position: absolute;
+	top:50%;
+	right:8px;
+	margin:-6px 0 0 0
+}
+
+.tui-time-input.tui-has-focus {
+	border-color:#aaa
+}
+
+.tui-time-input .tui-ico-time {
+	background-position:0 -30px
+}
+
+.tui-time-input.tui-has-focus .tui-ico-time {
+	background-position:0 -44px
+}

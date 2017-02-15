@@ -160,17 +160,8 @@ module.exports = function(config) {
             'bower_components/jquery/jquery.min.js',
             'bower_components/jasmine-jquery/lib/jasmine-jquery.js',
             'bower_components/tui-code-snippet/code-snippet.js',
-            'bower_components/tui-component-calendar/dist/tui-component-calendar.min.js',
             'node_modules/es5-shim/es5-shim.js',
-            'test/index.js',
-            {
-                pattern: 'test/fixtures/*.html',
-                included: false
-            },
-            {
-                pattern: 'test/css/*.css',
-                included: false
-            }
+            'test/index.js'
         ],
         preprocessors: {
             'test/index.js': ['webpack', 'sourcemap']
@@ -182,15 +173,24 @@ module.exports = function(config) {
                 preLoaders: [
                     {
                         test: /\.js$/,
-                        include: /src/,
-                        exclude: /(bower_components|node_modules)/,
+                        exclude: /(test|bower_components|node_modules)/,
                         loaders: ['istanbul-instrumenter', 'eslint-loader']
+                    },
+                    {
+                        test: /\.hbs$/,
+                        exclude: /(node_modules|bower_components)/,
+                        loader: 'handlebars-loader'
+                    },
+                    {
+                        test: /\.css/,
+                        loader: 'style!css'
+                    },
+                    {
+                        test: /\.png/,
+                        loader: 'url-loader'
                     }
                 ]
-            },
-            plugins: [
-                new webpack.HotModuleReplacementPlugin()
-            ]
+            }
         },
         port: 9876,
         colors: true,

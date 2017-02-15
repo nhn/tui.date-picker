@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title>Default datepicker sample</title>
+        <link href="../dist/tui-component-datepicker.css" rel="stylesheet">
+        <style type="text/css">
+            h2{margin-top:20px;margin-bottom:5px;}
+        </style>
+    </head>
+
+    <body>
+        <div class="code-html">
+            <h2>Pick date <sub>date=null, calendar.showToday=false</sub></h2>
+            <button id="datepicker-opener-1" type="button">open</button>
+            <div class="tui-datepicker-input tui-datetime-input tui-has-focus">
+                <input type="text" id="datepicker-input-1" aria-label="Date-Time">
+                <span class="tui-ico-date"></span>
+            </div>
+            <div id="wrapper-1" style="position: absolute; z-index:100;"></div>
+
+            <hr>
+
+            <h2>Pick date <sub>inlineTimepicker=true, calendar.showJumpButtons=true</sub></h2>
+            <button id="datepicker-opener-2" type="button">open</button>
+            <div class="tui-datepicker-input tui-datetime-input tui-has-focus" style="width:190px">
+                <input type="text" id="datepicker-input-2" aria-label="Date-Time">
+                <span class="tui-ico-date"></span>
+            </div>
+            <div id="wrapper-2" style="position: absolute; z-index:100;"></div>
+
+            <hr>
+
+            <h2>Pick date <sub>showJumpbuttons=false, showToday=true</sub></h2>
+            <button id="datepicker-opener-3" type="button">open</button>
+            <div class="tui-datepicker-input tui-datetime-input tui-has-focus">
+                <input type="text" id="datepicker-input-3" aria-label="Date-Time">
+                <span class="tui-ico-date"></span>
+            </div>
+            <div id="wrapper-3" style="position: absolute; z-index:100;"></div>
+
+            <hr>
+
+            <h2>Pick month</h2>
+            <button id="monthpicker-opener" type="button">open</button>
+            <div class="tui-datepicker-input tui-has-focus">
+                <input type="text" id="monthpicker-input" aria-label="Month">
+                <span class="tui-ico-date"></span>
+            </div>
+            <div id="wrapper-4" style="position: absolute; z-index:100;"></div>
+
+            <hr>
+
+            <h2>Pick year</h2>
+            <button id="yearpicker-opener" type="button">open</button>
+            <div class="tui-datepicker-input tui-has-focus">
+                <input type="text" id="yearpicker-input" aria-label="Year">
+                <span class="tui-ico-date"></span>
+            </div>
+            <div id="wrapper-5" style="position: absolute; z-index:100;"></div>
+
+            <hr>
+
+            <h2>Inline datepicker</h2>
+            <div>
+                <span>Selected date : </span><span id="seletedDate" ></span>
+            </div>
+            <div id="wrapper-6"></div>
+        </div>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+        <script type="text/javascript" src="https://cdn.rawgit.com/nhnent/tui.code-snippet/1.2.1/code-snippet.js"></script>
+        <script type="text/javascript" src="../dist/tui-component-datepicker.js"></script>
+        <script class="code-js">
+            tui.component.Datepicker.localeTexts['Chinese character'] = {
+                titles: {
+                    DD: ['日曜日', '月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日'],
+                    D: ['日', '月', '火', '水', '木', '金', '土'],
+                    MMM: ['1月', '2月', '3月', '4月', '5月', '6月',
+                        '7月', '8月', '9月', '10月', '11月', '12月'],
+                    MMMM: ['一月', '二月', '三月', '四月', '五月', '六月',
+                        '七月', '八月', '九月', '十月', '十一月', '十二月']
+                },
+                titleFormat: 'yyyy年 MMM',
+                todayFormat: '今日: yyyy年 MMM d日 (DD)',
+                date: '日字',
+                time: '時刻'
+            };
+
+            var today = new Date();
+            var datepicker = new tui.component.Datepicker('#wrapper-1', {
+                type: 'date',
+                date: null,
+                selectableRanges: [
+                    [new Date(2015, 8, 1), new Date(2016, 9, 3)],
+                    [new Date(2016, 11, 22), new Date(2017, 0, 25)],
+                    [today, new Date(today.getFullYear() + 1, today.getMonth(), 1)]
+                ],
+                openers: ['#datepicker-opener-1'],
+                calendar: {
+                    showToday: false
+                },
+                timepicker: {
+                    inputType: 'spinbox',
+                    layoutType: 'tab'
+                },
+                input: {
+                    element: '#datepicker-input-1',
+                    format: 'yyyy-MM-dd, hh:mm A'
+                }
+            });
+
+            var datepicker2 = new tui.component.Datepicker('#wrapper-2', {
+                input: {
+                    element: '#datepicker-input-2',
+                    format: 'yyyy年 MMM d日, hh:mm A'
+                },
+                language: 'Chinese character',
+                timepicker: {
+                    inputType: 'selectbox'
+                },
+                calendar: {
+                    showJumpButtons: true
+                },
+                inlineTimepicker: true,
+                type: 'date',
+                date: new Date(2017, 1, 22),
+                selectableRanges: [
+                    [new Date(2015, 8, 1), new Date(2016, 9, 3)],
+                    [new Date(2016, 11, 22), new Date(2017, 0, 25)],
+                    [today, new Date(today.getFullYear() + 1, today.getMonth(), 1)]
+                ],
+                openers: ['#datepicker-opener-2']
+            });
+
+            var datepicker3 = new tui.component.Datepicker('#wrapper-3', {
+                input: {
+                    element: '#datepicker-input-3',
+                    format: 'yyyy년 M월 d일, hh:mm'
+                },
+                timepicker: {
+                    inputType: 'selectbox'
+                },
+                calendar: {
+                    showJumpButtons: false,
+                    showToday: true
+                },
+                inlineTimepicker: true,
+                language: 'ko',
+                type: 'date',
+                date: new Date(2017, 1, 22),
+                selectableRanges: [
+                    [new Date(2015, 8, 1), new Date(2016, 9, 3)],
+                    [new Date(2016, 11, 22), new Date(2017, 0, 25)],
+                    [today, new Date(today.getFullYear() + 1, today.getMonth(), 1)]
+                ],
+                openers: ['#datepicker-opener-3']
+            });
+
+            datepicker3.on('error', function(err) {
+                console.log(err);
+                console.error(err.message);
+            });
+
+            var monthpicker = new tui.component.Datepicker('#wrapper-4', {
+                input: {
+                    element: '#monthpicker-input',
+                    format: 'yyyy-MM'
+                },
+                type: 'month',
+                date: new Date(2015, 1, 5),
+                selectableRanges: [
+                    [new Date(2015, 1, 3), new Date(2015, 1, 28)],
+                    [new Date(2015, 4, 3), new Date(2015, 6, 21)],
+                    [new Date(2016, 4, 1), new Date(2016, 6, 30)],
+                    [new Date(2018, 2, 1), new Date(2025, 9, 31)]
+                ],
+                language: 'ko',
+                openers: ['#monthpicker-opener']
+            });
+
+            var yearpicker = new tui.component.Datepicker('#wrapper-5', {
+                input: {
+                    element: '#yearpicker-input',
+                    format: 'yyyy'
+                },
+                type: 'year',
+                date: new Date(2016, 9, 1),
+                selectableRanges: [
+                    [new Date(2010, 2, 10), new Date(2025, 4, 11)],
+                    [new Date(2030, 10, 12), new Date(2035, 11, 22)]
+
+                ],
+                openers: ['#yearpicker-opener']
+            });
+
+            var inlineDatepicker = new tui.component.Datepicker('#wrapper-6', {
+                showAlways: true
+            });
+
+            inlineDatepicker.on('change', function() {
+                $('#seletedDate').text(inlineDatepicker.getDate());
+            });
+        </script>
+    </body>
+</html>

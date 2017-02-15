@@ -1,0 +1,20 @@
+<div class="tui-datepicker-container">
+    {{#if timepicker}}
+        {{#if ([../helpers/equals] timepicker.layoutType "tab")}}
+            <div class="tui-datepicker-selector">
+                <button type="button" class="tui-datepicker-selector-button tui-is-checked" aria-label="selected">
+                    <span class="tui-ico-date"></span>{{localeText.date}}
+                </button>
+                <button type="button" class="tui-datepicker-selector-button">
+                    <span class="tui-ico-time"></span>{{localeText.time}}
+                </button>
+            </div>
+            <div class="tui-datepicker-body"></div>
+        {{else}}
+            <div class="tui-datepicker-body"></div>
+            <div class="tui-datepicker-footer"></div>
+        {{/if}}
+    {{else}}
+        <div class="tui-datepicker-body"></div>
+    {{/if}}
+</div>

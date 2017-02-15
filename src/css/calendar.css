@@ -13,7 +13,8 @@
 .tui-datepicker-container{border:1px solid #aaa; background-color: white; position: absolute;}
 .tui-datepicker-type-date{width: 274px;}
 
-.tui-calendar-month, .tui-calendar-year{width:auto;}
+.tui-calendar-month, .tui-calendar-year{width: 202px;}
+.tui-datepicker-body .tui-calendar-month, .tui-datepicker-body .tui-calendar-year{width: auto;}
 .tui-calendar-month .tui-calendar-body,.tui-calendar-year .tui-calendar-body{width:202px;margin:0 auto;}
 .tui-calendar .tui-calendar-header{position:relative;border-bottom:1px solid #efefef}
 .tui-calendar .tui-calendar-header-inner{padding:17px 50px 15px;height:50px}

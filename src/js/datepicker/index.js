@@ -94,7 +94,11 @@ var mergeDefaultOption = function(option) {
  *      @param {Array} [option.openers = []] - Opener button list (example - icon, button, etc.)
  *      @param {boolean} [option.showAlways = false] - Whether the datepicker shows always
  *      @param {boolean} [option.autoClose = true] - Close after click a date
- * @tutorial datepicker
+ * @tutorial datepicker-basic
+ * @tutorial datepicker-inline
+ * @tutorial datepicker-selectable-ranges
+ * @tutorial datetimepicker
+ * @tutorial month-year-pickers
  * @example
  *
  *   var range1 = [new Date(2015, 2, 1), new Date(2015, 3, 1)];
@@ -111,7 +115,9 @@ var mergeDefaultOption = function(option) {
  *   });
  *
  *   var picker3 = new tui.component.Datepicker('#datepicker-container3', {
- *       language: 'ko', // There are two supporting types by default - 'en' and 'ko'.
+ *      // There are two supporting types by default - 'en' and 'ko'.
+ *      // See "{@link Datepicker.localeTexts}"
+ *       language: 'ko',
  *       calendar: {
  *          showToday: true
  *       },
@@ -243,7 +249,7 @@ var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
          * @private
          * @type {number}
          */
-        this._id = 'datepicker' + util.stamp(this);
+        this._id = 'datepicker-selectable-ranges' + util.stamp(this);
 
         /**
          * Datepicker type
@@ -334,11 +340,6 @@ var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
         var layoutType;
         if (!opTimepicker) {
             return;
-        }
-
-        if (this._date) {
-            opTimepicker.initialHour = this._date.getHours();
-            opTimepicker.initialMinute = this._date.getMinutes();
         }
 
         layoutType = opTimepicker.layoutType || '';
@@ -613,7 +614,7 @@ var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
 
     /**
      * Returns current calendar type
-     * @returns {TYPE_DATE|TYPE_MONTH|TYPE_YEAR}
+     * @returns {'date'|'month'|'year'}
      */
     getCalendarType: function() {
         return this._calendar.getType();
@@ -621,7 +622,7 @@ var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
 
     /**
      * Returns datepicker type
-     * @returns {TYPE_DATE|TYPE_MONTH|TYPE_YEAR}
+     * @returns {'date'|'month'|'year'}
      */
     getType: function() {
         return this._type;
@@ -934,6 +935,9 @@ var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
             this._date = newDate;
             this._syncToInput();
             this._calendar.draw({date: newDate});
+            if (this._timepicker) {
+                this._timepicker.setTime(newDate.getHours(), newDate.getMinutes());
+            }
 
             /**
              * Change event
@@ -959,13 +963,13 @@ var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
         if (this._datepickerInput) {
             this._datepickerInput.clearText();
         }
+        if (this._timepicker) {
+            this._timepicker.setTime(0, 0);
+        }
         this._date = null;
         this._calendar.draw(); // view update
 
         if (isChagned) {
-            /**
-             * @event Datepicker#change
-             */
             this.fire('change');
         }
     },

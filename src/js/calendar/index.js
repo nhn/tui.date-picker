@@ -34,8 +34,7 @@ var util = tui.util;
  * @constructor
  * @param {HTMLElement|jQuery|string} wrapperElement - Wrapper element or selector
  * @param {Object} [option] - Options for initialize
- * @tutorial calendar
- * @tutorial calendar-draw-event
+ * @tutorial calendars
  * @example
  * var calendar = new tui.component.Calendar('#calendar-wrapper', {
  *     language: 'en', // There are two supporting types by default - 'en' and 'ko'.
@@ -284,6 +283,19 @@ var Calendar = util.defineClass(/** @lends Calendar.prototype */ {
     /**
      * Draw calendar
      * @param {?object} option - Draw option
+     * @example
+     *
+     * calendar.draw();
+     * calendar.draw({
+     *     date: new Date()
+     * });
+     * calendar.draw({
+     *     type: 'month'
+     * });
+     * calendar.draw({
+     *     type: 'month',
+     *     date: new Date()
+     * });
      */
     draw: function(option) {
         var date, type;
@@ -321,6 +333,9 @@ var Calendar = util.defineClass(/** @lends Calendar.prototype */ {
 
     /**
      * Draw next page
+     * @example
+     *
+     * calendar.drawNext();
      */
     drawNext: function() {
         this.draw({
@@ -330,6 +345,10 @@ var Calendar = util.defineClass(/** @lends Calendar.prototype */ {
 
     /**
      * Draw previous page
+     *
+     * @example
+     *
+     * calendar.drawPrev();
      */
     drawPrev: function() {
         this.draw({
@@ -396,6 +415,7 @@ var Calendar = util.defineClass(/** @lends Calendar.prototype */ {
     /**
      * Change language
      * @param {string} language - Language
+     * @see {@link Calendar.localeTexts}
      */
     changeLanguage: function(language) {
         this._header.changeLanguage(language);
@@ -413,7 +433,7 @@ var Calendar = util.defineClass(/** @lends Calendar.prototype */ {
 
     /**
      * Returns rendered layer type
-     * @returns {string}
+     * @returns {'date'|'month'|'year'}
      */
     getType: function() {
         return this._type;

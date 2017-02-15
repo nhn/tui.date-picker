@@ -2,30 +2,38 @@
 <html>
     <head lang="en">
         <meta charset="UTF-8">
-        <title>Default calendar sample (no markup & option)</title>
+        <title>Date calendar</title>
         <meta http-equiv="Pragma" content="no-cache">
         <meta http-equiv="Expires" content="-1">
         <link href="../dist/tui-component-datepicker.css" rel="stylesheet">
+        <style>
+            .calendar-table {
+                width: 500px;
+            }
+            .calendar-table div {
+                margin: 0 auto;
+            }
+        </style>
     </head>
 
     <body>
     <div class="code-html">
-        <table>
+        <table class="calendar-table">
             <tbody>
                 <tr>
-                    <td><div id="calendar-date-en"></div></td>
-                    <td><div id="calendar-month-en"></div></td>
-                    <td><div id="calendar-year-en"></div></td>
-                </tr>
-                <tr>
                     <td><div id="calendar-date-ko"></div></td>
-                    <td><div id="calendar-month-ko"></div></td>
-                    <td><div id="calendar-year-ko"></div></td>
+                    <td><div id="calendar-date-en"></div></td>
+                    <td><div id="calendar-date-chinese-character"></div></td>
                 </tr>
                 <tr>
-                    <td><div id="calendar-date-no-todaybox"></div></td>
-                    <td><div id="calendar-date-show-jump-buttons"></div></td>
-                    <td><div id="calendar-date-custom-format"></div></td>
+                    <td><div id="calendar-month-ko"></div></td>
+                    <td><div id="calendar-month-en"></div></td>
+                    <td><div id="calendar-month-chinese-character"></div></td>
+                </tr>
+                <tr>
+                    <td><div id="calendar-year-ko"></div></td>
+                    <td><div id="calendar-year-en"></div></td>
+                    <td><div id="calendar-year-chinese-character"></div></td>
                 </tr>
             </tbody>
         </table>
@@ -49,14 +57,16 @@
         };
 
         var calDateEn = new tui.component.Calendar('#calendar-date-en', {language: 'en'});
-        var calDateKo = new tui.component.Calendar('#calendar-date-ko', {language: 'ko'});
+        var calDateOptional = new tui.component.Calendar('#calendar-date-ko', {language: 'ko'});
+        var calDateChineseCharacter = new tui.component.Calendar('#calendar-date-chinese-character', {language: 'Chinese character'});
+
         var calMonthEn = new tui.component.Calendar('#calendar-month-en', {language: 'en', type: 'month'});
         var calMonthKo = new tui.component.Calendar('#calendar-month-ko', {language: 'ko', type: 'month'});
+        var calDateChineseCharacter = new tui.component.Calendar('#calendar-month-chinese-character', {language: 'Chinese character', type: 'month'});
+
         var calYearEn = new tui.component.Calendar('#calendar-year-en', {language: 'en', type: 'year'});
         var calYearKo = new tui.component.Calendar('#calendar-year-ko', {language: 'ko', type: 'year'});
-        var calNoTodaybox = new tui.component.Calendar('#calendar-date-no-todaybox', {language: 'ko', showToday: false});
-        var calNoJumpButtons = new tui.component.Calendar('#calendar-date-show-jump-buttons', {language: 'ko', showJumpButtons: true});
-        var calCustomFormat = new tui.component.Calendar('#calendar-date-custom-format', {language: 'Chinese character'});
+        var calDateChineseCharacter = new tui.component.Calendar('#calendar-year-chinese-character', {language: 'Chinese character', type: 'year'});
     </script>
     </body>
 </html>

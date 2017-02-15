@@ -41,7 +41,7 @@ var mergeDefaultOption = function(option) {
  * @param {string} [option.inputType = 'selectbox'] - 'selectbox' or 'spinbox'
  * @param {boolean} [option.showMeridiem = true] - Show meridiem expression?
  *
- * @tutorial timepicker
+ * @tutorial timepickers
  */
 var Timepicker = util.defineClass(/** @lends Timepicker.prototype */ {
     init: function(container, option) {

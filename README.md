@@ -1,22 +1,21 @@
-Date Picker
+Datepicker
 ===============
 Component - DatePicker<br>
 It provides calendarUI for pick a date easily
 
 ## Feature
-* Date Picker
+* Datepicker
     * Pick a specific date & time
-    * Works with DI(Dependency injection) - Calendar, TimePicker
-    * Provides some options (selectable date range, opener buttons, etc.)
-    * Pick specific year & month (v1.4.0)
-* Time Picker
-    * Set a specific time with mouse-click and up/down-key
-    * Provides some options (exclude time, show meridian, etc.)
+    * Date, DateTime-picker
+    * Month-picker
+    * Year-picker
+* Calendar
+* Timepicker
 
 ## Documentation
 * API: https://nhnent.github.io/tui.component.date-picker/latest
-* Tutorial(Korean): https://github.com/nhnent/tui.component.date-picker/wiki
-* Sample: http://nhnent.github.io/tui.component.date-picker/latest/tutorial-sample1.html
+* Tutorial: https://github.com/nhnent/tui.component.date-picker/wiki
+* Examples: http://nhnent.github.io/tui.component.date-picker/latest/tutorial-sample1.html
 
 ## Dependency
 * jquery: ~1.8.3

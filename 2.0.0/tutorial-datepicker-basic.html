@@ -46,71 +46,106 @@
 <div class="main" id="main">
     
 
+<section>
+    <header>
+        
 
-
-    
-
-
-
-
-
-
-
-
+        <h2>Datepicker basic</h2>
+    </header>
 
     
+        
+
+        <ul id="example-nav" class="nav nav-tabs">
+            <li role="presentation" id="example-result-btn" class="active" onclick="showResult()">
+                <a href="#">Result</a>
+            </li>
+            <li role="presentation" id="example-js-btn" class="" onclick="showJs()">
+                <a href="#">JS</a>
+            </li>
+            <li role="presentation" id="example-html-btn" class="" onclick="showHtml()">
+                <a href="#">HTML</a>
+            </li>
+        </ul>
+        <article>
+            
+            <iframe id="example-result" width="100%" height="800" frameborder="0" src=tutorials/datepicker-basic.html></iframe>
+            <div id="example-js" class="hidden"><pre class="prettyprint source">
+        var datepicker = new tui.component.Datepicker('#wrapper', {
+            date: new Date(),
+            input: {
+                element: '#datepicker-input',
+                format: 'yyyy-MM-dd'
+            }
+        });
+    </pre></div>
+            <div id="example-html" class="hidden"><pre class="prettyprint source">
+        &lt;h3>Datepicker basic&lt;/h3>
+        &lt;div class="tui-datepicker-input tui-datetime-input tui-has-focus">
+            &lt;input type="text" id="datepicker-input" aria-label="Date-Time">
+            &lt;span class="tui-ico-date">&lt;/span>
+        &lt;/div>
+        &lt;div id="wrapper" style="margin-top: -1px;">&lt;/div>
+    </pre></div>
+        </article>
+    
+</section>
 
 
-    <section>
-        <article class="readme"><h1>Datepicker</h1><p>Component - DatePicker<br>
-It provides calendarUI for pick a date easily</p>
-<h2>Feature</h2><ul>
-<li>Datepicker<ul>
-<li>Pick a specific date &amp; time</li>
-<li>Date, DateTime-picker</li>
-<li>Month-picker</li>
-<li>Year-picker</li>
-</ul>
-</li>
-<li>Calendar</li>
-<li>Timepicker</li>
-</ul>
-<h2>Documentation</h2><ul>
-<li>API: https://nhnent.github.io/tui.component.date-picker/latest</li>
-<li>Tutorial: https://github.com/nhnent/tui.component.date-picker/wiki</li>
-<li>Examples: http://nhnent.github.io/tui.component.date-picker/latest/tutorial-sample1.html</li>
-</ul>
-<h2>Dependency</h2><ul>
-<li>jquery: ~1.8.3</li>
-<li>tui-code-snippet: ~1.2.0</li>
-<li>tui-component-calendar: ~1.2.0</li>
-</ul>
-<h2>Test environment</h2><ul>
-<li>PC<ul>
-<li>IE8~11</li>
-<li>Chrome</li>
-<li>Firefox</li>
-</ul>
-</li>
-</ul>
-<h2>Download/Install</h2><ul>
-<li>Bower:<ul>
-<li>Latest: <code>bower install tui-component-date-picker</code></li>
-<li>Each version: <code>bower install tui-component-date-picker[#tag]</code></li>
-</ul>
-</li>
-<li>Download: <a href="https://github.com/nhnent/tui.component.date-picker">https://github.com/nhnent/tui.component.date-picker</a></li>
-</ul>
-<h2>License</h2><p><a href="https://github.com/nhnent/tui.component.date-picker/blob/master/LICENSE">MIT LICENSE</a></p>
-<h2>Sponsor</h2><ul>
-<li><img src="https://cloud.githubusercontent.com/assets/12269563/12287774/8cf4d2c0-ba12-11e5-9fa8-0a9c452cca05.png" height="30"><br>
-<a href="https://www.browserstack.com/">BrowserStack</a> is a cloud based cross browser testing tool</li>
-</ul></article>
-    </section>
+    <script>
+        var exampleResult = document.getElementById('example-result');
+        var exampleJs = document.getElementById('example-js');
+        var exampleHtml = document.getElementById('example-html');
+        var exampleResultBtn = document.getElementById('example-result-btn');
+        var exampleJsBtn = document.getElementById('example-js-btn');
+        var exampleHtmlBtn = document.getElementById('example-html-btn');
 
+        function setActive(el) {
+            el.className += ' active';
+        }
 
+        function setInactive(el) {
+            el.className = el.className.replace(/\s*active\s*/g, '');
+        }
 
+        function show(el) {
+            el.className = el.className.replace(/\s*hidden\s*/g, '');
+        }
 
+        function hide(el) {
+            el.className += ' hidden';
+        }
+
+        function showJs() {
+            hide(exampleHtml);
+            hide(exampleResult);
+            setInactive(exampleHtmlBtn);
+            setInactive(exampleResultBtn);
+
+            show(exampleJs);
+            setActive(exampleJsBtn);
+        }
+
+        function showHtml() {
+            hide(exampleJs);
+            hide(exampleResult);
+            setInactive(exampleJsBtn);
+            setInactive(exampleResultBtn);
+
+            show(exampleHtml);
+            setActive(exampleHtmlBtn);
+        }
+
+        function showResult() {
+            hide(exampleJs);
+            hide(exampleHtml);
+            setInactive(exampleJsBtn);
+            setInactive(exampleHtmlBtn);
+
+            show(exampleResult);
+            setActive(exampleResultBtn);
+        }
+    </script>
 
 
 </div>
@@ -125,11 +160,7 @@ It provides calendarUI for pick a date easily</p>
 <script src="scripts/linenumber.js"></script>
 
     <script>
-        var id = 'package:tui-component-datepicker_sub'.replace(/"/g, '_');
-        var element = document.getElementById(id); // do not use jquery selector
-
-        $(element).removeClass('hidden');
-        showLnbApi();
+        showLnbExamples();
     </script>
 
 </body>

@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -49,66 +51,133 @@
 
 
     
-
-
-
-
-
-
-
-
-
-    
-
-
     <section>
-        <article class="readme"><h1>Datepicker</h1><p>Component - DatePicker<br>
-It provides calendarUI for pick a date easily</p>
-<h2>Feature</h2><ul>
-<li>Datepicker<ul>
-<li>Pick a specific date &amp; time</li>
-<li>Date, DateTime-picker</li>
-<li>Month-picker</li>
-<li>Year-picker</li>
-</ul>
-</li>
-<li>Calendar</li>
-<li>Timepicker</li>
-</ul>
-<h2>Documentation</h2><ul>
-<li>API: https://nhnent.github.io/tui.component.date-picker/latest</li>
-<li>Tutorial: https://github.com/nhnent/tui.component.date-picker/wiki</li>
-<li>Examples: http://nhnent.github.io/tui.component.date-picker/latest/tutorial-sample1.html</li>
-</ul>
-<h2>Dependency</h2><ul>
-<li>jquery: ~1.8.3</li>
-<li>tui-code-snippet: ~1.2.0</li>
-<li>tui-component-calendar: ~1.2.0</li>
-</ul>
-<h2>Test environment</h2><ul>
-<li>PC<ul>
-<li>IE8~11</li>
-<li>Chrome</li>
-<li>Firefox</li>
-</ul>
-</li>
-</ul>
-<h2>Download/Install</h2><ul>
-<li>Bower:<ul>
-<li>Latest: <code>bower install tui-component-date-picker</code></li>
-<li>Each version: <code>bower install tui-component-date-picker[#tag]</code></li>
-</ul>
-</li>
-<li>Download: <a href="https://github.com/nhnent/tui.component.date-picker">https://github.com/nhnent/tui.component.date-picker</a></li>
-</ul>
-<h2>License</h2><p><a href="https://github.com/nhnent/tui.component.date-picker/blob/master/LICENSE">MIT LICENSE</a></p>
-<h2>Sponsor</h2><ul>
-<li><img src="https://cloud.githubusercontent.com/assets/12269563/12287774/8cf4d2c0-ba12-11e5-9fa8-0a9c452cca05.png" height="30"><br>
-<a href="https://www.browserstack.com/">BrowserStack</a> is a cloud based cross browser testing tool</li>
-</ul></article>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @fileoverview RangeModel
+ * @author NHN Ent. FE Development Lab &lt;dl_javascript@nhnent.com>
+ */
+'use strict';
+
+var Range = require('./range');
+
+/**
+ * @class
+ * @ignore
+ * @param {Array.&lt;Array.&lt;number>>} ranges - Ranges
+ */
+var RangeModel = tui.util.defineClass(/** @lends RangeModel.prototype */{
+    init: function(ranges) {
+        ranges = ranges || [];
+
+        /**
+         * @type {Array.&lt;Range>}
+         * @private
+         */
+        this._ranges = tui.util.map(ranges, function(range) {
+            return new Range(range[0], range[1]);
+        });
+    },
+
+    /**
+     * Whether the ranges contain a time or time-range
+     * @param {number} start - timestamp
+     * @param {number} [end] - timestamp
+     * @returns {boolean}
+     */
+    contains: function(start, end) {
+        var i = 0;
+        var length = this._ranges.length;
+        var range;
+
+        for (; i &lt; length; i += 1) {
+            range = this._ranges[i];
+            if (range.contains(start, end)) {
+                return true;
+            }
+        }
+
+        return false;
+    },
+
+    /**
+     * Whether overlaps with a point or range
+     * @param {number} start - timestamp
+     * @param {number} [end] - timestamp
+     * @returns {boolean}
+     */
+    hasOverlap: function(start, end) {
+        var i = 0;
+        var length = this._ranges.length;
+        var range;
+
+        for (; i &lt; length; i += 1) {
+            range = this._ranges[i];
+            if (range.isOverlapped(start, end)) {
+                return true;
+            }
+        }
+
+        return false;
+    },
+
+    /**
+     * Add range
+     * @param {number} start - timestamp
+     * @param {number} [end] - timestamp
+     */
+    add: function(start, end) {
+        this._ranges.push(new Range(start, end));
+    },
+
+    /**
+     * Returns minimum value in ranges
+     * @returns {number}
+     */
+    getMinimumValue: function() {
+        return Math.min.apply(null, tui.util.map(this._ranges, function(range) {
+            return range.start;
+        }));
+    },
+
+    /**
+     * Returns maximum value in ranges
+     * @returns {number}
+     */
+    getMaximumValue: function() {
+        return Math.max.apply(null, tui.util.map(this._ranges, function(range) {
+            return range.end;
+        }));
+    },
+
+    /**
+     * @param {number} start - timestamp
+     * @param {number} [end] - timestamp
+     */
+    exclude: function(start, end) {
+        if (!tui.util.isNumber(end)) {
+            end = start;
+        }
+
+        tui.util.forEach(this._ranges, function(range) {
+            if (range.contains(start, end)) {
+                // Should add split range
+                this.add(end + 1, range.end);
+            }
+            range.exclude(start, end);
+        }, this);
+
+        // Reduce empty ranges
+        this._ranges = tui.util.filter(this._ranges, function(range) {
+            return !range.isEmpty();
+        });
+    }
+});
+
+module.exports = RangeModel;
+</code></pre>
+        </article>
     </section>
-
-
 
 
 
@@ -125,7 +194,7 @@ It provides calendarUI for pick a date easily</p>
 <script src="scripts/linenumber.js"></script>
 
     <script>
-        var id = 'package:tui-component-datepicker_sub'.replace(/"/g, '_');
+        var id = '_sub'.replace(/"/g, '_');
         var element = document.getElementById(id); // do not use jquery selector
 
         $(element).removeClass('hidden');

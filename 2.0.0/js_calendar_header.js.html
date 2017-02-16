@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -49,66 +51,228 @@
 
 
     
-
-
-
-
-
-
-
-
-
-    
-
-
     <section>
-        <article class="readme"><h1>Datepicker</h1><p>Component - DatePicker<br>
-It provides calendarUI for pick a date easily</p>
-<h2>Feature</h2><ul>
-<li>Datepicker<ul>
-<li>Pick a specific date &amp; time</li>
-<li>Date, DateTime-picker</li>
-<li>Month-picker</li>
-<li>Year-picker</li>
-</ul>
-</li>
-<li>Calendar</li>
-<li>Timepicker</li>
-</ul>
-<h2>Documentation</h2><ul>
-<li>API: https://nhnent.github.io/tui.component.date-picker/latest</li>
-<li>Tutorial: https://github.com/nhnent/tui.component.date-picker/wiki</li>
-<li>Examples: http://nhnent.github.io/tui.component.date-picker/latest/tutorial-sample1.html</li>
-</ul>
-<h2>Dependency</h2><ul>
-<li>jquery: ~1.8.3</li>
-<li>tui-code-snippet: ~1.2.0</li>
-<li>tui-component-calendar: ~1.2.0</li>
-</ul>
-<h2>Test environment</h2><ul>
-<li>PC<ul>
-<li>IE8~11</li>
-<li>Chrome</li>
-<li>Firefox</li>
-</ul>
-</li>
-</ul>
-<h2>Download/Install</h2><ul>
-<li>Bower:<ul>
-<li>Latest: <code>bower install tui-component-date-picker</code></li>
-<li>Each version: <code>bower install tui-component-date-picker[#tag]</code></li>
-</ul>
-</li>
-<li>Download: <a href="https://github.com/nhnent/tui.component.date-picker">https://github.com/nhnent/tui.component.date-picker</a></li>
-</ul>
-<h2>License</h2><p><a href="https://github.com/nhnent/tui.component.date-picker/blob/master/LICENSE">MIT LICENSE</a></p>
-<h2>Sponsor</h2><ul>
-<li><img src="https://cloud.githubusercontent.com/assets/12269563/12287774/8cf4d2c0-ba12-11e5-9fa8-0a9c452cca05.png" height="30"><br>
-<a href="https://www.browserstack.com/">BrowserStack</a> is a cloud based cross browser testing tool</li>
-</ul></article>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @fileoverview Calendar Header
+ * @author NHN Ent. FE dev Lab &lt;dl_javascript@nhnent.com>
+ */
+
+'use strict';
+
+var localeTexts = require('./../localeTexts');
+var headerTmpl = require('./../../template/calendar/header.hbs');
+var DateTimeFormatter = require('../dateTimeFormatter');
+var constants = require('../constants');
+
+var TYPE_DATE = constants.TYPE_DATE;
+var TYPE_MONTH = constants.TYPE_MONTH;
+var TYPE_YEAR = constants.TYPE_YEAR;
+
+var CLASS_NAME_PREV_MONTH_BTN = constants.CLASS_NAME_PREV_MONTH_BTN;
+var CLASS_NAME_PREV_YEAR_BTN = constants.CLASS_NAME_PREV_YEAR_BTN;
+var CLASS_NAME_NEXT_YEAR_BTN = constants.CLASS_NAME_NEXT_YEAR_BTN;
+var CLASS_NAME_NEXT_MONTH_BTN = constants.CLASS_NAME_NEXT_MONTH_BTN;
+
+var CLASS_NAME_TITLE_MONTH = 'tui-calendar-title-month';
+var CLASS_NAME_TITLE_YEAR = 'tui-calendar-title-year';
+var CLASS_NAME_TITLE_YEAR_TO_YEAR = 'tui-calendar-title-year-to-year';
+
+var YEAR_TITLE_FORMAT = 'yyyy';
+
+/**
+ * @ignore
+ * @class
+ * @param {string|Element|jQuery} container - Header container
+ * @param {object} option - Header option
+ * @param {string} option.language - Header language
+ * @param {boolean} option.showToday - Has today box or not.
+ * @param {boolean} option.showJumpButtons - Has jump buttons or not.
+ */
+var Header = tui.util.defineClass(/** @lends Header.prototype */{
+    init: function(container, option) {
+        /**
+         * Container element
+         * @type {jQuery}
+         * @private
+         */
+        this._$container = $(container);
+
+        /**
+         * headerElement
+         * @type {jQuery}
+         * @private
+         */
+        this._$element = $();
+
+        /**
+         * Render today box or not
+         * @type {boolean}
+         * @private
+         */
+        this._showToday = option.showToday;
+
+        /**
+         * Render jump buttons or not (next,prev year on date calendar)
+         * @type {boolean}
+         * @private
+         */
+        this._showJumpButtons = option.showJumpButtons;
+
+        /**
+         * Year_Month title formatter
+         * @type {DateTimeFormatter}
+         * @private
+         */
+        this._yearMonthTitleFormatter = null;
+
+        /**
+         * Year title formatter
+         * @type {DateTimeFormatter}
+         * @private
+         */
+        this._yearTitleFormatter = null;
+
+        /**
+         * Today formatter
+         * @type {DateTimeFormatter}
+         * @private
+         */
+        this._todayFormatter = null;
+
+        this._setFormatters(localeTexts[option.language]);
+        this._setEvents(option);
+    },
+
+    /**
+     * Set formatters
+     * @param {object} localeText - Locale text
+     * @private
+     */
+    _setFormatters: function(localeText) {
+        this._yearMonthTitleFormatter = new DateTimeFormatter(localeText.titleFormat, localeText.titles);
+        this._yearTitleFormatter = new DateTimeFormatter(YEAR_TITLE_FORMAT, localeText.titles);
+        this._todayFormatter = new DateTimeFormatter(localeText.todayFormat, localeText.titles);
+    },
+
+    /**
+     * Set events for firing customEvents
+     * @param {object} option - Constructor option
+     * @private
+     */
+    _setEvents: function() {
+        var self = this;
+        var classNames = [
+            CLASS_NAME_PREV_MONTH_BTN,
+            CLASS_NAME_PREV_YEAR_BTN,
+            CLASS_NAME_NEXT_MONTH_BTN,
+            CLASS_NAME_NEXT_YEAR_BTN
+        ];
+
+        tui.util.forEach(classNames, function(className) {
+            self._$container.on('touchend.calendar click.calendar', '.' + className, function(ev) {
+                self.fire('click', ev);
+                ev.preventDefault(); // To prevent click after touchend
+            });
+        });
+    },
+
+    /**
+     * Returns title class
+     * @param {string} type - Calendar type
+     * @returns {string}
+     * @private
+     */
+    _getTitleClass: function(type) {
+        switch (type) {
+            case TYPE_DATE:
+                return CLASS_NAME_TITLE_MONTH;
+            case TYPE_MONTH:
+                return CLASS_NAME_TITLE_YEAR;
+            case TYPE_YEAR:
+                return CLASS_NAME_TITLE_YEAR_TO_YEAR;
+            default:
+                return '';
+        }
+    },
+
+    /**
+     * Returns title text
+     * @param {Date} date - date
+     * @param {string} type - Calendar type
+     * @returns {string}
+     * @private
+     */
+    _getTitleText: function(date, type) {
+        var currentYear, start, end;
+
+        switch (type) {
+            case TYPE_DATE:
+                return this._yearMonthTitleFormatter.format(date);
+            case TYPE_MONTH:
+                return this._yearTitleFormatter.format(date);
+            case TYPE_YEAR:
+                currentYear = date.getFullYear();
+                start = new Date(currentYear - 4, 0, 1);
+                end = new Date(currentYear + 4, 0, 1);
+
+                return this._yearTitleFormatter.format(start) + ' - ' + this._yearTitleFormatter.format(end);
+            default:
+                return '';
+        }
+    },
+
+    /**
+     * Change langauge
+     * @param {string} language - Language
+     */
+    changeLanguage: function(language) {
+        this._setFormatters(localeTexts[language]);
+    },
+
+    /**
+     * Render header
+     * @param {Date} date - date
+     * @param {string} type - Calendar type
+     */
+    render: function(date, type) {
+        var context = {
+            showToday: this._showToday,
+            showJumpButtons: this._showJumpButtons,
+            todayText: this._todayFormatter.format(new Date()),
+            isDateCalendar: type === TYPE_DATE,
+            titleClass: this._getTitleClass(type),
+            title: this._getTitleText(date, type)
+        };
+
+        this._$element.remove();
+        this._$element = $(headerTmpl(context));
+        this._$element.appendTo(this._$container);
+    },
+
+    /**
+     * Destroy header
+     */
+    destroy: function() {
+        this.off();
+        this._$container.off('.calendar');
+        this._$element.remove();
+        this._$container
+            = this._showToday
+            = this._showJumpButtons
+            = this._yearMonthTitleFormatter
+            = this._yearTitleFormatter
+            = this._todayFormatter
+            = this._$element
+            = null;
+    }
+});
+
+tui.util.CustomEvents.mixin(Header);
+module.exports = Header;
+</code></pre>
+        </article>
     </section>
-
-
 
 
 
@@ -125,7 +289,7 @@ It provides calendarUI for pick a date easily</p>
 <script src="scripts/linenumber.js"></script>
 
     <script>
-        var id = 'package:tui-component-datepicker_sub'.replace(/"/g, '_');
+        var id = '_sub'.replace(/"/g, '_');
         var element = document.getElementById(id); // do not use jquery selector
 
         $(element).removeClass('hidden');

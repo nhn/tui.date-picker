@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -49,66 +51,144 @@
 
 
     
-
-
-
-
-
-
-
-
-
-    
-
-
     <section>
-        <article class="readme"><h1>Datepicker</h1><p>Component - DatePicker<br>
-It provides calendarUI for pick a date easily</p>
-<h2>Feature</h2><ul>
-<li>Datepicker<ul>
-<li>Pick a specific date &amp; time</li>
-<li>Date, DateTime-picker</li>
-<li>Month-picker</li>
-<li>Year-picker</li>
-</ul>
-</li>
-<li>Calendar</li>
-<li>Timepicker</li>
-</ul>
-<h2>Documentation</h2><ul>
-<li>API: https://nhnent.github.io/tui.component.date-picker/latest</li>
-<li>Tutorial: https://github.com/nhnent/tui.component.date-picker/wiki</li>
-<li>Examples: http://nhnent.github.io/tui.component.date-picker/latest/tutorial-sample1.html</li>
-</ul>
-<h2>Dependency</h2><ul>
-<li>jquery: ~1.8.3</li>
-<li>tui-code-snippet: ~1.2.0</li>
-<li>tui-component-calendar: ~1.2.0</li>
-</ul>
-<h2>Test environment</h2><ul>
-<li>PC<ul>
-<li>IE8~11</li>
-<li>Chrome</li>
-<li>Firefox</li>
-</ul>
-</li>
-</ul>
-<h2>Download/Install</h2><ul>
-<li>Bower:<ul>
-<li>Latest: <code>bower install tui-component-date-picker</code></li>
-<li>Each version: <code>bower install tui-component-date-picker[#tag]</code></li>
-</ul>
-</li>
-<li>Download: <a href="https://github.com/nhnent/tui.component.date-picker">https://github.com/nhnent/tui.component.date-picker</a></li>
-</ul>
-<h2>License</h2><p><a href="https://github.com/nhnent/tui.component.date-picker/blob/master/LICENSE">MIT LICENSE</a></p>
-<h2>Sponsor</h2><ul>
-<li><img src="https://cloud.githubusercontent.com/assets/12269563/12287774/8cf4d2c0-ba12-11e5-9fa8-0a9c452cca05.png" height="30"><br>
-<a href="https://www.browserstack.com/">BrowserStack</a> is a cloud based cross browser testing tool</li>
-</ul></article>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @fileoverview Selectbox (in Timepicker)
+ * @author NHN Ent. FE Development Lab &lt;dl_javascript@nhnent.com>
+ */
+
+'use strict';
+
+var tmpl = require('./../../template/timepicker/selectbox.hbs');
+var util = tui.util;
+
+/**
+ * @class
+ * @ignore
+ * @param {jQuery|string|Element} container - Container element
+ * @param {object} option - Option
+ * @param {Array.&lt;number>} option.items - Items
+ * @param {number} option.initialValue - Initial value
+ */
+var Selectbox = util.defineClass(/** @lends Selectbox.prototype */ {
+    init: function(container, option) {
+        option = util.extend({
+            items: []
+        }, option);
+
+        /**
+         * Container element
+         * @type {jQuery}
+         * @private
+         */
+        this._$container = $(container);
+
+        /**
+         * Selectbox items
+         * @type {Array.&lt;number>}
+         * @private
+         */
+        this._items = option.items || [];
+
+        /**
+         * Selected index
+         * @type {number}
+         * @private
+         */
+        this._selectedIndex = Math.max(0, util.inArray(option.initialValue, this._items));
+
+        /**
+         * Element
+         * @type {jQuery}
+         * @private
+         */
+        this._$element = $();
+
+        this._render();
+        this._setEvents();
+    },
+
+    /**
+     * Render selectbox
+     * @private
+     */
+    _render: function() {
+        var context = {
+            items: this._items,
+            initialValue: this.getValue()
+        };
+
+        this._$element.remove();
+        this._$element = $(tmpl(context));
+        this._$element.appendTo(this._$container);
+    },
+
+    /**
+     * Set events
+     * @private
+     */
+    _setEvents: function() {
+        this._$container.on('change.selectbox', 'select', $.proxy(this._onChange, this));
+    },
+
+    /**
+     * Change event handler
+     * @param {jQuery.Event} ev - Event object
+     * @private
+     */
+    _onChange: function(ev) {
+        var newValue = Number(ev.target.value);
+
+        this._selectedIndex = util.inArray(newValue, this._items);
+        this.fire('change', {
+            value: newValue
+        });
+    },
+
+    /**
+     * Returns current value
+     * @returns {number}
+     */
+    getValue: function() {
+        return this._items[this._selectedIndex];
+    },
+
+    /**
+     * Set value
+     * @param {number} value - New value
+     */
+    setValue: function(value) {
+        var newIndex = util.inArray(value, this._items);
+
+        if (newIndex > -1 &amp;&amp; newIndex !== this._selectedIndex) {
+            this._selectedIndex = newIndex;
+            this._$element.val(value).change();
+        }
+    },
+
+    /**
+     * Destory
+     */
+    destroy: function() {
+        this.off();
+        this._$container.off('.selectbox');
+        this._$element.remove();
+
+        this._$container
+            = this._items
+            = this._selectedIndex
+            = this._$element
+            = this._$element
+            = null;
+    }
+});
+
+util.CustomEvents.mixin(Selectbox);
+module.exports = Selectbox;
+</code></pre>
+        </article>
     </section>
-
-
 
 
 
@@ -125,7 +205,7 @@ It provides calendarUI for pick a date easily</p>
 <script src="scripts/linenumber.js"></script>
 
     <script>
-        var id = 'package:tui-component-datepicker_sub'.replace(/"/g, '_');
+        var id = '_sub'.replace(/"/g, '_');
         var element = document.getElementById(id); // do not use jquery selector
 
         $(element).removeClass('hidden');

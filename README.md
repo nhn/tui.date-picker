@@ -15,7 +15,7 @@ It provides calendarUI for pick a date easily
 ## Documentation
 * API: https://nhnent.github.io/tui.component.date-picker/latest
 * Tutorial: https://github.com/nhnent/tui.component.date-picker/wiki
-* Examples: http://nhnent.github.io/tui.component.date-picker/latest/tutorial-sample1.html
+* Examples: https://nhnent.github.io/tui.component.date-picker/latest/tutorial-datepicker-basic.html
 
 ## Dependency
 * jquery: ~1.8.3

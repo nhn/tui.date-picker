@@ -20,7 +20,6 @@ It provides calendarUI for pick a date easily
 ## Dependency
 * jquery: ~1.8.3
 * tui-code-snippet: ~1.2.0
-* tui-component-calendar: ~1.2.0
 
 ## Test environment
 * PC

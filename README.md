@@ -1,7 +1,6 @@
 Datepicker
 ===============
-Component - DatePicker<br>
-It provides calendarUI for pick a date easily
+Easily pick a date-time on calendar UI.
 
 ## Feature
 * Datepicker

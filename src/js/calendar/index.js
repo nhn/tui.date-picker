@@ -34,11 +34,17 @@ var util = tui.util;
  * @constructor
  * @param {HTMLElement|jQuery|string} wrapperElement - Wrapper element or selector
  * @param {Object} [option] - Options for initialize
+ * @param {string} [option.language = 'en'] - Calendar language - {@link Calendar.localeTexts}
+ * @param {boolean} [option.showToday] - If true, shows today
+ * @param {boolean} [option.showJumpButtons] - If true, shows jump buttons (next,prev-year in 'date'-Calendar)
+ * @param {Date} [option.date = new Date()] - Initial date
+ * @param {string} [option.type = 'date'] - Calendar types - 'date', 'month', 'year'
  * @tutorial calendars
  * @example
  * var calendar = new tui.component.Calendar('#calendar-wrapper', {
  *     language: 'en', // There are two supporting types by default - 'en' and 'ko'.
  *     showToday: true,
+ *     showJumpButtons: false,
  *     date: new Date(),
  *     type: 'date'
  * });
@@ -310,6 +316,13 @@ var Calendar = util.defineClass(/** @lends Calendar.prototype */ {
             this._render();
         }
 
+        /**
+         * @event Calendar#draw
+         * @param {object} event
+         * @param {Date} event.date - Calendar date
+         * @param {string} event.type - Calendar type
+         * @param {jQuery} event.$dateElements - Calendar date elements
+         */
         this.fire('draw', {
             date: date,
             type: type,

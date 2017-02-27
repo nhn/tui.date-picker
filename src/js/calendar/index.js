@@ -324,7 +324,7 @@ var Calendar = util.defineClass(/** @lends Calendar.prototype */ {
          * @param {jQuery} event.$dateElements - Calendar date elements
          */
         this.fire('draw', {
-            date: date,
+            date: this._date,
             type: type,
             $dateElements: this._body.getDateElements()
         });
@@ -453,11 +453,27 @@ var Calendar = util.defineClass(/** @lends Calendar.prototype */ {
     },
 
     /**
-     * Returns date elements on body
+     * Returns date elements(jQuery) on body
      * @returns {jQuery}
      */
     getDateElements: function() {
         return this._body.getDateElements();
+    },
+
+    /**
+     * Add calendar css class
+     * @param {string} className - Class name
+     */
+    addCssClass: function(className) {
+        this._$element.addClass(className);
+    },
+
+    /**
+     * Remove calendar css class
+     * @param {string} className - Class name
+     */
+    removeCssClass: function(className) {
+        this._$element.removeClass(className);
     },
 
     /**

@@ -16,6 +16,8 @@ module.exports = {
 
     DEFAULT_LANGUAGE_TYPE: 'en',
 
+    CLASS_NAME_SELECTED: 'tui-is-selected',
+
     CLASS_NAME_PREV_MONTH_BTN: 'tui-calendar-btn-prev-month',
     CLASS_NAME_PREV_YEAR_BTN: 'tui-calendar-btn-prev-year',
     CLASS_NAME_NEXT_YEAR_BTN: 'tui-calendar-btn-next-year',

@@ -36,11 +36,8 @@ describe('Date Picker', function() {
             expect(datepicker.getDate()).toBeNull();
         });
 
-        it('should open today calendar', function() {
-            var calendarDate;
-
-            datepicker.open();
-            calendarDate = datepicker.getCalendar().getDate();
+        it('should show today calendar if date is null', function() {
+            var calendarDate = datepicker.getCalendar().getDate();
 
             expect(calendarDate.setHours(0, 0, 0, 0)).toEqual(new Date().setHours(0, 0, 0, 0));
         });
@@ -57,9 +54,9 @@ describe('Date Picker', function() {
 
         beforeEach(function() {
             datepicker = new Datepicker($('<div></div>'), {
-                date: new Date(2014, 10, 27),
+                date: new Date(2017, 10, 27),
                 selectableRanges: [
-                    [new Date(2013, 10, 27), new Date(2015, 10, 27)]
+                    [new Date(2016, 10, 27), new Date(2018, 10, 27)]
                 ],
                 openers: [
                     document.createElement('button')
@@ -101,7 +98,7 @@ describe('Date Picker', function() {
         it('getDate', function() {
             var date = datepicker.getDate();
 
-            expect(date).toEqual(new Date(2014, 10, 27));
+            expect(date).toEqual(new Date(2017, 10, 27));
         });
 
         it('getTimepicker', function() {
@@ -113,13 +110,13 @@ describe('Date Picker', function() {
         });
 
         it('setDate', function() {
-            datepicker.setDate(new Date(2014, 2, 12));
+            datepicker.setDate(new Date(2017, 2, 12));
 
-            expect(datepicker.getDate()).toEqual(new Date(2014, 2, 12));
+            expect(datepicker.getDate()).toEqual(new Date(2017, 2, 12));
 
             datepicker.setDate();
 
-            expect(datepicker.getDate()).toEqual(new Date(2014, 2, 12));
+            expect(datepicker.getDate()).toEqual(new Date(2017, 2, 12));
         });
 
         it('isSelectable', function() {
@@ -137,9 +134,9 @@ describe('Date Picker', function() {
         });
 
         it('isSelected', function() {
-            datepicker.setDate(new Date(2014, 2, 12));
+            datepicker.setDate(new Date(2017, 2, 12));
 
-            expect(datepicker.isSelected(new Date(2014, 2, 12))).toBe(true);
+            expect(datepicker.isSelected(new Date(2017, 2, 12))).toBe(true);
         });
 
         it('timepicker.setTime -> input text', function() {
@@ -149,7 +146,7 @@ describe('Date Picker', function() {
             datepicker.setDateFormat('yyyyMMdd hh:mm A');
             datepicker.getTimepicker().setTime(12, 34);
 
-            expect(input.value).toEqual('20141127 12:34 PM');
+            expect(input.value).toEqual('20171127 12:34 PM');
         });
 
         it('addOpener', function() {
@@ -170,8 +167,8 @@ describe('Date Picker', function() {
         });
 
         it('setRanges', function() {
-            var start = new Date(2016, 10, 11);
-            var end = new Date(2017, 10, 11);
+            var start = new Date(2010, 10, 11);
+            var end = new Date(2011, 10, 11);
             var prevModel = datepicker._rangeModel;
             var nextModel;
 
@@ -186,11 +183,12 @@ describe('Date Picker', function() {
             expect(prevModel).not.toBe(nextModel);
             expect(datepicker.isSelectable(start)).toBe(true);
             expect(datepicker.isSelectable(end)).toBe(true);
+            expect(datepicker.getDate()).toBe(null);
         });
 
         it('addRange', function() {
-            var start = new Date(2017, 0, 1);
-            var end = new Date(2017, 1, 1);
+            var start = new Date(2020, 0, 1);
+            var end = new Date(2021, 1, 1);
 
             expect(datepicker.isSelectable(start)).toBe(false);
             expect(datepicker.isSelectable(end)).toBe(false);
@@ -215,11 +213,51 @@ describe('Date Picker', function() {
             expect(datepicker.isSelectable(new Date(2017, 0, 7))).toBe(true);
             expect(datepicker.isSelectable(new Date(2017, 0, 20))).toBe(true);
 
-            datepicker.removeRange(removeStart, removeEnd);
+            datepicker.removeRange(removeStart, removeEnd, 'date');
 
             expect(datepicker.isSelectable(new Date(2017, 0, 5))).toBe(false);
             expect(datepicker.isSelectable(new Date(2017, 0, 7))).toBe(false);
             expect(datepicker.isSelectable(new Date(2017, 0, 20))).toBe(false);
+        });
+
+        it('setInput - syncFromInput=false', function() {
+            var input = document.createElement('input');
+            datepicker.setDate(new Date(2017, 0, 1, 10, 10));
+
+            datepicker.setInput(input, {
+                format: 'yyyyMMdd'
+            });
+
+            expect(input.value).toEqual('20170101');
+        });
+
+        it('setInput - syncFromInput=true with selectable input value', function() {
+            var input = document.createElement('input');
+
+            datepicker.setDate(new Date(2017, 0, 1, 10, 10));
+
+            input.value = '20171111';
+            datepicker.setInput(input, {
+                format: 'yyyyMMdd',
+                syncFromInput: true
+            });
+
+            expect(datepicker.getDate()).toEqual(new Date(2017, 10, 11));
+        });
+
+        it('setInput - syncFromInput=true with unselectable input value', function() {
+            var input = document.createElement('input');
+
+            datepicker.setDate(new Date(2017, 0, 1, 10, 10));
+
+            input.value = '20200101';
+            datepicker.setInput(input, {
+                format: 'yyyyMMdd',
+                syncFromInput: true
+            });
+
+            expect(input.value).toEqual('');
+            expect(datepicker.getDate()).toBe(null);
         });
 
         it('disable', function() {
@@ -259,6 +297,22 @@ describe('Date Picker', function() {
             datepicker.open();
 
             expect(handler).toHaveBeenCalled();
+        });
+
+        it('findOverlappedRange', function() {
+            var actual;
+
+            datepicker.setRanges([
+                [new Date(2016, 0, 1), new Date(2016, 1, 1)],
+                [new Date(2016, 4, 1), new Date(2016, 5, 1)],
+                [new Date(2017, 2, 1), new Date(2017, 3, 1)]
+            ]);
+
+            actual = datepicker.findOverlappedRange(new Date(2016, 4, 3), new Date(2017, 4, 20));
+            expect(actual).toEqual([new Date(2016, 4, 1), new Date(2016, 5, 1)]);
+
+            actual = datepicker.findOverlappedRange(new Date(2017, 0, 1), new Date(2017, 4, 20));
+            expect(actual).toEqual([new Date(2017, 2, 1), new Date(2017, 3, 1)]);
         });
     });
 
@@ -358,7 +412,7 @@ describe('Date Picker', function() {
         });
     });
 
-    describe('should refersh date & input', function() {
+    describe('changing ranges - ', function() {
         var datepicker, container, input;
 
         beforeEach(function() {
@@ -379,9 +433,10 @@ describe('Date Picker', function() {
             datepicker.destroy();
             input = null;
             container = null;
+            datepicker = null;
         });
 
-        it('with no change from "setRanges" containing current date', function() {
+        it('should not change current date when selectable after "setRanges"', function() {
             var prevInputValue = input.value;
 
             datepicker.setRanges([
@@ -392,16 +447,16 @@ describe('Date Picker', function() {
             expect(input.value).toEqual(prevInputValue);
         });
 
-        it('with no change from "removeRange" excepting current date', function() {
+        it('shuold not change current date when selectable after "removeRange"', function() {
             var prevInputValue = input.value;
 
-            datepicker.removeRange(new Date(2016, 11, 1), new Date(2016, 11, 31));
+            datepicker.removeRange(new Date(2016, 11, 1), new Date(2016, 11, 31), 'date');
 
             expect(datepicker.getDate()).toEqual(new Date(2017, 0, 1));
             expect(input.value).toEqual(prevInputValue);
         });
 
-        it('to null from "setRanges" excepting current date', function() {
+        it('should set current-date to null when unselectable after "setRanges"', function() {
             datepicker.setRanges([
                 [new Date(2016, 0, 1), new Date(2016, 11, 1)]
             ]);
@@ -410,11 +465,27 @@ describe('Date Picker', function() {
             expect(input.value).toEqual('');
         });
 
-        it('to null from "removeRange" containing current date', function() {
+        it('should set current-date to null when unselectable after "removeRanges"', function() {
             datepicker.removeRange(new Date(2016, 11, 1), new Date(2017, 1, 1));
 
             expect(datepicker.getDate()).toBeNull();
             expect(input.value).toEqual('');
+        });
+
+        it('should change (unselectable)calendar-date to minimum-selectable after "setRanges"', function() {
+            datepicker.setRanges([
+                [new Date(2015, 0, 1), new Date(2016, 0, 1)]
+            ]);
+            expect(datepicker.getCalendar().getDate()).toEqual(new Date(2015, 0, 1));
+        });
+
+        it('should not change (selectable)calendar-date when selectable after "setRanges"', function() {
+            datepicker.setDate(new Date(2017, 5, 1));
+            datepicker.setRanges([
+                [new Date(2017, 0, 1), new Date(2018, 0, 1)]
+            ]);
+
+            expect(datepicker.getCalendar().getDate()).toEqual(new Date(2017, 5, 1));
         });
     });
 
@@ -485,6 +556,20 @@ describe('Date Picker', function() {
 
             $btn = $container.find('.' + constants.CLASS_NAME_NEXT_MONTH_BTN);
             expect(isHidden($btn)).toBe(true);
+        });
+
+        it('should not hide next/prev-year-btn when equals to selectables minimum/maximum', function() {
+            var $btn;
+            datepicker.setRanges([
+                [new Date(2015, 0, 1), new Date(2017, 0, 1)]
+            ]);
+            datepicker.setDate(new Date(2016, 0, 1));
+
+            $btn = $container.find('.' + constants.CLASS_NAME_NEXT_YEAR_BTN);
+            expect(isHidden($btn)).toBe(false);
+
+            $btn = $container.find('.' + constants.CLASS_NAME_PREV_YEAR_BTN);
+            expect(isHidden($btn)).toBe(false);
         });
     });
 });

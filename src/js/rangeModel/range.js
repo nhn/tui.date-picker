@@ -20,8 +20,8 @@ var Range = tui.util.defineClass(/** @lends Range.prototype */{
 
     /**
      * Set range
-     * @param {number} start - timestamp
-     * @param {number} [end] - timestamp
+     * @param {number} start - Start number
+     * @param {number} [end] - End number
      */
     setRange: function(start, end) {
         if (!isNumber(end)) {
@@ -30,6 +30,20 @@ var Range = tui.util.defineClass(/** @lends Range.prototype */{
 
         this.start = Math.min(start, end);
         this.end = Math.max(start, end);
+    },
+
+    /**
+     * Merge range
+     * @param {number} start - Start
+     * @param {number} [end] - End
+     */
+    merge: function(start, end) {
+        if (!isNumber(start) || !isNumber(end) || !this.isOverlapped(start, end)) {
+            return;
+        }
+
+        this.start = Math.min(start, this.start);
+        this.end = Math.max(end, this.end);
     },
 
     /**
@@ -49,8 +63,8 @@ var Range = tui.util.defineClass(/** @lends Range.prototype */{
 
     /**
      * Whether containing a range.
-     * @param {number} start - timestamp
-     * @param {number} [end] - timestamp
+     * @param {number} start - Start
+     * @param {number} [end] - End
      * @returns {boolean}
      */
     contains: function(start, end) {
@@ -63,8 +77,8 @@ var Range = tui.util.defineClass(/** @lends Range.prototype */{
 
     /**
      * Whether overlaps with a range
-     * @param {number} start - timestamp
-     * @param {number} [end] - timestamp
+     * @param {number} start - Start
+     * @param {number} [end] - End
      * @returns {boolean}
      */
     isOverlapped: function(start, end) {
@@ -77,8 +91,8 @@ var Range = tui.util.defineClass(/** @lends Range.prototype */{
 
     /**
      * Exclude a range
-     * @param {number} start - timestamp
-     * @param {number} end - timestamp
+     * @param {number} start - Start
+     * @param {number} end - End
      */
     exclude: function(start, end) {
         if (start <= this.start && end >= this.end) {

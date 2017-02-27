@@ -4,7 +4,7 @@
  */
 'use strict';
 
-var Range = require('../../src/js/datepicker/range');
+var Range = require('../../src/js/rangeModel/range');
 
 describe('Range', function() {
     var range;
@@ -13,7 +13,7 @@ describe('Range', function() {
         range = new Range(100, 300);
     });
 
-    it('should contain a timestamp in range', function() {
+    it('contains a value', function() {
         expect(range.contains(100)).toBe(true);
         expect(range.contains(200)).toBe(true);
         expect(range.contains(300)).toBe(true);
@@ -23,7 +23,7 @@ describe('Range', function() {
         expect(range.contains(1000)).toBe(false);
     });
 
-    it('should contain a time-range(subset) in range', function() {
+    it('contains a sub-range', function() {
         expect(range.contains(100, 110)).toBe(true);
         expect(range.contains(200, 210)).toBe(true);
         expect(range.contains(290, 300)).toBe(true);
@@ -33,7 +33,7 @@ describe('Range', function() {
         expect(range.contains(-200, -100)).toBe(false);
     });
 
-    it('should be able to set a new range', function() {
+    it('(re)set', function() {
         range.setRange(10, 20);
 
         expect(range.start).toBe(10);
@@ -41,7 +41,7 @@ describe('Range', function() {
         expect(range.contains(10, 20)).toBe(true);
     });
 
-    it('should set empty', function() {
+    it('set empty', function() {
         expect(range.isEmpty()).toBe(false);
 
         range.setEmpty();
@@ -49,7 +49,7 @@ describe('Range', function() {
         expect(range.isEmpty()).toBe(true);
     });
 
-    it('should be able to check overlapping', function() {
+    it('check overlaps', function() {
         expect(range.isOverlapped(10, 110)).toBe(true);
         expect(range.isOverlapped(101, 120)).toBe(true);
         expect(range.isOverlapped(250, 310)).toBe(true);
@@ -57,9 +57,13 @@ describe('Range', function() {
 
         expect(range.isOverlapped(1, 99)).toBe(false);
         expect(range.isOverlapped(301, 333)).toBe(false);
+
+        expect(range.isOverlapped(200)).toBe(true);
+        expect(range.isOverlapped(100)).toBe(true);
+        expect(range.isOverlapped(300)).toBe(true);
     });
 
-    it('should be able to exclude a time-range (subset)', function() {
+    it('exclude a sub-range(in-range)', function() {
         expect(range.contains(110, 200)).toBe(true);
 
         range.exclude(110, 200); // Range: 100 - 109
@@ -68,7 +72,7 @@ describe('Range', function() {
         expect(range.contains(110, 200)).toBe(false);
         expect(range.contains(200, 300)).toBe(false);
     });
-    it('should be able to exclude a time-range (left)', function() {
+    it('exclude a sub-range(right-side)', function() {
         expect(range.isOverlapped(201, 400)).toBe(true);
 
         range.exclude(201, 400); // Range: 100 - 200
@@ -77,7 +81,7 @@ describe('Range', function() {
         expect(range.isOverlapped(201, 300)).toBe(false);
     });
 
-    it('should be able to exclude a time-range (right)', function() {
+    it('exclude a sub-range(left-side)', function() {
         expect(range.isOverlapped(10, 199)).toBe(true);
 
         range.exclude(10, 199); // Range: 200 - 300
@@ -85,5 +89,12 @@ describe('Range', function() {
         expect(range.contains(200, 300)).toBe(true);
         expect(range.isOverlapped(10, 199)).toBe(false);
         expect(range.isOverlapped(301, 400)).toBe(false);
+    });
+
+    it('merge a range', function() {
+        range.merge(0, 100);
+
+        expect(range.start).toBe(0);
+        expect(range.end).toBe(300);
     });
 });

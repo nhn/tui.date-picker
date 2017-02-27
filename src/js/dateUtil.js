@@ -5,6 +5,13 @@
  */
 'use strict';
 
+var constants = require('./constants');
+var snippet = tui.util;
+
+var TYPE_DATE = constants.TYPE_DATE;
+var TYPE_MONTH = constants.TYPE_MONTH;
+var TYPE_YEAR = constants.TYPE_YEAR;
+
 /**
  * Utils of calendar
  * @namespace dateUtil
@@ -18,8 +25,8 @@ var utils = {
      * @returns {number} Weeks count (4~6)
      **/
     getWeeksCount: function(year, month) {
-        var firstDay = this.getFirstDay(year, month),
-            lastDate = this.getLastDayInMonth(year, month);
+        var firstDay = utils.getFirstDay(year, month),
+            lastDate = utils.getLastDayInMonth(year, month);
 
         return Math.ceil((firstDay + lastDate) / 7);
     },
@@ -29,7 +36,7 @@ var utils = {
      * @returns {boolean}
      */
     isValidDate: function(date) {
-        return !isNaN(date.getTime());
+        return snippet.isDate(date) && !isNaN(date.getTime());
     },
 
     /**
@@ -140,6 +147,118 @@ var utils = {
         }
 
         return arr;
+    },
+
+    /**
+     * Returns cloned date with the start of a unit of time
+     * @param {Date|number} date - Original date
+     * @param {string} [type = TYPE_DATE] - Unit type
+     * @throws {Error}
+     * @returns {Date}
+     */
+    cloneWithStartOf: function(date, type) {
+        type = type || TYPE_DATE;
+        date = new Date(date);
+
+        // Does not consider time-level yet.
+        date.setHours(0, 0, 0, 0);
+
+        switch (type) {
+            case TYPE_DATE:
+                break;
+            case TYPE_MONTH:
+                date.setDate(1);
+                break;
+            case TYPE_YEAR:
+                date.setMonth(0, 1);
+                break;
+            default:
+                throw Error('Unsupported type: ' + type);
+        }
+
+        return date;
+    },
+
+    /**
+     * Returns cloned date with the end of a unit of time
+     * @param {Date|number} date - Original date
+     * @param {string} [type = TYPE_DATE] - Unit type
+     * @throws {Error}
+     * @returns {Date}
+     */
+    cloneWithEndOf: function(date, type) {
+        type = type || TYPE_DATE;
+        date = new Date(date);
+
+        // Does not consider time-level yet.
+        date.setHours(23, 59, 59, 999);
+
+        switch (type) {
+            case TYPE_DATE:
+                break;
+            case TYPE_MONTH:
+                date.setMonth(date.getMonth() + 1, 0);
+                break;
+            case TYPE_YEAR:
+                date.setMonth(11, 31);
+                break;
+            default:
+                throw Error('Unsupported type: ' + type);
+        }
+
+        return date;
+    },
+
+    /**
+     * Compare two dates
+     * @param {Date|number} dateA - Date
+     * @param {Date|number} dateB - Date
+     * @param {string} [cmpLevel] - Comparing level
+     * @returns {number}
+     */
+    compare: function(dateA, dateB, cmpLevel) {
+        var aTimestamp, bTimestamp;
+
+        if (!(utils.isValidDate(dateA) && utils.isValidDate(dateB))) {
+            return NaN;
+        }
+
+        if (!cmpLevel) {
+            aTimestamp = dateA.getTime();
+            bTimestamp = dateB.getTime();
+        } else {
+            aTimestamp = utils.cloneWithStartOf(dateA, cmpLevel).getTime();
+            bTimestamp = utils.cloneWithStartOf(dateB, cmpLevel).getTime();
+        }
+
+        if (aTimestamp > bTimestamp) {
+            return 1;
+        }
+
+        return aTimestamp === bTimestamp ? 0 : -1;
+    },
+
+    /**
+     * Returns whether two dates are same
+     * @param {Date|number} dateA - Date
+     * @param {Date|number} dateB - Date
+     * @param {string} [cmpLevel] - Comparing level
+     * @returns {boolean}
+     */
+    isSame: function(dateA, dateB, cmpLevel) {
+        return utils.compare(dateA, dateB, cmpLevel) === 0;
+    },
+
+    /**
+     * Returns whether the target is in range
+     * @param {Date|number} start - Range start
+     * @param {Date|number} end - Range end
+     * @param {Date|number} target - Target
+     * @param {string} [cmpLevel = TYPE_DATE] - Comparing level
+     * @returns {boolean}
+     */
+    inRange: function(start, end, target, cmpLevel) {
+        return utils.compare(start, target, cmpLevel) < 1 && utils.compare(end, target, cmpLevel) > -1;
     }
 };
 

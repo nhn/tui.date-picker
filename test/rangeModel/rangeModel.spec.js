@@ -4,7 +4,7 @@
  */
 'use strict';
 
-var RangeModel = require('../../src/js/datepicker/rangeModel');
+var RangeModel = require('../../src/js/rangeModel/index');
 
 describe('RangeModel', function() {
     var rangeModel;
@@ -12,13 +12,14 @@ describe('RangeModel', function() {
     beforeEach(function() {
         rangeModel = new RangeModel([
             [10, 20],
-            [100, 300],
             [400, 500],
-            [25, 35]
+            [100, 300],
+            [25, 35],
+            [290, 310]
         ]);
     });
 
-    it('should contain a value in ranges', function() {
+    it('"contains" a value in ranges', function() {
         expect(rangeModel.contains(10)).toBe(true);
         expect(rangeModel.contains(15)).toBe(true);
         expect(rangeModel.contains(444)).toBe(true);
@@ -28,7 +29,7 @@ describe('RangeModel', function() {
         expect(rangeModel.contains(-1)).toBe(false);
     });
 
-    it('should contain a range in ranges', function() {
+    it('"contains" a range in ranges', function() {
         expect(rangeModel.contains(10, 15)).toBe(true);
         expect(rangeModel.contains(100, 200)).toBe(true);
         expect(rangeModel.contains(25, 30)).toBe(true);
@@ -38,7 +39,7 @@ describe('RangeModel', function() {
         expect(rangeModel.contains(-30, -1)).toBe(false);
     });
 
-    it('should be able to check overlap a value (It operates like the "contains")', function() {
+    it('check overlap from a value (It operates like the "contains")', function() {
         expect(rangeModel.hasOverlap(10)).toBe(true);
         expect(rangeModel.hasOverlap(15)).toBe(true);
         expect(rangeModel.hasOverlap(444)).toBe(true);
@@ -48,17 +49,17 @@ describe('RangeModel', function() {
         expect(rangeModel.hasOverlap(-1)).toBe(false);
     });
 
-    it('should be able to check overlap a range', function() {
+    it('check overlap from a range', function() {
         expect(rangeModel.hasOverlap(0, 11)).toBe(true);
         expect(rangeModel.hasOverlap(40, 150)).toBe(true);
         expect(rangeModel.hasOverlap(450, 600)).toBe(true);
 
         expect(rangeModel.hasOverlap(0, 5)).toBe(false);
-        expect(rangeModel.hasOverlap(301, 399)).toBe(false);
+        expect(rangeModel.hasOverlap(333, 399)).toBe(false);
         expect(rangeModel.hasOverlap(501, 600)).toBe(false);
     });
 
-    it('should be able to add a value', function() {
+    it('add a value', function() {
         expect(rangeModel.contains(55)).toBe(false);
 
         rangeModel.add(55);
@@ -66,7 +67,7 @@ describe('RangeModel', function() {
         expect(rangeModel.contains(55)).toBe(true);
     });
 
-    it('should be able to add a time-range', function() {
+    it('add a range', function() {
         expect(rangeModel.contains(55, 60)).toBe(false);
 
         rangeModel.add(55, 60);
@@ -74,7 +75,7 @@ describe('RangeModel', function() {
         expect(rangeModel.contains(55, 60)).toBe(true);
     });
 
-    it('should be able to exclude a value', function() {
+    it('exclude a value', function() {
         expect(rangeModel.contains(15)).toBe(true);
 
         rangeModel.exclude(15);
@@ -82,7 +83,7 @@ describe('RangeModel', function() {
         expect(rangeModel.contains(15)).toBe(false);
     });
 
-    it('should be able to exclude a time-range', function() {
+    it('exclude a range', function() {
         expect(rangeModel.contains(15, 20)).toBe(true);
 
         rangeModel.exclude(15, 20);
@@ -90,12 +91,24 @@ describe('RangeModel', function() {
         expect(rangeModel.contains(15, 20)).toBe(false);
     });
 
-    it('should be able to return minimum value in ranges', function() {
+    it('exclude wide-range(containing all)', function() {
+        rangeModel.exclude(0, 500);
+
+        expect(rangeModel._ranges.length).toBe(0);
+    });
+
+    it('get minimum value in ranges', function() {
         expect(rangeModel.getMinimumValue()).toBe(10);
     });
 
-    it('should be able to return maximum value in ranges', function() {
+    it('get maximum value in ranges', function() {
         expect(rangeModel.getMaximumValue()).toBe(500);
     });
 
+    it('get overlapped range from a point', function() {
+        var overlappedRange = rangeModel.findOverlappedRange(100);
+
+        expect(overlappedRange[0]).toBe(100);
+        expect(overlappedRange[1]).toBe(310);
+    });
 });

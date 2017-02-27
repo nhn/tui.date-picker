@@ -5,7 +5,7 @@
 'use strict';
 
 var Calendar = require('../calendar');
-var RangeModel = require('./rangeModel');
+var RangeModel = require('./../rangeModel/index');
 var Timepicker = require('../timepicker');
 var constants = require('../constants');
 var localeTexts = require('../localeTexts');
@@ -24,10 +24,10 @@ var CLASS_NAME_NEXT_YEAR_BTN = constants.CLASS_NAME_NEXT_YEAR_BTN;
 var CLASS_NAME_NEXT_MONTH_BTN = constants.CLASS_NAME_NEXT_MONTH_BTN;
 var CLASS_NAME_PREV_YEAR_BTN = constants.CLASS_NAME_PREV_YEAR_BTN;
 var CLASS_NAME_PREV_MONTH_BTN = constants.CLASS_NAME_PREV_MONTH_BTN;
+var CLASS_NAME_SELECTED = constants.CLASS_NAME_SELECTED;
 
 var CLASS_NAME_SELECTABLE = 'tui-is-selectable';
 var CLASS_NAME_BLOCKED = 'tui-is-blocked';
-var CLASS_NAME_SELECTED = 'tui-is-selected';
 var CLASS_NAME_CHECKED = 'tui-is-checked';
 var CLASS_NAME_SELECTOR_BUTTON = 'tui-datepicker-selector-button';
 var CLASS_NAME_TODAY = 'tui-calendar-today';
@@ -46,20 +46,21 @@ var mergeDefaultOption = function(option) {
     option = util.extend({
         language: DEFAULT_LANGUAGE_TYPE,
         calendar: {},
-        timepicker: null,
         input: {
             element: null,
             format: null
         },
+        timepicker: null,
         date: null,
         showAlways: false,
         type: TYPE_DATE,
-        selectableRanges: [[constants.MIN_DATE, constants.MAX_DATE]],
+        selectableRanges: null,
         openers: [],
         autoClose: true
     }, option);
 
-    option.localeText = localeTexts[option.language];
+    option.selectableRanges = option.selectableRanges || [[constants.MIN_DATE, constants.MAX_DATE]];
+
     if (!util.isObject(option.calendar)) {
         throw new Error('Calendar option must be an object');
     }
@@ -69,6 +70,8 @@ var mergeDefaultOption = function(option) {
     if (!util.isArray(option.selectableRanges)) {
         throw new Error('Selectable-ranges must be a 2d-array');
     }
+
+    option.localeText = localeTexts[option.language];
 
     // override calendar option
     option.calendar.language = option.language;
@@ -80,20 +83,20 @@ var mergeDefaultOption = function(option) {
 /**
  * @Class
  * @param {HTMLElement|jQuery|string} container - Container element of datepicker
- * @param {Object} [option] - Options
- *      @param {Date|number} [option.date] - Initial date. Default - null for no initial date
- *      @param {string} [option.type = 'date'] - Datepicker type - ('date' | 'month' | 'year')
- *      @param {string} [option.language='en'] - Language key
- *      @param {object|boolean} [option.timePicker] - {@link Timepicker} option
- *      @param {object} [option.calendar] - {@link Calendar} option
- *      @param {object} [option.input] - Input option
- *      @param {HTMLElement|string|jQuery} [option.input.element] - Input element
- *      @param {string} [option.intput.format = 'yyyy-mm-dd'] - Date string format
+ * @param {Object} [options] - Options
+ *      @param {Date|number} [options.date] - Initial date. Default - null for no initial date
+ *      @param {string} [options.type = 'date'] - Datepicker type - ('date' | 'month' | 'year')
+ *      @param {string} [options.language='en'] - Language key
+ *      @param {object|boolean} [options.timePicker] - {@link Timepicker} option
+ *      @param {object} [options.calendar] - {@link Calendar} option
+ *      @param {object} [options.input] - Input option
+ *      @param {HTMLElement|string|jQuery} [options.input.element] - Input element
+ *      @param {string} [options.input.format = 'yyyy-mm-dd'] - Date string format
  *      @param {Array.<Array.<Date|number>>} [options.selectableRanges = 1900/1/1 ~ 2999/12/31]
  *                                                                      - Selectable date ranges.
- *      @param {Array} [option.openers = []] - Opener button list (example - icon, button, etc.)
- *      @param {boolean} [option.showAlways = false] - Whether the datepicker shows always
- *      @param {boolean} [option.autoClose = true] - Close after click a date
+ *      @param {Array} [options.openers = []] - Opener button list (example - icon, button, etc.)
+ *      @param {boolean} [options.showAlways = false] - Whether the datepicker shows always
+ *      @param {boolean} [options.autoClose = true] - Close after click a date
  * @tutorial datepicker-basic
  * @tutorial datepicker-inline
  * @tutorial datepicker-selectable-ranges
@@ -171,15 +174,15 @@ var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
          */
         localeTexts: localeTexts
     },
-    init: function(container, option) {
-        option = mergeDefaultOption(option);
+    init: function(container, options) {
+        options = mergeDefaultOption(options);
 
         /**
          * Language type
          * @type {string}
          * @private
          */
-        this._language = option.language;
+        this._language = options.language;
 
         /**
          * Datepicker container
@@ -193,14 +196,14 @@ var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
          * @type {jQuery}
          * @private
          */
-        this._$element = $(tmpl(option)).appendTo(this._$container);
+        this._$element = $(tmpl(options)).appendTo(this._$container);
 
         /**
          * Calendar instance
          * @type {Calendar}
          * @private
          */
-        this._calendar = new Calendar(this._$element.find(SELECTOR_BODY), option.calendar);
+        this._calendar = new Calendar(this._$element.find(SELECTOR_BODY), options.calendar);
 
         /**
          * Timepicker instance
@@ -249,28 +252,28 @@ var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
          * @private
          * @type {number}
          */
-        this._id = 'datepicker-selectable-ranges' + util.stamp(this);
+        this._id = 'tui-datepicker-' + util.stamp(this);
 
         /**
          * Datepicker type
          * @type {TYPE_DATE|TYPE_MONTH|TYPE_YEAR}
          * @private
          */
-        this._type = option.type;
+        this._type = options.type;
 
         /**
          * Show always or not
          * @type {boolean}
          */
-        this.showAlways = option.showAlways;
+        this.showAlways = options.showAlways;
 
         /**
          * Close after select a date
          * @type {boolean}
          */
-        this.autoClose = option.autoClose;
+        this.autoClose = options.autoClose;
 
-        this._initializeDatepicker(option);
+        this._initializeDatepicker(options);
     },
 
     /**
@@ -401,49 +404,84 @@ var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
     },
 
     /**
-     * Set selectable-class-name to selectable date element.
-     * @param {jQuery} $dateElements - date element
+     * add/remove today-class-name to date element
+     * @param {jQuery} $el - date element
      * @private
      */
-    _setDefaultClassName: function($dateElements) {
-        var self = this;
+    _setTodayClassName: function($el) {
+        var timestamp, isToday;
 
-        $dateElements.each(function(idx, el) {
-            var $el = $(el);
-            var timestamp = $el.data('timestamp');
-            var date = new Date(timestamp);
-            var isToday = timestamp === new Date().setHours(0, 0, 0, 0);
+        if (this.getCalendarType() !== TYPE_DATE) {
+            return;
+        }
 
-            if (isToday) {
-                $el.addClass(CLASS_NAME_TODAY);
-            }
+        timestamp = $el.data('timestamp');
+        isToday = timestamp === new Date().setHours(0, 0, 0, 0);
 
-            if (self.isSelectable(date)) {
-                $el.addClass(CLASS_NAME_SELECTABLE);
-            } else {
-                $el.addClass(CLASS_NAME_BLOCKED);
-            }
-        });
+        if (isToday) {
+            $el.addClass(CLASS_NAME_TODAY);
+        } else {
+            $el.removeClass(CLASS_NAME_TODAY);
+        }
     },
 
     /**
-     * Set selected-class-name to selected date element
-     * @param {jQuery} $dateElements - date element
+     * add/remove selectable-class-name to date element
+     * @param {jQuery} $el - date element
      * @private
      */
-    _setSelectedClassName: function($dateElements) {
-        var self = this;
+    _setSelectableClassName: function($el) {
+        var elDate = new Date($el.data('timestamp'));
 
-        $dateElements.each(function(idx, el) {
-            var $el = $(el);
-            var date = new Date($el.data('timestamp'));
+        if (this._isSelectableOnCalendar(elDate)) {
+            $el.addClass(CLASS_NAME_SELECTABLE)
+                .removeClass(CLASS_NAME_BLOCKED);
+        } else {
+            $el.addClass(CLASS_NAME_BLOCKED)
+                .removeClass(CLASS_NAME_SELECTABLE);
+        }
+    },
 
-            if (self.isSelectable(date) && self.isSelected(date)) {
-                $el.addClass(CLASS_NAME_SELECTED);
-            } else {
-                $el.removeClass(CLASS_NAME_SELECTED);
-            }
-        });
+    /**
+     * add/remove selected-class-name to date element
+     * @param {jQuery} $el - date element
+     * @private
+     */
+    _setSelectedClassName: function($el) {
+        var elDate = new Date($el.data('timestamp'));
+
+        if (this._isSelectedOnCalendar(elDate)) {
+            $el.addClass(CLASS_NAME_SELECTED);
+        } else {
+            $el.removeClass(CLASS_NAME_SELECTED);
+        }
+    },
+
+    /**
+     * Returns whether the date is selectable on calendar
+     * @param {Date} date - Date instance
+     * @returns {boolean}
+     * @private
+     */
+    _isSelectableOnCalendar: function(date) {
+        var type = this.getCalendarType();
+        var start = dateUtil.cloneWithStartOf(date, type).getTime();
+        var end = dateUtil.cloneWithEndOf(date, type).getTime();
+
+        return this._rangeModel.hasOverlap(start, end);
+    },
+
+    /**
+     * Returns whether the date is selected on calendar
+     * @param {Date} date - Date instance
+     * @returns {boolean}
+     * @private
+     */
+    _isSelectedOnCalendar: function(date) {
+        var curDate = this.getDate();
+        var calendarType = this.getCalendarType();
+
+        return curDate && dateUtil.isSame(curDate, date, calendarType);
     },
 
     /**
@@ -456,6 +494,52 @@ var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
         }
 
         this._datepickerInput.setDate(this._date);
+    },
+
+    /**
+     * Set date from input value
+     * @param {boolean} [shouldRollback = false] - Should rollback from unselectable or error
+     * @private
+     */
+    _syncFromInput: function(shouldRollback) {
+        var isFailed = false;
+        var date;
+
+        try {
+            date = this._datepickerInput.getDate();
+
+            if (this.isSelectable(date)) {
+                if (this._timepicker) {
+                    this._timepicker.setTime(date.getHours(), date.getMinutes());
+                }
+                this.setDate(date);
+            } else {
+                isFailed = true;
+            }
+        } catch (err) {
+            /**
+             * Parsing error from input-text
+             * @event Datepicker#error
+             * @example
+             *
+             * datepicker.on('error', function(err) {
+             *     console.error(err.message);
+             * });
+             */
+            this.fire('error', {
+                type: 'ParsingError',
+                message: err.message
+            });
+            isFailed = true;
+        } finally {
+            if (isFailed) {
+                if (shouldRollback) {
+                    this._syncToInput();
+                } else {
+                    this.setNull();
+                }
+            }
+        }
     },
 
     /**
@@ -487,9 +571,10 @@ var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
         var newDate = new Date(timestamp);
         var timepicker = this._timepicker;
         var prevDate = this._date;
-        var shouldLowerCalendarType = this.getCalendarType() !== this._type;
+        var calendarType = this.getCalendarType();
+        var pickerType = this.getType();
 
-        if (shouldLowerCalendarType) {
+        if (calendarType !== pickerType) {
             this.drawLowerCalendar(newDate);
         } else {
             if (timepicker) {
@@ -513,13 +598,25 @@ var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
      */
     _onDrawCalendar: function(eventData) {
         var $dateElements = eventData.$dateElements;
+        var self = this;
 
-        this._setDefaultClassName($dateElements);
-        if (this._date) {
-            this._setSelectedClassName($dateElements);
-        }
+        $dateElements.each(function(idx, el) {
+            var $el = $(el);
+            self._setTodayClassName($el);
+            self._setSelectableClassName($el);
+            self._setSelectedClassName($el);
+        });
+        this._setDisplayHeadButtons();
 
-        this._hideUselessButtons();
+        /**
+         * Fires after calendar drawing
+         * @event Datepicker#draw
+         * @param {Object} event - See {@link Calendar#event:draw}
+         * @param {Date} event.date - Calendar date
+         * @param {string} event.type - Calendar type
+         * @param {jQuery} event.$dateElements - Calendar date elements
+         */
+        this.fire('draw', eventData);
     },
 
     /**
@@ -527,40 +624,47 @@ var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
      * @see Don't save buttons reference. The buttons are rerendered every "calendar.darw".
      * @private
      */
-    _hideUselessButtons: function() {
+    _setDisplayHeadButtons: function() {
         var nextYearDate = this._calendar.getNextYearDate();
         var prevYearDate = this._calendar.getPrevYearDate();
         var maxTimestamp = this._rangeModel.getMaximumValue();
         var minTimestamp = this._rangeModel.getMinimumValue();
-        var nextMonthDate, prevMonthDate;
+        var $nextYearBtn = this._$element.find('.' + CLASS_NAME_NEXT_YEAR_BTN);
+        var $prevYearBtn = this._$element.find('.' + CLASS_NAME_PREV_YEAR_BTN);
+        var nextMonthDate, prevMonthDate, $nextMonBtn, $prevMonBtn;
 
         if (this.getCalendarType() === TYPE_DATE) {
-            nextMonthDate = this._calendar.getNextDate();
-            prevMonthDate = this._calendar.getPrevDate();
+            nextMonthDate = dateUtil.cloneWithStartOf(this._calendar.getNextDate(), TYPE_MONTH);
+            prevMonthDate = dateUtil.cloneWithEndOf(this._calendar.getPrevDate(), TYPE_MONTH);
+
+            $nextMonBtn = this._$element.find('.' + CLASS_NAME_NEXT_MONTH_BTN);
+            $prevMonBtn = this._$element.find('.' + CLASS_NAME_PREV_MONTH_BTN);
+
+            this._setDisplay($nextMonBtn, nextMonthDate.getTime() <= maxTimestamp);
+            this._setDisplay($prevMonBtn, prevMonthDate.getTime() >= minTimestamp);
 
             prevYearDate.setDate(1);
             nextYearDate.setDate(1);
-            prevMonthDate.setMonth(prevMonthDate.getMonth() + 1, 0);
-            nextMonthDate.setDate(1);
-
-            if (maxTimestamp < nextMonthDate.getTime()) {
-                this._$element.find('.' + CLASS_NAME_NEXT_MONTH_BTN).hide();
-            }
-
-            if (minTimestamp > prevMonthDate.getTime()) {
-                this._$element.find('.' + CLASS_NAME_PREV_MONTH_BTN).hide();
-            }
         } else {
             prevYearDate.setMonth(12, 0);
             nextYearDate.setMonth(0, 1);
         }
 
-        if (maxTimestamp < nextYearDate.getTime()) {
-            this._$element.find('.' + CLASS_NAME_NEXT_YEAR_BTN).hide();
-        }
+        this._setDisplay($nextYearBtn, nextYearDate.getTime() <= maxTimestamp);
+        this._setDisplay($prevYearBtn, prevYearDate.getTime() >= minTimestamp);
+    },
 
-        if (minTimestamp > prevYearDate.getTime()) {
-            this._$element.find('.' + CLASS_NAME_PREV_YEAR_BTN).hide();
+    /**
+     * Set display show/hide by condition
+     * @param {jQuery} $el - jQuery Element
+     * @param {boolean} shouldShow - Condition
+     * @private
+     */
+    _setDisplay: function($el, shouldShow) {
+        if (shouldShow) {
+            $el.show();
+        } else {
+            $el.hide();
         }
     },
 
@@ -570,34 +674,7 @@ var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
      * @throws {Error}
      */
     _onChangeInput: function() {
-        var date;
-        try {
-            date = this._datepickerInput.getDate();
-
-            if (this.isSelectable(date)) {
-                if (this._timepicker) {
-                    this._timepicker.setTime(date.getHours(), date.getMinutes());
-                }
-                this.setDate(date);
-            } else {
-                this._syncToInput(); // Rollback input value
-            }
-        } catch (err) {
-            /**
-             * Parsing error from input-text
-             * @event Datepicker#error
-             * @example
-             *
-             * datepicker.on('error', function(err) {
-             *     console.error(err.message);
-             * });
-             */
-            this.fire('error', {
-                type: 'ParsingError',
-                message: err.message
-            });
-            this._syncToInput(); // Rollback input value
-        }
+        this._syncFromInput(true);
     },
 
     /**
@@ -610,6 +687,18 @@ var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
         var prevDate = this.getDate();
 
         return !prevDate || (date.getTime() !== prevDate.getTime());
+    },
+
+    /**
+     * Refresh datepicker
+     * @private
+     */
+    _refreshFromRanges: function() {
+        if (!this.isSelectable(this._date)) {
+            this.setNull();
+        } else {
+            this._calendar.draw(); // view update
+        }
     },
 
     /**
@@ -629,59 +718,41 @@ var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
     },
 
     /**
-     * Whether the provided date is selectable
+     * Whether the date is selectable
      * @param {Date} date - Date instance
      * @returns {boolean}
      */
     isSelectable: function(date) {
+        var type = this.getType();
         var start, end;
 
         if (!dateUtil.isValidDate(date)) {
             return false;
         }
+        start = dateUtil.cloneWithStartOf(date, type).getTime();
+        end = dateUtil.cloneWithEndOf(date, type).getTime();
 
-        start = new Date(date);
-        end = new Date(date);
-
-        switch (this.getCalendarType()) {
-            case TYPE_YEAR:
-                start.setMonth(0, 1);
-                end.setMonth(11, 31);
-                break;
-            case TYPE_MONTH:
-                start.setDate(1);
-                end.setMonth(end.getMonth() + 1, 0);
-                break;
-            default: break;
-        }
-
-        return this._rangeModel.hasOverlap(start.getTime(), end.getTime());
+        return this._rangeModel.hasOverlap(start, end);
     },
 
     /**
-     * Returns whether the date is selected or not
+     * Returns whether the date is selected
      * @param {Date} date - Date instance
      * @returns {boolean}
      */
     isSelected: function(date) {
-        var curDate = new Date(this._date);
-
-        date = new Date(date);
-        switch (this.getCalendarType()) {
-            case TYPE_DATE:
-                return curDate.setHours(0, 0, 0, 0) === date.setHours(0, 0, 0, 0);
-            case TYPE_MONTH:
-                return (curDate.getFullYear() === date.getFullYear()) && (curDate.getMonth() === date.getMonth());
-            case TYPE_YEAR:
-                return curDate.getFullYear() === date.getFullYear();
-            default:
-                return false;
-        }
+        return dateUtil.isValidDate(date) && dateUtil.isSame(this._date, date, this.getType());
     },
 
     /**
      * Set selectable ranges (prev ranges will be removed)
      * @param {Array.<Array<Date|number>>} ranges - (2d-array) Selectable ranges
+     * @example
+     *
+     * datepicker.setRanges([
+     *     [new Date(2017, 0, 1), new Date(2018, 0, 2)],
+     *     [new Date(2015, 2, 3), new Date(2016, 4, 2)]
+     * ]);
      */
     setRanges: function(ranges) {
         ranges = tui.util.map(ranges, function(range) {
@@ -717,30 +788,25 @@ var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
      * Remove a range
      * @param {Date|number} start - startDate
      * @param {Date|number} end - endDate
+     * @param {null|'date'|'month'|'year'} type - Range type, If falsy -> Use strict timestamp;
      * @example
      * var start = new Date(2015, 1, 3);
      * var end = new Date(2015, 2, 6);
      *
      * datepicker.removeRange(start, end);
      */
-    removeRange: function(start, end) {
-        start = new Date(start).getTime();
-        end = new Date(end).getTime();
+    removeRange: function(start, end, type) {
+        start = new Date(start);
+        end = new Date(end);
 
-        this._rangeModel.exclude(start, end);
-        this._refreshFromRanges();
-    },
-
-    /**
-     * Refresh datepicker
-     * @private
-     */
-    _refreshFromRanges: function() {
-        if (!this._date || !this.isSelectable(this._date)) {
-            this.setNull();
-        } else {
-            this._calendar.draw(); // view update
+        if (type) {
+            // @todo Consider time-range on timepicker
+            start = dateUtil.cloneWithStartOf(start, type);
+            end = dateUtil.cloneWithEndOf(end, type);
         }
+
+        this._rangeModel.exclude(start.getTime(), end.getTime());
+        this._refreshFromRanges();
     },
 
     /**
@@ -790,7 +856,7 @@ var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
         }
 
         this._calendar.draw({
-            date: this._date || new Date(),
+            date: this._date,
             type: this._type
         });
         this._$element.show();
@@ -816,14 +882,14 @@ var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
      * @param {Date} date - Date
      */
     drawUpperCalendar: function(date) {
-        var currentType = this.getCalendarType();
+        var calendarType = this.getCalendarType();
 
-        if (currentType === TYPE_DATE) {
+        if (calendarType === TYPE_DATE) {
             this._calendar.draw({
                 date: date,
                 type: TYPE_MONTH
             });
-        } else if (currentType === TYPE_MONTH) {
+        } else if (calendarType === TYPE_MONTH) {
             this._calendar.draw({
                 date: date,
                 type: TYPE_YEAR
@@ -837,20 +903,20 @@ var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
      * @param {Date} date - Date
      */
     drawLowerCalendar: function(date) {
-        var currentType = this.getCalendarType();
-        var originalType = this._type;
-        var isLast = currentType === originalType;
+        var calendarType = this.getCalendarType();
+        var pickerType = this.getType();
+        var isLast = calendarType === pickerType;
 
         if (isLast) {
             return;
         }
 
-        if (currentType === TYPE_MONTH) {
+        if (calendarType === TYPE_MONTH) {
             this._calendar.draw({
                 date: date,
                 type: TYPE_DATE
             });
-        } else if (currentType === TYPE_YEAR) {
+        } else if (calendarType === TYPE_YEAR) {
             this._calendar.draw({
                 date: date,
                 type: TYPE_MONTH
@@ -933,11 +999,11 @@ var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
         if (shouldUpdate) {
             newDate = new Date(date);
             this._date = newDate;
-            this._syncToInput();
             this._calendar.draw({date: newDate});
             if (this._timepicker) {
                 this._timepicker.setTime(newDate.getHours(), newDate.getMinutes());
             }
+            this._syncToInput();
 
             /**
              * Change event
@@ -958,7 +1024,10 @@ var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
      * Set null date
      */
     setNull: function() {
+        var calendarDate = this._calendar.getDate();
         var isChagned = this._date !== null;
+
+        this._date = null;
 
         if (this._datepickerInput) {
             this._datepickerInput.clearText();
@@ -966,8 +1035,15 @@ var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
         if (this._timepicker) {
             this._timepicker.setTime(0, 0);
         }
-        this._date = null;
-        this._calendar.draw(); // view update
+
+        // View update
+        if (!this.isSelectable(calendarDate)) {
+            this._calendar.draw({
+                date: new Date(this._rangeModel.getMinimumValue())
+            });
+        } else {
+            this._calendar.draw();
+        }
 
         if (isChagned) {
             this.fire('change');
@@ -1023,12 +1099,15 @@ var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
     /**
      * Set input element
      * @param {string|jQuery|HTMLElement} element - Input element
-     * @private
+     * @param {object} [options] - Input option
+     * @param {string} [options.format = prevInput.format] - Input text format
+     * @param {boolean} [options.syncFromInput = false] - Set date from input value
      */
-    setInput: function(element) {
+    setInput: function(element, options) {
         var prev = this._datepickerInput;
         var localeText = localeTexts[this._language] || localeTexts[DEFAULT_LANGUAGE_TYPE];
         var prevFormat;
+        options = options || {};
 
         if (prev) {
             prevFormat = prev.getFormat();
@@ -1036,7 +1115,7 @@ var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
         }
 
         this._datepickerInput = new DatepickerInput(element, {
-            format: prevFormat,
+            format: options.format || prevFormat,
             id: this._id,
             localeText: localeText
         });
@@ -1046,7 +1125,11 @@ var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
             click: this.open
         }, this);
 
-        this._syncToInput();
+        if (options.syncFromInput) {
+            this._syncFromInput();
+        } else {
+            this._syncToInput();
+        }
     },
 
     /**
@@ -1089,6 +1172,53 @@ var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
         util.forEach(this._openers, function(opener) {
             $(opener).attr('disabled', true);
         }, this);
+    },
+
+    /**
+     * Returns whether the datepicker is disabled
+     * @returns {boolean}
+     */
+    isDisabled: function() {
+        // @todo this._isEnabled --> this._isDisabled
+        return !this._isEnabled;
+    },
+
+    /**
+     * Add datepicker css class
+     * @param {string} className - Class name
+     */
+    addCssClass: function(className) {
+        this._$element.addClass(className);
+    },
+
+    /**
+     * Remove datepicker css class
+     * @param {string} className - Class name
+     */
+    removeCssClass: function(className) {
+        this._$element.removeClass(className);
+    },
+
+    /**
+     * Returns date elements(jQuery) on calendar
+     * @returns {jQuery}
+     */
+    getDateElements: function() {
+        return this._calendar.getDateElements();
+    },
+
+    /**
+     * Returns the first overlapped range from the point or range
+     * @param {Date|number} startDate - Start date to find overlapped range
+     * @param {Date|number} endDate - End date to find overlapped range
+     * @returns {[Date, Date]}
+     */
+    findOverlappedRange: function(startDate, endDate) {
+        var startTimestamp = new Date(startDate).getTime();
+        var endTimestamp = new Date(endDate).getTime();
+        var overlappedRange = this._rangeModel.findOverlappedRange(startTimestamp, endTimestamp);
+
+        return [new Date(overlappedRange[0]), new Date(overlappedRange[1])];
     },
 
     /**

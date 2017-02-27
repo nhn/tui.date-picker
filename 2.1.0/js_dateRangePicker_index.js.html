@@ -1,0 +1,427 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Source: js/dateRangePicker/index.js | Datepicker</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-jsdoc.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/tui-doc.css">
+
+    
+</head>
+<body>
+<nav class="lnb" id="lnb">
+    <div class="logo" style="width: 150px">
+        <img src="https://cloud.githubusercontent.com/assets/12269563/20029815/01133928-a39a-11e6-80f3-12500a91c755.png" width="100%" height="100%">
+    </div>
+    <div class="title">
+        <h1><a href="index.html" class="link">Datepicker</a></h1>
+        
+            <span class="version">v2.1.0</span>
+        
+    </div>
+    <div class="search-container" id="search-container">
+        <input type="text" placeholder="Search">
+        <ul></ul>
+    </div>
+    
+        <ol class="lnb-tab">
+            <li id="api-tab">
+                <a href="#"><h4>API</h4></a>
+            </li>
+            <li id="examples-tab">
+                <a href="#"><h4>Examples</h4></a>
+            </li>
+        </ol>
+    
+    <div class="lnb-examples hidden"><h3>Examples</h3><ul><li><a href="tutorial-calendars.html">Calendar examples</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="calendars_sub"></div></li><li><a href="tutorial-datepicker-basic.html">Datepicker basic</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="datepicker-basic_sub"></div></li><li><a href="tutorial-datepicker-inline.html">Inline datepicker</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="datepicker-inline_sub"></div></li><li><a href="tutorial-datepicker-selectable-ranges.html">Datepicker having selectable ranges</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="datepicker-selectable-ranges_sub"></div></li><li><a href="tutorial-daterangepicker_.html">DateRange-picker example</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="daterangepicker_sub"></div></li><li><a href="tutorial-datetimepicker.html">Date-Time picker</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="datetimepicker_sub"></div></li><li><a href="tutorial-month-year-pickers.html">Month/Year picker examples</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="month-year-pickers_sub"></div></li><li><a href="tutorial-timepickers.html">Timepicker examples</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="timepickers_sub"></div></li></ul></div><div class="lnb-api hidden"><h3>Classes</h3><ul><li><a href="Calendar.html">Calendar</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Calendar_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Calendar.html#.localeTexts">localeTexts</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="Calendar.html#addCssClass">addCssClass</a></li><li><a href="Calendar.html#changeLanguage">changeLanguage</a></li><li><a href="Calendar.html#destroy">destroy</a></li><li><a href="Calendar.html#draw">draw</a></li><li><a href="Calendar.html#drawNext">drawNext</a></li><li><a href="Calendar.html#drawPrev">drawPrev</a></li><li><a href="Calendar.html#getDate">getDate</a></li><li><a href="Calendar.html#getDateElements">getDateElements</a></li><li><a href="Calendar.html#getNextDate">getNextDate</a></li><li><a href="Calendar.html#getNextYearDate">getNextYearDate</a></li><li><a href="Calendar.html#getPrevDate">getPrevDate</a></li><li><a href="Calendar.html#getPrevYearDate">getPrevYearDate</a></li><li><a href="Calendar.html#getType">getType</a></li><li><a href="Calendar.html#hide">hide</a></li><li><a href="Calendar.html#removeCssClass">removeCssClass</a></li><li><a href="Calendar.html#show">show</a></li></ul><div class="member-type">Events</div><ul class="inner"><li><a href="Calendar.html#event:draw">draw</a></li></ul></div></li><li><a href="Datepicker.html">Datepicker</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Datepicker_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Datepicker.html#.localeTexts">localeTexts</a></li><li><a href="Datepicker.html#autoClose">autoClose</a></li><li><a href="Datepicker.html#showAlways">showAlways</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="Datepicker.html#addCssClass">addCssClass</a></li><li><a href="Datepicker.html#addOpener">addOpener</a></li><li><a href="Datepicker.html#addRange">addRange</a></li><li><a href="Datepicker.html#close">close</a></li><li><a href="Datepicker.html#destroy">destroy</a></li><li><a href="Datepicker.html#disable">disable</a></li><li><a href="Datepicker.html#drawLowerCalendar">drawLowerCalendar</a></li><li><a href="Datepicker.html#drawUpperCalendar">drawUpperCalendar</a></li><li><a href="Datepicker.html#enable">enable</a></li><li><a href="Datepicker.html#findOverlappedRange">findOverlappedRange</a></li><li><a href="Datepicker.html#getCalendar">getCalendar</a></li><li><a href="Datepicker.html#getCalendarType">getCalendarType</a></li><li><a href="Datepicker.html#getDate">getDate</a></li><li><a href="Datepicker.html#getDateElements">getDateElements</a></li><li><a href="Datepicker.html#getTimepicker">getTimepicker</a></li><li><a href="Datepicker.html#getType">getType</a></li><li><a href="Datepicker.html#isDisabled">isDisabled</a></li><li><a href="Datepicker.html#isOpened">isOpened</a></li><li><a href="Datepicker.html#isSelectable">isSelectable</a></li><li><a href="Datepicker.html#isSelected">isSelected</a></li><li><a href="Datepicker.html#open">open</a></li><li><a href="Datepicker.html#removeAllOpeners">removeAllOpeners</a></li><li><a href="Datepicker.html#removeCssClass">removeCssClass</a></li><li><a href="Datepicker.html#removeOpener">removeOpener</a></li><li><a href="Datepicker.html#removeRange">removeRange</a></li><li><a href="Datepicker.html#setDate">setDate</a></li><li><a href="Datepicker.html#setDateFormat">setDateFormat</a></li><li><a href="Datepicker.html#setInput">setInput</a></li><li><a href="Datepicker.html#setNull">setNull</a></li><li><a href="Datepicker.html#setRanges">setRanges</a></li><li><a href="Datepicker.html#toggle">toggle</a></li></ul><div class="member-type">Events</div><ul class="inner"><li><a href="Datepicker.html#event:change">change</a></li><li><a href="Datepicker.html#event:close">close</a></li><li><a href="Datepicker.html#event:draw">draw</a></li><li><a href="Datepicker.html#event:error">error</a></li><li><a href="Datepicker.html#event:open">open</a></li></ul></div></li><li><a href="DateRangePicker.html">DateRangePicker</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="DateRangePicker_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="DateRangePicker.html#addRange">addRange</a></li><li><a href="DateRangePicker.html#destroy">destroy</a></li><li><a href="DateRangePicker.html#getEndDate">getEndDate</a></li><li><a href="DateRangePicker.html#getEndpicker">getEndpicker</a></li><li><a href="DateRangePicker.html#getStartDate">getStartDate</a></li><li><a href="DateRangePicker.html#getStartpicker">getStartpicker</a></li><li><a href="DateRangePicker.html#removeRange">removeRange</a></li><li><a href="DateRangePicker.html#setEndDate">setEndDate</a></li><li><a href="DateRangePicker.html#setRanges">setRanges</a></li><li><a href="DateRangePicker.html#setStartDate">setStartDate</a></li></ul><div class="member-type">Events</div><ul class="inner"><li><a href="DateRangePicker.html#event:change:end">change:end</a></li><li><a href="DateRangePicker.html#event:change:start">change:start</a></li></ul></div></li><li><a href="Timepicker.html">Timepicker</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Timepicker_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Timepicker.html#destroy">destroy</a></li><li><a href="Timepicker.html#getHour">getHour</a></li><li><a href="Timepicker.html#getMinute">getMinute</a></li><li><a href="Timepicker.html#hide">hide</a></li><li><a href="Timepicker.html#setHour">setHour</a></li><li><a href="Timepicker.html#setMinute">setMinute</a></li><li><a href="Timepicker.html#setTime">setTime</a></li><li><a href="Timepicker.html#show">show</a></li></ul><div class="member-type">Events</div><ul class="inner"><li><a href="Timepicker.html#event:change">change</a></li></ul></div></li></ul></div>
+</nav>
+<div id="resizer"></div>
+
+<div class="main" id="main">
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @fileoverview Date-Range picker
+ * @author NHN Ent. FE Development Lab &lt;dl_javascript@nhnent.com>
+ */
+'use strict';
+
+var Datepicker = require('../datepicker');
+var dateUtil = require('../dateUtil');
+var constants = require('../constants');
+
+var util = tui.util;
+
+var CLASS_NAME_RANGE_PICKER = 'tui-rangepicker';
+var CLASS_NAME_SELECTED = constants.CLASS_NAME_SELECTED;
+var CLASS_NAME_SELECTED_RANGE = 'tui-is-selected-range';
+
+/**
+ * @class
+ * @param {object} options - Date-Range picker options
+ * @param {object} options.startpicker - Startpicker options
+ * @param {Element|jQuery|string} options.startpicker.input - Startpicker input element
+ * @param {Element|jQuery|string} options.startpicker.container - Startpicker container element
+ * @param {object} options.endpicker - Endpicker options
+ * @param {Element|jQuery|string} options.endpicker.input - Endpicker input element
+ * @param {Element|jQuery|string} options.endpicker.container - Endpicker container element
+ * @param {string} options.format - Input date-string format
+ * @param {string} [options.type = 'date'] - Datepicker type - ('date' | 'month' | 'year')
+ * @param {string} [options.language='en'] - Language key
+ * @param {object|boolean} [options.timePicker] - {@link Timepicker} option
+ * @param {object} [options.calendar] - {@link Calendar} option
+ * @param {Array.&lt;Array.&lt;Date|number>>} [options.selectableRanges] - Selectable ranges
+ * @param {boolean} [options.showAlways = false] - Whether the datepicker shows always
+ * @param {boolean} [options.autoClose = true] - Close after click a date
+ *
+ * @tutorial daterangepicker
+ * @example
+ *
+ *  var rangepicker = new DateRangePicker({
+ *      startpicker: {
+ *          input: '#start-input',
+ *          container: '#start-container'
+ *      },
+ *      endpicker: {
+ *          input: '#end-input',
+ *          container: '#end-container'
+ *      },
+ *      type: 'date',
+ *      format: 'yyyy-MM-dd'
+ *      selectableRanges: [
+ *          [new Date(2017, 3, 1), new Date(2017, 5, 1)],
+ *          [new Date(2017, 6, 3), new Date(2017, 10, 5)]
+ *      ]
+ *  });
+ */
+var DateRangePicker = tui.util.defineClass(/** @lends DateRangePicker.prototype */{
+    init: function(options) {
+        var startpickerOpt, endpickerOpt;
+
+        options = options || {};
+        startpickerOpt = options.startpicker;
+        endpickerOpt = options.endpicker;
+
+        if (!startpickerOpt) {
+            throw new Error('The "startpicker" option is required.');
+        }
+        if (!endpickerOpt) {
+            throw new Error('The "endpicker" option is required.');
+        }
+
+        /**
+         * Start picker
+         * @type {Datepicker}
+         * @private
+         */
+        this._startpicker = null;
+
+        /**
+         * End picker
+         * @type {Datepicker}
+         * @private
+         */
+        this._endpicker = null;
+
+        this._initializePickers(options);
+        this.setStartDate(startpickerOpt.date);
+        this.setEndDate(endpickerOpt.date);
+        this._syncRangesToEndpicker();
+    },
+
+    /**
+     * Create picker
+     * @param {Object} options - Datepicker options
+     * @private
+     */
+    _initializePickers: function(options) {
+        var $startpickerContainer = $(options.startpicker.container);
+        var $endpickerContainer = $(options.endpicker.container);
+        var $startInput = $(options.startpicker.input);
+        var $endInput = $(options.endpicker.input);
+
+        var startpickerOpt = util.extend({}, options, {
+            input: {
+                element: $startInput,
+                format: options.format
+            }
+        });
+        var endpickerOpt = util.extend({}, options, {
+            input: {
+                element: $endInput,
+                format: options.format
+            }
+        });
+
+        this._startpicker = new Datepicker($startpickerContainer, startpickerOpt);
+        this._startpicker.addCssClass(CLASS_NAME_RANGE_PICKER);
+        this._startpicker.on('change', this._onChangeStartpicker, this);
+        this._startpicker.on('draw', this._onDrawPicker, this);
+
+        this._endpicker = new Datepicker($endpickerContainer, endpickerOpt);
+        this._endpicker.addCssClass(CLASS_NAME_RANGE_PICKER);
+        this._endpicker.on('change', this._onChangeEndpicker, this);
+        this._endpicker.on('draw', this._onDrawPicker, this);
+    },
+
+    /**
+     * Set selection-class to elements after calendar drawing
+     * @param {Object} eventData - Event data {@link Datepicker#event:draw}
+     * @private
+     */
+    _onDrawPicker: function(eventData) {
+        var self = this;
+        var calendarType = eventData.type;
+        var $dateElements = eventData.$dateElements;
+        var startDate = this._startpicker.getDate();
+        var endDate = this._endpicker.getDate();
+
+        if (!startDate) {
+            return;
+        }
+
+        if (!endDate) {
+            // Convert null to invaild date.
+            endDate = new Date(NaN);
+        }
+
+        $dateElements.each(function(idx, el) {
+            var $el = $(el);
+            var elDate = new Date($el.data('timestamp'));
+            var isInRange = dateUtil.inRange(startDate, endDate, elDate, calendarType);
+            var isSelected = (
+                dateUtil.isSame(startDate, elDate, calendarType)
+                || dateUtil.isSame(endDate, elDate, calendarType)
+            );
+
+            self._setRangeClass($el, isInRange);
+            self._setSelectedClass($el, isSelected);
+        });
+    },
+
+    /**
+     * Set range class to element
+     * @param {jQuery} $el - Element
+     * @param {boolean} isInRange - In range
+     * @private
+     */
+    _setRangeClass: function($el, isInRange) {
+        if (isInRange) {
+            $el.addClass(CLASS_NAME_SELECTED_RANGE);
+        } else {
+            $el.removeClass(CLASS_NAME_SELECTED_RANGE);
+        }
+    },
+
+    /**
+     * Set selected class to element
+     * @param {jQuery} $el - Element
+     * @param {boolean} isSelected - Is selected
+     * @private
+     */
+    _setSelectedClass: function($el, isSelected) {
+        if (isSelected) {
+            $el.addClass(CLASS_NAME_SELECTED);
+        } else {
+            $el.removeClass(CLASS_NAME_SELECTED);
+        }
+    },
+
+    /**
+     * Sync ranges to endpicker
+     * @private
+     */
+    _syncRangesToEndpicker: function() {
+        var startDate = this._startpicker.getDate();
+        var overlappedRange;
+
+        if (startDate) {
+            overlappedRange = this._startpicker.findOverlappedRange(
+                dateUtil.cloneWithStartOf(startDate).getTime(),
+                dateUtil.cloneWithEndOf(startDate).getTime()
+            );
+
+            this._endpicker.enable();
+            this._endpicker.setRanges([
+                [startDate.getTime(), overlappedRange[1].getTime()]
+            ]);
+        } else {
+            this._endpicker.setNull();
+            this._endpicker.disable();
+        }
+    },
+
+    /**
+     * After change on start-picker
+     * @private
+     */
+    _onChangeStartpicker: function() {
+        this._syncRangesToEndpicker();
+        /**
+         * @event DateRangePicker#change:start
+         * @example
+         *
+         * rangepicker.on('change:start', function() {
+         *     console.log(rangepicker.getStartDate());
+         * });
+         */
+        this.fire('change:start');
+    },
+
+    /**
+     * After change on end-picker
+     * @private
+     */
+    _onChangeEndpicker: function() {
+        /**
+         * @event DateRangePicker#change:end
+         * @example
+         *
+         * rangepicker.on('change:end', function() {
+         *     console.log(rangepicker.getEndDate());
+         * });
+         */
+        this.fire('change:end');
+    },
+
+    /**
+     * Returns start-datepicker
+     * @returns {Datepicker}
+     */
+    getStartpicker: function() {
+        return this._startpicker;
+    },
+
+    /**
+     * Returns end-datepicker
+     * @returns {Datepicker}
+     */
+    getEndpicker: function() {
+        return this._endpicker;
+    },
+
+    /**
+     * Set start date
+     * @param {Date} date - Start date
+     */
+    setStartDate: function(date) {
+        this._startpicker.setDate(date);
+    },
+
+    /**
+     * Returns start-date
+     * @returns {?Date}
+     */
+    getStartDate: function() {
+        return this._startpicker.getDate();
+    },
+
+    /**
+     * Returns end-date
+     * @returns {?Date}
+     */
+    getEndDate: function() {
+        return this._endpicker.getDate();
+    },
+
+    /**
+     * Set end date
+     * @param {Date} date - End date
+     */
+    setEndDate: function(date) {
+        this._endpicker.setDate(date);
+    },
+
+    /**
+     * Set selectable ranges
+     * @param {Array.&lt;Array.&lt;number|Date>>} ranges - Selectable ranges
+     * @see Datepicker#setRanges
+     */
+    setRanges: function(ranges) {
+        this._startpicker.setRanges(ranges);
+        this._syncRangesToEndpicker();
+    },
+
+    /**
+     * Add a range
+     * @param {Date|number} start - startDate
+     * @param {Date|number} end - endDate
+     * @see Datepicker#addRange
+     */
+    addRange: function(start, end) {
+        this._startpicker.addRange(start, end);
+        this._syncRangesToEndpicker();
+    },
+
+    /**
+     * Remove a range
+     * @param {Date|number} start - startDate
+     * @param {Date|number} end - endDate
+     * @param {null|'date'|'month'|'year'} type - Range type, If falsy -> Use strict timestamp;
+     * @see Datepicker#removeRange
+     */
+    removeRange: function(start, end, type) {
+        this._startpicker.removeRange(start, end, type);
+        this._syncRangesToEndpicker();
+    },
+
+    /**
+     * Destroy date-range picker
+     */
+    destroy: function() {
+        this.off();
+        this._startpicker.destroy();
+        this._endpicker.destroy();
+        this._startpicker
+            = this._endpicker
+            = null;
+    }
+});
+
+util.CustomEvents.mixin(DateRangePicker);
+module.exports = DateRangePicker;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<footer>
+    <img class="logo" src="https://cloud.githubusercontent.com/assets/12269563/20029815/01133928-a39a-11e6-80f3-12500a91c755.png" style="width: 150px">
+    <div class="footer-text">NHN Entertainment. Frontend Development Lab</div>
+</footer>
+<script>prettyPrint();</script>
+<script src="scripts/jquery.min.js"></script>
+<script src="scripts/tui-doc.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+    <script>
+        var id = '_sub'.replace(/"/g, '_');
+        var selectedApi = document.getElementById(id); // do not use jquery selector
+        var $selectedApi = $(selectedApi);
+
+        $selectedApi.removeClass('hidden');
+        $selectedApi.parent().find('.glyphicon').removeClass('glyphicon-plus').addClass('glyphicon-minus');
+        showLnbApi();
+    </script>
+
+</body>
+</html>

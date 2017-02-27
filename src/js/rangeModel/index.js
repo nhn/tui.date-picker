@@ -150,7 +150,7 @@ var RangeModel = snippet.defineClass(/** @lends RangeModel.prototype */{
      * Returns the first overlapped range from the point or range
      * @param {number} start - Start
      * @param {number} end - End
-     * @returns {[number, number]}
+     * @returns {Array.<number>} - [start, end]
      */
     findOverlappedRange: function(start, end) {
         var i = 0;

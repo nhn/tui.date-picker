@@ -215,6 +215,14 @@ var DateRangePicker = tui.util.defineClass(/** @lends DateRangePicker.prototype 
      */
     _onChangeStartpicker: function() {
         this._syncRangesToEndpicker();
+        /**
+         * @event DateRangePicker#change:start
+         * @example
+         *
+         * rangepicker.on('change:start', function() {
+         *     console.log(rangepicker.getStartDate());
+         * });
+         */
         this.fire('change:start');
     },
 
@@ -223,6 +231,14 @@ var DateRangePicker = tui.util.defineClass(/** @lends DateRangePicker.prototype 
      * @private
      */
     _onChangeEndpicker: function() {
+        /**
+         * @event DateRangePicker#change:end
+         * @example
+         *
+         * rangepicker.on('change:end', function() {
+         *     console.log(rangepicker.getEndDate());
+         * });
+         */
         this.fire('change:end');
     },
 
@@ -277,7 +293,7 @@ var DateRangePicker = tui.util.defineClass(/** @lends DateRangePicker.prototype 
     /**
      * Set selectable ranges
      * @param {Array.<Array.<number|Date>>} ranges - Selectable ranges
-     * @see Datepicker.setRanges
+     * @see Datepicker#setRanges
      */
     setRanges: function(ranges) {
         this._startpicker.setRanges(ranges);
@@ -288,7 +304,7 @@ var DateRangePicker = tui.util.defineClass(/** @lends DateRangePicker.prototype 
      * Add a range
      * @param {Date|number} start - startDate
      * @param {Date|number} end - endDate
-     * @see Datepicker.addRange
+     * @see Datepicker#addRange
      */
     addRange: function(start, end) {
         this._startpicker.addRange(start, end);
@@ -300,7 +316,7 @@ var DateRangePicker = tui.util.defineClass(/** @lends DateRangePicker.prototype 
      * @param {Date|number} start - startDate
      * @param {Date|number} end - endDate
      * @param {null|'date'|'month'|'year'} type - Range type, If falsy -> Use strict timestamp;
-     * @see Datepicker.removeRange
+     * @see Datepicker#removeRange
      */
     removeRange: function(start, end, type) {
         this._startpicker.removeRange(start, end, type);

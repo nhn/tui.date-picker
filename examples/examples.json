@@ -19,5 +19,8 @@
   },
   "timepickers": {
     "title": "Timepicker examples"
+  },
+  "daterangepicker": {
+    "title": "DateRange-picker example"
   }
 }

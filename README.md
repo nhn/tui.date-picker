@@ -10,6 +10,7 @@ Easily pick a date-time on calendar UI.
     * Year-picker
 * Calendar
 * Timepicker
+* DateRange-picker
 
 ## Documentation
 * API: https://nhnent.github.io/tui.component.date-picker/latest

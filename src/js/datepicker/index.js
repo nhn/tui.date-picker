@@ -1211,7 +1211,7 @@ var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
      * Returns the first overlapped range from the point or range
      * @param {Date|number} startDate - Start date to find overlapped range
      * @param {Date|number} endDate - End date to find overlapped range
-     * @returns {[Date, Date]}
+     * @returns {Array.<Date>} - [startDate, endDate]
      */
     findOverlappedRange: function(startDate, endDate) {
         var startTimestamp = new Date(startDate).getTime();

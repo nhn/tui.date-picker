@@ -159,7 +159,7 @@ module.exports = function(config) {
         files: [
             'bower_components/jquery/jquery.min.js',
             'bower_components/jasmine-jquery/lib/jasmine-jquery.js',
-            'bower_components/tui-code-snippet/code-snippet.js',
+            'bower_components/tui-code-snippet/dist/code-snippet.js',
             'node_modules/es5-shim/es5-shim.js',
             'test/index.js'
         ],

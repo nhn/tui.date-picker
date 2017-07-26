@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>2. Inline style</title>
+    <link href="../dist/tui-date-picker.css" rel="stylesheet">
+</head>
+<body>
+    <div class="code-html">
+        <div class="tui-datepicker-input tui-datetime-input tui-has-focus">
+            <input type="text" id="datepicker-input" aria-label="Date-Time">
+            <span class="tui-ico-date"></span>
+        </div>
+        <div id="wrapper" style="margin-top: -1px;"></div>
+    </div>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/nhnent/tui.code-snippet/1.2.5/dist/tui-code-snippet.js"></script>
+    <script type="text/javascript" src="../dist/tui-date-picker.js"></script>
+    <script class="code-js">
+        var datepicker = new tui.DatePicker('#wrapper', {
+            date: new Date(),
+            input: {
+                element: '#datepicker-input',
+                format: 'yyyy-MM-dd'
+            },
+            showAlways: true
+        });
+    </script>
+</body>
+</html>

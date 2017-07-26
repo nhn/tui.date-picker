@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title>7. Calendar</title>
+        <meta http-equiv="Pragma" content="no-cache">
+        <meta http-equiv="Expires" content="-1">
+        <link href="../dist/tui-date-picker.css" rel="stylesheet">
+        <style>
+            .calendar-table {
+                width: 500px;
+            }
+            .calendar-table div {
+                margin: 0 auto;
+            }
+        </style>
+    </head>
+
+    <body>
+    <div class="code-html">
+        <table class="calendar-table">
+            <tbody>
+                <tr>
+                    <td><div id="calendar-date-ko"></div></td>
+                    <td><div id="calendar-date-en"></div></td>
+                    <td><div id="calendar-date-chinese-character"></div></td>
+                </tr>
+                <tr>
+                    <td><div id="calendar-month-ko"></div></td>
+                    <td><div id="calendar-month-en"></div></td>
+                    <td><div id="calendar-month-chinese-character"></div></td>
+                </tr>
+                <tr>
+                    <td><div id="calendar-year-ko"></div></td>
+                    <td><div id="calendar-year-en"></div></td>
+                    <td><div id="calendar-year-chinese-character"></div></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/nhnent/tui.code-snippet/v1.2.5/dist/tui-code-snippet.js"></script>
+    <script type="text/javascript" src="../dist/tui-date-picker.js"></script>
+    <script type="text/javascript" class="code-js">
+        var DatePicker = tui.DatePicker;
+
+        DatePicker.localeTexts['Chinese character'] = {
+            titles: {
+                DD: ['日曜日', '月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日'],
+                D: ['日', '月', '火', '水', '木', '金', '土'],
+                MMM: ['1月', '2月', '3月', '4月', '5月', '6月',
+                    '7月', '8月', '9月', '10月', '11月', '12月'],
+                MMMM: ['一月', '二月', '三月', '四月', '五月', '六月',
+                    '七月', '八月', '九月', '十月', '十一月', '十二月']
+            },
+            titleFormat: 'yyyy年 MMM',
+            todayFormat: 'yyyy年 MMM d日 (DD)'
+        };
+
+        var calDateEn = DatePicker.createCalendar('#calendar-date-en', {language: 'en'});
+        var calDateOptional = DatePicker.createCalendar('#calendar-date-ko', {language: 'ko'});
+        var calDateChineseCharacter = DatePicker.createCalendar('#calendar-date-chinese-character', {language: 'Chinese character'});
+
+        var calMonthEn = DatePicker.createCalendar('#calendar-month-en', {language: 'en', type: 'month'});
+        var calMonthKo = DatePicker.createCalendar('#calendar-month-ko', {language: 'ko', type: 'month'});
+        var calDateChineseCharacter = DatePicker.createCalendar('#calendar-month-chinese-character', {language: 'Chinese character', type: 'month'});
+
+        var calYearEn = DatePicker.createCalendar('#calendar-year-en', {language: 'en', type: 'year'});
+        var calYearKo = DatePicker.createCalendar('#calendar-year-ko', {language: 'ko', type: 'year'});
+        var calDateChineseCharacter = DatePicker.createCalendar('#calendar-year-chinese-character', {language: 'Chinese character', type: 'year'});
+    </script>
+    </body>
+</html>

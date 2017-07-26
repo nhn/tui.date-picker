@@ -18,7 +18,7 @@ Components that select a specific date
 ## Dependency
 * jquery ~1.11.0
 * tui-code-snippet ~1.2.5
-* tui-time-picker ~1.1.0
+* tui-time-picker ~1.0.0
 
 ## Test Environment
 ### PC

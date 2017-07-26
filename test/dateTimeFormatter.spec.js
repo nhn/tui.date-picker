@@ -2,6 +2,9 @@
  * @fileoverview DateTimeFormatter spec
  * @author NHN Ent. FE Development Lab <dl_javascript@nhnent.com>
  */
+'use strict';
+
+var $ = require('jquery');
 
 var DateTimeFormatter = require('../src/js/dateTimeFormatter');
 

@@ -2,7 +2,11 @@
  * @fileoverview Year layer
  * @author NHN Ent. FE Development Lab <dl_javascript@nhnent.com>
  */
+
 'use strict';
+
+var $ = require('jquery');
+var snippet = require('tui-code-snippet');
 
 var bodyTmpl = require('../../../template/calendar/yearLayer.hbs');
 var LayerBase = require('./base');
@@ -17,7 +21,7 @@ var DATE_SELECTOR = '.tui-calendar-year';
  * @param {string} language - Initial language
  * @ignore
  */
-var YearLayer = tui.util.defineClass(LayerBase, /** @lends YearLayer.prototype */{
+var YearLayer = snippet.defineClass(LayerBase, /** @lends YearLayer.prototype */{
     init: function(language) {
         LayerBase.call(this, language);
     },

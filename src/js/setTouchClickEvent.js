@@ -5,6 +5,10 @@
 
 'use strict';
 
+var snippet = require('tui-code-snippet');
+
+var $ = require('jquery');
+
 /**
  * For using one - Touch or Mouse Events
  * @param {jQuery|string|Element} target - Target element
@@ -23,7 +27,7 @@ module.exports = function(target, handler, option) {
     namespace = option.namespace || '';
 
     if (namespace) {
-        eventList = tui.util.map(eventList, function(eventName) {
+        eventList = snippet.map(eventList, function(eventName) {
             return eventName + '.' + namespace;
         });
     }

@@ -1,13 +1,15 @@
 /**
- * @fileoverview Datepicker spec
+ * @fileoverview DatePicker spec
  * @author NHN Ent. FE Development Lab <dl_javascript@nhnent.com>
  */
-
 'use strict';
 
-var Datepicker = require('../../src/js/datepicker');
+var $ = require('jquery');
+var snippet = require('tui-code-snippet');
+var TimePicker = require('tui-time-picker');
+
+var DatePicker = require('../../src/js/datepicker');
 var Calendar = require('../../src/js/calendar');
-var Timepicker = require('../../src/js/timepicker');
 var constants = require('../../src/js/constants');
 
 describe('Date Picker', function() {
@@ -17,7 +19,7 @@ describe('Date Picker', function() {
         beforeEach(function() {
             container = document.createElement('div');
             input = document.createElement('input');
-            datepicker = new Datepicker(container, {
+            datepicker = new DatePicker(container, {
                 input: {
                     element: input
                 },
@@ -53,7 +55,7 @@ describe('Date Picker', function() {
         var datepicker;
 
         beforeEach(function() {
-            datepicker = new Datepicker($('<div></div>'), {
+            datepicker = new DatePicker($('<div></div>'), {
                 date: new Date(2017, 10, 27),
                 selectableRanges: [
                     [new Date(2016, 10, 27), new Date(2018, 10, 27)]
@@ -101,8 +103,8 @@ describe('Date Picker', function() {
             expect(date).toEqual(new Date(2017, 10, 27));
         });
 
-        it('getTimepicker', function() {
-            expect(datepicker.getTimepicker()).toEqual(jasmine.any(Timepicker));
+        it('getTimePicker', function() {
+            expect(datepicker.getTimePicker()).toEqual(jasmine.any(TimePicker));
         });
 
         it('getCalendar', function() {
@@ -144,7 +146,7 @@ describe('Date Picker', function() {
 
             datepicker.setInput(input);
             datepicker.setDateFormat('yyyyMMdd hh:mm A');
-            datepicker.getTimepicker().setTime(12, 34);
+            datepicker.getTimePicker().setTime(12, 34);
 
             expect(input.value).toEqual('20171127 12:34 PM');
         });
@@ -154,7 +156,7 @@ describe('Date Picker', function() {
 
             datepicker.addOpener(btn);
 
-            expect(tui.util.inArray(btn, datepicker._openers)).not.toEqual(-1);
+            expect(snippet.inArray(btn, datepicker._openers)).not.toEqual(-1);
         });
 
         it('removeOpener', function() {
@@ -163,7 +165,7 @@ describe('Date Picker', function() {
             datepicker.addOpener(btn);
             datepicker.removeOpener(btn);
 
-            expect(tui.util.inArray(btn, datepicker._openers)).toEqual(-1);
+            expect(snippet.inArray(btn, datepicker._openers)).toEqual(-1);
         });
 
         it('setRanges', function() {
@@ -321,7 +323,7 @@ describe('Date Picker', function() {
 
         beforeEach(function() {
             input = document.createElement('input');
-            datepicker = new Datepicker($('<div></div>'), {
+            datepicker = new DatePicker($('<div></div>'), {
                 input: {
                     element: input,
                     format: 'yy년 MM월 dd일'
@@ -418,7 +420,7 @@ describe('Date Picker', function() {
         beforeEach(function() {
             container = document.createElement('div');
             input = document.createElement('input');
-            datepicker = new Datepicker(container, {
+            datepicker = new DatePicker(container, {
                 date: new Date(2017, 0, 1),
                 input: {
                     element: input
@@ -498,7 +500,7 @@ describe('Date Picker', function() {
 
         beforeEach(function() {
             $container = $('<div></div>');
-            datepicker = new Datepicker($container, {
+            datepicker = new DatePicker($container, {
                 date: new Date(2017, 6, 1),
                 calendar: {
                     showJumpButtons: true

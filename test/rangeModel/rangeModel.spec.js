@@ -4,6 +4,8 @@
  */
 'use strict';
 
+var $ = require('jquery');
+
 var RangeModel = require('../../src/js/rangeModel/index');
 
 describe('RangeModel', function() {

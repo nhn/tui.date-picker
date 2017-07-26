@@ -2,16 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Date-Time picker</title>
-    <link href="../dist/tui-component-datepicker.css" rel="stylesheet">
+    <title>4. Having TimePicker</title>
+    <link href="https://cdn.rawgit.com/nhnent/tui.time-picker/v1.0.0/dist/tui-time-picker.css" rel="stylesheet">
+    <link href="../dist/tui-date-picker.css" rel="stylesheet">
 </head>
 <body>
     <div class="code-html">
         <table style="width: 650px;">
             <thead>
                 <tr>
-                    <td><h3>DateTime-picker - basic</h3></td>
-                    <td><h3>DateTime-picker - Tab style</h3></td>
+                    <td><h3>Basic</h3></td>
+                    <td><h3>Tab style</h3></td>
                 </tr>
             </thead>
             <tbody>
@@ -24,6 +25,7 @@
                         <div id="wrapper" style="margin-top: -1px;"></div>
                     </td>
                     <td>
+
                         <div class="tui-datepicker-input tui-datetime-input tui-has-focus">
                             <input type="text" id="datepicker-input-2" aria-label="Date-Time">
                             <span class="tui-ico-date"></span>
@@ -35,11 +37,12 @@
         </table>
     </div>
 
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/nhnent/tui.code-snippet/1.2.1/code-snippet.js"></script>
-    <script type="text/javascript" src="../dist/tui-component-datepicker.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/nhnent/tui.code-snippet/v1.2.5/dist/tui-code-snippet.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/nhnent/tui.time-picker/v1.0.0/dist/tui-time-picker.js"></script>
+    <script type="text/javascript" src="../dist/tui-date-picker.js"></script>
     <script class="code-js">
-        var datepicker = new tui.component.Datepicker('#wrapper', {
+        var datepicker = new tui.DatePicker('#wrapper', {
             date: new Date(),
             input: {
                 element: '#datepicker-input',
@@ -48,7 +51,7 @@
             timepicker: true
         });
 
-        var datepicker2 = new tui.component.Datepicker('#wrapper-2', {
+        var datepicker2 = new tui.DatePicker('#wrapper-2', {
             date: new Date(),
             input: {
                 element: '#datepicker-input-2',

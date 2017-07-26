@@ -2,13 +2,15 @@
  * @fileoverview Date-Range picker
  * @author NHN Ent. FE Development Lab <dl_javascript@nhnent.com>
  */
+
 'use strict';
 
-var Datepicker = require('../datepicker');
+var $ = require('jquery');
+var snippet = require('tui-code-snippet');
+
+var DatePicker = require('../datepicker');
 var dateUtil = require('../dateUtil');
 var constants = require('../constants');
-
-var util = tui.util;
 
 var CLASS_NAME_RANGE_PICKER = 'tui-rangepicker';
 var CLASS_NAME_SELECTED = constants.CLASS_NAME_SELECTED;
@@ -17,42 +19,41 @@ var CLASS_NAME_SELECTED_RANGE = 'tui-is-selected-range';
 /**
  * @class
  * @param {object} options - Date-Range picker options
- * @param {object} options.startpicker - Startpicker options
- * @param {Element|jQuery|string} options.startpicker.input - Startpicker input element
- * @param {Element|jQuery|string} options.startpicker.container - Startpicker container element
- * @param {object} options.endpicker - Endpicker options
- * @param {Element|jQuery|string} options.endpicker.input - Endpicker input element
- * @param {Element|jQuery|string} options.endpicker.container - Endpicker container element
- * @param {string} options.format - Input date-string format
- * @param {string} [options.type = 'date'] - Datepicker type - ('date' | 'month' | 'year')
- * @param {string} [options.language='en'] - Language key
- * @param {object|boolean} [options.timePicker] - {@link Timepicker} option
- * @param {object} [options.calendar] - {@link Calendar} option
- * @param {Array.<Array.<Date|number>>} [options.selectableRanges] - Selectable ranges
- * @param {boolean} [options.showAlways = false] - Whether the datepicker shows always
- * @param {boolean} [options.autoClose = true] - Close after click a date
- *
- * @tutorial daterangepicker
+ *     @param {object} options.startpicker - Startpicker options
+ *     @param {Element|jQuery|string} options.startpicker.input - Startpicker input element
+ *     @param {Element|jQuery|string} options.startpicker.container - Startpicker container element
+ *     @param {object} options.endpicker - Endpicker options
+ *     @param {Element|jQuery|string} options.endpicker.input - Endpicker input element
+ *     @param {Element|jQuery|string} options.endpicker.container - Endpicker container element
+ *     @param {string} options.format - Input date-string format
+ *     @param {string} [options.type = 'date'] - DatePicker type - ('date' | 'month' | 'year')
+ *     @param {string} [options.language='en'] - Language key
+ *     @param {object|boolean} [options.timePicker] -
+ *                             [TimePicker]{@link https://nhnent.github.io/tui.time-picker/latest} options
+ *     @param {object} [options.calendar] - {@link Calendar} options
+ *     @param {Array.<Array.<Date|number>>} [options.selectableRanges] - Selectable ranges
+ *     @param {boolean} [options.showAlways = false] - Whether the datepicker shows always
+ *     @param {boolean} [options.autoClose = true] - Close after click a date
  * @example
- *
- *  var rangepicker = new DateRangePicker({
- *      startpicker: {
- *          input: '#start-input',
- *          container: '#start-container'
- *      },
- *      endpicker: {
- *          input: '#end-input',
- *          container: '#end-container'
- *      },
- *      type: 'date',
- *      format: 'yyyy-MM-dd'
- *      selectableRanges: [
- *          [new Date(2017, 3, 1), new Date(2017, 5, 1)],
- *          [new Date(2017, 6, 3), new Date(2017, 10, 5)]
- *      ]
- *  });
+ * var DatePicker = tui.DatePicker; // or require('tui-date-picker');
+ * var rangepicker = DatePicker.createRangePicker({
+ *     startpicker: {
+ *         input: '#start-input',
+ *         container: '#start-container'
+ *     },
+ *     endpicker: {
+ *         input: '#end-input',
+ *         container: '#end-container'
+ *     },
+ *     type: 'date',
+ *     format: 'yyyy-MM-dd'
+ *     selectableRanges: [
+ *         [new Date(2017, 3, 1), new Date(2017, 5, 1)],
+ *         [new Date(2017, 6, 3), new Date(2017, 10, 5)]
+ *     ]
+ * });
  */
-var DateRangePicker = tui.util.defineClass(/** @lends DateRangePicker.prototype */{
+var DateRangePicker = snippet.defineClass(/** @lends DateRangePicker.prototype */{
     init: function(options) {
         var startpickerOpt, endpickerOpt;
 
@@ -69,14 +70,14 @@ var DateRangePicker = tui.util.defineClass(/** @lends DateRangePicker.prototype 
 
         /**
          * Start picker
-         * @type {Datepicker}
+         * @type {DatePicker}
          * @private
          */
         this._startpicker = null;
 
         /**
          * End picker
-         * @type {Datepicker}
+         * @type {DatePicker}
          * @private
          */
         this._endpicker = null;
@@ -89,7 +90,7 @@ var DateRangePicker = tui.util.defineClass(/** @lends DateRangePicker.prototype 
 
     /**
      * Create picker
-     * @param {Object} options - Datepicker options
+     * @param {Object} options - DatePicker options
      * @private
      */
     _initializePickers: function(options) {
@@ -98,25 +99,25 @@ var DateRangePicker = tui.util.defineClass(/** @lends DateRangePicker.prototype 
         var $startInput = $(options.startpicker.input);
         var $endInput = $(options.endpicker.input);
 
-        var startpickerOpt = util.extend({}, options, {
+        var startpickerOpt = snippet.extend({}, options, {
             input: {
                 element: $startInput,
                 format: options.format
             }
         });
-        var endpickerOpt = util.extend({}, options, {
+        var endpickerOpt = snippet.extend({}, options, {
             input: {
                 element: $endInput,
                 format: options.format
             }
         });
 
-        this._startpicker = new Datepicker($startpickerContainer, startpickerOpt);
+        this._startpicker = new DatePicker($startpickerContainer, startpickerOpt);
         this._startpicker.addCssClass(CLASS_NAME_RANGE_PICKER);
         this._startpicker.on('change', this._onChangeStartpicker, this);
         this._startpicker.on('draw', this._onDrawPicker, this);
 
-        this._endpicker = new Datepicker($endpickerContainer, endpickerOpt);
+        this._endpicker = new DatePicker($endpickerContainer, endpickerOpt);
         this._endpicker.addCssClass(CLASS_NAME_RANGE_PICKER);
         this._endpicker.on('change', this._onChangeEndpicker, this);
         this._endpicker.on('draw', this._onDrawPicker, this);
@@ -124,7 +125,7 @@ var DateRangePicker = tui.util.defineClass(/** @lends DateRangePicker.prototype 
 
     /**
      * Set selection-class to elements after calendar drawing
-     * @param {Object} eventData - Event data {@link Datepicker#event:draw}
+     * @param {Object} eventData - Event data {@link DatePicker#event:draw}
      * @private
      */
     _onDrawPicker: function(eventData) {
@@ -244,7 +245,7 @@ var DateRangePicker = tui.util.defineClass(/** @lends DateRangePicker.prototype 
 
     /**
      * Returns start-datepicker
-     * @returns {Datepicker}
+     * @returns {DatePicker}
      */
     getStartpicker: function() {
         return this._startpicker;
@@ -252,7 +253,7 @@ var DateRangePicker = tui.util.defineClass(/** @lends DateRangePicker.prototype 
 
     /**
      * Returns end-datepicker
-     * @returns {Datepicker}
+     * @returns {DatePicker}
      */
     getEndpicker: function() {
         return this._endpicker;
@@ -293,7 +294,7 @@ var DateRangePicker = tui.util.defineClass(/** @lends DateRangePicker.prototype 
     /**
      * Set selectable ranges
      * @param {Array.<Array.<number|Date>>} ranges - Selectable ranges
-     * @see Datepicker#setRanges
+     * @see DatePicker#setRanges
      */
     setRanges: function(ranges) {
         this._startpicker.setRanges(ranges);
@@ -304,7 +305,7 @@ var DateRangePicker = tui.util.defineClass(/** @lends DateRangePicker.prototype 
      * Add a range
      * @param {Date|number} start - startDate
      * @param {Date|number} end - endDate
-     * @see Datepicker#addRange
+     * @see DatePicker#addRange
      */
     addRange: function(start, end) {
         this._startpicker.addRange(start, end);
@@ -316,7 +317,7 @@ var DateRangePicker = tui.util.defineClass(/** @lends DateRangePicker.prototype 
      * @param {Date|number} start - startDate
      * @param {Date|number} end - endDate
      * @param {null|'date'|'month'|'year'} type - Range type, If falsy -> Use strict timestamp;
-     * @see Datepicker#removeRange
+     * @see DatePicker#removeRange
      */
     removeRange: function(start, end, type) {
         this._startpicker.removeRange(start, end, type);
@@ -336,5 +337,5 @@ var DateRangePicker = tui.util.defineClass(/** @lends DateRangePicker.prototype 
     }
 });
 
-util.CustomEvents.mixin(DateRangePicker);
+snippet.CustomEvents.mixin(DateRangePicker);
 module.exports = DateRangePicker;

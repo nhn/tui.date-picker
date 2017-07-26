@@ -2,6 +2,7 @@
  * @fileoverview Handlebars helper - unique id
  * @author NHN Ent. FE Development Lab <dl_javascript@nhnent.com>
  */
+
 'use strict';
 
 var uniqueId = 0;

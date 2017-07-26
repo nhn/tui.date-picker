@@ -2,7 +2,10 @@
  * @fileoverview Date <-> Text formatting module
  * @author NHN Ent. FE Development Lab <dl_javascript@nhnent.com>
  */
+
 'use strict';
+
+var snippet = require('tui-code-snippet');
 
 var dateUtil = require('./dateUtil');
 var constants = require('./constants');
@@ -100,7 +103,7 @@ var mapForConverting = {
  * @class
  * @ignore
  */
-var DateTimeFormatter = tui.util.defineClass(/** @lends DateTimeFormatter.prototype */{
+var DateTimeFormatter = snippet.defineClass(/** @lends DateTimeFormatter.prototype */{
     init: function(rawStr, titles) {
         /**
          * @type {string}
@@ -142,11 +145,11 @@ var DateTimeFormatter = tui.util.defineClass(/** @lends DateTimeFormatter.protot
         var matchedKeys = this._rawStr.match(rFormableKeys);
         var keyOrder = [];
 
-        matchedKeys = tui.util.filter(matchedKeys, function(key) {
+        matchedKeys = snippet.filter(matchedKeys, function(key) {
             return key[0] !== '\\'; // escape character
         });
 
-        tui.util.forEach(matchedKeys, function(key, index) {
+        snippet.forEach(matchedKeys, function(key, index) {
             if (!/m/i.test(key)) {
                 key = key.toLowerCase();
             }
@@ -187,7 +190,7 @@ var DateTimeFormatter = tui.util.defineClass(/** @lends DateTimeFormatter.protot
             throw Error('DateTimeFormatter: Not matched - "' + str + '"');
         }
 
-        tui.util.forEach(this._keyOrder, function(name, index) {
+        snippet.forEach(this._keyOrder, function(name, index) {
             var value = matched[index + 1];
 
             if (name === constants.TYPE_MERIDIEM && /[ap]m/i.test(value)) {
@@ -242,7 +245,7 @@ var DateTimeFormatter = tui.util.defineClass(/** @lends DateTimeFormatter.protot
         var meridiem = 'a'; // Default value for unusing meridiem format
         var replaceMap;
 
-        if (tui.util.inArray(constants.TYPE_MERIDIEM, this._keyOrder) > -1) {
+        if (snippet.inArray(constants.TYPE_MERIDIEM, this._keyOrder) > -1) {
             meridiem = hour >= 12 ? 'pm' : 'am';
             hour = dateUtil.getMeridiemHour(hour);
         }

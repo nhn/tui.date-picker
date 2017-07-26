@@ -2,8 +2,9 @@
  * @fileoverview Calendar spec
  * @author NHN Ent. FE Development Lab <dl_javascript@nhnent.com>
  */
-
 'use strict';
+
+var $ = require('jquery');
 
 var Calendar = require('../../src/js/calendar');
 

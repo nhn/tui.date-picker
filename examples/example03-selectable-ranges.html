@@ -2,17 +2,16 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title>Default datepicker sample</title>
-    <link href="../dist/tui-component-datepicker.css" rel="stylesheet">
+    <title>3. Having selectable range</title>
+    <link href="../dist/tui-date-picker.css" rel="stylesheet">
     <style type="text/css">
         h2{margin-top:20px;margin-bottom:5px;}
     </style>
 </head>
 <body>
     <div class="code-html">
-        <h2>Datepicker with selectable ranges</h2>
         <sub>
-            Selectables
+            <h3>Selectables</h3>
             <ul>
                 <li>2017-01-03 ~ 2017-01-07</li>
                 <li>2017-02-08 ~ 2017-05-08</li>
@@ -24,11 +23,11 @@
         </div>
         <div id="wrapper" style="margin-top: -1px;"></div>
     </div>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/nhnent/tui.code-snippet/1.2.1/code-snippet.js"></script>
-    <script type="text/javascript" src="../dist/tui-component-datepicker.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/nhnent/tui.code-snippet/v1.2.5/dist/tui-code-snippet.js"></script>
+    <script type="text/javascript" src="../dist/tui-date-picker.js"></script>
     <script class="code-js">
-        var datepicker = new tui.component.Datepicker('#wrapper', {
+        var datepicker = new tui.DatePicker('#wrapper', {
             date: new Date(2017, 1, 10),
             selectableRanges: [
                 [new Date(2017, 0, 3), new Date(2017, 0, 7)],

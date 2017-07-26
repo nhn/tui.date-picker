@@ -2,6 +2,7 @@
  * @fileoverview Handlebars helper - weeks (templating) for date-calendar
  * @author NHN Ent. FE Development Lab <dl_javascript@nhnent.com>
  */
+
 'use strict';
 
 var dateUtil = require('../../js/dateUtil');

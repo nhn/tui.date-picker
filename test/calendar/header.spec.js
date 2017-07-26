@@ -2,6 +2,9 @@
  * @fileoverview Calendar-header spec
  * @author NHN Ent. FE Development Lab <dl_javascript@nhnent.com>
  */
+'use strict';
+
+var $ = require('jquery');
 
 var Header = require('../../src/js/calendar/header');
 var constants = require('../../src/js/constants');

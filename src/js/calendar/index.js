@@ -2,7 +2,11 @@
  * @fileoverview Calendar component
  * @author NHN Ent. FE dev Lab <dl_javascript@nhnent.com>
  */
+
 'use strict';
+
+var $ = require('jquery');
+var snippet = require('tui-code-snippet');
 
 var tmpl = require('./../../template/calendar/index.hbs');
 var Header = require('./header');
@@ -28,20 +32,20 @@ var CLASS_NAME_CALENDAR_YEAR = 'tui-calendar-year';
 var HEADER_SELECTOR = '.tui-calendar-header';
 var BODY_SELECTOR = '.tui-calendar-body';
 
-var util = tui.util;
+var util = snippet;
 /**
- * Calendar component class
+ * Calendar class
  * @constructor
  * @param {HTMLElement|jQuery|string} wrapperElement - Wrapper element or selector
- * @param {Object} [option] - Options for initialize
- * @param {string} [option.language = 'en'] - Calendar language - {@link Calendar.localeTexts}
- * @param {boolean} [option.showToday] - If true, shows today
- * @param {boolean} [option.showJumpButtons] - If true, shows jump buttons (next,prev-year in 'date'-Calendar)
- * @param {Date} [option.date = new Date()] - Initial date
- * @param {string} [option.type = 'date'] - Calendar types - 'date', 'month', 'year'
- * @tutorial calendars
+ * @param {Object} [options] - Options for initialize
+ *     @param {string} [options.language = 'en'] - Calendar language - {@link Calendar.localeTexts}
+ *     @param {boolean} [options.showToday] - If true, shows today
+ *     @param {boolean} [options.showJumpButtons] - If true, shows jump buttons (next,prev-year in 'date'-Calendar)
+ *     @param {Date} [options.date = new Date()] - Initial date
+ *     @param {string} [options.type = 'date'] - Calendar types - 'date', 'month', 'year'
  * @example
- * var calendar = new tui.component.Calendar('#calendar-wrapper', {
+ * var DatePicker = tui.DatePicker; // or require('tui-date-picker');
+ * var calendar = DatePicker.createCalendar('#calendar-wrapper', {
  *     language: 'en', // There are two supporting types by default - 'en' and 'ko'.
  *     showToday: true,
  *     showJumpButtons: false,
@@ -67,7 +71,9 @@ var Calendar = util.defineClass(/** @lends Calendar.prototype */ {
          * @memberof Calendar
          * @static
          * @example
-         * tui.component.Calendar.localeTexts['customKey'] = {
+         * var DatePicker = tui.DatePicker; // or require('tui-date-picker');
+         *
+         * DatePicker.localeTexts['customKey'] = {
          *     titles: {
          *         // days
          *         DD: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
@@ -85,20 +91,20 @@ var Calendar = util.defineClass(/** @lends Calendar.prototype */ {
          *     todayFormat: 'D, MMMM dd, yyyy'
          * };
          *
-         * var calendar = new tui.component.Calendar('#calendar-wrapper', {
+         * var calendar = DatePicker.createCalendar('#calendar-wrapper', {
          *     language: 'customKey',
          * });
          */
         localeTexts: localeTexts
     },
-    init: function(container, option) {
-        option = tui.util.extend({
+    init: function(container, options) {
+        options = snippet.extend({
             language: DEFAULT_LANGUAGE_TYPE,
             showToday: true,
             showJumpButtons: false,
             date: new Date(),
             type: TYPE_DATE
-        }, option);
+        }, options);
 
         /**
          * Container element
@@ -112,7 +118,7 @@ var Calendar = util.defineClass(/** @lends Calendar.prototype */ {
          * @type {jQuery}
          * @private
          */
-        this._$element = $(tmpl(option)).appendTo(this._$container);
+        this._$element = $(tmpl(options)).appendTo(this._$container);
 
         /**
          * Date
@@ -142,23 +148,23 @@ var Calendar = util.defineClass(/** @lends Calendar.prototype */ {
          */
         this._body = null;
 
-        this._initHeader(option);
-        this._initBody(option);
+        this._initHeader(options);
+        this._initBody(options);
         this.draw({
-            date: option.date,
-            type: option.type
+            date: options.date,
+            type: options.type
         });
     },
 
     /**
      * Initialize header
-     * @param {object} option - Header option
+     * @param {object} options - Header options
      * @private
      */
-    _initHeader: function(option) {
+    _initHeader: function(options) {
         var $headerContainer = this._$element.find(HEADER_SELECTOR);
 
-        this._header = new Header($headerContainer, option);
+        this._header = new Header($headerContainer, options);
         this._header.on('click', function(ev) {
             var $target = $(ev.target);
             if ($target.hasClass(CLASS_NAME_PREV_MONTH_BTN)) {
@@ -175,13 +181,13 @@ var Calendar = util.defineClass(/** @lends Calendar.prototype */ {
 
     /**
      * Initialize body
-     * @param {object} option - Body option
+     * @param {object} options - Body options
      * @private
      */
-    _initBody: function(option) {
+    _initBody: function(options) {
         var $bodyContainer = this._$element.find(BODY_SELECTOR);
 
-        this._body = new Body($bodyContainer, option);
+        this._body = new Body($bodyContainer, options);
     },
 
     /**
@@ -288,7 +294,7 @@ var Calendar = util.defineClass(/** @lends Calendar.prototype */ {
 
     /**
      * Draw calendar
-     * @param {?object} option - Draw option
+     * @param {?object} options - Draw options
      * @example
      *
      * calendar.draw();
@@ -303,12 +309,12 @@ var Calendar = util.defineClass(/** @lends Calendar.prototype */ {
      *     date: new Date()
      * });
      */
-    draw: function(option) {
+    draw: function(options) {
         var date, type;
 
-        option = option || {};
-        date = option.date || this._date;
-        type = (option.type || this.getType()).toLowerCase();
+        options = options || {};
+        date = options.date || this._date;
+        type = (options.type || this.getType()).toLowerCase();
 
         if (this._shouldUpdate(date, type)) {
             this._date = date;

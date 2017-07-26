@@ -2,7 +2,11 @@
  * @fileoverview Date layer
  * @author NHN Ent. FE Development Lab <dl_javascript@nhnent.com>
  */
+
 'use strict';
+
+var $ = require('jquery');
+var snippet = require('tui-code-snippet');
 
 var bodyTmpl = require('./../../../template/calendar/dateLayer.hbs');
 var LayerBase = require('./base');
@@ -16,7 +20,7 @@ var DATE_SELECTOR = '.tui-calendar-date';
  * @extends LayerBase
  * @param {string} language - Initial language
  */
-var DateLayer = tui.util.defineClass(LayerBase, /** @lends DateLayer.prototype */{
+var DateLayer = snippet.defineClass(LayerBase, /** @lends DateLayer.prototype */{
     init: function(language) {
         LayerBase.call(this, language);
     },

@@ -1,20 +1,22 @@
 /**
- * @fileoverview Datepicker component
+ * @fileoverview DatePicker component
  * @author NHN ent FE dev Lab <dl_javascript@nhnent.com>
  */
+
 'use strict';
+
+var $ = require('jquery');
+var snippet = require('tui-code-snippet');
+var TimePicker = require('tui-time-picker');
 
 var Calendar = require('../calendar');
 var RangeModel = require('./../rangeModel/index');
-var Timepicker = require('../timepicker');
 var constants = require('../constants');
 var localeTexts = require('../localeTexts');
 var dateUtil = require('../dateUtil');
 var setTouchClickEvent = require('../setTouchClickEvent');
 var tmpl = require('../../template/datepicker/index.hbs');
-var DatepickerInput = require('./input');
-
-var util = tui.util;
+var DatePickerInput = require('./input');
 
 var DEFAULT_LANGUAGE_TYPE = constants.DEFAULT_LANGUAGE_TYPE;
 var TYPE_DATE = constants.TYPE_DATE;
@@ -39,11 +41,11 @@ var SELECTOR_DATE_ICO = '.tui-ico-date';
 /**
  * Merge default option
  * @ignore
- * @param {object} option - Datepicker option
+ * @param {object} option - DatePicker option
  * @returns {object}
  */
 var mergeDefaultOption = function(option) {
-    option = util.extend({
+    option = snippet.extend({
         language: DEFAULT_LANGUAGE_TYPE,
         calendar: {},
         input: {
@@ -61,13 +63,13 @@ var mergeDefaultOption = function(option) {
 
     option.selectableRanges = option.selectableRanges || [[constants.MIN_DATE, constants.MAX_DATE]];
 
-    if (!util.isObject(option.calendar)) {
+    if (!snippet.isObject(option.calendar)) {
         throw new Error('Calendar option must be an object');
     }
-    if (!util.isObject(option.input)) {
+    if (!snippet.isObject(option.input)) {
         throw new Error('Input option must be an object');
     }
-    if (!util.isArray(option.selectableRanges)) {
+    if (!snippet.isArray(option.selectableRanges)) {
         throw new Error('Selectable-ranges must be a 2d-array');
     }
 
@@ -81,14 +83,15 @@ var mergeDefaultOption = function(option) {
 };
 
 /**
- * @Class
+ * @class
  * @param {HTMLElement|jQuery|string} container - Container element of datepicker
  * @param {Object} [options] - Options
  *      @param {Date|number} [options.date] - Initial date. Default - null for no initial date
- *      @param {string} [options.type = 'date'] - Datepicker type - ('date' | 'month' | 'year')
+ *      @param {string} [options.type = 'date'] - DatePicker type - ('date' | 'month' | 'year')
  *      @param {string} [options.language='en'] - Language key
- *      @param {object|boolean} [options.timePicker] - {@link Timepicker} option
- *      @param {object} [options.calendar] - {@link Calendar} option
+ *      @param {object|boolean} [options.timePicker] -
+ *                              [TimePicker]{@link https://nhnent.github.io/tui.time-picker/latest} options
+ *      @param {object} [options.calendar] - {@link Calendar} options
  *      @param {object} [options.input] - Input option
  *      @param {HTMLElement|string|jQuery} [options.input.element] - Input element
  *      @param {string} [options.input.format = 'yyyy-mm-dd'] - Date string format
@@ -97,58 +100,54 @@ var mergeDefaultOption = function(option) {
  *      @param {Array} [options.openers = []] - Opener button list (example - icon, button, etc.)
  *      @param {boolean} [options.showAlways = false] - Whether the datepicker shows always
  *      @param {boolean} [options.autoClose = true] - Close after click a date
- * @tutorial datepicker-basic
- * @tutorial datepicker-inline
- * @tutorial datepicker-selectable-ranges
- * @tutorial datetimepicker
- * @tutorial month-year-pickers
  * @example
+ * var DatePicker = tui.DatePicker; // or require('tui-date-picker');
  *
- *   var range1 = [new Date(2015, 2, 1), new Date(2015, 3, 1)];
- *   var range2 = [1465570800000, 1481266182155]; // timestamps
+ * var range1 = [new Date(2015, 2, 1), new Date(2015, 3, 1)];
+ * var range2 = [1465570800000, 1481266182155]; // timestamps
  *
- *   var picker1 = new tui.component.Datepicker('#datepicker-container1, {
- *       showAlways: true
- *   });
+ * var picker1 = new DatePicker('#datepicker-container1', {
+ *     showAlways: true
+ * });
  *
+ * var picker2 = new DatePicker('#datepicker-container2', {
+ *    showAlways: true,
+ *    timepicker: true
+ * });
  *
- *   var picker2 = new tui.component.Datepicker('#datepicker-container2, {
- *      showAlways: true,
- *      timepicker: true
- *   });
- *
- *   var picker3 = new tui.component.Datepicker('#datepicker-container3', {
- *      // There are two supporting types by default - 'en' and 'ko'.
- *      // See "{@link Datepicker.localeTexts}"
- *       language: 'ko',
- *       calendar: {
- *          showToday: true
- *       },
- *       timepicker: {
- *           showMeridiem: true,
- *           defaultHour: 13,
- *           defaultMinute: 24
- *       },
- *       input: {
- *           element: '#datepicker-input',
- *           format: 'yyyy년 MM월 dd일 hh:mm A'
- *       }
- *       type: 'date',
- *       date: new Date(2015, 0, 1) // or timestamp. (default: null-(no initial date))
- *       selectableRanges: [range1, range2],
- *       openers: ['#opener']
- *   });
+ * var picker3 = new DatePicker('#datepicker-container3', {
+ *     // There are two supporting types by default - 'en' and 'ko'.
+ *     // See "{@link DatePicker.localeTexts}"
+ *     language: 'ko',
+ *     calendar: {
+ *         showToday: true
+ *     },
+ *     timepicker: {
+ *         showMeridiem: true,
+ *         defaultHour: 13,
+ *         defaultMinute: 24
+ *     },
+ *     input: {
+ *         element: '#datepicker-input',
+ *         format: 'yyyy년 MM월 dd일 hh:mm A'
+ *     }
+ *     type: 'date',
+ *     date: new Date(2015, 0, 1) // or timestamp. (default: null-(no initial date))
+ *     selectableRanges: [range1, range2],
+ *     openers: ['#opener']
+ * });
  */
-var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
+var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
     static: {
         /**
          * Locale text data
          * @type {object}
-         * @memberof Datepicker
+         * @memberof DatePicker
          * @static
          * @example
+         * var DatePicker = tui.DatePicker; // or require('tui-date-picker');
          *
-         * tui.component.Datepicker.localeTexts['customKey'] = {
+         * DatePicker.localeTexts['customKey'] = {
          *     titles: {
          *         // days
          *         DD: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
@@ -168,7 +167,7 @@ var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
          *     time: 'Time'
          * };
          *
-         * var datepicker = new tui.component.Datepicker('#datepicker-container', {
+         * var datepicker = new tui.DatePicker('#datepicker-container', {
          *     language: 'customKey'
          * });
          */
@@ -185,14 +184,14 @@ var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
         this._language = options.language;
 
         /**
-         * Datepicker container
+         * DatePicker container
          * @type {jQuery}
          * @private
          */
         this._$container = $(container);
 
         /**
-         * Datepicker element
+         * DatePicker element
          * @type {jQuery}
          * @private
          */
@@ -206,15 +205,15 @@ var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
         this._calendar = new Calendar(this._$element.find(SELECTOR_BODY), options.calendar);
 
         /**
-         * Timepicker instance
-         * @type {Timepicker}
+         * TimePicker instance
+         * @type {TimePicker}
          * @private
          */
         this._timepicker = null;
 
         /**
-         * Datepicker input
-         * @type {DatepickerInput}
+         * DatePicker input
+         * @type {DatePickerInput}
          * @private
          */
         this._datepickerInput = null;
@@ -252,10 +251,10 @@ var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
          * @private
          * @type {number}
          */
-        this._id = 'tui-datepicker-' + util.stamp(this);
+        this._id = 'tui-datepicker-' + snippet.stamp(this);
 
         /**
-         * Datepicker type
+         * DatePicker type
          * @type {TYPE_DATE|TYPE_MONTH|TYPE_YEAR}
          * @private
          */
@@ -273,7 +272,7 @@ var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
          */
         this.autoClose = options.autoClose;
 
-        this._initializeDatepicker(options);
+        this._initializeDatePicker(options);
     },
 
     /**
@@ -281,15 +280,15 @@ var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
      * @param {Object} option - user option
      * @private
      */
-    _initializeDatepicker: function(option) {
+    _initializeDatePicker: function(option) {
         this.setRanges(option.selectableRanges);
         this._setEvents(option);
-        this._initTimepicker(option.timepicker);
+        this._initTimePicker(option.timepicker);
         this.setInput(option.input.element);
         this.setDateFormat(option.input.format);
         this.setDate(option.date);
 
-        util.forEach(option.openers, this.addOpener, this);
+        snippet.forEach(option.openers, this.addOpener, this);
         if (!this.showAlways) {
             this._$element.hide();
         }
@@ -330,27 +329,27 @@ var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
      * @param {string|jQuery|Element} el - Element
      * @private
      */
-    _offDatepickerEvents: function(el) {
+    _offDatePickerEvents: function(el) {
         $(el).off('.' + this._id);
     },
 
     /**
-     * Set Timepicker instance
-     * @param {object|boolean} opTimepicker - Timepicker instance
+     * Set TimePicker instance
+     * @param {object|boolean} opTimePicker - TimePicker instance
      * @private
      */
-    _initTimepicker: function(opTimepicker) {
+    _initTimePicker: function(opTimePicker) {
         var layoutType;
-        if (!opTimepicker) {
+        if (!opTimePicker) {
             return;
         }
 
-        layoutType = opTimepicker.layoutType || '';
+        layoutType = opTimePicker.layoutType || '';
         if (layoutType.toLowerCase() === 'tab') {
-            this._timepicker = new Timepicker(this._$element.find(SELECTOR_BODY), opTimepicker);
+            this._timepicker = new TimePicker(this._$element.find(SELECTOR_BODY), opTimePicker);
             this._timepicker.hide();
         } else {
-            this._timepicker = new Timepicker(this._$element.find(SELECTOR_FOOTER), opTimepicker);
+            this._timepicker = new TimePicker(this._$element.find(SELECTOR_FOOTER), opTimePicker);
         }
 
         this._timepicker.on('change', function(ev) {
@@ -400,7 +399,7 @@ var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
     _isOpener: function(element) {
         var el = $(element)[0];
 
-        return util.inArray(el, this._openers) > -1;
+        return snippet.inArray(el, this._openers) > -1;
     },
 
     /**
@@ -519,7 +518,7 @@ var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
         } catch (err) {
             /**
              * Parsing error from input-text
-             * @event Datepicker#error
+             * @event DatePicker#error
              * @example
              *
              * datepicker.on('error', function(err) {
@@ -610,7 +609,7 @@ var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
 
         /**
          * Fires after calendar drawing
-         * @event Datepicker#draw
+         * @event DatePicker#draw
          * @param {Object} event - See {@link Calendar#event:draw}
          * @param {Date} event.date - Calendar date
          * @param {string} event.type - Calendar type
@@ -755,7 +754,7 @@ var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
      * ]);
      */
     setRanges: function(ranges) {
-        ranges = tui.util.map(ranges, function(range) {
+        ranges = snippet.map(ranges, function(range) {
             var start = new Date(range[0]).getTime();
             var end = new Date(range[1]).getTime();
 
@@ -828,10 +827,10 @@ var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
      */
     removeOpener: function(opener) {
         var $opener = $(opener);
-        var index = util.inArray($opener[0], this._openers);
+        var index = snippet.inArray($opener[0], this._openers);
 
         if (index > -1) {
-            this._offDatepickerEvents(opener);
+            this._offDatePickerEvents(opener);
             this._openers.splice(index, 1);
         }
     },
@@ -840,7 +839,7 @@ var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
      * Remove all openers
      */
     removeAllOpeners: function() {
-        this._offDatepickerEvents(this._openers);
+        this._offDatePickerEvents(this._openers);
         this._openers = [];
     },
 
@@ -867,7 +866,7 @@ var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
         }
 
         /**
-         * @event Datepicker#open
+         * @event DatePicker#open
          * @example
          * datepicker.on('open', function() {
          *     alert('open');
@@ -933,12 +932,12 @@ var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
         if (!this.isOpened()) {
             return;
         }
-        this._offDatepickerEvents(document);
+        this._offDatePickerEvents(document);
         this._$element.hide();
 
         /**
-         * Close event - Datepicker
-         * @event Datepicker#close
+         * Close event - DatePicker
+         * @event DatePicker#close
          * @example
          * datepicker.on('close', function() {
          *     alert('close');
@@ -992,7 +991,7 @@ var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
             return;
         }
 
-        isValidInput = util.isNumber(date) || util.isDate(date);
+        isValidInput = snippet.isNumber(date) || snippet.isDate(date);
         newDate = new Date(date);
         shouldUpdate = isValidInput && this._isChanged(newDate) && this.isSelectable(newDate);
 
@@ -1007,14 +1006,14 @@ var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
 
             /**
              * Change event
-             * @event Datepicker#change
+             * @event DatePicker#change
              * @example
              *
-             *   datepicker.on('change', function() {
-             *       var newDate = datepicker.getDate();
+             * datepicker.on('change', function() {
+             *     var newDate = datepicker.getDate();
              *
-             *       console.log(newDate);
-             *   });
+             *     console.log(newDate);
+             * });
              */
             this.fire('change');
         }
@@ -1080,11 +1079,11 @@ var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
 
     /**
      * Returns timepicker instance
-     * @returns {?Timepicker} - Timepicker instance
+     * @returns {?TimePicker} - TimePicker instance
      * @example
-     * var timepicker = this.getTimepicker();
+     * var timepicker = this.getTimePicker();
      */
-    getTimepicker: function() {
+    getTimePicker: function() {
         return this._timepicker;
     },
 
@@ -1114,7 +1113,7 @@ var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
             prev.destroy();
         }
 
-        this._datepickerInput = new DatepickerInput(element, {
+        this._datepickerInput = new DatePickerInput(element, {
             format: options.format || prevFormat,
             id: this._id,
             localeText: localeText
@@ -1145,7 +1144,7 @@ var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
         this._isEnabled = true;
         this._datepickerInput.enable();
 
-        util.forEach(this._openers, function(opener) {
+        snippet.forEach(this._openers, function(opener) {
             $(opener).removeAttr('disabled');
             setTouchClickEvent(opener, $.proxy(this.toggle, this), {
                 namespace: this._id
@@ -1168,8 +1167,8 @@ var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
         this.close();
         this._datepickerInput.disable();
 
-        this._offDatepickerEvents(this._openers);
-        util.forEach(this._openers, function(opener) {
+        this._offDatePickerEvents(this._openers);
+        snippet.forEach(this._openers, function(opener) {
             $(opener).attr('disabled', true);
         }, this);
     },
@@ -1225,7 +1224,7 @@ var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
      * Destroy
      */
     destroy: function() {
-        this._offDatepickerEvents(document);
+        this._offDatePickerEvents(document);
         this._calendar.destroy();
         if (this._timepicker) {
             this._timepicker.destroy();
@@ -1250,5 +1249,5 @@ var Datepicker = util.defineClass(/** @lends Datepicker.prototype */{
     }
 });
 
-util.CustomEvents.mixin(Datepicker);
-module.exports = Datepicker;
+snippet.CustomEvents.mixin(DatePicker);
+module.exports = DatePicker;

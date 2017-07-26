@@ -2,6 +2,7 @@
  * @fileoverview Constants of date-picker
  * @author NHN Ent. FE Development Lab <dl_javascript@nhnent.com>
  */
+
 'use strict';
 
 module.exports = {

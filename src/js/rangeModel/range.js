@@ -2,10 +2,12 @@
  * @fileoverview Range (in RangeModel)
  * @author NHN Ent. FE Development Lab <dl_javascript@nhnent.com>
  */
+
 'use strict';
 
+var snippet = require('tui-code-snippet');
 
-var isNumber = tui.util.isNumber;
+var isNumber = snippet.isNumber;
 
 /**
  * @class
@@ -13,7 +15,7 @@ var isNumber = tui.util.isNumber;
  * @param {number} start - Start of range
  * @param {number} [end] - End of range
  */
-var Range = tui.util.defineClass(/** @lends Range.prototype */{
+var Range = snippet.defineClass(/** @lends Range.prototype */{
     init: function(start, end) {
         this.setRange(start, end);
     },

@@ -5,6 +5,9 @@
 
 'use strict';
 
+var $ = require('jquery');
+var snippet = require('tui-code-snippet');
+
 var localeTexts = require('./../localeTexts');
 var headerTmpl = require('./../../template/calendar/header.hbs');
 var DateTimeFormatter = require('../dateTimeFormatter');
@@ -34,7 +37,7 @@ var YEAR_TITLE_FORMAT = 'yyyy';
  * @param {boolean} option.showToday - Has today box or not.
  * @param {boolean} option.showJumpButtons - Has jump buttons or not.
  */
-var Header = tui.util.defineClass(/** @lends Header.prototype */{
+var Header = snippet.defineClass(/** @lends Header.prototype */{
     init: function(container, option) {
         /**
          * Container element
@@ -114,7 +117,7 @@ var Header = tui.util.defineClass(/** @lends Header.prototype */{
             CLASS_NAME_NEXT_YEAR_BTN
         ];
 
-        tui.util.forEach(classNames, function(className) {
+        snippet.forEach(classNames, function(className) {
             self._$container.on('touchend.calendar click.calendar', '.' + className, function(ev) {
                 self.fire('click', ev);
                 ev.preventDefault(); // To prevent click after touchend
@@ -213,5 +216,5 @@ var Header = tui.util.defineClass(/** @lends Header.prototype */{
     }
 });
 
-tui.util.CustomEvents.mixin(Header);
+snippet.CustomEvents.mixin(Header);
 module.exports = Header;

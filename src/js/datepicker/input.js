@@ -1,8 +1,12 @@
 /**
- * @fileoverview Datepicker input(element) component
+ * @fileoverview DatePicker input(element) component
  * @author NHN Ent. FE Development Lab <dl_javascript@nhnent.com>
  */
+
 'use strict';
+
+var $ = require('jquery');
+var snippet = require('tui-code-snippet');
 
 var DateTimeFormatter = require('../dateTimeFormatter');
 var setTouchClickEvent = require('../setTouchClickEvent');
@@ -10,7 +14,7 @@ var setTouchClickEvent = require('../setTouchClickEvent');
 var DEFAULT_FORMAT = 'yyyy-MM-dd';
 
 /**
- * Datepicker Input
+ * DatePicker Input
  * @ignore
  * @class
  * @param {string|jQuery|HTMLElement} inputElement - Input element
@@ -18,7 +22,7 @@ var DEFAULT_FORMAT = 'yyyy-MM-dd';
  * @param {string} option.id - Id
  * @param {string} option.format - Text format
  */
-var DatepickerInput = tui.util.defineClass(/** @lends DatepickerInput.prototype */{
+var DatePickerInput = snippet.defineClass(/** @lends DatePickerInput.prototype */{
     init: function(inputElement, option) {
         option.format = option.format || DEFAULT_FORMAT;
 
@@ -150,6 +154,5 @@ var DatepickerInput = tui.util.defineClass(/** @lends DatepickerInput.prototype 
     }
 });
 
-tui.util.CustomEvents.mixin(DatepickerInput);
-module.exports = DatepickerInput;
-
+snippet.CustomEvents.mixin(DatePickerInput);
+module.exports = DatePickerInput;

@@ -2,7 +2,11 @@
  * @fileoverview Calendar body
  * @author NHN Ent. FE Development Lab <dl_javascript@nhnent.com>
  */
+
 'use strict';
+
+var $ = require('jquery');
+var snippet = require('tui-code-snippet');
 
 var DateLayer = require('./layerBody/date');
 var MonthLayer = require('./layerBody/month');
@@ -17,7 +21,7 @@ var TYPE_YEAR = constants.TYPE_YEAR;
  * @ignore
  * @class
  */
-var Body = tui.util.defineClass(/** @lends Body.prototype */{
+var Body = snippet.defineClass(/** @lends Body.prototype */{
     init: function(bodyContainer, option) {
         var language = option.language;
 
@@ -82,7 +86,7 @@ var Body = tui.util.defineClass(/** @lends Body.prototype */{
      * @private
      */
     _eachLayer: function(fn) {
-        tui.util.forEach([this._dateLayer, this._monthLayer, this._yearLayer], fn);
+        snippet.forEach([this._dateLayer, this._monthLayer, this._yearLayer], fn);
     },
 
     /**
@@ -132,4 +136,3 @@ var Body = tui.util.defineClass(/** @lends Body.prototype */{
 });
 
 module.exports = Body;
-

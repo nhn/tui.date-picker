@@ -2,7 +2,10 @@
  * @fileoverview Layer base
  * @author NHN Ent. FE Development Lab <dl_javascript@nhnent.com>
  */
+
 'use strict';
+
+var snippet = require('tui-code-snippet');
 
 var localeText = require('../../localeTexts');
 var DEFAULT_LANGUAGE_TYPE = require('../../constants').DEFAULT_LANGUAGE_TYPE;
@@ -14,7 +17,7 @@ var DEFAULT_LANGUAGE_TYPE = require('../../constants').DEFAULT_LANGUAGE_TYPE;
  * @param {string} language - Initial language
  * Layer base
  */
-var LayerBase = tui.util.defineClass(/** @lends LayerBase.prototype */{
+var LayerBase = snippet.defineClass(/** @lends LayerBase.prototype */{
     init: function(language) {
         language = language || DEFAULT_LANGUAGE_TYPE;
 

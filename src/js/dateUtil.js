@@ -1,12 +1,14 @@
 /**
- * @fileoverview Utils for Datepicker component
+ * @fileoverview Utils for DatePicker component
  * @author NHN Ent. FE dev Lab. <dl_javascript@nhnent.com>
  * @dependency tui-code-snippet ^1.0.2
  */
+
 'use strict';
 
+var snippet = require('tui-code-snippet');
+
 var constants = require('./constants');
-var snippet = tui.util;
 
 var TYPE_DATE = constants.TYPE_DATE;
 var TYPE_MONTH = constants.TYPE_MONTH;
@@ -101,7 +103,7 @@ var utils = {
      * @returns {number}
      */
     getSafeNumber: function(any, defaultNumber) {
-        if (isNaN(defaultNumber) || !tui.util.isNumber(defaultNumber)) {
+        if (isNaN(defaultNumber) || !snippet.isNumber(defaultNumber)) {
             throw Error('The defaultNumber must be a valid number.');
         }
         if (isNaN(any)) {

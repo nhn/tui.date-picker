@@ -2,7 +2,11 @@
  * @fileoverview Month layer
  * @author NHN Ent. FE Development Lab <dl_javascript@nhnent.com>
  */
+
 'use strict';
+
+var $ = require('jquery');
+var snippet = require('tui-code-snippet');
 
 var bodyTmpl = require('./../../../template/calendar/monthLayer.hbs');
 var LayerBase = require('./base');
@@ -16,7 +20,7 @@ var DATE_SELECTOR = '.tui-calendar-month';
  * @param {string} language - Initial language
  * @ignore
  */
-var MonthLayer = tui.util.defineClass(LayerBase, /** @lends MonthLayer.prototype */{
+var MonthLayer = snippet.defineClass(LayerBase, /** @lends MonthLayer.prototype */{
     init: function(language) {
         LayerBase.call(this, language);
     },

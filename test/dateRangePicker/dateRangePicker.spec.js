@@ -4,7 +4,9 @@
  */
 'use strict';
 
-var Datepicker = require('../../src/js/datepicker');
+var $ = require('jquery');
+
+var DatePicker = require('../../src/js/datepicker');
 var DateRangePicker = require('../../src/js/dateRangePicker');
 
 describe('DateRangePicker', function() {
@@ -44,8 +46,8 @@ describe('DateRangePicker', function() {
     });
 
     it('should create two datepickers', function() {
-        expect(picker.getStartpicker()).toEqual(jasmine.any(Datepicker));
-        expect(picker.getEndpicker()).toEqual(jasmine.any(Datepicker));
+        expect(picker.getStartpicker()).toEqual(jasmine.any(DatePicker));
+        expect(picker.getEndpicker()).toEqual(jasmine.any(DatePicker));
     });
 
     it('should set start-date', function() {

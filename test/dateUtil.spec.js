@@ -4,6 +4,8 @@
  */
 'use strict';
 
+var $ = require('jquery');
+
 var dateUtil = require('../src/js/dateUtil');
 
 describe('getMeridiemHour()', function() {

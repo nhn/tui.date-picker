@@ -2,6 +2,7 @@
  * @fileoverview Handlebars helper - week (templating) for date-calendar
  * @author NHN Ent. FE Development Lab <dl_javascript@nhnent.com>
  */
+
 'use strict';
 
 module.exports = function(currentYear, currentMonth, dates, options) {

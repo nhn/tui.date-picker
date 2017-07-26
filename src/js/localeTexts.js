@@ -2,6 +2,7 @@
  * @fileoverview Default locale texts
  * @author NHN Ent. FE Development Lab <dl_javascript@nhnent.com>
  */
+
 'use strict';
 
 module.exports = {

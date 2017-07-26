@@ -2,11 +2,12 @@
  * @fileoverview RangeModel
  * @author NHN Ent. FE Development Lab <dl_javascript@nhnent.com>
  */
+
 'use strict';
 
-var Range = require('./range');
+var snippet = require('tui-code-snippet');
 
-var snippet = tui.util;
+var Range = require('./range');
 
 /**
  * @class
@@ -23,7 +24,7 @@ var RangeModel = snippet.defineClass(/** @lends RangeModel.prototype */{
          */
         this._ranges = [];
 
-        tui.util.forEach(ranges, function(range) {
+        snippet.forEach(ranges, function(range) {
             this.add(range[0], range[1]);
         }, this);
     },
@@ -123,11 +124,11 @@ var RangeModel = snippet.defineClass(/** @lends RangeModel.prototype */{
      * @param {number} [end] - End
      */
     exclude: function(start, end) {
-        if (!tui.util.isNumber(end)) {
+        if (!snippet.isNumber(end)) {
             end = start;
         }
 
-        tui.util.forEach(this._ranges, function(range) {
+        snippet.forEach(this._ranges, function(range) {
             var rangeEnd;
 
             if (range.isOverlapped(start, end)) {
@@ -141,7 +142,7 @@ var RangeModel = snippet.defineClass(/** @lends RangeModel.prototype */{
         }, this);
 
         // Reduce empty ranges
-        this._ranges = tui.util.filter(this._ranges, function(range) {
+        this._ranges = snippet.filter(this._ranges, function(range) {
             return !range.isEmpty();
         });
     },

@@ -2,6 +2,9 @@
  * @fileoverview Calendar body spec
  * @author NHN Ent. FE Development Lab <dl_javascript@nhnent.com>
  */
+'use strict';
+
+var $ = require('jquery');
 
 var Body = require('../../src/js/calendar/body');
 

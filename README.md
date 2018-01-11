@@ -16,15 +16,17 @@ Components that select a specific date
 [https://nhnent.github.io/tui.date-picker/latest/tutorial-example01-basic.html](https://nhnent.github.io/tui.date-picker/latest/tutorial-example01-basic.html)
 
 ## Dependency
-* jquery ~1.11.0
-* tui-code-snippet ~1.2.5
-* tui-time-picker ~1.0.0
+* [jquery](https://jquery.com/) >=1.11.0
+* [tui-code-snippet](https://github.com/nhnent/tui.code-snippet) >=1.2.5
+* [tui-time-picker](https://github.com/nhnent/tui.time-picker) >=1.0.0
 
 ## Test Environment
 ### PC
 * IE8~11
+* Edge
 * Chrome
 * Firefox
+* Safari
 
 ## Usage
 ### Use `npm`
@@ -38,7 +40,7 @@ $ npm install tui-date-picker --save
 or want to install the each version:
 
 ```
-$ npm install tui-date-picker@<tag> --save
+$ npm install tui-date-picker@<version> --save
 ```
 
 To access as module format in your code:

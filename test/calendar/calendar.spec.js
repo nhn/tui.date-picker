@@ -97,7 +97,7 @@ describe('Calendar', function() {
         });
 
         it('"draw" should throw error if get invalid type', function() {
-            expect(function() {
+            expect(function() { // eslint-disable-line
                 calendar.draw({
                     type: 'invalid'
                 });

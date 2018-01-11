@@ -4,8 +4,6 @@
  */
 'use strict';
 
-var $ = require('jquery');
-
 var DatePicker = require('../../src/js/datepicker');
 var DateRangePicker = require('../../src/js/dateRangePicker');
 
@@ -65,7 +63,7 @@ describe('DateRangePicker', function() {
     it('should set null to end-date when changing start-date to a later date than end-date', function() {
         picker.setStartDate(new Date(2017, 0, 20));
 
-        expect(picker.getEndDate()).toEqual(null)
+        expect(picker.getEndDate()).toEqual(null);
     });
 
     it('should not set end-date which is earlier than start-date', function() {

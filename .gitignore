@@ -7,8 +7,8 @@ pids
 *.pid
 *.seed
 
-# Compiled files for DEV
-build
+# Compiled files
+dist
 
 # Dependency directory
 node_modules
@@ -45,4 +45,3 @@ tags
 
 # etc
 .agignore
-dist

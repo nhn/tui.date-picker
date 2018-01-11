@@ -94,6 +94,5 @@ describe('Calendar', function() {
 
             nHeader.destroy();
         });
-
     });
 });

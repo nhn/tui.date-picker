@@ -190,7 +190,7 @@ var DateTimeFormatter = snippet.defineClass(/** @lends DateTimeFormatter.prototy
             throw Error('DateTimeFormatter: Not matched - "' + str + '"');
         }
 
-        snippet.forEach(this._keyOrder, function(name, index) {
+        snippet.forEach(this._keyOrder, function(name, index) { // eslint-disable-line complexity
             var value = matched[index + 1];
 
             if (name === constants.TYPE_MERIDIEM && /[ap]m/i.test(value)) {

@@ -982,7 +982,7 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @example
      * datepicker.setDate(new Date()); // Set today
      */
-    setDate: function(date) {
+    setDate: function(date) { // eslint-disable-line complexity
         var isValidInput, newDate, shouldUpdate;
 
         if (date === null) {

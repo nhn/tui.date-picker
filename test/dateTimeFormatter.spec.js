@@ -4,8 +4,6 @@
  */
 'use strict';
 
-var $ = require('jquery');
-
 var DateTimeFormatter = require('../src/js/dateTimeFormatter');
 
 describe('DateTimeFormatter', function() {
@@ -23,7 +21,6 @@ describe('DateTimeFormatter', function() {
         it('should return formatted string', function() {
             expect(formatter.format(new Date(2016, 10, 28))).toEqual('2016-11-28 00:00');
             expect(formatter.format(new Date(2016, 10, 28, 10, 11))).toEqual('2016-11-28 10:11');
-
         });
 
         it('should return formatted string (with meridiem expression)', function() {
@@ -61,7 +58,7 @@ describe('DateTimeFormatter', function() {
         });
 
         it('should parse "16/11/28" to dateHash', function() {
-            expect(formatter.parse("16/11/28")).toEqual(new Date(2016, 10, 28));
+            expect(formatter.parse('16/11/28')).toEqual(new Date(2016, 10, 28));
         });
     });
 
@@ -76,7 +73,7 @@ describe('DateTimeFormatter', function() {
         });
 
         it('should parse "5 12" to dateHash', function() {
-            expect(formatter.parse("5 12")).toEqual(new Date(0, 4, 12));
+            expect(formatter.parse('5 12')).toEqual(new Date(0, 4, 12));
         });
     });
 
@@ -98,11 +95,11 @@ describe('DateTimeFormatter', function() {
         formatter = new DateTimeFormatter('yyyy/MM/dd');
 
         expect(function() {
-            formatter.parse('2016/11/133')
+            formatter.parse('2016/11/133');
         }).toThrow();
 
         expect(function() {
-            formatter.parse('2016-11-12, 55')
+            formatter.parse('2016-11-12, 55');
         }).toThrow();
     });
 });

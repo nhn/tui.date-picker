@@ -4,8 +4,6 @@
  */
 'use strict';
 
-var $ = require('jquery');
-
 var dateUtil = require('../src/js/dateUtil');
 
 describe('getMeridiemHour()', function() {
@@ -32,7 +30,7 @@ describe('getSafeNumber', function() {
     it('should return defaultNumber if the first-param is NaN', function() {
         expect(getSafeNumber('a', 3)).toBe(3);
         expect(getSafeNumber(/a/, 3)).toBe(3);
-        expect(getSafeNumber(undefined, 3)).toBe(3);
+        expect(getSafeNumber(undefined, 3)).toBe(3); // eslint-disable-line
         expect(getSafeNumber(NaN, 3)).toBe(3);
         expect(getSafeNumber({}, 3)).toBe(3);
     });

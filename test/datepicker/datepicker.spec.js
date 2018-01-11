@@ -122,13 +122,15 @@ describe('Date Picker', function() {
         });
 
         it('isSelectable', function() {
+            var date1, date2, date3;
+
             datepicker.setRanges([
                 [new Date(1994, 4, 9), new Date(2090, 4, 11)]
             ]);
 
-            var date1 = new Date(2014, 8, 1);
-            var date2 = new Date(1990, 10, 3);
-            var date3 = new Date(2111, 10, 3);
+            date1 = new Date(2014, 8, 1);
+            date2 = new Date(1990, 10, 3);
+            date3 = new Date(2111, 10, 3);
 
             expect(datepicker.isSelectable(date1)).toEqual(true);
             expect(datepicker.isSelectable(date2)).toEqual(false);
@@ -328,7 +330,7 @@ describe('Date Picker', function() {
                     element: input,
                     format: 'yy년 MM월 dd일'
                 },
-                date: new Date(2015, 4 ,10),
+                date: new Date(2015, 4, 10),
                 selectableRanges: [
                     [new Date(1994, 4, 9), new Date(2090, 4, 11)]
                 ]
@@ -494,7 +496,7 @@ describe('Date Picker', function() {
     describe('about useless-buttons', function() {
         var datepicker, $container;
 
-        function isHidden($el) {
+        function isHidden($el) { // eslint-disable-line
             return $el.css('display') === 'none';
         }
 

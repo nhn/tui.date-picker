@@ -47,7 +47,7 @@
 * [Basic](https://nhnent.github.io/tui.date-picker/latest/tutorial-example01-basic.html) : Example of using default options.
 * [Having Timepicker](https://nhnent.github.io/tui.date-picker/latest/tutorial-example04-having-timepicker.html) :  Example of using a time picker to select a time.
 * [Calendar](https://nhnent.github.io/tui.date-picker/latest/tutorial-example07-calendar.html) : Examples of creating and using calendars.
-* [RangePicker](https://http://nhnent.github.io/tui.date-picker/latest/tutorial-example08-daterangepicker.html) : Example of creating and using a range picker.
+* [RangePicker](https://nhnent.github.io/tui.date-picker/latest/tutorial-example08-daterangepicker.html) : Example of creating and using a range picker.
 
 More examples can be found on the left sidebar of each example page, and have fun with it.
 

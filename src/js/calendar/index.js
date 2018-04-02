@@ -13,6 +13,7 @@ var Header = require('./header');
 var Body = require('./body');
 var localeTexts = require('../localeTexts');
 var constants = require('../constants');
+var commonUtil = require('../util');
 var dateUtil = require('../dateUtil');
 
 var DEFAULT_LANGUAGE_TYPE = constants.DEFAULT_LANGUAGE_TYPE;
@@ -103,7 +104,8 @@ var Calendar = util.defineClass(/** @lends Calendar.prototype */ {
             showToday: true,
             showJumpButtons: false,
             date: new Date(),
-            type: TYPE_DATE
+            type: TYPE_DATE,
+            usageStatistics: true
         }, options);
 
         /**
@@ -154,6 +156,10 @@ var Calendar = util.defineClass(/** @lends Calendar.prototype */ {
             date: options.date,
             type: options.type
         });
+
+        if (options.usageStatistics) {
+            commonUtil.sendHostName();
+        }
     },
 
     /**

@@ -18,8 +18,7 @@ var TYPE_YEAR = constants.TYPE_YEAR;
  * Utils of calendar
  * @namespace dateUtil
  * @ignore
- */
-var utils = {
+ */ var utils = {
     /**
      * Get weeks count by paramenter
      * @param {number} year A year

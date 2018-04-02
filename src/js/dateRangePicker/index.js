@@ -34,6 +34,7 @@ var CLASS_NAME_SELECTED_RANGE = 'tui-is-selected-range';
  *     @param {Array.<Array.<Date|number>>} [options.selectableRanges] - Selectable ranges
  *     @param {boolean} [options.showAlways = false] - Whether the datepicker shows always
  *     @param {boolean} [options.autoClose = true] - Close after click a date
+ *     @param {Boolean} [options.usageStatistics=true|false] send hostname to google analytics [default value is true]
  * @example
  * var DatePicker = tui.DatePicker; // or require('tui-date-picker');
  * var rangepicker = DatePicker.createRangePicker({

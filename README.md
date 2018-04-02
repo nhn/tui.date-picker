@@ -83,7 +83,7 @@ $ bower install tui-date-picker#<tag> # Specific version
 
 ### Via Contents Delivery Network (CDN)
 
-TOAST UI Component: Date Picker is available over a CDN.
+The TOAST UI Component: Date Picker is available over a CDN.
 
 - You can use cdn as below.
 

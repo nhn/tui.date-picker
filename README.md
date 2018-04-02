@@ -81,6 +81,29 @@ $ bower install tui-date-picker#<tag> # Specific version
 * [Download bundle files](https://github.com/nhnent/tui.date-picker/tree/production/dist)
 * [Download all sources for each version](https://github.com/nhnent/tui.date-picker/releases)
 
+### Via Contents Delivery Network (CDN)
+
+TOAST UI Component: Date Picker is available over a CDN.
+
+- You can use cdn as below.
+
+```html
+<link rel="stylesheet" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css">
+<script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.min.js"></script>
+```
+
+
+- Within the download you'll find the following directories
+
+```
+tui.date-picker/
+├─ latest
+│  ├─ tui-date-picker.css
+│  ├─ tui-date-picker.js
+│  ├─ tui-date-picker.min.js
+```
+
+
 
 ## 🔨 Usage
 

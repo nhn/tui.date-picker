@@ -51,6 +51,40 @@ describe('Date Picker', function() {
         });
     });
 
+    describe('usageStatistics', function() {
+        var datepicker;
+        var container = document.createElement('div');
+        var input = document.createElement('input');
+        it('should send hostname by default', function() {
+            spyOn(snippet, 'imagePing');
+            datepicker = new DatePicker(container, {
+                input: {
+                    element: input
+                },
+                date: null
+            });
+
+            expect(snippet.imagePing).toHaveBeenCalled();
+        });
+
+        it('should not send hostname on usageStatistics option false', function() {
+            spyOn(snippet, 'imagePing');
+            datepicker = new DatePicker(container, {
+                input: {
+                    element: input
+                },
+                date: null,
+                usageStatistics: false
+            });
+
+            expect(snippet.imagePing).not.toHaveBeenCalled();
+        });
+
+        afterEach(function() {
+            datepicker.destroy();
+        });
+    });
+
     describe('apis - ', function() {
         var datepicker;
 

@@ -21,6 +21,7 @@ require('../css/calendar.css');
  *     @param {boolean} [options.showJumpButtons] - If true, shows jump buttons (next,prev-year in 'date'-Calendar)
  *     @param {Date} [options.date = new Date()] - Initial date
  *     @param {string} [options.type = 'date'] - Calendar types - 'date', 'month', 'year'
+ *     @param {Boolean} [options.usageStatistics=true|false] send hostname to google analytics [default value is true]
  * @returns {Calendar} Instance of Calendar
  * @example
  * var DatePicker = tui.DatePicker; // or require('tui-date-picker');
@@ -54,6 +55,7 @@ DatePicker.createCalendar = function(wrapperElement, options) {
  *     @param {Array.<Array.<Date|number>>} [options.selectableRanges] - Selectable ranges
  *     @param {boolean} [options.showAlways = false] - Whether the datepicker shows always
  *     @param {boolean} [options.autoClose = true] - Close after click a date
+ *     @param {Boolean} [options.usageStatistics=true|false] send hostname to google analytics [default value is true]
  * @returns {DateRangePicker} Instance of DateRangePicker
  * @example
  * var DatePicker = tui.DatePicker; // or require('tui-date-picker');

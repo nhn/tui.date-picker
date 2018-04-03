@@ -58,7 +58,8 @@ var mergeDefaultOption = function(option) {
         type: TYPE_DATE,
         selectableRanges: null,
         openers: [],
-        autoClose: true
+        autoClose: true,
+        usageStatistics: true
     }, option);
 
     option.selectableRanges = option.selectableRanges || [[constants.MIN_DATE, constants.MAX_DATE]];
@@ -100,6 +101,7 @@ var mergeDefaultOption = function(option) {
  *      @param {Array} [options.openers = []] - Opener button list (example - icon, button, etc.)
  *      @param {boolean} [options.showAlways = false] - Whether the datepicker shows always
  *      @param {boolean} [options.autoClose = true] - Close after click a date
+ *      @param {Boolean} [options.usageStatistics=true|false] send hostname to google analytics [default value is true]
  * @example
  * var DatePicker = tui.DatePicker; // or require('tui-date-picker');
  *
@@ -202,7 +204,9 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
          * @type {Calendar}
          * @private
          */
-        this._calendar = new Calendar(this._$element.find(SELECTOR_BODY), options.calendar);
+        this._calendar = new Calendar(this._$element.find(SELECTOR_BODY), snippet.extend(options.calendar, {
+            usageStatistics: options.usageStatistics
+        }));
 
         /**
          * TimePicker instance

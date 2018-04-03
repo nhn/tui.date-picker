@@ -5,6 +5,7 @@
 'use strict';
 
 var $ = require('jquery');
+var snippet = require('tui-code-snippet');
 
 var Calendar = require('../../src/js/calendar');
 
@@ -197,6 +198,27 @@ describe('Calendar', function() {
             expect($nContainer.children().length).toBe(0);
             expect(nCalendar._header).toBeNull();
             expect(nCalendar._body).toBeNull();
+        });
+    });
+
+    describe('usageStatistics', function() {
+        var nCalendar;
+        it('should send hostname by default', function() {
+            spyOn(snippet, 'imagePing');
+            nCalendar = new Calendar($('<div></div>'));
+
+            expect(snippet.imagePing).toHaveBeenCalled();
+        });
+
+        it('should not send hostname on usageStatistics option false', function() {
+            spyOn(snippet, 'imagePing');
+            nCalendar = new Calendar($('<div></div>'), {usageStatistics: false});
+
+            expect(snippet.imagePing).not.toHaveBeenCalled();
+        });
+
+        afterEach(function() {
+            nCalendar.destroy();
         });
     });
 });

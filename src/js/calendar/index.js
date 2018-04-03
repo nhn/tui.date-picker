@@ -13,6 +13,7 @@ var Header = require('./header');
 var Body = require('./body');
 var localeTexts = require('../localeTexts');
 var constants = require('../constants');
+var commonUtil = require('../util');
 var dateUtil = require('../dateUtil');
 
 var DEFAULT_LANGUAGE_TYPE = constants.DEFAULT_LANGUAGE_TYPE;
@@ -43,6 +44,7 @@ var util = snippet;
  *     @param {boolean} [options.showJumpButtons] - If true, shows jump buttons (next,prev-year in 'date'-Calendar)
  *     @param {Date} [options.date = new Date()] - Initial date
  *     @param {string} [options.type = 'date'] - Calendar types - 'date', 'month', 'year'
+ *     @param {Boolean} [options.usageStatistics=true|false] send hostname to google analytics [default value is true]
  * @example
  * var DatePicker = tui.DatePicker; // or require('tui-date-picker');
  * var calendar = DatePicker.createCalendar('#calendar-wrapper', {
@@ -103,7 +105,8 @@ var Calendar = util.defineClass(/** @lends Calendar.prototype */ {
             showToday: true,
             showJumpButtons: false,
             date: new Date(),
-            type: TYPE_DATE
+            type: TYPE_DATE,
+            usageStatistics: true
         }, options);
 
         /**
@@ -154,6 +157,10 @@ var Calendar = util.defineClass(/** @lends Calendar.prototype */ {
             date: options.date,
             type: options.type
         });
+
+        if (options.usageStatistics) {
+            commonUtil.sendHostName();
+        }
     },
 
     /**

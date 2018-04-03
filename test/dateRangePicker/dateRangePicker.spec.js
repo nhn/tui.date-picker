@@ -4,6 +4,7 @@
  */
 'use strict';
 
+var snippet = require('tui-code-snippet');
 var DatePicker = require('../../src/js/datepicker');
 var DateRangePicker = require('../../src/js/dateRangePicker');
 
@@ -121,5 +122,55 @@ describe('DateRangePicker', function() {
 
         expect(picker.getEndpicker().isDisabled()).toBe(true);
         expect(picker.getEndDate()).toBe(null);
+    });
+
+    describe('usageStatistics', function() {
+        var testPicker;
+        it('should send hostname by default', function() {
+            spyOn(snippet, 'imagePing');
+            testPicker = new DateRangePicker({
+                startpicker: {
+                    date: new Date(2017, 0, 1),
+                    input: startpickerInput,
+                    container: startpickerContainer
+                },
+                endpicker: {
+                    date: new Date(2017, 0, 15),
+                    input: endpickerInput,
+                    container: endpickerContainer
+                },
+                selectableRanges: [
+                    [new Date(2017, 0, 1), new Date(2017, 1, 3)]
+                ]
+            });
+
+            expect(snippet.imagePing).toHaveBeenCalled();
+        });
+
+        it('should not send hostname on usageStatistics option false', function() {
+            spyOn(snippet, 'imagePing');
+            testPicker = new DateRangePicker({
+                startpicker: {
+                    date: new Date(2017, 0, 1),
+                    input: startpickerInput,
+                    container: startpickerContainer
+                },
+                endpicker: {
+                    date: new Date(2017, 0, 15),
+                    input: endpickerInput,
+                    container: endpickerContainer
+                },
+                selectableRanges: [
+                    [new Date(2017, 0, 1), new Date(2017, 1, 3)]
+                ],
+                usageStatistics: false
+            });
+
+            expect(snippet.imagePing).not.toHaveBeenCalled();
+        });
+
+        afterEach(function() {
+            testPicker.destroy();
+        });
     });
 });

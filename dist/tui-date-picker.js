@@ -1,6 +1,6 @@
 /*!
  * tui-date-picker.js
- * @version 3.0.0
+ * @version 3.1.0
  * @author NHNEnt FE Development Lab <dl_javascript@nhnent.com>
  * @license MIT
  */
@@ -68,10 +68,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var DatePicker = __webpack_require__(1);
-	var DateRangePicker = __webpack_require__(49);
+	var DateRangePicker = __webpack_require__(50);
 	var Calendar = __webpack_require__(5);
 
-	__webpack_require__(50);
+	__webpack_require__(51);
 
 	/**
 	 * Create a calendar component
@@ -83,6 +83,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *     @param {boolean} [options.showJumpButtons] - If true, shows jump buttons (next,prev-year in 'date'-Calendar)
 	 *     @param {Date} [options.date = new Date()] - Initial date
 	 *     @param {string} [options.type = 'date'] - Calendar types - 'date', 'month', 'year'
+	 *     @param {Boolean} [options.usageStatistics=true|false] send hostname to google analytics [default value is true]
 	 * @returns {Calendar} Instance of Calendar
 	 * @example
 	 * var DatePicker = tui.DatePicker; // or require('tui-date-picker');
@@ -116,6 +117,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *     @param {Array.<Array.<Date|number>>} [options.selectableRanges] - Selectable ranges
 	 *     @param {boolean} [options.showAlways = false] - Whether the datepicker shows always
 	 *     @param {boolean} [options.autoClose = true] - Close after click a date
+	 *     @param {Boolean} [options.usageStatistics=true|false] send hostname to google analytics [default value is true]
 	 * @returns {DateRangePicker} Instance of DateRangePicker
 	 * @example
 	 * var DatePicker = tui.DatePicker; // or require('tui-date-picker');
@@ -159,13 +161,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	var TimePicker = __webpack_require__(4);
 
 	var Calendar = __webpack_require__(5);
-	var RangeModel = __webpack_require__(43);
+	var RangeModel = __webpack_require__(44);
 	var constants = __webpack_require__(31);
 	var localeTexts = __webpack_require__(27);
 	var dateUtil = __webpack_require__(30);
-	var setTouchClickEvent = __webpack_require__(45);
-	var tmpl = __webpack_require__(46);
-	var DatePickerInput = __webpack_require__(48);
+	var setTouchClickEvent = __webpack_require__(46);
+	var tmpl = __webpack_require__(47);
+	var DatePickerInput = __webpack_require__(49);
 
 	var DEFAULT_LANGUAGE_TYPE = constants.DEFAULT_LANGUAGE_TYPE;
 	var TYPE_DATE = constants.TYPE_DATE;
@@ -207,7 +209,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        type: TYPE_DATE,
 	        selectableRanges: null,
 	        openers: [],
-	        autoClose: true
+	        autoClose: true,
+	        usageStatistics: true
 	    }, option);
 
 	    option.selectableRanges = option.selectableRanges || [[constants.MIN_DATE, constants.MAX_DATE]];
@@ -249,6 +252,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *      @param {Array} [options.openers = []] - Opener button list (example - icon, button, etc.)
 	 *      @param {boolean} [options.showAlways = false] - Whether the datepicker shows always
 	 *      @param {boolean} [options.autoClose = true] - Close after click a date
+	 *      @param {Boolean} [options.usageStatistics=true|false] send hostname to google analytics [default value is true]
 	 * @example
 	 * var DatePicker = tui.DatePicker; // or require('tui-date-picker');
 	 *
@@ -351,7 +355,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	         * @type {Calendar}
 	         * @private
 	         */
-	        this._calendar = new Calendar(this._$element.find(SELECTOR_BODY), options.calendar);
+	        this._calendar = new Calendar(this._$element.find(SELECTOR_BODY), snippet.extend(options.calendar, {
+	            usageStatistics: options.usageStatistics
+	        }));
 
 	        /**
 	         * TimePicker instance
@@ -1131,7 +1137,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @example
 	     * datepicker.setDate(new Date()); // Set today
 	     */
-	    setDate: function(date) {
+	    setDate: function(date) { // eslint-disable-line complexity
 	        var isValidInput, newDate, shouldUpdate;
 
 	        if (date === null) {
@@ -1439,6 +1445,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Body = __webpack_require__(32);
 	var localeTexts = __webpack_require__(27);
 	var constants = __webpack_require__(31);
+	var commonUtil = __webpack_require__(43);
 	var dateUtil = __webpack_require__(30);
 
 	var DEFAULT_LANGUAGE_TYPE = constants.DEFAULT_LANGUAGE_TYPE;
@@ -1469,6 +1476,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *     @param {boolean} [options.showJumpButtons] - If true, shows jump buttons (next,prev-year in 'date'-Calendar)
 	 *     @param {Date} [options.date = new Date()] - Initial date
 	 *     @param {string} [options.type = 'date'] - Calendar types - 'date', 'month', 'year'
+	 *     @param {Boolean} [options.usageStatistics=true|false] send hostname to google analytics [default value is true]
 	 * @example
 	 * var DatePicker = tui.DatePicker; // or require('tui-date-picker');
 	 * var calendar = DatePicker.createCalendar('#calendar-wrapper', {
@@ -1529,7 +1537,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	            showToday: true,
 	            showJumpButtons: false,
 	            date: new Date(),
-	            type: TYPE_DATE
+	            type: TYPE_DATE,
+	            usageStatistics: true
 	        }, options);
 
 	        /**
@@ -1580,6 +1589,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	            date: options.date,
 	            type: options.type
 	        });
+
+	        if (options.usageStatistics) {
+	            commonUtil.sendHostName();
+	        }
 	    },
 
 	    /**
@@ -3637,7 +3650,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            throw Error('DateTimeFormatter: Not matched - "' + str + '"');
 	        }
 
-	        snippet.forEach(this._keyOrder, function(name, index) {
+	        snippet.forEach(this._keyOrder, function(name, index) { // eslint-disable-line complexity
 	            var value = matched[index + 1];
 
 	            if (name === constants.TYPE_MERIDIEM && /[ap]m/i.test(value)) {
@@ -4812,6 +4825,50 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
+	 * @fileoverview Util for DatePicker component
+	 * @author NHN Ent. FE dev Lab. <dl_javascript@nhnent.com>
+	 * @dependency tui-code-snippet ^1.3.0
+	 */
+
+	'use strict';
+
+	var snippet = __webpack_require__(3);
+
+	/**
+	 * utils
+	 * @namespace util
+	 * @ignore
+	 */
+	var util = (function() {
+	    /**
+	     * send host name
+	     * @ignore
+	     */
+	    function sendHostName() {
+	        var hostname = location.hostname;
+	        snippet.imagePing('https://www.google-analytics.com/collect', {
+	            v: 1,
+	            t: 'event',
+	            tid: 'UA-115377265-9',
+	            cid: hostname,
+	            dp: hostname,
+	            dh: 'date-picker'
+	        });
+	    }
+
+	    return {
+	        sendHostName: sendHostName
+	    };
+	})();
+
+	module.exports = util;
+
+
+/***/ }),
+/* 44 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/**
 	 * @fileoverview RangeModel
 	 * @author NHN Ent. FE Development Lab <dl_javascript@nhnent.com>
 	 */
@@ -4820,7 +4877,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var snippet = __webpack_require__(3);
 
-	var Range = __webpack_require__(44);
+	var Range = __webpack_require__(45);
 
 	/**
 	 * @class
@@ -4986,7 +5043,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -5103,7 +5160,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -5152,7 +5209,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var Handlebars = __webpack_require__(7);
@@ -5160,7 +5217,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = (Handlebars["default"] || Handlebars).template({"1":function(container,depth0,helpers,partials,data) {
 	    var stack1, alias1=depth0 != null ? depth0 : {};
 
-	  return ((stack1 = helpers["if"].call(alias1,__default(__webpack_require__(47)).call(alias1,((stack1 = (depth0 != null ? depth0.timepicker : depth0)) != null ? stack1.layoutType : stack1),"tab",{"name":"../helpers/equals","hash":{},"data":data}),{"name":"if","hash":{},"fn":container.program(2, data, 0),"inverse":container.program(4, data, 0),"data":data})) != null ? stack1 : "");
+	  return ((stack1 = helpers["if"].call(alias1,__default(__webpack_require__(48)).call(alias1,((stack1 = (depth0 != null ? depth0.timepicker : depth0)) != null ? stack1.layoutType : stack1),"tab",{"name":"../helpers/equals","hash":{},"data":data}),{"name":"if","hash":{},"fn":container.program(2, data, 0),"inverse":container.program(4, data, 0),"data":data})) != null ? stack1 : "");
 	},"2":function(container,depth0,helpers,partials,data) {
 	    var stack1, alias1=container.lambda, alias2=container.escapeExpression;
 
@@ -5182,7 +5239,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	},"useData":true});
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports) {
 
 	/**
@@ -5203,7 +5260,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -5217,7 +5274,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var snippet = __webpack_require__(3);
 
 	var DateTimeFormatter = __webpack_require__(29);
-	var setTouchClickEvent = __webpack_require__(45);
+	var setTouchClickEvent = __webpack_require__(46);
 
 	var DEFAULT_FORMAT = 'yyyy-MM-dd';
 
@@ -5367,7 +5424,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -5406,6 +5463,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *     @param {Array.<Array.<Date|number>>} [options.selectableRanges] - Selectable ranges
 	 *     @param {boolean} [options.showAlways = false] - Whether the datepicker shows always
 	 *     @param {boolean} [options.autoClose = true] - Close after click a date
+	 *     @param {Boolean} [options.usageStatistics=true|false] send hostname to google analytics [default value is true]
 	 * @example
 	 * var DatePicker = tui.DatePicker; // or require('tui-date-picker');
 	 * var rangepicker = DatePicker.createRangePicker({
@@ -5714,7 +5772,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

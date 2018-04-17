@@ -1,6 +1,6 @@
 /*!
  * tui-date-picker.js
- * @version 3.1.0
+ * @version 3.2.0
  * @author NHNEnt FE Development Lab <dl_javascript@nhnent.com>
  * @license MIT
  */
@@ -1373,6 +1373,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var overlappedRange = this._rangeModel.findOverlappedRange(startTimestamp, endTimestamp);
 
 	        return [new Date(overlappedRange[0]), new Date(overlappedRange[1])];
+	    },
+
+	    /**
+	     * Change language
+	     * @param {string} language - Language
+	     * @see {@link DatePicker.localeTexts}
+	     */
+	    changeLanguage: function(language) {
+	        this._language = language;
+	        this._calendar.changeLanguage(this._language);
+	        if (this._timepicker) {
+	            this._timepicker.changeLanguage(this._language);
+	        }
 	    },
 
 	    /**
@@ -5752,6 +5765,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	    removeRange: function(start, end, type) {
 	        this._startpicker.removeRange(start, end, type);
 	        this._syncRangesToEndpicker();
+	    },
+
+	    /**
+	     * Change language
+	     * @param {string} language - Language
+	     * @see {@link DatePicker.localeTexts}
+	     */
+	    changeLanguage: function(language) {
+	        this._startpicker.changeLanguage(language);
+	        this._endpicker.changeLanguage(language);
 	    },
 
 	    /**

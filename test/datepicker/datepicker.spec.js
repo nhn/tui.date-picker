@@ -354,10 +354,12 @@ describe('Date Picker', function() {
         });
 
         it('"changeLanguage" should call the changeLanguage method of the calendar instance', function() {
-            spyOn(datepicker._calendar, 'changeLanguage');
+            var calendar = datepicker.getCalendar();
+
+            spyOn(calendar, 'changeLanguage');
             datepicker.changeLanguage('ko');
 
-            expect(datepicker._calendar.changeLanguage).toHaveBeenCalled();
+            expect(calendar.changeLanguage).toHaveBeenCalled();
         });
     });
 

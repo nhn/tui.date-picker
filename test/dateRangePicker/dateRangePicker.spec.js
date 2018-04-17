@@ -49,8 +49,8 @@ describe('DateRangePicker', function() {
         spyOn(picker._endpicker, 'changeLanguage');
         picker.changeLanguage('ko');
 
-        expect(picker._startpicker.changeLanguage).toHaveBeenCalled();
-        expect(picker._endpicker.changeLanguage).toHaveBeenCalled();
+        expect(picker.getStartpicker().changeLanguage).toHaveBeenCalled();
+        expect(picker.getEndpicker().changeLanguage).toHaveBeenCalled();
     });
 
     it('should create two datepickers', function() {

@@ -326,6 +326,16 @@ var DateRangePicker = snippet.defineClass(/** @lends DateRangePicker.prototype *
     },
 
     /**
+     * Change language
+     * @param {string} language - Language
+     * @see {@link DatePicker.localeTexts}
+     */
+    changeLanguage: function(language) {
+        this._startpicker.changeLanguage(language);
+        this._endpicker.changeLanguage(language);
+    },
+
+    /**
      * Destroy date-range picker
      */
     destroy: function() {

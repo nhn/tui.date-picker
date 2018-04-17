@@ -352,6 +352,15 @@ describe('Date Picker', function() {
             actual = datepicker.findOverlappedRange(new Date(2017, 0, 1), new Date(2017, 4, 20));
             expect(actual).toEqual([new Date(2017, 2, 1), new Date(2017, 3, 1)]);
         });
+
+        it('"changeLanguage" should call the changeLanguage method of the calendar instance', function() {
+            var calendar = datepicker.getCalendar();
+
+            spyOn(calendar, 'changeLanguage');
+            datepicker.changeLanguage('ko');
+
+            expect(calendar.changeLanguage).toHaveBeenCalled();
+        });
     });
 
     describe('events - ', function() {

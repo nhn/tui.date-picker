@@ -44,6 +44,15 @@ describe('DateRangePicker', function() {
             = null;
     });
 
+    it('"changeLanguage" should call the changeLanguage method of the datePicker instance', function() {
+        spyOn(picker._startpicker, 'changeLanguage');
+        spyOn(picker._endpicker, 'changeLanguage');
+        picker.changeLanguage('ko');
+
+        expect(picker.getStartpicker().changeLanguage).toHaveBeenCalled();
+        expect(picker.getEndpicker().changeLanguage).toHaveBeenCalled();
+    });
+
     it('should create two datepickers', function() {
         expect(picker.getStartpicker()).toEqual(jasmine.any(DatePicker));
         expect(picker.getEndpicker()).toEqual(jasmine.any(DatePicker));

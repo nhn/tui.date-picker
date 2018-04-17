@@ -1225,6 +1225,19 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
     },
 
     /**
+     * Change language
+     * @param {string} language - Language
+     * @see {@link DatePicker.localeTexts}
+     */
+    changeLanguage: function(language) {
+        this._language = language;
+        this._calendar.changeLanguage(this._language);
+        if (this._timepicker) {
+            this._timepicker.changeLanguage(this._language);
+        }
+    },
+
+    /**
      * Destroy
      */
     destroy: function() {

@@ -1099,6 +1099,10 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
         return this._calendar;
     },
 
+    getLocaleText: function() {
+        return localeTexts[this._language] || localeTexts[DEFAULT_LANGUAGE_TYPE];
+    },
+
     /**
      * Set input element
      * @param {string|jQuery|HTMLElement} element - Input element
@@ -1108,7 +1112,7 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      */
     setInput: function(element, options) {
         var prev = this._datepickerInput;
-        var localeText = localeTexts[this._language] || localeTexts[DEFAULT_LANGUAGE_TYPE];
+        var localeText = this.getLocaleText();
         var prevFormat;
         options = options || {};
 
@@ -1232,6 +1236,9 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
     changeLanguage: function(language) {
         this._language = language;
         this._calendar.changeLanguage(this._language);
+        this._datepickerInput.changeLocaleTitles(this.getLocaleText().titles);
+        this.setDateFormat(this._datepickerInput.getFormat());
+
         if (this._timepicker) {
             this._timepicker.changeLanguage(this._language);
         }

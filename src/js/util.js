@@ -1,7 +1,7 @@
 /**
  * @fileoverview Util for DatePicker component
  * @author NHN Ent. FE dev Lab. <dl_javascript@nhnent.com>
- * @dependency tui-code-snippet ^1.3.0
+ * @dependency tui-code-snippet ^1.5.0
  */
 
 'use strict';
@@ -19,15 +19,7 @@ var util = (function() {
      * @ignore
      */
     function sendHostName() {
-        var hostname = location.hostname;
-        snippet.imagePing('https://www.google-analytics.com/collect', {
-            v: 1,
-            t: 'event',
-            tid: 'UA-115377265-9',
-            cid: hostname,
-            dp: hostname,
-            dh: 'date-picker'
-        });
+        snippet.sendHostname('date-picker', 'UA-129987462-1');
     }
 
     return {

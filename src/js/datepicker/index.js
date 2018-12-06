@@ -1099,6 +1099,10 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
         return this._calendar;
     },
 
+    /**
+     * Returns locale text object
+     * @returns {object}
+     */
     getLocaleText: function() {
         return localeTexts[this._language] || localeTexts[DEFAULT_LANGUAGE_TYPE];
     },

@@ -28,7 +28,7 @@
   "author": "NHNEnt FE Development Lab <dl_javascript@nhnent.com>",
   "license": "MIT",
   "devDependencies": {
-    "css-loader": "^0.26.1",
+    "css-loader": "^1.0.1",
     "es5-shim": "^4.5.9",
     "eslint": "^4.5.0",
     "eslint-config-tui": "^1.0.1",

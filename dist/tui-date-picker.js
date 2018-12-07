@@ -1,6 +1,6 @@
 /*!
  * tui-date-picker.js
- * @version 3.2.0
+ * @version 3.2.1
  * @author NHNEnt FE Development Lab <dl_javascript@nhnent.com>
  * @license MIT
  */
@@ -68,10 +68,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var DatePicker = __webpack_require__(1);
-	var DateRangePicker = __webpack_require__(50);
+	var DateRangePicker = __webpack_require__(49);
 	var Calendar = __webpack_require__(5);
 
-	__webpack_require__(51);
+	__webpack_require__(50);
 
 	/**
 	 * Create a calendar component
@@ -161,13 +161,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	var TimePicker = __webpack_require__(4);
 
 	var Calendar = __webpack_require__(5);
-	var RangeModel = __webpack_require__(44);
+	var RangeModel = __webpack_require__(43);
 	var constants = __webpack_require__(31);
 	var localeTexts = __webpack_require__(27);
 	var dateUtil = __webpack_require__(30);
-	var setTouchClickEvent = __webpack_require__(46);
-	var tmpl = __webpack_require__(47);
-	var DatePickerInput = __webpack_require__(49);
+	var setTouchClickEvent = __webpack_require__(45);
+	var tmpl = __webpack_require__(46);
+	var DatePickerInput = __webpack_require__(48);
 
 	var DEFAULT_LANGUAGE_TYPE = constants.DEFAULT_LANGUAGE_TYPE;
 	var TYPE_DATE = constants.TYPE_DATE;
@@ -1251,6 +1251,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    /**
+	     * Returns locale text object
+	     * @returns {object}
+	     */
+	    getLocaleText: function() {
+	        return localeTexts[this._language] || localeTexts[DEFAULT_LANGUAGE_TYPE];
+	    },
+
+	    /**
 	     * Set input element
 	     * @param {string|jQuery|HTMLElement} element - Input element
 	     * @param {object} [options] - Input option
@@ -1259,7 +1267,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     */
 	    setInput: function(element, options) {
 	        var prev = this._datepickerInput;
-	        var localeText = localeTexts[this._language] || localeTexts[DEFAULT_LANGUAGE_TYPE];
+	        var localeText = this.getLocaleText();
 	        var prevFormat;
 	        options = options || {};
 
@@ -1383,6 +1391,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    changeLanguage: function(language) {
 	        this._language = language;
 	        this._calendar.changeLanguage(this._language);
+	        this._datepickerInput.changeLocaleTitles(this.getLocaleText().titles);
+	        this.setDateFormat(this._datepickerInput.getFormat());
+
 	        if (this._timepicker) {
 	            this._timepicker.changeLanguage(this._language);
 	        }
@@ -1458,7 +1469,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Body = __webpack_require__(32);
 	var localeTexts = __webpack_require__(27);
 	var constants = __webpack_require__(31);
-	var commonUtil = __webpack_require__(43);
 	var dateUtil = __webpack_require__(30);
 
 	var DEFAULT_LANGUAGE_TYPE = constants.DEFAULT_LANGUAGE_TYPE;
@@ -1604,7 +1614,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        });
 
 	        if (options.usageStatistics) {
-	            commonUtil.sendHostName();
+	            snippet.sendHostname('date-picker', 'UA-129987462-1');
 	        }
 	    },
 
@@ -4838,50 +4848,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
-	 * @fileoverview Util for DatePicker component
-	 * @author NHN Ent. FE dev Lab. <dl_javascript@nhnent.com>
-	 * @dependency tui-code-snippet ^1.3.0
-	 */
-
-	'use strict';
-
-	var snippet = __webpack_require__(3);
-
-	/**
-	 * utils
-	 * @namespace util
-	 * @ignore
-	 */
-	var util = (function() {
-	    /**
-	     * send host name
-	     * @ignore
-	     */
-	    function sendHostName() {
-	        var hostname = location.hostname;
-	        snippet.imagePing('https://www.google-analytics.com/collect', {
-	            v: 1,
-	            t: 'event',
-	            tid: 'UA-115377265-9',
-	            cid: hostname,
-	            dp: hostname,
-	            dh: 'date-picker'
-	        });
-	    }
-
-	    return {
-	        sendHostName: sendHostName
-	    };
-	})();
-
-	module.exports = util;
-
-
-/***/ }),
-/* 44 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	/**
 	 * @fileoverview RangeModel
 	 * @author NHN Ent. FE Development Lab <dl_javascript@nhnent.com>
 	 */
@@ -4890,7 +4856,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var snippet = __webpack_require__(3);
 
-	var Range = __webpack_require__(45);
+	var Range = __webpack_require__(44);
 
 	/**
 	 * @class
@@ -5056,7 +5022,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 45 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -5173,7 +5139,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 46 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -5222,7 +5188,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 47 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var Handlebars = __webpack_require__(7);
@@ -5230,7 +5196,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = (Handlebars["default"] || Handlebars).template({"1":function(container,depth0,helpers,partials,data) {
 	    var stack1, alias1=depth0 != null ? depth0 : {};
 
-	  return ((stack1 = helpers["if"].call(alias1,__default(__webpack_require__(48)).call(alias1,((stack1 = (depth0 != null ? depth0.timepicker : depth0)) != null ? stack1.layoutType : stack1),"tab",{"name":"../helpers/equals","hash":{},"data":data}),{"name":"if","hash":{},"fn":container.program(2, data, 0),"inverse":container.program(4, data, 0),"data":data})) != null ? stack1 : "");
+	  return ((stack1 = helpers["if"].call(alias1,__default(__webpack_require__(47)).call(alias1,((stack1 = (depth0 != null ? depth0.timepicker : depth0)) != null ? stack1.layoutType : stack1),"tab",{"name":"../helpers/equals","hash":{},"data":data}),{"name":"if","hash":{},"fn":container.program(2, data, 0),"inverse":container.program(4, data, 0),"data":data})) != null ? stack1 : "");
 	},"2":function(container,depth0,helpers,partials,data) {
 	    var stack1, alias1=container.lambda, alias2=container.escapeExpression;
 
@@ -5252,7 +5218,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	},"useData":true});
 
 /***/ }),
-/* 48 */
+/* 47 */
 /***/ (function(module, exports) {
 
 	/**
@@ -5273,7 +5239,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 49 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -5287,7 +5253,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var snippet = __webpack_require__(3);
 
 	var DateTimeFormatter = __webpack_require__(29);
-	var setTouchClickEvent = __webpack_require__(46);
+	var setTouchClickEvent = __webpack_require__(45);
 
 	var DEFAULT_FORMAT = 'yyyy-MM-dd';
 
@@ -5333,6 +5299,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this._formatter = new DateTimeFormatter(option.format, this._titles);
 
 	        this._setEvents();
+	    },
+
+	    /**
+	     * Change locale titles
+	     * @param {object} titles - locale text in format
+	     */
+	    changeLocaleTitles: function(titles) {
+	        this._titles = titles;
 	    },
 
 	    /**
@@ -5437,7 +5411,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 50 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -5795,7 +5769,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 51 */
+/* 50 */
 /***/ (function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

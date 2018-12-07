@@ -12,5 +12,8 @@ module.exports = {
     "globals": {
         "tui": true,
         "loadFixtures": true
+    },
+    'rules': {
+        'indent': [2, 4, {'SwitchCase': 1, 'ignoreComments': false, 'ImportDeclaration': 1, 'flatTernaryExpressions': false}]
     }
 };

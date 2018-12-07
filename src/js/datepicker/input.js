@@ -58,6 +58,14 @@ var DatePickerInput = snippet.defineClass(/** @lends DatePickerInput.prototype *
     },
 
     /**
+     * Change locale titles
+     * @param {object} titles - locale text in format
+     */
+    changeLocaleTitles: function(titles) {
+        this._titles = titles;
+    },
+
+    /**
      * Set input 'click', 'change' event
      * @private
      */

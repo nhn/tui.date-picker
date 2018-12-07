@@ -136,7 +136,7 @@ describe('DateRangePicker', function() {
     describe('usageStatistics', function() {
         var testPicker;
         it('should send hostname by default', function() {
-            spyOn(snippet, 'imagePing');
+            spyOn(snippet, 'sendHostname');
             testPicker = new DateRangePicker({
                 startpicker: {
                     date: new Date(2017, 0, 1),
@@ -153,7 +153,7 @@ describe('DateRangePicker', function() {
                 ]
             });
 
-            expect(snippet.imagePing).toHaveBeenCalled();
+            expect(snippet.sendHostname).toHaveBeenCalled();
         });
 
         it('should not send hostname on usageStatistics option false', function() {

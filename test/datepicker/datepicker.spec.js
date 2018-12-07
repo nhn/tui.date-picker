@@ -56,7 +56,7 @@ describe('Date Picker', function() {
         var container = document.createElement('div');
         var input = document.createElement('input');
         it('should send hostname by default', function() {
-            spyOn(snippet, 'imagePing');
+            spyOn(snippet, 'sendHostname');
             datepicker = new DatePicker(container, {
                 input: {
                     element: input
@@ -64,7 +64,7 @@ describe('Date Picker', function() {
                 date: null
             });
 
-            expect(snippet.imagePing).toHaveBeenCalled();
+            expect(snippet.sendHostname).toHaveBeenCalled();
         });
 
         it('should not send hostname on usageStatistics option false', function() {

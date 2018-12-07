@@ -204,17 +204,17 @@ describe('Calendar', function() {
     describe('usageStatistics', function() {
         var nCalendar;
         it('should send hostname by default', function() {
-            spyOn(snippet, 'imagePing');
+            spyOn(snippet, 'sendHostname');
             nCalendar = new Calendar($('<div></div>'));
 
-            expect(snippet.imagePing).toHaveBeenCalled();
+            expect(snippet.sendHostname).toHaveBeenCalled();
         });
 
         it('should not send hostname on usageStatistics option false', function() {
-            spyOn(snippet, 'imagePing');
+            spyOn(snippet, 'sendHostname');
             nCalendar = new Calendar($('<div></div>'), {usageStatistics: false});
 
-            expect(snippet.imagePing).not.toHaveBeenCalled();
+            expect(snippet.sendHostname).not.toHaveBeenCalled();
         });
 
         afterEach(function() {

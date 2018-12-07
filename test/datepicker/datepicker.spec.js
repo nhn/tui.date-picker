@@ -361,6 +361,12 @@ describe('Date Picker', function() {
 
             expect(calendar.changeLanguage).toHaveBeenCalled();
         });
+
+        it('`locateTitle` should also be changed when you run `locateLanguage`', function() {
+            datepicker.changeLanguage('ko');
+
+            expect(datepicker._datepickerInput._titles).toEqual(datepicker.getLocaleText().titles);
+        });
     });
 
     describe('events - ', function() {

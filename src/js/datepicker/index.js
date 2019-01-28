@@ -296,10 +296,6 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
         if (!this.showAlways) {
             this._$element.hide();
         }
-
-        if (this.getType() === TYPE_DATE) {
-            this._$element.find(SELECTOR_BODY).addClass('tui-datepicker-type-date');
-        }
     },
 
     /**
@@ -767,6 +763,16 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
 
         this._rangeModel = new RangeModel(ranges);
         this._refreshFromRanges();
+    },
+
+    /**
+    * Set calendar type
+    * @param {null|'date'|'month'|'year'} type - (2d-array) Selectable ranges
+    * @example
+    * datepicker.setType('month');
+    */
+    setType: function(type) {
+        this._type = type;
     },
 
     /**

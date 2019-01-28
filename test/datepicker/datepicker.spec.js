@@ -155,6 +155,22 @@ describe('Date Picker', function() {
             expect(datepicker.getDate()).toEqual(new Date(2017, 2, 12));
         });
 
+        it('setType', function() {
+            expect(datepicker.getType()).toEqual('date');
+
+            datepicker.setType('month');
+
+            expect(datepicker.getType()).toEqual('month');
+
+            datepicker.setType('year');
+
+            expect(datepicker.getType()).toEqual('year');
+
+            datepicker.setType('date');
+
+            expect(datepicker.getType()).toEqual('date');
+        });
+
         it('isSelectable', function() {
             var date1, date2, date3;
 

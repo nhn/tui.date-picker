@@ -767,7 +767,7 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
 
     /**
     * Set calendar type
-    * @param {null|'date'|'month'|'year'} type - (2d-array) Selectable ranges
+    * @param {'date'|'month'|'year'} type - set type
     * @example
     * datepicker.setType('month');
     */

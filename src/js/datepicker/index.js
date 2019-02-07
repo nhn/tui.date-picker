@@ -296,6 +296,10 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
         if (!this.showAlways) {
             this._$element.hide();
         }
+
+        if (this.getType() === TYPE_DATE) {
+            this._$element.find(SELECTOR_BODY).addClass('tui-datepicker-type-date');
+        }
     },
 
     /**
@@ -767,7 +771,7 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * Set calendar type
-     * @param {'date'|'month'|'year'} type - set type
+     * @param {string} type - set type
      * @example
      * datepicker.setType('month');
      */

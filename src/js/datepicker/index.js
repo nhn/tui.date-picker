@@ -770,6 +770,16 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
     },
 
     /**
+     * Set calendar type
+     * @param {string} type - set type
+     * @example
+     * datepicker.setType('month');
+     */
+    setType: function(type) {
+        this._type = type;
+    },
+
+    /**
      * Add a range
      * @param {Date|number} start - startDate
      * @param {Date|number} end - endDate

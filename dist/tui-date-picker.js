@@ -1,6 +1,6 @@
 /*!
  * tui-date-picker.js
- * @version 3.2.1
+ * @version 3.3.0
  * @author NHNEnt FE Development Lab <dl_javascript@nhnent.com>
  * @license MIT
  */
@@ -918,6 +918,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        this._rangeModel = new RangeModel(ranges);
 	        this._refreshFromRanges();
+	    },
+
+	    /**
+	     * Set calendar type
+	     * @param {string} type - set type
+	     * @example
+	     * datepicker.setType('month');
+	     */
+	    setType: function(type) {
+	        this._type = type;
 	    },
 
 	    /**

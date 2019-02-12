@@ -52,7 +52,6 @@ DatePicker.createCalendar = function(wrapperElement, options) {
  *     @param {string} [options.language='en'] - Language key
  *     @param {object|boolean} [options.timePicker] - {@link TimePicker} option
  *     @param {object} [options.calendar] - {@link Calendar} option
- *     @param {Array.<Date|number>} [options.test] - Selectable ranges
  *     @param {Array.<Array.<Date|number>>} [options.selectableRanges] - Selectable ranges
  *     @param {boolean} [options.showAlways = false] - Whether the datepicker shows always
  *     @param {boolean} [options.autoClose = true] - Close after click a date

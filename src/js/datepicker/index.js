@@ -101,7 +101,7 @@ var mergeDefaultOption = function(option) {
  *      @param {Array} [options.openers = []] - Opener button list (example - icon, button, etc.)
  *      @param {boolean} [options.showAlways = false] - Whether the datepicker shows always
  *      @param {boolean} [options.autoClose = true] - Close after click a date
- *      @param {Boolean} [options.usageStatistics=true|false] send hostname to google analytics [default value is true]
+ *      @param {Boolean} [options.usageStatistics=true|false] send hostname to google analytics (default value is true)
  * @example
  * var DatePicker = tui.DatePicker; // or require('tui-date-picker');
  *
@@ -520,15 +520,6 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
                 isFailed = true;
             }
         } catch (err) {
-            /**
-             * Parsing error from input-text
-             * @event DatePicker#error
-             * @example
-             *
-             * datepicker.on('error', function(err) {
-             *     console.error(err.message);
-             * });
-             */
             this.fire('error', {
                 type: 'ParsingError',
                 message: err.message
@@ -614,10 +605,15 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
         /**
          * Fires after calendar drawing
          * @event DatePicker#draw
-         * @param {Object} event - See {@link Calendar#event:draw}
-         * @param {Date} event.date - Calendar date
-         * @param {string} event.type - Calendar type
-         * @param {jQuery} event.$dateElements - Calendar date elements
+         * @type {Object} evt - See {@link Calendar#event:draw}
+         * @property {Date} date - Calendar date
+         * @property {string} type - Calendar type
+         * @property {jQuery} $dateElements - Calendar date elements
+         * @example
+         *
+         * datepicker.on('draw', function(evt) {
+         *     console.log(evt.date);
+         * });
          */
         this.fire('draw', eventData);
     },

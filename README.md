@@ -45,10 +45,10 @@
 
 
 ## 🐾 Examples
-* [Basic](https://nhnent.github.io/tui.date-picker/latest/tutorial-example01-basic.html) : Example of using default options.
-* [Having Timepicker](https://nhnent.github.io/tui.date-picker/latest/tutorial-example04-having-timepicker.html) :  Example of using a time picker to select a time.
-* [Calendar](https://nhnent.github.io/tui.date-picker/latest/tutorial-example07-calendar.html) : Examples of creating and using calendars.
-* [RangePicker](https://nhnent.github.io/tui.date-picker/latest/tutorial-example08-daterangepicker.html) : Example of creating and using a range picker.
+* [Basic](https://nhnent.github.io/tui.date-picker/latest/tutorial-example01-basic) : Example of using default options.
+* [Having Timepicker](https://nhnent.github.io/tui.date-picker/latest/tutorial-example04-having-timepicker) :  Example of using a time picker to select a time.
+* [Calendar](https://nhnent.github.io/tui.date-picker/latest/tutorial-example07-calendar) : Examples of creating and using calendars.
+* [RangePicker](https://nhnent.github.io/tui.date-picker/latest/tutorial-example08-daterangepicker) : Example of creating and using a range picker.
 
 More examples can be found on the left sidebar of each example page, and have fun with it.
 
@@ -142,10 +142,10 @@ var DatePicker = require('tui-date-picker'); /* CommonJS */
 ```
 
 ``` javascript
-import {DatePicker} from 'tui-date-picker'; /* ES6 */
+import DatePicker from 'tui-date-picker'; /* ES6 */
 ```
 
-You can create an instance with [options](http://nhnent.github.io/tui.date-picker/latest/DatePicker.html) and call various APIs after creating an instance.
+You can create an instance with [options](http://nhnent.github.io/tui.date-picker/latest/DatePicker) and call various APIs after creating an instance.
 
 ``` javascript
 var container = document.getElementById('tui-date-picker-container');
@@ -161,7 +161,7 @@ var instance = new DatePicker(container, {
 instance.getDate();
 ```
 
-For more information about the API, please see [here](http://nhnent.github.io/tui.date-picker/latest/DatePicker.html).
+For more information about the API, please see [here](http://nhnent.github.io/tui.date-picker/latest/DatePicker).
 
 
 ## 🔧 Pull Request Steps

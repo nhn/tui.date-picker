@@ -43,7 +43,7 @@ var util = snippet;
  *     @param {boolean} [options.showJumpButtons] - If true, shows jump buttons (next,prev-year in 'date'-Calendar)
  *     @param {Date} [options.date = new Date()] - Initial date
  *     @param {string} [options.type = 'date'] - Calendar types - 'date', 'month', 'year'
- *     @param {Boolean} [options.usageStatistics=true|false] send hostname to google analytics [default value is true]
+ *     @param {Boolean} [options.usageStatistics=true|false] send hostname to google analytics (default value is true)
  * @example
  * var DatePicker = tui.DatePicker; // or require('tui-date-picker');
  * var calendar = DatePicker.createCalendar('#calendar-wrapper', {
@@ -330,10 +330,14 @@ var Calendar = util.defineClass(/** @lends Calendar.prototype */ {
 
         /**
          * @event Calendar#draw
-         * @param {object} event
-         * @param {Date} event.date - Calendar date
-         * @param {string} event.type - Calendar type
-         * @param {jQuery} event.$dateElements - Calendar date elements
+         * @type {object} evt
+         * @property {Date} date - Calendar date
+         * @property {string} type - Calendar type
+         * @property {jQuery} $dateElements - Calendar date elements
+         * @example
+         * calendar.on('draw', function(evt) {
+         *     console.error(evt.date);
+         * });
          */
         this.fire('draw', {
             date: this._date,
@@ -458,7 +462,7 @@ var Calendar = util.defineClass(/** @lends Calendar.prototype */ {
 
     /**
      * Returns rendered layer type
-     * @returns {'date'|'month'|'year'}
+     * @returns {('date'|'month'|'year')}
      */
     getType: function() {
         return this._type;

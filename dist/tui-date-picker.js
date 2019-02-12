@@ -1,6 +1,6 @@
 /*!
  * tui-date-picker.js
- * @version 3.3.0
+ * @version 3.3.1
  * @author NHNEnt FE Development Lab <dl_javascript@nhnent.com>
  * @license MIT
  */
@@ -252,7 +252,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *      @param {Array} [options.openers = []] - Opener button list (example - icon, button, etc.)
 	 *      @param {boolean} [options.showAlways = false] - Whether the datepicker shows always
 	 *      @param {boolean} [options.autoClose = true] - Close after click a date
-	 *      @param {Boolean} [options.usageStatistics=true|false] send hostname to google analytics [default value is true]
+	 *      @param {Boolean} [options.usageStatistics=true|false] send hostname to google analytics (default value is true)
 	 * @example
 	 * var DatePicker = tui.DatePicker; // or require('tui-date-picker');
 	 *
@@ -671,15 +671,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	                isFailed = true;
 	            }
 	        } catch (err) {
-	            /**
-	             * Parsing error from input-text
-	             * @event DatePicker#error
-	             * @example
-	             *
-	             * datepicker.on('error', function(err) {
-	             *     console.error(err.message);
-	             * });
-	             */
 	            this.fire('error', {
 	                type: 'ParsingError',
 	                message: err.message
@@ -765,10 +756,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	        /**
 	         * Fires after calendar drawing
 	         * @event DatePicker#draw
-	         * @param {Object} event - See {@link Calendar#event:draw}
-	         * @param {Date} event.date - Calendar date
-	         * @param {string} event.type - Calendar type
-	         * @param {jQuery} event.$dateElements - Calendar date elements
+	         * @type {Object} evt - See {@link Calendar#event:draw}
+	         * @property {Date} date - Calendar date
+	         * @property {string} type - Calendar type
+	         * @property {jQuery} $dateElements - Calendar date elements
+	         * @example
+	         *
+	         * datepicker.on('draw', function(evt) {
+	         *     console.log(evt.date);
+	         * });
 	         */
 	        this.fire('draw', eventData);
 	    },
@@ -1509,7 +1505,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *     @param {boolean} [options.showJumpButtons] - If true, shows jump buttons (next,prev-year in 'date'-Calendar)
 	 *     @param {Date} [options.date = new Date()] - Initial date
 	 *     @param {string} [options.type = 'date'] - Calendar types - 'date', 'month', 'year'
-	 *     @param {Boolean} [options.usageStatistics=true|false] send hostname to google analytics [default value is true]
+	 *     @param {Boolean} [options.usageStatistics=true|false] send hostname to google analytics (default value is true)
 	 * @example
 	 * var DatePicker = tui.DatePicker; // or require('tui-date-picker');
 	 * var calendar = DatePicker.createCalendar('#calendar-wrapper', {
@@ -1796,10 +1792,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        /**
 	         * @event Calendar#draw
-	         * @param {object} event
-	         * @param {Date} event.date - Calendar date
-	         * @param {string} event.type - Calendar type
-	         * @param {jQuery} event.$dateElements - Calendar date elements
+	         * @type {object} evt
+	         * @property {Date} date - Calendar date
+	         * @property {string} type - Calendar type
+	         * @property {jQuery} $dateElements - Calendar date elements
+	         * @example
+	         * calendar.on('draw', function(evt) {
+	         *     console.error(evt.date);
+	         * });
 	         */
 	        this.fire('draw', {
 	            date: this._date,
@@ -1924,7 +1924,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    /**
 	     * Returns rendered layer type
-	     * @returns {'date'|'month'|'year'}
+	     * @returns {('date'|'month'|'year')}
 	     */
 	    getType: function() {
 	        return this._type;

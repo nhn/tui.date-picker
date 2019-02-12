@@ -1,6 +1,6 @@
 /*!
  * tui-date-picker.min.js
- * @version 3.3.0
+ * @version 3.3.1
  * @author NHNEnt FE Development Lab <dl_javascript@nhnent.com>
  * @license MIT
  */

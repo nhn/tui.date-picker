@@ -9,6 +9,7 @@ var $ = require('jquery');
 
 /**
  * Detect mobile browser
+ * @private
  * @returns {boolean} Whether using Mobile browser
  */
 function _isMobile() {

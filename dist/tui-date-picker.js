@@ -1,6 +1,6 @@
 /*!
  * tui-date-picker.js
- * @version 3.3.1
+ * @version 3.3.2
  * @author NHNEnt FE Development Lab <dl_javascript@nhnent.com>
  * @license MIT
  */
@@ -5159,9 +5159,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var snippet = __webpack_require__(3);
-
 	var $ = __webpack_require__(2);
+
+	/**
+	 * Detect mobile browser
+	 * @private
+	 * @returns {boolean} Whether using Mobile browser
+	 */
+	function isMobile() {
+	    return /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
+	}
 
 	/**
 	 * For using one - Touch or Mouse Events
@@ -5173,27 +5180,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	module.exports = function(target, handler, option) {
 	    var $target = $(target);
-	    var eventList = ['touchend', 'click'];
-	    var selector, namespace, events;
+	    var eventType = isMobile() ? 'touchend' : 'click';
+	    var selector, namespace;
 
 	    option = option || {};
 	    selector = option.selector || null;
 	    namespace = option.namespace || '';
 
 	    if (namespace) {
-	        eventList = snippet.map(eventList, function(eventName) {
-	            return eventName + '.' + namespace;
-	        });
+	        eventType = eventType + '.' + namespace;
 	    }
 
-	    events = eventList.join(' ');
-	    $target.on(events, selector, function onceHandler(ev) {
-	        var newEventName = ev.type + '.' + namespace;
-
-	        handler(ev);
-	        $target.off(events, selector, onceHandler)
-	            .on(newEventName, selector, handler);
-	    });
+	    $target.on(eventType, selector, handler);
 	};
 
 

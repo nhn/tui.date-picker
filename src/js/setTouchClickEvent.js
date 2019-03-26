@@ -5,9 +5,16 @@
 
 'use strict';
 
-var snippet = require('tui-code-snippet');
-
 var $ = require('jquery');
+
+/**
+ * Detect mobile browser
+ * @private
+ * @returns {boolean} Whether using Mobile browser
+ */
+function isMobile() {
+    return /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
+}
 
 /**
  * For using one - Touch or Mouse Events
@@ -19,25 +26,16 @@ var $ = require('jquery');
  */
 module.exports = function(target, handler, option) {
     var $target = $(target);
-    var eventList = ['touchend', 'click'];
-    var selector, namespace, events;
+    var eventType = isMobile() ? 'touchend' : 'click';
+    var selector, namespace;
 
     option = option || {};
     selector = option.selector || null;
     namespace = option.namespace || '';
 
     if (namespace) {
-        eventList = snippet.map(eventList, function(eventName) {
-            return eventName + '.' + namespace;
-        });
+        eventType = eventType + '.' + namespace;
     }
 
-    events = eventList.join(' ');
-    $target.on(events, selector, function onceHandler(ev) {
-        var newEventName = ev.type + '.' + namespace;
-
-        handler(ev);
-        $target.off(events, selector, onceHandler)
-            .on(newEventName, selector, handler);
-    });
+    $target.on(eventType, selector, handler);
 };

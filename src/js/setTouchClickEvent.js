@@ -12,7 +12,7 @@ var $ = require('jquery');
  * @private
  * @returns {boolean} Whether using Mobile browser
  */
-function _isMobile() {
+function isMobile() {
     return /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
 }
 
@@ -26,8 +26,7 @@ function _isMobile() {
  */
 module.exports = function(target, handler, option) {
     var $target = $(target);
-    var isMobile = _isMobile();
-    var eventType = isMobile ? 'touchend' : 'click';
+    var eventType = isMobile() ? 'touchend' : 'click';
     var selector, namespace;
 
     option = option || {};

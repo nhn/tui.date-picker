@@ -1,6 +1,6 @@
 /**
  * @fileoverview Handlebars helper - subtract
- * @author NHN Ent. FE Development Lab <dl_javascript@nhnent.com>
+ * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  */
 
 'use strict';

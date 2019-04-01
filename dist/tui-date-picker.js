@@ -1,7 +1,7 @@
 /*!
  * tui-date-picker.js
- * @version 3.3.2
- * @author NHNEnt FE Development Lab <dl_javascript@nhnent.com>
+ * @version 3.3.3
+ * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  * @license MIT
  */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -62,7 +62,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @fileoverview The entry file of DatePicker components
-	 * @author NHN Ent. FE Development Team
+	 * @author NHN. FE Development Team
 	 */
 
 	'use strict';
@@ -151,7 +151,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @fileoverview DatePicker component
-	 * @author NHN ent FE dev Lab <dl_javascript@nhnent.com>
+	 * @author NHN. FE dev Lab <dl_javascript@nhn.com>
 	 */
 
 	'use strict';
@@ -1462,7 +1462,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @fileoverview Calendar component
-	 * @author NHN Ent. FE dev Lab <dl_javascript@nhnent.com>
+	 * @author NHN. FE dev Lab <dl_javascript@nhn.com>
 	 */
 
 	'use strict';
@@ -3177,7 +3177,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @fileoverview Calendar Header
-	 * @author NHN Ent. FE dev Lab <dl_javascript@nhnent.com>
+	 * @author NHN. FE dev Lab <dl_javascript@nhn.com>
 	 */
 
 	'use strict';
@@ -3403,7 +3403,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @fileoverview Default locale texts
-	 * @author NHN Ent. FE Development Lab <dl_javascript@nhnent.com>
+	 * @author NHN. FE Development Lab <dl_javascript@nhn.com>
 	 */
 
 	'use strict';
@@ -3493,7 +3493,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @fileoverview Date <-> Text formatting module
-	 * @author NHN Ent. FE Development Lab <dl_javascript@nhnent.com>
+	 * @author NHN. FE Development Lab <dl_javascript@nhn.com>
 	 */
 
 	'use strict';
@@ -3781,7 +3781,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @fileoverview Utils for DatePicker component
-	 * @author NHN Ent. FE dev Lab. <dl_javascript@nhnent.com>
+	 * @author NHN. FE dev Lab. <dl_javascript@nhn.com>
 	 * @dependency tui-code-snippet ^1.0.2
 	 */
 
@@ -4054,7 +4054,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @fileoverview Constants of date-picker
-	 * @author NHN Ent. FE Development Lab <dl_javascript@nhnent.com>
+	 * @author NHN. FE Development Lab <dl_javascript@nhn.com>
 	 */
 
 	'use strict';
@@ -4086,7 +4086,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @fileoverview Calendar body
-	 * @author NHN Ent. FE Development Lab <dl_javascript@nhnent.com>
+	 * @author NHN. FE Development Lab <dl_javascript@nhn.com>
 	 */
 
 	'use strict';
@@ -4230,7 +4230,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @fileoverview Date layer
-	 * @author NHN Ent. FE Development Lab <dl_javascript@nhnent.com>
+	 * @author NHN. FE Development Lab <dl_javascript@nhn.com>
 	 */
 
 	'use strict';
@@ -4362,7 +4362,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @fileoverview Handlebars helper - week (templating) for date-calendar
-	 * @author NHN Ent. FE Development Lab <dl_javascript@nhnent.com>
+	 * @author NHN. FE Development Lab <dl_javascript@nhn.com>
 	 */
 
 	'use strict';
@@ -4415,7 +4415,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @fileoverview Handlebars helper - weeks (templating) for date-calendar
-	 * @author NHN Ent. FE Development Lab <dl_javascript@nhnent.com>
+	 * @author NHN. FE Development Lab <dl_javascript@nhn.com>
 	 */
 
 	'use strict';
@@ -4455,7 +4455,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @fileoverview Layer base
-	 * @author NHN Ent. FE Development Lab <dl_javascript@nhnent.com>
+	 * @author NHN. FE Development Lab <dl_javascript@nhn.com>
 	 */
 
 	'use strict';
@@ -4584,7 +4584,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @fileoverview Month layer
-	 * @author NHN Ent. FE Development Lab <dl_javascript@nhnent.com>
+	 * @author NHN. FE Development Lab <dl_javascript@nhn.com>
 	 */
 
 	'use strict';
@@ -4730,7 +4730,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @fileoverview Handlebars helper - timestamp
-	 * @author NHN Ent. FE Development Lab <dl_javascript@nhnent.com>
+	 * @author NHN. FE Development Lab <dl_javascript@nhn.com>
 	 */
 
 	'use strict';
@@ -4752,7 +4752,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @fileoverview Year layer
-	 * @author NHN Ent. FE Development Lab <dl_javascript@nhnent.com>
+	 * @author NHN. FE Development Lab <dl_javascript@nhn.com>
 	 */
 
 	'use strict';
@@ -4859,7 +4859,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @fileoverview RangeModel
-	 * @author NHN Ent. FE Development Lab <dl_javascript@nhnent.com>
+	 * @author NHN. FE Development Lab <dl_javascript@nhn.com>
 	 */
 
 	'use strict';
@@ -5037,7 +5037,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @fileoverview Range (in RangeModel)
-	 * @author NHN Ent. FE Development Lab <dl_javascript@nhnent.com>
+	 * @author NHN. FE Development Lab <dl_javascript@nhn.com>
 	 */
 
 	'use strict';
@@ -5154,7 +5154,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @fileoverview Set mouse-touch event
-	 * @author NHN Ent. FE Development Lab <dl_javascript@nhnent.com>
+	 * @author NHN. FE Development Lab <dl_javascript@nhn.com>
 	 */
 
 	'use strict';
@@ -5231,7 +5231,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @fileoverview Handlebars helper - Equals
-	 * @author NHN Ent. FE Development Lab <dl_javascript@nhnent.com>
+	 * @author NHN. FE Development Lab <dl_javascript@nhn.com>
 	 */
 
 	'use strict';
@@ -5252,7 +5252,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @fileoverview DatePicker input(element) component
-	 * @author NHN Ent. FE Development Lab <dl_javascript@nhnent.com>
+	 * @author NHN. FE Development Lab <dl_javascript@nhn.com>
 	 */
 
 	'use strict';
@@ -5424,7 +5424,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @fileoverview Date-Range picker
-	 * @author NHN Ent. FE Development Lab <dl_javascript@nhnent.com>
+	 * @author NHN. FE Development Lab <dl_javascript@nhn.com>
 	 */
 
 	'use strict';

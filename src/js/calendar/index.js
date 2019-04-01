@@ -1,6 +1,6 @@
 /**
  * @fileoverview Calendar component
- * @author NHN Ent. FE dev Lab <dl_javascript@nhnent.com>
+ * @author NHN. FE dev Lab <dl_javascript@nhn.com>
  */
 
 'use strict';

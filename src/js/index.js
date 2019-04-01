@@ -1,6 +1,6 @@
 /**
  * @fileoverview The entry file of DatePicker components
- * @author NHN Ent. FE Development Team
+ * @author NHN. FE Development Team
  */
 
 'use strict';

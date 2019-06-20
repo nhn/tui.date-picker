@@ -1,9 +1,9 @@
 # TOAST UI Component : Date Picker
 > Component that selects specific date.
 
-[![GitHub release](https://img.shields.io/github/release/nhnent/tui.date-picker.svg)](https://github.com/nhn/tui.date-picker/releases/latest)
+[![GitHub release](https://img.shields.io/github/release/nhn/tui.date-picker.svg)](https://github.com/nhn/tui.date-picker/releases/latest)
 [![npm](https://img.shields.io/npm/v/tui-date-picker.svg)](https://www.npmjs.com/package/tui-date-picker)
-[![GitHub license](https://img.shields.io/github/license/nhnent/tui.date-picker.svg)](https://github.com/nhn/tui.date-picker/blob/production/LICENSE)
+[![GitHub license](https://img.shields.io/github/license/nhn/tui.date-picker.svg)](https://github.com/nhn/tui.date-picker/blob/production/LICENSE)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-ff69b4.svg)](https://github.com/nhn/tui.project-name/labels/help%20wanted)
 [![code with hearth by NHN](https://img.shields.io/badge/%3C%2F%3E%20with%20%E2%99%A5%20by-NHN-ff1414.svg)](https://github.com/nhn)
 

@@ -91,7 +91,7 @@ var mergeDefaultOption = function(option) {
  *      @param {string} [options.type = 'date'] - DatePicker type - ('date' | 'month' | 'year')
  *      @param {string} [options.language='en'] - Language key
  *      @param {object|boolean} [options.timePicker] -
- *                              [TimePicker]{@link https://nhnent.github.io/tui.time-picker/latest} options
+ *                              [TimePicker]{@link https://nhn.github.io/tui.time-picker/latest} options
  *      @param {object} [options.calendar] - {@link Calendar} options
  *      @param {object} [options.input] - Input option
  *      @param {HTMLElement|string|jQuery} [options.input.element] - Input element

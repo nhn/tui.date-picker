@@ -29,7 +29,7 @@ var CLASS_NAME_SELECTED_RANGE = 'tui-is-selected-range';
  *     @param {string} [options.type = 'date'] - DatePicker type - ('date' | 'month' | 'year')
  *     @param {string} [options.language='en'] - Language key
  *     @param {object|boolean} [options.timePicker] -
- *                             [TimePicker]{@link https://nhnent.github.io/tui.time-picker/latest} options
+ *                             [TimePicker]{@link https://nhn.github.io/tui.time-picker/latest} options
  *     @param {object} [options.calendar] - {@link Calendar} options
  *     @param {Array.<Array.<Date|number>>} [options.selectableRanges] - Selectable ranges
  *     @param {boolean} [options.showAlways = false] - Whether the datepicker shows always

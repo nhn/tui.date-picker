@@ -353,10 +353,10 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
 
         if (snippet.isObject(opTimePicker)) {
             opTimePicker.usageStatistics = usageStatistics;
-        } else { // opTimePicker === true
+        } else {
             opTimePicker = {
                 usageStatistics: usageStatistics
-            }
+            };
         }
 
         if (layoutType.toLowerCase() === 'tab') {

@@ -1,6 +1,6 @@
 ## Load dependency files
 * Script - [jQuery](https://github.com/jquery/jquery) 1.11.0 or later
-* Script - [tui-code-snippet](https://github.com/nhnent/tui.code-snippet) 1.2.5 or later
+* Script - [tui-code-snippet](https://github.com/nhn/tui.code-snippet) 1.2.5 or later
 
 ```html
 <html>
@@ -37,7 +37,7 @@ var instance = new tui.DatePicker('#datepicker-wrapper', {
 ### Datepicker
 * language (default 'en')
   * There are two supporting types by default - 'en' and 'ko'.
-  * For custom texts - See the [Datepicker.localeTexts](https://nhnent.github.io/tui.date-picker/latest/DatePicker.html#.localeTexts)
+  * For custom texts - See the [Datepicker.localeTexts](https://nhn.github.io/tui.date-picker/latest/DatePicker.html#.localeTexts)
   * If set both calendar-language and datepicker-language, will apply datepicker-language first.
 * showAlways (default false)
   * If true, the datepicker will not close until you call "close()".
@@ -51,7 +51,7 @@ var instance = new tui.DatePicker('#datepicker-wrapper', {
   * See the [Date-Time text format](#date-time-text-format)
 * type (default 'date')
   * Type of picker - 'date', 'month', year'
-  * See [examples](https://nhnent.github.io/tui.date-picker/latest/tutorial-example05-picking-month.html) in API page
+  * See [examples](https://nhn.github.io/tui.date-picker/latest/tutorial-example05-picking-month.html) in API page
 * selectableRanges
   * Set selectable dates of datepicker
   * 2d-Array: `[[startDate1, endDate1], [startDate2, endDate2], ...]`
@@ -66,7 +66,7 @@ var instance = new tui.DatePicker('#datepicker-wrapper', {
 ### Calendar
 * language (default 'en')
   * There are two supporting types by default - 'en' and 'ko'.
-  * For custom texts - See the [Calendar.localeTexts](https://nhnent.github.io/tui.date-picker/latest/Calendar.html#.localeTexts)
+  * For custom texts - See the [Calendar.localeTexts](https://nhn.github.io/tui.date-picker/latest/Calendar.html#.localeTexts)
 * showToday (default true)
   * If true, calendar shows today
 * showJumpButtons

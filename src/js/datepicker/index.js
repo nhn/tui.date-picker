@@ -91,7 +91,7 @@ var mergeDefaultOption = function(option) {
  *      @param {string} [options.type = 'date'] - DatePicker type - ('date' | 'month' | 'year')
  *      @param {string} [options.language='en'] - Language key
  *      @param {object|boolean} [options.timePicker] -
- *                              [TimePicker]{@link https://nhnent.github.io/tui.time-picker/latest} options
+ *                              [TimePicker]{@link https://nhn.github.io/tui.time-picker/latest} options
  *      @param {object} [options.calendar] - {@link Calendar} options
  *      @param {object} [options.input] - Input option
  *      @param {HTMLElement|string|jQuery} [options.input.element] - Input element
@@ -287,7 +287,7 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
     _initializeDatePicker: function(option) {
         this.setRanges(option.selectableRanges);
         this._setEvents(option);
-        this._initTimePicker(option.timepicker);
+        this._initTimePicker(option.timepicker, option.usageStatistics);
         this.setInput(option.input.element);
         this.setDateFormat(option.input.format);
         this.setDate(option.date);
@@ -339,16 +339,26 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * Set TimePicker instance
-     * @param {object|boolean} opTimePicker - TimePicker instance
+     * @param {object|boolean} opTimePicker - TimePicker instance options
+     * @param {boolean} usageStatistics - GA tracking options
      * @private
      */
-    _initTimePicker: function(opTimePicker) {
+    _initTimePicker: function(opTimePicker, usageStatistics) {
         var layoutType;
         if (!opTimePicker) {
             return;
         }
 
         layoutType = opTimePicker.layoutType || '';
+
+        if (snippet.isObject(opTimePicker)) {
+            opTimePicker.usageStatistics = usageStatistics;
+        } else {
+            opTimePicker = {
+                usageStatistics: usageStatistics
+            };
+        }
+
         if (layoutType.toLowerCase() === 'tab') {
             this._timepicker = new TimePicker(this._$element.find(SELECTOR_BODY), opTimePicker);
             this._timepicker.hide();

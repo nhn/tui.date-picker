@@ -109,7 +109,8 @@
     width: 32px;
     height: 50px;
     line-height: 400px;
-    z-index: 10
+    z-index: 10;
+    cursor: pointer
 }
 
 .tui-calendar .tui-calendar-btn-prev-month {
@@ -539,4 +540,8 @@
 
 .tui-dropdown-area .tui-datepicker-dropdown+.tui-datepicker-dropdown {
     margin-left: 5px
+}
+
+.tui-hidden {
+    display: none;
 }

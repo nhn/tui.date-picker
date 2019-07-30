@@ -226,8 +226,8 @@ You can also see the older versions of API page on the [releases page](https://g
 
 ## 🔩 Dependency
 * [tui-code-snippet](https://github.com/nhn/tui.code-snippet) >=1.5.0
+* [tui-dom](https://github.com/nhn/tui.dom) >=3.0.0
 * [tui-time-picker](https://github.com/nhn/tui.time-picker) >=1.3.0
-* [jquery](https://jquery.com/) >=1.11.0
 
 
 ## 📜 License

@@ -1,6 +1,7 @@
 ## Load dependency files
-* Script - [jQuery](https://github.com/jquery/jquery) 1.11.0 or later
-* Script - [tui-code-snippet](https://github.com/nhn/tui.code-snippet) 1.2.5 or later
+* Script - [tui-code-snippet](https://github.com/nhn/tui.code-snippet) 1.5.0 or later
+* Script - [tui-dom](https://github.com/nhn/tui.dom) 3.0.0 or later
+    > If your project should support IE8, please use `tui-dom.js`, not `tui-dom.min.js`.
 
 ```html
 <html>
@@ -10,8 +11,8 @@
     </head>
     <body>
         ....
-        <script type="text/javascript" src="jquery.min.js"></script>
         <script type="text/javascript" src="tui-code-snippet.js"></script>
+        <script type="text/javascript" src="tui-dom.min.js"></script>
         <script type="text/javascript" src="tui-date-picker.js"></script>
         ....
     </body>

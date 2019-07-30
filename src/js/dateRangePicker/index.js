@@ -5,12 +5,13 @@
 
 'use strict';
 
-var $ = require('jquery');
 var snippet = require('tui-code-snippet');
+var domUtil = require('tui-dom');
 
 var DatePicker = require('../datepicker');
 var dateUtil = require('../dateUtil');
 var constants = require('../constants');
+var util = require('../util');
 
 var CLASS_NAME_RANGE_PICKER = 'tui-rangepicker';
 var CLASS_NAME_SELECTED = constants.CLASS_NAME_SELECTED;
@@ -20,11 +21,11 @@ var CLASS_NAME_SELECTED_RANGE = 'tui-is-selected-range';
  * @class
  * @param {object} options - Date-Range picker options
  *     @param {object} options.startpicker - Startpicker options
- *     @param {Element|jQuery|string} options.startpicker.input - Startpicker input element
- *     @param {Element|jQuery|string} options.startpicker.container - Startpicker container element
+ *     @param {HTMLElement|string} options.startpicker.input - Startpicker input element or selector
+ *     @param {HTMLElement|string} options.startpicker.container - Startpicker container element or selector
  *     @param {object} options.endpicker - Endpicker options
- *     @param {Element|jQuery|string} options.endpicker.input - Endpicker input element
- *     @param {Element|jQuery|string} options.endpicker.container - Endpicker container element
+ *     @param {HTMLElement|string} options.endpicker.input - Endpicker input element or selector
+ *     @param {HTMLElement|string} options.endpicker.container - Endpicker container element or selector
  *     @param {string} options.format - Input date-string format
  *     @param {string} [options.type = 'date'] - DatePicker type - ('date' | 'month' | 'year')
  *     @param {string} [options.language='en'] - Language key
@@ -95,30 +96,30 @@ var DateRangePicker = snippet.defineClass(/** @lends DateRangePicker.prototype *
      * @private
      */
     _initializePickers: function(options) {
-        var $startpickerContainer = $(options.startpicker.container);
-        var $endpickerContainer = $(options.endpicker.container);
-        var $startInput = $(options.startpicker.input);
-        var $endInput = $(options.endpicker.input);
+        var startpickerContainer = util.getElement(options.startpicker.container);
+        var endpickerContainer = util.getElement(options.endpicker.container);
+        var startInput = util.getElement(options.startpicker.input);
+        var endInput = util.getElement(options.endpicker.input);
 
         var startpickerOpt = snippet.extend({}, options, {
             input: {
-                element: $startInput,
+                element: startInput,
                 format: options.format
             }
         });
         var endpickerOpt = snippet.extend({}, options, {
             input: {
-                element: $endInput,
+                element: endInput,
                 format: options.format
             }
         });
 
-        this._startpicker = new DatePicker($startpickerContainer, startpickerOpt);
+        this._startpicker = new DatePicker(startpickerContainer, startpickerOpt);
         this._startpicker.addCssClass(CLASS_NAME_RANGE_PICKER);
         this._startpicker.on('change', this._onChangeStartpicker, this);
         this._startpicker.on('draw', this._onDrawPicker, this);
 
-        this._endpicker = new DatePicker($endpickerContainer, endpickerOpt);
+        this._endpicker = new DatePicker(endpickerContainer, endpickerOpt);
         this._endpicker.addCssClass(CLASS_NAME_RANGE_PICKER);
         this._endpicker.on('change', this._onChangeEndpicker, this);
         this._endpicker.on('draw', this._onDrawPicker, this);
@@ -130,9 +131,8 @@ var DateRangePicker = snippet.defineClass(/** @lends DateRangePicker.prototype *
      * @private
      */
     _onDrawPicker: function(eventData) {
-        var self = this;
         var calendarType = eventData.type;
-        var $dateElements = eventData.$dateElements;
+        var dateElements = util.convertToArray(eventData.dateElements);
         var startDate = this._startpicker.getDate();
         var endDate = this._endpicker.getDate();
 
@@ -145,45 +145,44 @@ var DateRangePicker = snippet.defineClass(/** @lends DateRangePicker.prototype *
             endDate = new Date(NaN);
         }
 
-        $dateElements.each(function(idx, el) {
-            var $el = $(el);
-            var elDate = new Date($el.data('timestamp'));
+        snippet.forEach(dateElements, function(el) {
+            var elDate = new Date(Number(domUtil.getData(el, 'timestamp')));
             var isInRange = dateUtil.inRange(startDate, endDate, elDate, calendarType);
             var isSelected = (
                 dateUtil.isSame(startDate, elDate, calendarType)
                 || dateUtil.isSame(endDate, elDate, calendarType)
             );
 
-            self._setRangeClass($el, isInRange);
-            self._setSelectedClass($el, isSelected);
-        });
+            this._setRangeClass(el, isInRange);
+            this._setSelectedClass(el, isSelected);
+        }, this);
     },
 
     /**
      * Set range class to element
-     * @param {jQuery} $el - Element
+     * @param {HTMLElement} el - Element
      * @param {boolean} isInRange - In range
      * @private
      */
-    _setRangeClass: function($el, isInRange) {
+    _setRangeClass: function(el, isInRange) {
         if (isInRange) {
-            $el.addClass(CLASS_NAME_SELECTED_RANGE);
+            domUtil.addClass(el, CLASS_NAME_SELECTED_RANGE);
         } else {
-            $el.removeClass(CLASS_NAME_SELECTED_RANGE);
+            domUtil.removeClass(el, CLASS_NAME_SELECTED_RANGE);
         }
     },
 
     /**
      * Set selected class to element
-     * @param {jQuery} $el - Element
+     * @param {HTMLElement} el - Element
      * @param {boolean} isSelected - Is selected
      * @private
      */
-    _setSelectedClass: function($el, isSelected) {
+    _setSelectedClass: function(el, isSelected) {
         if (isSelected) {
-            $el.addClass(CLASS_NAME_SELECTED);
+            domUtil.addClass(el, CLASS_NAME_SELECTED);
         } else {
-            $el.removeClass(CLASS_NAME_SELECTED);
+            domUtil.removeClass(el, CLASS_NAME_SELECTED);
         }
     },
 
@@ -295,7 +294,7 @@ var DateRangePicker = snippet.defineClass(/** @lends DateRangePicker.prototype *
     /**
      * Set selectable ranges
      * @param {Array.<Array.<number|Date>>} ranges - Selectable ranges
-     * @see DatePicker#setRanges
+     * @see {@link DatePicker#setRanges}
      */
     setRanges: function(ranges) {
         this._startpicker.setRanges(ranges);
@@ -306,7 +305,7 @@ var DateRangePicker = snippet.defineClass(/** @lends DateRangePicker.prototype *
      * Add a range
      * @param {Date|number} start - startDate
      * @param {Date|number} end - endDate
-     * @see DatePicker#addRange
+     * @see {@link DatePicker#addRange}
      */
     addRange: function(start, end) {
         this._startpicker.addRange(start, end);
@@ -318,7 +317,7 @@ var DateRangePicker = snippet.defineClass(/** @lends DateRangePicker.prototype *
      * @param {Date|number} start - startDate
      * @param {Date|number} end - endDate
      * @param {null|'date'|'month'|'year'} type - Range type, If falsy -> Use strict timestamp;
-     * @see DatePicker#removeRange
+     * @see {@link DatePicker#removeRange}
      */
     removeRange: function(start, end, type) {
         this._startpicker.removeRange(start, end, type);
@@ -328,7 +327,7 @@ var DateRangePicker = snippet.defineClass(/** @lends DateRangePicker.prototype *
     /**
      * Change language
      * @param {string} language - Language
-     * @see {@link DatePicker.localeTexts}
+     * @see {@link DatePicker#localeTexts}
      */
     changeLanguage: function(language) {
         this._startpicker.changeLanguage(language);

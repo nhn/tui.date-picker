@@ -4,16 +4,14 @@
  */
 'use strict';
 
-var $ = require('jquery');
-
 var Body = require('../../src/js/calendar/body');
 
 describe('Calendar - Body', function() {
     var body;
-    var $container = $('<div></div>');
+    var container = document.createElement('div');
 
     beforeEach(function() {
-        body = new Body($container, {language: 'en'});
+        body = new Body(container, {language: 'en'});
     });
 
     afterEach(function() {
@@ -43,14 +41,13 @@ describe('Calendar - Body', function() {
         expect(body._monthLayer.render).toHaveBeenCalled();
     });
 
-    it('"getDateElements" should return date jquery elements', function() {
-        var $dateElements;
+    it('"getDateElements" should return date HTML elements', function() {
+        var dateElements;
 
         body.render(new Date(2016, 0), 'month');
 
-        $dateElements = body.getDateElements();
+        dateElements = body.getDateElements();
 
-        expect($dateElements.length).toBe(12);
-        expect($dateElements.jquery).toBeTruthy();
+        expect(dateElements.length).toBe(12);
     });
 });

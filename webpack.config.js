@@ -34,17 +34,17 @@ var config = {
         filename: FILENAME
     },
     externals: {
-        'jquery': {
-            'commonjs': 'jquery',
-            'commonjs2': 'jquery',
-            'amd': 'jquery',
-            'root': '$'
-        },
         'tui-code-snippet': {
             'commonjs': 'tui-code-snippet',
             'commonjs2': 'tui-code-snippet',
             'amd': 'tui-code-snippet',
             'root': ['tui', 'util']
+        },
+        'tui-dom': {
+            'commonjs': 'tui-dom',
+            'commonjs2': 'tui-dom',
+            'amd': 'tui-dom',
+            'root': ['tui', 'dom']
         },
         'tui-time-picker': {
             'commonjs': 'tui-time-picker',

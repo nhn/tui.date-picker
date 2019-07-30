@@ -1,0 +1,64 @@
+/**
+ * @fileoverview Set mouse-touch event
+ * @author NHN. FE Development Lab <dl_javascript@nhn.com>
+ */
+
+'use strict';
+
+var domUtil = require('tui-dom');
+
+var touchMouseEvent = {
+    /**
+     * Detect mobile browser
+     * @type {boolean} Whether using Mobile browser
+     * @private
+     */
+    _isMobile: (function() {
+        return /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
+    })(),
+
+    /**
+     * Return a matched event type by a mouse event type 
+     * @param {string} type A mouse event type - mousedown, click
+     * @returns {string}
+     * @private
+     */
+    _getEventType: function(type) {
+        if (this._isMobile) {
+            switch (type) {
+                case 'mousedown':
+                    type = 'touchstart';
+                    break;
+                case 'click':
+                    type = 'touchend';
+                    break;
+                default: break;
+            }
+        }
+
+        return type;
+    },
+
+    /**
+     * Bind touch or mouse events
+     * @param {HTMLElement} element An element to bind
+     * @param {string} type A mouse event type - mousedown, click
+     * @param {Function} handler A handler function
+     * @param {object} [context] A context for handler.
+     */
+    on: function(element, type, handler, context) {
+        domUtil.on(element, this._getEventType(type), handler, context);
+    },
+
+    /**
+     * Unbind touch or mouse events
+     * @param {HTMLElement} element - Target element
+     * @param {string} type A mouse event type - mousedown, click
+     * @param {Function} handler - Handler
+     */
+    off: function(element, type, handler) {
+        domUtil.off(element, this._getEventType(type), handler);
+    }
+};
+
+module.exports = touchMouseEvent;

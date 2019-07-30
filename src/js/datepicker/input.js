@@ -5,11 +5,12 @@
 
 'use strict';
 
-var $ = require('jquery');
 var snippet = require('tui-code-snippet');
+var domUtil = require('tui-dom');
 
 var DateTimeFormatter = require('../dateTimeFormatter');
-var setTouchClickEvent = require('../setTouchClickEvent');
+var touchMouseEvent = require('../touchMouseEvent');
+var util = require('../util');
 
 var DEFAULT_FORMAT = 'yyyy-MM-dd';
 
@@ -17,7 +18,7 @@ var DEFAULT_FORMAT = 'yyyy-MM-dd';
  * DatePicker Input
  * @ignore
  * @class
- * @param {string|jQuery|HTMLElement} inputElement - Input element
+ * @param {string|HTMLElement} inputElement - Input element or selector
  * @param {object} option - Option
  * @param {string} option.id - Id
  * @param {string} option.format - Text format
@@ -28,10 +29,10 @@ var DatePickerInput = snippet.defineClass(/** @lends DatePickerInput.prototype *
 
         /**
          * Input element
-         * @type {jQuery}
+         * @type {HTMLElement}
          * @private
          */
-        this._$input = $(inputElement);
+        this._input = util.getElement(inputElement);
 
         /**
          * Id
@@ -70,34 +71,64 @@ var DatePickerInput = snippet.defineClass(/** @lends DatePickerInput.prototype *
      * @private
      */
     _setEvents: function() {
-        this._$input.on('change.' + this._id, $.proxy(this.fire, this, 'change'));
-
-        setTouchClickEvent(this._$input, $.proxy(this.fire, this, 'click'), {
-            namespace: this._id
-        });
+        if (this._input) {
+            domUtil.on(this._input, 'change', this._onChangeHandler, this);
+            touchMouseEvent.on(this._input, 'click', this._onClickHandler, this);
+        }
     },
 
     /**
-     * @see {@link http://api.jquery.com/is/}
-     * @param {string|jQuery|HTMLElement|function} el - To check matched set of elements
+     * Remove events
+     * @private
+     */
+    _removeEvents: function() {
+        this.off();
+
+        if (this._input) {
+            domUtil.off(this._input, 'change', this._onChangeHandler);
+            touchMouseEvent.off(this._input, 'click', this._onClickHandler);
+        }
+    },
+
+    /**
+     * Onchange handler
+     */
+    _onChangeHandler: function() {
+        this.fire('change');
+    },
+
+    /**
+     * Onclick handler
+     */
+    _onClickHandler: function() {
+        this.fire('click');
+    },
+
+    /**
+     * Check element is same as the input element.
+     * @param {HTMLElement} el - To check matched set of elements
      * @returns {boolean}
      */
     is: function(el) {
-        return this._$input.is(el);
+        return this._input === el;
     },
 
     /**
      * Enable input
      */
     enable: function() {
-        this._$input.removeAttr('disabled');
+        if (this._input) {
+            this._input.removeAttribute('disabled');
+        }
     },
 
     /**
      * Disable input
      */
     disable: function() {
-        this._$input.attr('disabled', true);
+        if (this._input) {
+            this._input.setAttribute('disabled', true);
+        }
     },
 
     /**
@@ -124,7 +155,9 @@ var DatePickerInput = snippet.defineClass(/** @lends DatePickerInput.prototype *
      * Clear text
      */
     clearText: function() {
-        this._$input.val('');
+        if (this._input) {
+            this._input.value = '';
+        }
     },
 
     /**
@@ -132,7 +165,9 @@ var DatePickerInput = snippet.defineClass(/** @lends DatePickerInput.prototype *
      * @param {Date} date - Date
      */
     setDate: function(date) {
-        this._$input.val(this._formatter.format(date));
+        if (this._input) {
+            this._input.value = this._formatter.format(date);
+        }
     },
 
     /**
@@ -141,7 +176,11 @@ var DatePickerInput = snippet.defineClass(/** @lends DatePickerInput.prototype *
      * @throws {Error}
      */
     getDate: function() {
-        var value = this._$input.val();
+        var value = '';
+
+        if (this._input) {
+            value = this._input.value;
+        }
 
         return this._formatter.parse(value);
     },
@@ -150,12 +189,9 @@ var DatePickerInput = snippet.defineClass(/** @lends DatePickerInput.prototype *
      * Destroy
      */
     destroy: function() {
-        var evNamespace = '.' + this._id;
+        this._removeEvents();
 
-        this.off();
-        this._$input.off(evNamespace);
-
-        this._$input
+        this._input
             = this._id
             = this._formatter
             = null;

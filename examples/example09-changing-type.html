@@ -22,8 +22,8 @@
     <input type="radio" id="year" name="datePickerType" value="year">
     <label for="year">year</label>
 </div>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script type="text/javascript" src="https://uicdn.toast.com/tui.code-snippet/v1.5.0/tui-code-snippet.js"></script>
+<script type="text/javascript" src="https://uicdn.toast.com/tui.dom/v3.0.0/tui-dom.js"></script>
 <script type="text/javascript" src="../dist/tui-date-picker.js"></script>
 <script class="code-js">
      var datepicker = new tui.DatePicker('#wrapper', {
@@ -35,8 +35,10 @@
          type: 'date'
     });
 
-    $('input[type=radio][name="datePickerType"]').change(function() {
-        datepicker.setType($(this).val());
+    var datePickerTypes = document.querySelector('.radio-set');
+    tui.dom.on(datePickerTypes, 'click', function(ev) {
+        var target = ev.target || ev.srcElement;
+        datepicker.setType(target.value);
     });
 </script>
 </body>

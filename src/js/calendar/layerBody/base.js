@@ -6,6 +6,7 @@
 'use strict';
 
 var snippet = require('tui-code-snippet');
+var domUtil = require('tui-dom');
 
 var localeText = require('../../localeTexts');
 var DEFAULT_LANGUAGE_TYPE = require('../../constants').DEFAULT_LANGUAGE_TYPE;
@@ -23,10 +24,10 @@ var LayerBase = snippet.defineClass(/** @lends LayerBase.prototype */{
 
         /**
          * Layer element
-         * @type {jQuery}
+         * @type {HTMLElement}
          * @private
          */
-        this._$element = null;
+        this._element = null;
 
         /**
          * Language type
@@ -67,7 +68,7 @@ var LayerBase = snippet.defineClass(/** @lends LayerBase.prototype */{
      * Returns date elements
      * @abstract
      * @throws {Error}
-     * @returns {jQuery}
+     * @returns {NodeList}
      */
     getDateElements: function() {
         throwOverrideError(this.getType(), 'getDateElements');
@@ -90,22 +91,13 @@ var LayerBase = snippet.defineClass(/** @lends LayerBase.prototype */{
     },
 
     /**
-     * Append to parent element
-     * @param {string|HTMLElement|jQuery} parent - Parent element
-     * @returns {jQuery}
-     */
-    appendTo: function(parent) {
-        return this._$element.appendTo(parent);
-    },
-
-    /**
      * Remove elements
      */
     remove: function() {
-        if (this._$element) {
-            this._$element.remove();
+        if (this._element) {
+            domUtil.removeElement(this._element);
         }
-        this._$element = null;
+        this._element = null;
     }
 });
 

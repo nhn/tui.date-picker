@@ -5,7 +5,6 @@
 
 'use strict';
 
-var $ = require('jquery');
 var snippet = require('tui-code-snippet');
 
 var bodyTmpl = require('./../../../template/calendar/monthLayer.hbs');
@@ -60,20 +59,23 @@ var MonthLayer = snippet.defineClass(LayerBase, /** @lends MonthLayer.prototype 
     /**
      * Render month-layer element
      * @override
+     * @param {Date} date Date to render
+     * @param {HTMLElement} container A container element for the rendered element
      */
-    render: function(date) {
+    render: function(date, container) {
         var context = this._makeContext(date);
 
-        this._$element = $(bodyTmpl(context));
+        container.innerHTML = bodyTmpl(context);
+        this._element = container.firstChild;
     },
 
     /**
      * Returns month elements
      * @override
-     * @returns {jQuery}
+     * @returns {NodeList}
      */
     getDateElements: function() {
-        return this._$element.find(DATE_SELECTOR);
+        return this._element.querySelectorAll(DATE_SELECTOR);
     }
 });
 

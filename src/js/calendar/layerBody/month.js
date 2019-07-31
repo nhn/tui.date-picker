@@ -72,7 +72,7 @@ var MonthLayer = snippet.defineClass(LayerBase, /** @lends MonthLayer.prototype 
     /**
      * Returns month elements
      * @override
-     * @returns {NodeList}
+     * @returns {HTMLElement[]}
      */
     getDateElements: function() {
         return this._element.querySelectorAll(DATE_SELECTOR);

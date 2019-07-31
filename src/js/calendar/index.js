@@ -473,7 +473,7 @@ var Calendar = snippet.defineClass(/** @lends Calendar.prototype */ {
 
     /**
      * Returns date elements on body
-     * @returns {NodeList}
+     * @returns {HTMLElement[]}
      */
     getDateElements: function() {
         return this._body.getDateElements();

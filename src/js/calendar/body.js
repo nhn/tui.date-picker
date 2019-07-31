@@ -115,7 +115,7 @@ var Body = snippet.defineClass(/** @lends Body.prototype */{
 
     /**
      * Returns date elements
-     * @returns {NodeList}
+     * @returns {HTMLElement[]}
      */
     getDateElements: function() {
         return this._currentLayer.getDateElements();

@@ -7,6 +7,8 @@
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-ff69b4.svg)](https://github.com/nhn/tui.project-name/labels/help%20wanted)
 [![code with hearth by NHN](https://img.shields.io/badge/%3C%2F%3E%20with%20%E2%99%A5%20by-NHN-ff1414.svg)](https://github.com/nhn)
 
+## v4.0.0
+In v4.0.0, jQuery is removed. It might cause other components to fail if they pass a jQuery object as a container.
 
 ## 🚩 Table of Contents
 * [Browser Support](#-browser-support)

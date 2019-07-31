@@ -132,7 +132,7 @@ var DateRangePicker = snippet.defineClass(/** @lends DateRangePicker.prototype *
      */
     _onDrawPicker: function(eventData) {
         var calendarType = eventData.type;
-        var dateElements = util.convertToArray(eventData.dateElements);
+        var dateElements = snippet.toArray(eventData.dateElements);
         var startDate = this._startpicker.getDate();
         var endDate = this._endpicker.getDate();
 

@@ -1,24 +1,24 @@
 {{#if isDateCalendar}}
     {{#if showJumpButtons}}
         <div class="tui-calendar-header-inner tui-calendar-has-btns">
-            <a class="tui-calendar-btn-prev-year">Prev year</a>
-            <a class="tui-calendar-btn-prev-month">Prev month</a>
+            <button class="tui-calendar-btn tui-calendar-btn-prev-year">Prev year</button>
+            <button class="tui-calendar-btn tui-calendar-btn-prev-month">Prev month</button>
             <em class="tui-calendar-title {{titleClass}}">{{title}}</em>
-            <a class="tui-calendar-btn-next-month">Next month</a>
-            <a class="tui-calendar-btn-next-year">Next year</a>
+            <button class="tui-calendar-btn tui-calendar-btn-next-month">Next month</button>
+            <button class="tui-calendar-btn tui-calendar-btn-next-year">Next year</button>
         </div>
     {{else}}
         <div class="tui-calendar-header-inner">
-            <a class="tui-calendar-btn-prev-month">Prev month</a>
+            <button class="tui-calendar-btn tui-calendar-btn-prev-month">Prev month</button>
             <em class="tui-calendar-title {{titleClass}}">{{title}}</em>
-            <a class="tui-calendar-btn-next-month">Next month</a>
+            <button class="tui-calendar-btn tui-calendar-btn-next-month">Next month</button>
         </div>
     {{/if}}
 {{else}}
     <div class="tui-calendar-header-inner">
-        <a class="tui-calendar-btn-prev-year">Prev year</a>
+        <button class="tui-calendar-btn tui-calendar-btn-prev-year">Prev year</button>
         <em class="tui-calendar-title {{titleClass}}">{{title}}</em>
-        <a class="tui-calendar-btn-next-year">Next year</a>
+        <button class="tui-calendar-btn tui-calendar-btn-next-year">Next year</button>
     </div>
 {{/if}}
 

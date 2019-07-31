@@ -71,9 +71,9 @@ var DateLayer = snippet.defineClass(LayerBase, /** @lends DateLayer.prototype */
     },
 
     /**
-     * Retunrs date elements
+     * Return date elements
      * @override
-     * @returns {NodeList}
+     * @returns {HTMLElement[]}
      */
     getDateElements: function() {
         return this._element.querySelectorAll(DATE_SELECTOR);

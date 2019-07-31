@@ -13,16 +13,11 @@ var headerTmpl = require('./../../template/calendar/header.hbs');
 var DateTimeFormatter = require('../dateTimeFormatter');
 var constants = require('../constants');
 var util = require('../util');
-var touchMouseEvent = require('../touchMouseEvent');
+var mouseTouchEvent = require('../mouseTouchEvent');
 
 var TYPE_DATE = constants.TYPE_DATE;
 var TYPE_MONTH = constants.TYPE_MONTH;
 var TYPE_YEAR = constants.TYPE_YEAR;
-
-var CLASS_NAME_PREV_MONTH_BTN = constants.CLASS_NAME_PREV_MONTH_BTN;
-var CLASS_NAME_PREV_YEAR_BTN = constants.CLASS_NAME_PREV_YEAR_BTN;
-var CLASS_NAME_NEXT_YEAR_BTN = constants.CLASS_NAME_NEXT_YEAR_BTN;
-var CLASS_NAME_NEXT_MONTH_BTN = constants.CLASS_NAME_NEXT_MONTH_BTN;
 
 var CLASS_NAME_TITLE_MONTH = 'tui-calendar-title-month';
 var CLASS_NAME_TITLE_YEAR = 'tui-calendar-title-year';
@@ -30,6 +25,7 @@ var CLASS_NAME_TITLE_YEAR_TO_YEAR = 'tui-calendar-title-year-to-year';
 
 var SELECTOR_INNER_ELEM = '.tui-calendar-header-inner';
 var SELECTOR_INFO_ELEM = '.tui-calendar-header-info';
+var SELECTOR_BTN = '.tui-calendar-btn';
 
 var YEAR_TITLE_FORMAT = 'yyyy';
 
@@ -121,7 +117,7 @@ var Header = snippet.defineClass(/** @lends Header.prototype */{
      * @private
      */
     _setEvents: function() {
-        touchMouseEvent.on(this._container, 'click', this._onClickHandler, this);
+        mouseTouchEvent.on(this._container, 'click', this._onClickHandler, this);
     },
 
     /**
@@ -130,7 +126,7 @@ var Header = snippet.defineClass(/** @lends Header.prototype */{
      */
     _removeEvents: function() {
         this.off();
-        touchMouseEvent.off(this._container, 'click', this._onClickHandler);
+        mouseTouchEvent.off(this._container, 'click', this._onClickHandler);
     },
 
     /**
@@ -138,26 +134,9 @@ var Header = snippet.defineClass(/** @lends Header.prototype */{
      * @param {Event} ev An event object
      */
     _onClickHandler: function(ev) {
-        var classNames = [
-            CLASS_NAME_PREV_MONTH_BTN,
-            CLASS_NAME_PREV_YEAR_BTN,
-            CLASS_NAME_NEXT_MONTH_BTN,
-            CLASS_NAME_NEXT_YEAR_BTN
-        ];
         var target = util.getTarget(ev);
-        var trigger = false;
 
-        snippet.forEach(classNames, function(className) {
-            if (domUtil.closest(target, '.' + className)) {
-                trigger = true;
-
-                return false;
-            }
-
-            return true;
-        });
-
-        if (trigger) {
+        if (domUtil.closest(target, SELECTOR_BTN)) {
             this.fire('click', ev);
         }
     },

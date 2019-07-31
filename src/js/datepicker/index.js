@@ -15,7 +15,7 @@ var constants = require('../constants');
 var localeTexts = require('../localeTexts');
 var dateUtil = require('../dateUtil');
 var util = require('../util');
-var touchMouseEvent = require('../touchMouseEvent');
+var mouseTouchEvent = require('../mouseTouchEvent');
 var tmpl = require('../../template/datepicker/index.hbs');
 var DatePickerInput = require('./input');
 
@@ -315,7 +315,7 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @private
      */
     _setEvents: function() {
-        touchMouseEvent.on(this._element, 'click', this._onClickHandler, this);
+        mouseTouchEvent.on(this._element, 'click', this._onClickHandler, this);
         this._calendar.on('draw', this._onDrawCalendar, this);
     },
 
@@ -324,7 +324,7 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @private
      */
     _removeEvents: function() {
-        touchMouseEvent.off(this._element, 'click', this._onClickHandler, this);
+        mouseTouchEvent.off(this._element, 'click', this._onClickHandler, this);
         this._calendar.off();
     },
 
@@ -333,7 +333,7 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @private
      */
     _setDocumentEvents: function() {
-        touchMouseEvent.on(document, 'mousedown', this._onMousedownDocument, this);
+        mouseTouchEvent.on(document, 'mousedown', this._onMousedownDocument, this);
     },
 
     /**
@@ -341,7 +341,7 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @private
      */
     _removeDocumentEvents: function() {
-        touchMouseEvent.off(document, 'mousedown', this._onMousedownDocument);
+        mouseTouchEvent.off(document, 'mousedown', this._onMousedownDocument);
     },
 
     /**
@@ -350,7 +350,7 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @private
      */
     _setOpenerEvents: function(opener) {
-        touchMouseEvent.on(opener, 'click', this.toggle, this);
+        mouseTouchEvent.on(opener, 'click', this.toggle, this);
     },
 
     /**
@@ -359,7 +359,7 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @private
      */
     _removeOpenerEvents: function(opener) {
-        touchMouseEvent.off(opener, 'click', this.toggle);
+        mouseTouchEvent.off(opener, 'click', this.toggle);
     },
 
     /**
@@ -648,7 +648,7 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @private
      */
     _onDrawCalendar: function(eventData) {
-        var dateElements = util.convertToArray(eventData.dateElements);
+        var dateElements = snippet.toArray(eventData.dateElements);
 
         snippet.forEach(dateElements, function(el) {
             this._setTodayClassName(el);
@@ -1273,7 +1273,7 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * Returns date elements on calendar
-     * @returns {NodeList}
+     * @returns {HTMLElement[]}
      */
     getDateElements: function() {
         return this._calendar.getDateElements();

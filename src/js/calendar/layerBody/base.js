@@ -68,7 +68,7 @@ var LayerBase = snippet.defineClass(/** @lends LayerBase.prototype */{
      * Returns date elements
      * @abstract
      * @throws {Error}
-     * @returns {NodeList}
+     * @returns {HTMLElement[]}
      */
     getDateElements: function() {
         throwOverrideError(this.getType(), 'getDateElements');

@@ -1,4 +1,5 @@
 ## Load dependency files
+> In v4.0.0, jQuery is removed. It might cause other components to fail if they pass a jQuery object as a container.
 * Script - [tui-code-snippet](https://github.com/nhn/tui.code-snippet) 1.5.0 or later
 * Script - [tui-dom](https://github.com/nhn/tui.dom) 3.0.0 or later
     > If your project should support IE8, please use `tui-dom.js`, not `tui-dom.min.js`.
@@ -38,7 +39,7 @@ var instance = new tui.DatePicker('#datepicker-wrapper', {
 ### Datepicker
 * language (default 'en')
   * There are two supporting types by default - 'en' and 'ko'.
-  * For custom texts - See the [Datepicker.localeTexts](https://nhn.github.io/tui.date-picker/latest/DatePicker.html#.localeTexts)
+  * For custom texts - See the [Datepicker.localeTexts](https://nhn.github.io/tui.date-picker/latest/DatePicker#localeTexts)
   * If set both calendar-language and datepicker-language, will apply datepicker-language first.
 * showAlways (default false)
   * If true, the datepicker will not close until you call "close()".
@@ -52,7 +53,7 @@ var instance = new tui.DatePicker('#datepicker-wrapper', {
   * See the [Date-Time text format](#date-time-text-format)
 * type (default 'date')
   * Type of picker - 'date', 'month', year'
-  * See [examples](https://nhn.github.io/tui.date-picker/latest/tutorial-example05-picking-month.html) in API page
+  * See [examples](https://nhn.github.io/tui.date-picker/latest/tutorial-example05-picking-month) in API page
 * selectableRanges
   * Set selectable dates of datepicker
   * 2d-Array: `[[startDate1, endDate1], [startDate2, endDate2], ...]`

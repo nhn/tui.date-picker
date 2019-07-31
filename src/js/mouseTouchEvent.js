@@ -7,7 +7,7 @@
 
 var domUtil = require('tui-dom');
 
-var touchMouseEvent = {
+var mouseTouchEvent = {
     /**
      * Detect mobile browser
      * @type {boolean} Whether using Mobile browser
@@ -25,14 +25,10 @@ var touchMouseEvent = {
      */
     _getEventType: function(type) {
         if (this._isMobile) {
-            switch (type) {
-                case 'mousedown':
-                    type = 'touchstart';
-                    break;
-                case 'click':
-                    type = 'touchend';
-                    break;
-                default: break;
+            if (type === 'mousedown') {
+                type = 'touchstart';
+            } else if (type === 'click') {
+                type = 'touchend';
             }
         }
 
@@ -61,4 +57,4 @@ var touchMouseEvent = {
     }
 };
 
-module.exports = touchMouseEvent;
+module.exports = mouseTouchEvent;

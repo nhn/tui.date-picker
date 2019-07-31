@@ -65,7 +65,7 @@ var YearLayer = snippet.defineClass(LayerBase, /** @lends YearLayer.prototype */
     /**
      * Returns year elements
      * @override
-     * @returns {NodeList}
+     * @returns {HTMLElement[]}
      */
     getDateElements: function() {
         return this._element.querySelectorAll(DATE_SELECTOR);

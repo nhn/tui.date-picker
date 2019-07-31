@@ -40,26 +40,6 @@ var utils = {
         }
 
         return selector;
-    },
-
-    /**
-     * Convert a nodelist to an array.
-     * @param {NodeList} elems A nodelist
-     * @returns {Array<HTMLElement>}
-     */
-    convertToArray: function(elems) {
-        var result, i, len;
-
-        try {
-            result = Array.prototype.slice.call(elems);
-        } catch (err) {
-            result = [];
-            for (i = 0, len = elems.length; i < len; i += 1) {
-                result.push(elems[i]);
-            }
-        }
-
-        return result;
     }
 };
 

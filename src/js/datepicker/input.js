@@ -9,7 +9,7 @@ var snippet = require('tui-code-snippet');
 var domUtil = require('tui-dom');
 
 var DateTimeFormatter = require('../dateTimeFormatter');
-var touchMouseEvent = require('../touchMouseEvent');
+var mouseTouchEvent = require('../mouseTouchEvent');
 var util = require('../util');
 
 var DEFAULT_FORMAT = 'yyyy-MM-dd';
@@ -73,7 +73,7 @@ var DatePickerInput = snippet.defineClass(/** @lends DatePickerInput.prototype *
     _setEvents: function() {
         if (this._input) {
             domUtil.on(this._input, 'change', this._onChangeHandler, this);
-            touchMouseEvent.on(this._input, 'click', this._onClickHandler, this);
+            mouseTouchEvent.on(this._input, 'click', this._onClickHandler, this);
         }
     },
 
@@ -86,7 +86,7 @@ var DatePickerInput = snippet.defineClass(/** @lends DatePickerInput.prototype *
 
         if (this._input) {
             domUtil.off(this._input, 'change', this._onChangeHandler);
-            touchMouseEvent.off(this._input, 'click', this._onClickHandler);
+            mouseTouchEvent.off(this._input, 'click', this._onClickHandler);
         }
     },
 

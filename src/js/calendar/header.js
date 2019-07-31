@@ -101,7 +101,6 @@ var Header = snippet.defineClass(/** @lends Header.prototype */{
     },
 
     /**
-     * Set formatters
      * @param {object} localeText - Locale text
      * @private
      */
@@ -112,7 +111,6 @@ var Header = snippet.defineClass(/** @lends Header.prototype */{
     },
 
     /**
-     * Set events
      * @param {object} option - Constructor option
      * @private
      */
@@ -121,7 +119,6 @@ var Header = snippet.defineClass(/** @lends Header.prototype */{
     },
 
     /**
-     * Remove events
      * @private
      */
     _removeEvents: function() {
@@ -132,6 +129,7 @@ var Header = snippet.defineClass(/** @lends Header.prototype */{
     /**
      * Fire customEvents
      * @param {Event} ev An event object
+     * @private
      */
     _onClickHandler: function(ev) {
         var target = util.getTarget(ev);
@@ -142,7 +140,6 @@ var Header = snippet.defineClass(/** @lends Header.prototype */{
     },
 
     /**
-     * Returns title class
      * @param {string} type - Calendar type
      * @returns {string}
      * @private
@@ -161,7 +158,6 @@ var Header = snippet.defineClass(/** @lends Header.prototype */{
     },
 
     /**
-     * Returns title text
      * @param {Date} date - date
      * @param {string} type - Calendar type
      * @returns {string}

@@ -26,6 +26,16 @@
 <script type="text/javascript" src="https://uicdn.toast.com/tui.dom/v3.0.0/tui-dom.js"></script>
 <script type="text/javascript" src="../dist/tui-date-picker.js"></script>
 <script class="code-js">
+    var util = {
+        addEventListener: function(element, eventName, handler) {
+            if (element.addEventListener) {
+                element.addEventListener(eventName, handler, false);
+            } else {
+                element.attachEvent('on' + eventName, handler);
+            }
+        }
+    };
+
      var datepicker = new tui.DatePicker('#wrapper', {
          date: new Date(),
          input: {
@@ -36,10 +46,10 @@
     });
 
     var datePickerTypes = document.querySelector('.radio-set');
-    tui.dom.on(datePickerTypes, 'click', function(ev) {
+    util.addEventListener(datePickerTypes, 'click', function(ev) {
         var target = ev.target || ev.srcElement;
         datepicker.setType(target.value);
-    });
+    })
 </script>
 </body>
 </html>

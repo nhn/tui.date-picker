@@ -102,7 +102,7 @@
     vertical-align: top
 }
 
-.tui-calendar .tui-calendar-btn-prev-month, .tui-calendar .tui-calendar-btn-next-month, .tui-calendar .tui-calendar-btn-prev-year, .tui-calendar .tui-calendar-btn-next-year {
+.tui-calendar-btn {
     overflow: hidden;
     position: absolute;
     top: 0;

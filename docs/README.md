@@ -1,7 +1,6 @@
 ## Tutorials
 
 - [Getting Started](getting-started.md)
-- [v3.0.0 Migration Guide](v3.0.0-migration-guide.md)
 
 ## Documents
 

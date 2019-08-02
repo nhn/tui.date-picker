@@ -1,5 +1,30 @@
+## v4.0.0 Migration Guide
+In v4.0.0, jQuery is removed. It might cause other components to fail if they pass a jQuery object as a container.
+
+Previously, you can use a `jQuery` object to create an instance.
+```javascript
+// v3
+var instance = new tui.DatePicker($('#datepicker-wrapper'), {
+   // options
+});
+```
+
+Now, you have to use `selector` or `HTMLElement` as a container.
+```javascript
+// v4
+var instance = new tui.DatePicker('#datepicker-wrapper', {
+   // options
+});
+
+// or
+
+var container = document.getElementById('datepicker-wrapper');
+var instance = new tui.DatePicker(container, {
+    // options
+});
+```
+
 ## Load dependency files
-> In v4.0.0, jQuery is removed. It might cause other components to fail if they pass a jQuery object as a container.
 * Script - [tui-code-snippet](https://github.com/nhn/tui.code-snippet) 1.5.0 or later
 * Script - [tui-dom](https://github.com/nhn/tui.dom) 3.0.0 or later
     > If your project should support IE8, please use `tui-dom.js`, not `tui-dom.min.js`.

@@ -7,6 +7,31 @@
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-ff69b4.svg)](https://github.com/nhn/tui.project-name/labels/help%20wanted)
 [![code with hearth by NHN](https://img.shields.io/badge/%3C%2F%3E%20with%20%E2%99%A5%20by-NHN-ff1414.svg)](https://github.com/nhn)
 
+## v4.0.0 Migration Guide
+In v4.0.0, jQuery is removed. It might cause other components to fail if they pass a jQuery object as a container.
+
+Previously, you can use a `jQuery` object to create an instance.
+```javascript
+// v3
+var instance = new tui.DatePicker($('#datepicker-wrapper'), {
+   // options
+});
+```
+
+Now, you have to use `selector` or `HTMLElement` as a container.
+```javascript
+// v4
+var instance = new tui.DatePicker('#datepicker-wrapper', {
+   // options
+});
+
+// or
+
+var container = document.getElementById('datepicker-wrapper');
+var instance = new tui.DatePicker(container, {
+    // options
+});
+```
 
 ## 🚩 Table of Contents
 * [Browser Support](#-browser-support)
@@ -226,8 +251,8 @@ You can also see the older versions of API page on the [releases page](https://g
 
 ## 🔩 Dependency
 * [tui-code-snippet](https://github.com/nhn/tui.code-snippet) >=1.5.0
+* [tui-dom](https://github.com/nhn/tui.dom) >=3.0.0
 * [tui-time-picker](https://github.com/nhn/tui.time-picker) >=1.3.0
-* [jquery](https://jquery.com/) >=1.11.0
 
 
 ## 📜 License

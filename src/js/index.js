@@ -14,7 +14,7 @@ require('../css/calendar.css');
 /**
  * Create a calendar component
  * @static
- * @param {HTMLElement|jQuery|string} wrapperElement - Wrapper element or selector
+ * @param {HTMLElement|string} wrapperElement - Wrapper element or selector
  *     @param {Object} [options] - Options for initialize
  *     @param {string} [options.language = 'en'] - Calendar language - {@link Calendar.localeTexts}
  *     @param {boolean} [options.showToday] - If true, shows today
@@ -42,11 +42,11 @@ DatePicker.createCalendar = function(wrapperElement, options) {
  * @static
  * @param {object} options - Date-Range picker options
  *     @param {object} options.startpicker - Startpicker options
- *     @param {Element|jQuery|string} options.startpicker.input - Startpicker input element
- *     @param {Element|jQuery|string} options.startpicker.container - Startpicker container element
+ *     @param {HTMLElement|string} options.startpicker.input - Startpicker input element or selector
+ *     @param {HTMLElement|string} options.startpicker.container - Startpicker container element or selector
  *     @param {object} options.endpicker - Endpicker options
- *     @param {Element|jQuery|string} options.endpicker.input - Endpicker input element
- *     @param {Element|jQuery|string} options.endpicker.container - Endpicker container element
+ *     @param {HTMLElement|string} options.endpicker.input - Endpicker input element or selector
+ *     @param {HTMLElement|string} options.endpicker.container - Endpicker container element or selector
  *     @param {string} options.format - Input date-string format
  *     @param {string} [options.type = 'date'] - DatePicker type - ('date' | 'month' | 'year')
  *     @param {string} [options.language='en'] - Language key

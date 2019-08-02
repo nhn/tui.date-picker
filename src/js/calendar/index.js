@@ -5,8 +5,8 @@
 
 'use strict';
 
-var $ = require('jquery');
 var snippet = require('tui-code-snippet');
+var domUtil = require('tui-dom');
 
 var tmpl = require('./../../template/calendar/index.hbs');
 var Header = require('./header');
@@ -14,6 +14,7 @@ var Body = require('./body');
 var localeTexts = require('../localeTexts');
 var constants = require('../constants');
 var dateUtil = require('../dateUtil');
+var util = require('../util');
 
 var DEFAULT_LANGUAGE_TYPE = constants.DEFAULT_LANGUAGE_TYPE;
 
@@ -28,15 +29,15 @@ var CLASS_NAME_NEXT_MONTH_BTN = constants.CLASS_NAME_NEXT_MONTH_BTN;
 
 var CLASS_NAME_CALENDAR_MONTH = 'tui-calendar-month';
 var CLASS_NAME_CALENDAR_YEAR = 'tui-calendar-year';
+var CLASS_NAME_HIDDEN = 'tui-hidden';
 
 var HEADER_SELECTOR = '.tui-calendar-header';
 var BODY_SELECTOR = '.tui-calendar-body';
 
-var util = snippet;
 /**
  * Calendar class
  * @constructor
- * @param {HTMLElement|jQuery|string} wrapperElement - Wrapper element or selector
+ * @param {HTMLElement|string} wrapperElement - Wrapper element or selector
  * @param {Object} [options] - Options for initialize
  *     @param {string} [options.language = 'en'] - Calendar language - {@link Calendar.localeTexts}
  *     @param {boolean} [options.showToday] - If true, shows today
@@ -55,16 +56,17 @@ var util = snippet;
  * });
  *
  * calendar.on('draw', function(event) {
+ *     var i, len;
  *     console.log(event.date);
  *     console.log(event.type);
- *     event.dateElements.each(function() {
- *         var $el = $(this);
- *         var date = new Date($el.data('timestamp'));
+ *     for (i = 0, len = event.dateElements.length; i < len; i += 1) {
+ *         var el = event.dateElements[i];
+ *         var date = new Date(domUtil.getData(el, 'timestamp'));
  *         console.log(date);
- *     });
+ *     }
  * });
  */
-var Calendar = util.defineClass(/** @lends Calendar.prototype */ {
+var Calendar = snippet.defineClass(/** @lends Calendar.prototype */ {
     static: {
         /**
          * Locale text data
@@ -110,17 +112,18 @@ var Calendar = util.defineClass(/** @lends Calendar.prototype */ {
 
         /**
          * Container element
-         * @type {jQuery}
+         * @type {HTMLElement}
          * @private
          */
-        this._$container = $(container);
+        this._container = util.getElement(container);
+        this._container.innerHTML = tmpl(options);
 
         /**
          * Wrapper element
-         * @type {jQuery}
+         * @type {HTMLElement}
          * @private
          */
-        this._$element = $(tmpl(options)).appendTo(this._$container);
+        this._element = this._container.firstChild;
 
         /**
          * Date
@@ -168,18 +171,18 @@ var Calendar = util.defineClass(/** @lends Calendar.prototype */ {
      * @private
      */
     _initHeader: function(options) {
-        var $headerContainer = this._$element.find(HEADER_SELECTOR);
+        var headerContainer = this._element.querySelector(HEADER_SELECTOR);
 
-        this._header = new Header($headerContainer, options);
+        this._header = new Header(headerContainer, options);
         this._header.on('click', function(ev) {
-            var $target = $(ev.target);
-            if ($target.hasClass(CLASS_NAME_PREV_MONTH_BTN)) {
+            var target = util.getTarget(ev);
+            if (domUtil.hasClass(target, CLASS_NAME_PREV_MONTH_BTN)) {
                 this.drawPrev();
-            } else if ($target.hasClass(CLASS_NAME_PREV_YEAR_BTN)) {
+            } else if (domUtil.hasClass(target, CLASS_NAME_PREV_YEAR_BTN)) {
                 this._onClickPrevYear();
-            } else if ($target.hasClass(CLASS_NAME_NEXT_MONTH_BTN)) {
+            } else if (domUtil.hasClass(target, CLASS_NAME_NEXT_MONTH_BTN)) {
                 this.drawNext();
-            } else if ($target.hasClass(CLASS_NAME_NEXT_YEAR_BTN)) {
+            } else if (domUtil.hasClass(target, CLASS_NAME_NEXT_YEAR_BTN)) {
                 this._onClickNextYear();
             }
         }, this);
@@ -191,9 +194,9 @@ var Calendar = util.defineClass(/** @lends Calendar.prototype */ {
      * @private
      */
     _initBody: function(options) {
-        var $bodyContainer = this._$element.find(BODY_SELECTOR);
+        var bodyContainer = this._element.querySelector(BODY_SELECTOR);
 
-        this._body = new Body($bodyContainer, options);
+        this._body = new Body(bodyContainer, options);
     },
 
     /**
@@ -273,14 +276,14 @@ var Calendar = util.defineClass(/** @lends Calendar.prototype */ {
 
         this._header.render(date, type);
         this._body.render(date, type);
-        this._$element.removeClass([CLASS_NAME_CALENDAR_MONTH, CLASS_NAME_CALENDAR_YEAR].join(' '));
+        domUtil.removeClass(this._element, CLASS_NAME_CALENDAR_MONTH, CLASS_NAME_CALENDAR_YEAR);
 
         switch (type) {
             case TYPE_MONTH:
-                this._$element.addClass(CLASS_NAME_CALENDAR_MONTH);
+                domUtil.addClass(this._element, CLASS_NAME_CALENDAR_MONTH);
                 break;
             case TYPE_YEAR:
-                this._$element.addClass(CLASS_NAME_CALENDAR_YEAR);
+                domUtil.addClass(this._element, CLASS_NAME_CALENDAR_YEAR);
                 break;
             default: break;
         }
@@ -333,7 +336,7 @@ var Calendar = util.defineClass(/** @lends Calendar.prototype */ {
          * @type {object} evt
          * @property {Date} date - Calendar date
          * @property {string} type - Calendar type
-         * @property {jQuery} $dateElements - Calendar date elements
+         * @property {HTMLElement} dateElements - Calendar date elements
          * @example
          * calendar.on('draw', function(evt) {
          *     console.error(evt.date);
@@ -342,7 +345,7 @@ var Calendar = util.defineClass(/** @lends Calendar.prototype */ {
         this.fire('draw', {
             date: this._date,
             type: type,
-            $dateElements: this._body.getDateElements()
+            dateElements: this._body.getDateElements()
         });
     },
 
@@ -350,14 +353,14 @@ var Calendar = util.defineClass(/** @lends Calendar.prototype */ {
      * Show calendar
      */
     show: function() {
-        this._$element.show();
+        domUtil.removeClass(this._element, CLASS_NAME_HIDDEN);
     },
 
     /**
      * Hide calendar
      */
     hide: function() {
-        this._$element.hide();
+        domUtil.addClass(this._element, CLASS_NAME_HIDDEN);
     },
 
     /**
@@ -444,7 +447,7 @@ var Calendar = util.defineClass(/** @lends Calendar.prototype */ {
     /**
      * Change language
      * @param {string} language - Language
-     * @see {@link Calendar.localeTexts}
+     * @see {@link Calendar#localeTexts}
      */
     changeLanguage: function(language) {
         this._header.changeLanguage(language);
@@ -469,8 +472,8 @@ var Calendar = util.defineClass(/** @lends Calendar.prototype */ {
     },
 
     /**
-     * Returns date elements(jQuery) on body
-     * @returns {jQuery}
+     * Returns date elements on body
+     * @returns {HTMLElement[]}
      */
     getDateElements: function() {
         return this._body.getDateElements();
@@ -481,7 +484,7 @@ var Calendar = util.defineClass(/** @lends Calendar.prototype */ {
      * @param {string} className - Class name
      */
     addCssClass: function(className) {
-        this._$element.addClass(className);
+        domUtil.addClass(this._element, className);
     },
 
     /**
@@ -489,7 +492,7 @@ var Calendar = util.defineClass(/** @lends Calendar.prototype */ {
      * @param {string} className - Class name
      */
     removeCssClass: function(className) {
-        this._$element.removeClass(className);
+        domUtil.removeClass(this._element, className);
     },
 
     /**
@@ -498,11 +501,17 @@ var Calendar = util.defineClass(/** @lends Calendar.prototype */ {
     destroy: function() {
         this._header.destroy();
         this._body.destroy();
-        this._$element.remove();
+        domUtil.removeElement(this._element);
 
-        this._type = this._date = this._$container = this._$element = this._header = this._body = null;
+        this._type
+            = this._date
+            = this._container
+            = this._element
+            = this._header
+            = this._body
+            = null;
     }
 });
 
-util.CustomEvents.mixin(Calendar);
+snippet.CustomEvents.mixin(Calendar);
 module.exports = Calendar;

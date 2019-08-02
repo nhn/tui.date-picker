@@ -5,7 +5,6 @@
 
 'use strict';
 
-var $ = require('jquery');
 var snippet = require('tui-code-snippet');
 
 var DateLayer = require('./layerBody/date');
@@ -27,10 +26,10 @@ var Body = snippet.defineClass(/** @lends Body.prototype */{
 
         /**
          * Body container element
-         * @type {jQuery}
+         * @type {HTMLElement}
          * @private
          */
-        this._$container = $(bodyContainer);
+        this._container = bodyContainer;
 
         /**
          * DateLayer
@@ -109,15 +108,14 @@ var Body = snippet.defineClass(/** @lends Body.prototype */{
         var prevLayer = this._currentLayer;
 
         prevLayer.remove();
-        nextLayer.render(date);
-        nextLayer.appendTo(this._$container);
+        nextLayer.render(date, this._container);
 
         this._currentLayer = nextLayer;
     },
 
     /**
-     * Returns date jQuery elements
-     * @returns {jQuery}
+     * Returns date elements
+     * @returns {HTMLElement[]}
      */
     getDateElements: function() {
         return this._currentLayer.getDateElements();
@@ -131,7 +129,7 @@ var Body = snippet.defineClass(/** @lends Body.prototype */{
             layer.remove();
         });
 
-        this._$container = this._currentLayer = this._dateLayer = this._monthLayer = this._yearLayer = null;
+        this._container = this._currentLayer = this._dateLayer = this._monthLayer = this._yearLayer = null;
     }
 });
 

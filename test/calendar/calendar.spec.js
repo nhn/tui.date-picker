@@ -4,18 +4,17 @@
  */
 'use strict';
 
-var $ = require('jquery');
 var snippet = require('tui-code-snippet');
 
 var Calendar = require('../../src/js/calendar');
 
 describe('Calendar', function() {
     describe('Api', function() {
-        var $container = $('<div></div>');
+        var container = document.createElement('div');
         var calendar;
 
         beforeEach(function() {
-            calendar = new Calendar($container);
+            calendar = new Calendar(container);
         });
 
         afterEach(function() {
@@ -163,7 +162,7 @@ describe('Calendar', function() {
             expect(calendar.getDate().getMonth()).toBe(0);
         });
 
-        it('"getDateElements" should return jQuery elements', function() {
+        it('"getDateElements" should return HTML elements', function() {
             var dateElements;
 
             calendar.draw({
@@ -173,7 +172,6 @@ describe('Calendar', function() {
 
             dateElements = calendar.getDateElements();
 
-            expect(dateElements.jquery).toBeTruthy();
             expect(dateElements.length).toBe(42);
         });
 
@@ -190,12 +188,12 @@ describe('Calendar', function() {
         });
 
         it('"destory" should destory', function() {
-            var $nContainer = $('<div></div>');
-            var nCalendar = new Calendar($nContainer);
+            var nContainer = document.createElement('div');
+            var nCalendar = new Calendar(nContainer);
 
             nCalendar.destroy();
 
-            expect($nContainer.children().length).toBe(0);
+            expect(nContainer.children.length).toBe(0);
             expect(nCalendar._header).toBeNull();
             expect(nCalendar._body).toBeNull();
         });
@@ -205,14 +203,14 @@ describe('Calendar', function() {
         var nCalendar;
         it('should send hostname by default', function() {
             spyOn(snippet, 'sendHostname');
-            nCalendar = new Calendar($('<div></div>'));
+            nCalendar = new Calendar(document.createElement('div'));
 
             expect(snippet.sendHostname).toHaveBeenCalled();
         });
 
         it('should not send hostname on usageStatistics option false', function() {
             spyOn(snippet, 'sendHostname');
-            nCalendar = new Calendar($('<div></div>'), {usageStatistics: false});
+            nCalendar = new Calendar(document.createElement('div'), {usageStatistics: false});
 
             expect(snippet.sendHostname).not.toHaveBeenCalled();
         });

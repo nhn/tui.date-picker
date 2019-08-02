@@ -5,33 +5,34 @@
 
 'use strict';
 
-var $ = require('jquery');
 var snippet = require('tui-code-snippet');
+var domUtil = require('tui-dom');
 
 var localeTexts = require('./../localeTexts');
 var headerTmpl = require('./../../template/calendar/header.hbs');
 var DateTimeFormatter = require('../dateTimeFormatter');
 var constants = require('../constants');
+var util = require('../util');
+var mouseTouchEvent = require('../mouseTouchEvent');
 
 var TYPE_DATE = constants.TYPE_DATE;
 var TYPE_MONTH = constants.TYPE_MONTH;
 var TYPE_YEAR = constants.TYPE_YEAR;
 
-var CLASS_NAME_PREV_MONTH_BTN = constants.CLASS_NAME_PREV_MONTH_BTN;
-var CLASS_NAME_PREV_YEAR_BTN = constants.CLASS_NAME_PREV_YEAR_BTN;
-var CLASS_NAME_NEXT_YEAR_BTN = constants.CLASS_NAME_NEXT_YEAR_BTN;
-var CLASS_NAME_NEXT_MONTH_BTN = constants.CLASS_NAME_NEXT_MONTH_BTN;
-
 var CLASS_NAME_TITLE_MONTH = 'tui-calendar-title-month';
 var CLASS_NAME_TITLE_YEAR = 'tui-calendar-title-year';
 var CLASS_NAME_TITLE_YEAR_TO_YEAR = 'tui-calendar-title-year-to-year';
+
+var SELECTOR_INNER_ELEM = '.tui-calendar-header-inner';
+var SELECTOR_INFO_ELEM = '.tui-calendar-header-info';
+var SELECTOR_BTN = '.tui-calendar-btn';
 
 var YEAR_TITLE_FORMAT = 'yyyy';
 
 /**
  * @ignore
  * @class
- * @param {string|Element|jQuery} container - Header container
+ * @param {string|HTMLElement} container - Header container or selector
  * @param {object} option - Header option
  * @param {string} option.language - Header language
  * @param {boolean} option.showToday - Has today box or not.
@@ -41,17 +42,24 @@ var Header = snippet.defineClass(/** @lends Header.prototype */{
     init: function(container, option) {
         /**
          * Container element
-         * @type {jQuery}
+         * @type {HTMLElement}
          * @private
          */
-        this._$container = $(container);
+        this._container = util.getElement(container);
 
         /**
-         * headerElement
-         * @type {jQuery}
+         * Header inner element
+         * @type {HTMLElement}
          * @private
          */
-        this._$element = $();
+        this._innerElement = null;
+
+        /**
+         * Header info element
+         * @type {HTMLElement}
+         * @private
+         */
+        this._infoElement = null;
 
         /**
          * Render today box or not
@@ -93,7 +101,6 @@ var Header = snippet.defineClass(/** @lends Header.prototype */{
     },
 
     /**
-     * Set formatters
      * @param {object} localeText - Locale text
      * @private
      */
@@ -104,29 +111,35 @@ var Header = snippet.defineClass(/** @lends Header.prototype */{
     },
 
     /**
-     * Set events for firing customEvents
      * @param {object} option - Constructor option
      * @private
      */
     _setEvents: function() {
-        var self = this;
-        var classNames = [
-            CLASS_NAME_PREV_MONTH_BTN,
-            CLASS_NAME_PREV_YEAR_BTN,
-            CLASS_NAME_NEXT_MONTH_BTN,
-            CLASS_NAME_NEXT_YEAR_BTN
-        ];
-
-        snippet.forEach(classNames, function(className) {
-            self._$container.on('touchend.calendar click.calendar', '.' + className, function(ev) {
-                self.fire('click', ev);
-                ev.preventDefault(); // To prevent click after touchend
-            });
-        });
+        mouseTouchEvent.on(this._container, 'click', this._onClickHandler, this);
     },
 
     /**
-     * Returns title class
+     * @private
+     */
+    _removeEvents: function() {
+        this.off();
+        mouseTouchEvent.off(this._container, 'click', this._onClickHandler);
+    },
+
+    /**
+     * Fire customEvents
+     * @param {Event} ev An event object
+     * @private
+     */
+    _onClickHandler: function(ev) {
+        var target = util.getTarget(ev);
+
+        if (domUtil.closest(target, SELECTOR_BTN)) {
+            this.fire('click', ev);
+        }
+    },
+
+    /**
      * @param {string} type - Calendar type
      * @returns {string}
      * @private
@@ -145,7 +158,6 @@ var Header = snippet.defineClass(/** @lends Header.prototype */{
     },
 
     /**
-     * Returns title text
      * @param {Date} date - date
      * @param {string} type - Calendar type
      * @returns {string}
@@ -193,25 +205,28 @@ var Header = snippet.defineClass(/** @lends Header.prototype */{
             title: this._getTitleText(date, type)
         };
 
-        this._$element.remove();
-        this._$element = $(headerTmpl(context));
-        this._$element.appendTo(this._$container);
+        this._container.innerHTML = headerTmpl(context).replace(/^\s+|\s+$/g, '');
+        this._innerElement = this._container.querySelector(SELECTOR_INNER_ELEM);
+        if (context.showToday) {
+            this._infoElement = this._container.querySelector(SELECTOR_INFO_ELEM);
+        }
     },
 
     /**
      * Destroy header
      */
     destroy: function() {
-        this.off();
-        this._$container.off('.calendar');
-        this._$element.remove();
-        this._$container
+        this._removeEvents();
+        domUtil.removeElement(this._innerElement);
+        domUtil.removeElement(this._infoElement);
+        this._container
             = this._showToday
             = this._showJumpButtons
             = this._yearMonthTitleFormatter
             = this._yearTitleFormatter
             = this._todayFormatter
-            = this._$element
+            = this._innerElement
+            = this._infoElement
             = null;
     }
 });

@@ -37,9 +37,10 @@ var CLASS_NAME_TODAY = 'tui-calendar-today';
 var CLASS_NAME_HIDDEN = 'tui-hidden';
 
 var SELECTOR_BODY = '.tui-datepicker-body';
-var SELECTOR_FOOTER = '.tui-datepicker-footer';
 var SELECTOR_DATE_ICO = '.tui-ico-date';
 var SELECTOR_CALENDAR_TITLE = '.tui-calendar-title';
+var SELECTOR_CALENDAR_CONTAINER = '.tui-calendar-container';
+var SELECTOR_TIMEPICKER_CONTAINER = '.tui-timepicker-container';
 
 /**
  * Merge default option
@@ -204,16 +205,30 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
         this._element = this._container.firstChild;
 
         /**
+         * Calendar container
+         * @type {HTMLElement}
+         * @private
+         */
+        this._calendarContainer = this._element.querySelector(SELECTOR_CALENDAR_CONTAINER);
+
+        /**
          * Calendar instance
          * @type {Calendar}
          * @private
          */
         this._calendar = new Calendar(
-            this._element.querySelector(SELECTOR_BODY),
+            this._calendarContainer,
             snippet.extend(options.calendar, {
                 usageStatistics: options.usageStatistics
             })
         );
+
+        /**
+         * TimePicker container
+         * @type {HTMLElement}
+         * @private
+         */
+        this._timepickerContainer = null;
 
         /**
          * TimePicker instance
@@ -384,11 +399,11 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
             };
         }
 
+        this._timepickerContainer = this._element.querySelector(SELECTOR_TIMEPICKER_CONTAINER);
+        this._timepicker = new TimePicker(this._timepickerContainer, opTimePicker);
+
         if (layoutType.toLowerCase() === 'tab') {
-            this._timepicker = new TimePicker(this._element.querySelector(SELECTOR_BODY), opTimePicker);
             this._timepicker.hide();
-        } else {
-            this._timepicker = new TimePicker(this._element.querySelector(SELECTOR_FOOTER), opTimePicker);
         }
 
         this._timepicker.on('change', function(ev) {

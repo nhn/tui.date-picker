@@ -9,12 +9,21 @@
                     <span class="tui-ico-time"></span>{{localeText.time}}
                 </button>
             </div>
-            <div class="tui-datepicker-body"></div>
+            <div class="tui-datepicker-body">
+                <div class="tui-calendar-container"></div>
+                <div class="tui-timepicker-container"></div>
+            </div>
         {{else}}
-            <div class="tui-datepicker-body"></div>
-            <div class="tui-datepicker-footer"></div>
+            <div class="tui-datepicker-body">
+                <div class="tui-calendar-container"></div>
+            </div>
+            <div class="tui-datepicker-footer">
+                <div class="tui-timepicker-container"></div>
+            </div>
         {{/if}}
     {{else}}
-        <div class="tui-datepicker-body"></div>
+        <div class="tui-datepicker-body">
+            <div class="tui-calendar-container"></div>
+        </div>
     {{/if}}
 </div>

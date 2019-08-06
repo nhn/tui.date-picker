@@ -5,8 +5,8 @@
 
 'use strict';
 
-var $ = require('jquery');
 var snippet = require('tui-code-snippet');
+var domUtil = require('tui-dom');
 var TimePicker = require('tui-time-picker');
 
 var Calendar = require('../calendar');
@@ -14,7 +14,8 @@ var RangeModel = require('./../rangeModel/index');
 var constants = require('../constants');
 var localeTexts = require('../localeTexts');
 var dateUtil = require('../dateUtil');
-var setTouchClickEvent = require('../setTouchClickEvent');
+var util = require('../util');
+var mouseTouchEvent = require('../mouseTouchEvent');
 var tmpl = require('../../template/datepicker/index.hbs');
 var DatePickerInput = require('./input');
 
@@ -33,10 +34,13 @@ var CLASS_NAME_BLOCKED = 'tui-is-blocked';
 var CLASS_NAME_CHECKED = 'tui-is-checked';
 var CLASS_NAME_SELECTOR_BUTTON = 'tui-datepicker-selector-button';
 var CLASS_NAME_TODAY = 'tui-calendar-today';
+var CLASS_NAME_HIDDEN = 'tui-hidden';
 
 var SELECTOR_BODY = '.tui-datepicker-body';
-var SELECTOR_FOOTER = '.tui-datepicker-footer';
 var SELECTOR_DATE_ICO = '.tui-ico-date';
+var SELECTOR_CALENDAR_TITLE = '.tui-calendar-title';
+var SELECTOR_CALENDAR_CONTAINER = '.tui-calendar-container';
+var SELECTOR_TIMEPICKER_CONTAINER = '.tui-timepicker-container';
 
 /**
  * Merge default option
@@ -85,7 +89,7 @@ var mergeDefaultOption = function(option) {
 
 /**
  * @class
- * @param {HTMLElement|jQuery|string} container - Container element of datepicker
+ * @param {HTMLElement|string} container - Container element or selector of datepicker
  * @param {Object} [options] - Options
  *      @param {Date|number} [options.date] - Initial date. Default - null for no initial date
  *      @param {string} [options.type = 'date'] - DatePicker type - ('date' | 'month' | 'year')
@@ -94,7 +98,7 @@ var mergeDefaultOption = function(option) {
  *                              [TimePicker]{@link https://nhn.github.io/tui.time-picker/latest} options
  *      @param {object} [options.calendar] - {@link Calendar} options
  *      @param {object} [options.input] - Input option
- *      @param {HTMLElement|string|jQuery} [options.input.element] - Input element
+ *      @param {HTMLElement|string} [options.input.element] - Input element or selector
  *      @param {string} [options.input.format = 'yyyy-mm-dd'] - Date string format
  *      @param {Array.<Array.<Date|number>>} [options.selectableRanges = 1900/1/1 ~ 2999/12/31]
  *                                                                      - Selectable date ranges.
@@ -187,26 +191,30 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
 
         /**
          * DatePicker container
-         * @type {jQuery}
+         * @type {HTMLElement}
          * @private
          */
-        this._$container = $(container);
+        this._container = util.getElement(container);
+        this._container.innerHTML = tmpl(options);
 
         /**
          * DatePicker element
-         * @type {jQuery}
+         * @type {HTMLElement}
          * @private
          */
-        this._$element = $(tmpl(options)).appendTo(this._$container);
+        this._element = this._container.firstChild;
 
         /**
          * Calendar instance
          * @type {Calendar}
          * @private
          */
-        this._calendar = new Calendar(this._$element.find(SELECTOR_BODY), snippet.extend(options.calendar, {
-            usageStatistics: options.usageStatistics
-        }));
+        this._calendar = new Calendar(
+            this._element.querySelector(SELECTOR_CALENDAR_CONTAINER),
+            snippet.extend(options.calendar, {
+                usageStatistics: options.usageStatistics
+            })
+        );
 
         /**
          * TimePicker instance
@@ -286,7 +294,7 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      */
     _initializeDatePicker: function(option) {
         this.setRanges(option.selectableRanges);
-        this._setEvents(option);
+        this._setEvents();
         this._initTimePicker(option.timepicker, option.usageStatistics);
         this.setInput(option.input.element);
         this.setDateFormat(option.input.format);
@@ -294,47 +302,65 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
 
         snippet.forEach(option.openers, this.addOpener, this);
         if (!this.showAlways) {
-            this._$element.hide();
+            this._hide();
         }
 
         if (this.getType() === TYPE_DATE) {
-            this._$element.find(SELECTOR_BODY).addClass('tui-datepicker-type-date');
+            domUtil.addClass(this._element.querySelector(SELECTOR_BODY), 'tui-datepicker-type-date');
         }
     },
 
     /**
-     * Set events
+     * Set events on the date picker's element
      * @param {object} option - Constructor option
      * @private
      */
-    _setEvents: function(option) {
-        setTouchClickEvent(this._$element, $.proxy(this._onClickDate, this), {
-            selector: '.' + CLASS_NAME_SELECTABLE,
-            namespace: this._id
-        });
-
-        setTouchClickEvent(this._$element, $.proxy(this._onClickCalendarTitle, this), {
-            selector: '.tui-calendar-title',
-            namespace: this._id
-        });
-
-        if (option.timepicker && option.timepicker.layoutType === 'tab') {
-            setTouchClickEvent(this._$element, $.proxy(this._onClickSelectorButton, this), {
-                selector: '.' + CLASS_NAME_SELECTOR_BUTTON,
-                namespace: this._id
-            });
-        }
-
+    _setEvents: function() {
+        mouseTouchEvent.on(this._element, 'click', this._onClickHandler, this);
         this._calendar.on('draw', this._onDrawCalendar, this);
     },
 
     /**
-     * Off datepicker's events
-     * @param {string|jQuery|Element} el - Element
+     * Remove events on the date picker's element
      * @private
      */
-    _offDatePickerEvents: function(el) {
-        $(el).off('.' + this._id);
+    _removeEvents: function() {
+        mouseTouchEvent.off(this._element, 'click', this._onClickHandler, this);
+        this._calendar.off();
+    },
+
+    /**
+     * Set events on the document
+     * @private
+     */
+    _setDocumentEvents: function() {
+        mouseTouchEvent.on(document, 'mousedown', this._onMousedownDocument, this);
+    },
+
+    /**
+     * Remove events on the document
+     * @private
+     */
+    _removeDocumentEvents: function() {
+        mouseTouchEvent.off(document, 'mousedown', this._onMousedownDocument);
+    },
+
+    /**
+     * Set events on the opener
+     * @param {HTMLElement} opener An opener to bind the events
+     * @private
+     */
+    _setOpenerEvents: function(opener) {
+        mouseTouchEvent.on(opener, 'click', this.toggle, this);
+    },
+
+    /**
+     * Remove events on the opener
+     * @param {HTMLElement} opener An opener to unbind the events
+     * @private
+     */
+    _removeOpenerEvents: function(opener) {
+        mouseTouchEvent.off(opener, 'click', this.toggle);
     },
 
     /**
@@ -359,11 +385,10 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
             };
         }
 
+        this._timepicker = new TimePicker(this._element.querySelector(SELECTOR_TIMEPICKER_CONTAINER), opTimePicker);
+
         if (layoutType.toLowerCase() === 'tab') {
-            this._timepicker = new TimePicker(this._$element.find(SELECTOR_BODY), opTimePicker);
             this._timepicker.hide();
-        } else {
-            this._timepicker = new TimePicker(this._$element.find(SELECTOR_FOOTER), opTimePicker);
         }
 
         this._timepicker.on('change', function(ev) {
@@ -376,22 +401,14 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
     },
 
     /**
-     * Calendar-header click handler
+     * Change picker's type by a selector button.
+     * @param {HTMLElement} target A target element
      * @private
      */
-    _onClickCalendarTitle: function() {
-        this.drawUpperCalendar(this._date);
-    },
-
-    /**
-     * Selector button click handler
-     * @param {jQuery.Event} ev - Event object
-     * @private
-     */
-    _onClickSelectorButton: function(ev) {
+    _changePicker: function(target) {
         var btnSelector = '.' + CLASS_NAME_SELECTOR_BUTTON;
-        var $selectedBtn = $(ev.target).closest(btnSelector);
-        var isDate = !!$selectedBtn.find(SELECTOR_DATE_ICO).length;
+        var selectedBtn = domUtil.closest(target, btnSelector);
+        var isDate = selectedBtn.querySelector(SELECTOR_DATE_ICO);
 
         if (isDate) {
             this._calendar.show();
@@ -400,73 +417,73 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
             this._calendar.hide();
             this._timepicker.show();
         }
-        this._$element.find(btnSelector).removeClass(CLASS_NAME_CHECKED);
-        $selectedBtn.addClass(CLASS_NAME_CHECKED);
+        domUtil.removeClass(this._element.querySelector('.' + CLASS_NAME_CHECKED), CLASS_NAME_CHECKED);
+        domUtil.addClass(selectedBtn, CLASS_NAME_CHECKED);
     },
 
     /**
      * Returns whether the element is opener
-     * @param {string|jQuery|HTMLElement} element - Element
+     * @param {string|HTMLElement} element - Element or selector
      * @returns {boolean}
      * @private
      */
     _isOpener: function(element) {
-        var el = $(element)[0];
+        var el = util.getElement(element);
 
         return snippet.inArray(el, this._openers) > -1;
     },
 
     /**
      * add/remove today-class-name to date element
-     * @param {jQuery} $el - date element
+     * @param {HTMLElement} el - date element
      * @private
      */
-    _setTodayClassName: function($el) {
+    _setTodayClassName: function(el) {
         var timestamp, isToday;
 
         if (this.getCalendarType() !== TYPE_DATE) {
             return;
         }
 
-        timestamp = $el.data('timestamp');
+        timestamp = Number(domUtil.getData(el, 'timestamp'));
         isToday = timestamp === new Date().setHours(0, 0, 0, 0);
 
         if (isToday) {
-            $el.addClass(CLASS_NAME_TODAY);
+            domUtil.addClass(el, CLASS_NAME_TODAY);
         } else {
-            $el.removeClass(CLASS_NAME_TODAY);
+            domUtil.removeClass(el, CLASS_NAME_TODAY);
         }
     },
 
     /**
      * add/remove selectable-class-name to date element
-     * @param {jQuery} $el - date element
+     * @param {HTMLElement} el - date element
      * @private
      */
-    _setSelectableClassName: function($el) {
-        var elDate = new Date($el.data('timestamp'));
+    _setSelectableClassName: function(el) {
+        var elDate = new Date(Number(domUtil.getData(el, 'timestamp')));
 
         if (this._isSelectableOnCalendar(elDate)) {
-            $el.addClass(CLASS_NAME_SELECTABLE)
-                .removeClass(CLASS_NAME_BLOCKED);
+            domUtil.addClass(el, CLASS_NAME_SELECTABLE);
+            domUtil.removeClass(el, CLASS_NAME_BLOCKED);
         } else {
-            $el.addClass(CLASS_NAME_BLOCKED)
-                .removeClass(CLASS_NAME_SELECTABLE);
+            domUtil.removeClass(el, CLASS_NAME_SELECTABLE);
+            domUtil.addClass(el, CLASS_NAME_BLOCKED);
         }
     },
 
     /**
      * add/remove selected-class-name to date element
-     * @param {jQuery} $el - date element
+     * @param {HTMLElement} el - date element
      * @private
      */
-    _setSelectedClassName: function($el) {
-        var elDate = new Date($el.data('timestamp'));
+    _setSelectedClassName: function(el) {
+        var elDate = new Date(Number(domUtil.getData(el, 'timestamp')));
 
         if (this._isSelectedOnCalendar(elDate)) {
-            $el.addClass(CLASS_NAME_SELECTED);
+            domUtil.addClass(el, CLASS_NAME_SELECTED);
         } else {
-            $el.removeClass(CLASS_NAME_SELECTED);
+            domUtil.removeClass(el, CLASS_NAME_SELECTED);
         }
     },
 
@@ -495,6 +512,20 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
         var calendarType = this.getCalendarType();
 
         return curDate && dateUtil.isSame(curDate, date, calendarType);
+    },
+
+    /**
+     * Show the date picker element
+     */
+    _show: function() {
+        domUtil.removeClass(this._element, CLASS_NAME_HIDDEN);
+    },
+
+    /**
+     * Hide the date picker element
+     */
+    _hide: function() {
+        domUtil.addClass(this._element, CLASS_NAME_HIDDEN);
     },
 
     /**
@@ -553,11 +584,12 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @private
      */
     _onMousedownDocument: function(ev) {
-        var evTarget = ev.target;
-        var isContains = $.contains(this._$element[0], evTarget);
-        var isInput = this._datepickerInput.is(evTarget);
-        var isInOpener = !!$(evTarget).closest(this._openers).length;
-        var shouldClose = !(this.showAlways || isInput || isContains || isInOpener);
+        var target = util.getTarget(ev);
+        var selector = util.getSelector(target);
+        var isContain = selector ? this._element.querySelector(selector) : false;
+        var isInput = this._datepickerInput.is(target);
+        var isInOpener = (snippet.inArray(target, this._openers) > -1);
+        var shouldClose = !(this.showAlways || isInput || isContain || isInOpener);
 
         if (shouldClose) {
             this.close();
@@ -565,13 +597,28 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
     },
 
     /**
-     * Event handler for click of calendar<br>
-     * - Update date form event-target
-     * @param {Event} ev - event object
+     * Event handler for click of calendar
+     * @param {Event} ev An event object
+     */
+    _onClickHandler: function(ev) {
+        var target = util.getTarget(ev);
+
+        if (domUtil.closest(target, '.' + CLASS_NAME_SELECTABLE)) {
+            this._updateDate(target);
+        } else if (domUtil.closest(target, SELECTOR_CALENDAR_TITLE)) {
+            this.drawUpperCalendar(this._date);
+        } else if (domUtil.closest(target, '.' + CLASS_NAME_SELECTOR_BUTTON)) {
+            this._changePicker(target);
+        }
+    },
+
+    /**
+     * Update date from event-target
+     * @param {HTMLElement} target An event target element
      * @private
      */
-    _onClickDate: function(ev) {
-        var timestamp = $(ev.target).data('timestamp');
+    _updateDate: function(target) {
+        var timestamp = Number(domUtil.getData(target, 'timestamp'));
         var newDate = new Date(timestamp);
         var timepicker = this._timepicker;
         var prevDate = this._date;
@@ -597,19 +644,17 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
     /**
      * Event handler for 'draw'-custom event of calendar
      * @param {Object} eventData - custom event data
-     * @see {Calendar.draw}
+     * @see {@link Calendar#draw}
      * @private
      */
     _onDrawCalendar: function(eventData) {
-        var $dateElements = eventData.$dateElements;
-        var self = this;
+        var dateElements = snippet.toArray(eventData.dateElements);
 
-        $dateElements.each(function(idx, el) {
-            var $el = $(el);
-            self._setTodayClassName($el);
-            self._setSelectableClassName($el);
-            self._setSelectedClassName($el);
-        });
+        snippet.forEach(dateElements, function(el) {
+            this._setTodayClassName(el);
+            this._setSelectableClassName(el);
+            this._setSelectedClassName(el);
+        }, this);
         this._setDisplayHeadButtons();
 
         /**
@@ -618,7 +663,7 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
          * @type {Object} evt - See {@link Calendar#event:draw}
          * @property {Date} date - Calendar date
          * @property {string} type - Calendar type
-         * @property {jQuery} $dateElements - Calendar date elements
+         * @property {HTMLElement} dateElements - Calendar date elements
          * @example
          *
          * datepicker.on('draw', function(evt) {
@@ -630,7 +675,7 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * Hide useless buttons (next, next-year, prev, prev-year)
-     * @see Don't save buttons reference. The buttons are rerendered every "calendar.darw".
+     * @see Don't save buttons reference. The buttons are rerendered every "calendar.draw".
      * @private
      */
     _setDisplayHeadButtons: function() {
@@ -638,19 +683,19 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
         var prevYearDate = this._calendar.getPrevYearDate();
         var maxTimestamp = this._rangeModel.getMaximumValue();
         var minTimestamp = this._rangeModel.getMinimumValue();
-        var $nextYearBtn = this._$element.find('.' + CLASS_NAME_NEXT_YEAR_BTN);
-        var $prevYearBtn = this._$element.find('.' + CLASS_NAME_PREV_YEAR_BTN);
-        var nextMonthDate, prevMonthDate, $nextMonBtn, $prevMonBtn;
+        var nextYearBtn = this._element.querySelector('.' + CLASS_NAME_NEXT_YEAR_BTN);
+        var prevYearBtn = this._element.querySelector('.' + CLASS_NAME_PREV_YEAR_BTN);
+        var nextMonthDate, prevMonthDate, nextMonBtn, prevMonBtn;
 
         if (this.getCalendarType() === TYPE_DATE) {
             nextMonthDate = dateUtil.cloneWithStartOf(this._calendar.getNextDate(), TYPE_MONTH);
             prevMonthDate = dateUtil.cloneWithEndOf(this._calendar.getPrevDate(), TYPE_MONTH);
 
-            $nextMonBtn = this._$element.find('.' + CLASS_NAME_NEXT_MONTH_BTN);
-            $prevMonBtn = this._$element.find('.' + CLASS_NAME_PREV_MONTH_BTN);
+            nextMonBtn = this._element.querySelector('.' + CLASS_NAME_NEXT_MONTH_BTN);
+            prevMonBtn = this._element.querySelector('.' + CLASS_NAME_PREV_MONTH_BTN);
 
-            this._setDisplay($nextMonBtn, nextMonthDate.getTime() <= maxTimestamp);
-            this._setDisplay($prevMonBtn, prevMonthDate.getTime() >= minTimestamp);
+            this._setDisplay(nextMonBtn, nextMonthDate.getTime() <= maxTimestamp);
+            this._setDisplay(prevMonBtn, prevMonthDate.getTime() >= minTimestamp);
 
             prevYearDate.setDate(1);
             nextYearDate.setDate(1);
@@ -659,21 +704,23 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
             nextYearDate.setMonth(0, 1);
         }
 
-        this._setDisplay($nextYearBtn, nextYearDate.getTime() <= maxTimestamp);
-        this._setDisplay($prevYearBtn, prevYearDate.getTime() >= minTimestamp);
+        this._setDisplay(nextYearBtn, nextYearDate.getTime() <= maxTimestamp);
+        this._setDisplay(prevYearBtn, prevYearDate.getTime() >= minTimestamp);
     },
 
     /**
      * Set display show/hide by condition
-     * @param {jQuery} $el - jQuery Element
+     * @param {HTMLElement} el - An Element
      * @param {boolean} shouldShow - Condition
      * @private
      */
-    _setDisplay: function($el, shouldShow) {
-        if (shouldShow) {
-            $el.show();
-        } else {
-            $el.hide();
+    _setDisplay: function(el, shouldShow) {
+        if (el) {
+            if (shouldShow) {
+                domUtil.removeClass(el, CLASS_NAME_HIDDEN);
+            } else {
+                domUtil.addClass(el, CLASS_NAME_HIDDEN);
+            }
         }
     },
 
@@ -830,27 +877,29 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * Add opener
-     * @param {HTMLElement|jQuery|string} opener - element or selector
+     * @param {HTMLElement|string} opener - element or selector
      */
     addOpener: function(opener) {
+        opener = util.getElement(opener);
+
         if (!this._isOpener(opener)) {
-            this._openers.push($(opener)[0]);
-            setTouchClickEvent(opener, $.proxy(this.toggle, this), {
-                namespace: this._id
-            });
+            this._openers.push(opener);
+            this._setOpenerEvents(opener);
         }
     },
 
     /**
      * Remove opener
-     * @param {HTMLElement|jQuery|string} opener - element or selector
+     * @param {HTMLElement|string} opener - element or selector
      */
     removeOpener: function(opener) {
-        var $opener = $(opener);
-        var index = snippet.inArray($opener[0], this._openers);
+        var index;
+
+        opener = util.getElement(opener);
+        index = snippet.inArray(opener, this._openers);
 
         if (index > -1) {
-            this._offDatePickerEvents(opener);
+            this._removeOpenerEvents(opener);
             this._openers.splice(index, 1);
         }
     },
@@ -859,7 +908,9 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * Remove all openers
      */
     removeAllOpeners: function() {
-        this._offDatePickerEvents(this._openers);
+        snippet.forEach(this._openers, function(opener) {
+            this._removeOpenerEvents(opener);
+        }, this);
         this._openers = [];
     },
 
@@ -869,7 +920,6 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * datepicker.open();
      */
     open: function() {
-        var docEvTypes;
         if (this.isOpened() || !this._isEnabled) {
             return;
         }
@@ -878,11 +928,10 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
             date: this._date,
             type: this._type
         });
-        this._$element.show();
+        this._show();
 
         if (!this.showAlways) {
-            docEvTypes = 'touchstart.' + this._id + ' mousedown.' + this._id;
-            $(document).on(docEvTypes, $.proxy(this._onMousedownDocument, this));
+            this._setDocumentEvents();
         }
 
         /**
@@ -952,8 +1001,8 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
         if (!this.isOpened()) {
             return;
         }
-        this._offDatePickerEvents(document);
-        this._$element.hide();
+        this._removeDocumentEvents();
+        this._hide();
 
         /**
          * Close event - DatePicker
@@ -972,9 +1021,7 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * datepicker.toggle();
      */
     toggle: function() {
-        var isOpened = this.isOpened();
-
-        if (isOpened) {
+        if (this.isOpened()) {
             this.close();
         } else {
             this.open();
@@ -1075,7 +1122,7 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @example
      * datepicker.setDateFormat('yyyy-MM-dd');
      * datepicker.setDateFormat('MM-dd, yyyy');
-     * datepicker.setDateFormat('y/M/d');
+     * datepicker.setDateFormat('yy/M/d');
      * datepicker.setDateFormat('yy/MM/dd');
      */
     setDateFormat: function(format) {
@@ -1094,7 +1141,7 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * datepicker.isOpened(); // true
      */
     isOpened: function() {
-        return this._$element.css('display') !== 'none';
+        return !domUtil.hasClass(this._element, CLASS_NAME_HIDDEN);
     },
 
     /**
@@ -1125,7 +1172,7 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
 
     /**
      * Set input element
-     * @param {string|jQuery|HTMLElement} element - Input element
+     * @param {string|HTMLElement} element - Input element or selector
      * @param {object} [options] - Input option
      * @param {string} [options.format = prevInput.format] - Input text format
      * @param {boolean} [options.syncFromInput = false] - Set date from input value
@@ -1173,10 +1220,8 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
         this._datepickerInput.enable();
 
         snippet.forEach(this._openers, function(opener) {
-            $(opener).removeAttr('disabled');
-            setTouchClickEvent(opener, $.proxy(this.toggle, this), {
-                namespace: this._id
-            });
+            opener.removeAttribute('disabled');
+            this._setOpenerEvents(opener);
         }, this);
     },
 
@@ -1195,9 +1240,9 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
         this.close();
         this._datepickerInput.disable();
 
-        this._offDatePickerEvents(this._openers);
         snippet.forEach(this._openers, function(opener) {
-            $(opener).attr('disabled', true);
+            opener.setAttribute('disabled', true);
+            this._removeOpenerEvents(opener);
         }, this);
     },
 
@@ -1215,7 +1260,7 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @param {string} className - Class name
      */
     addCssClass: function(className) {
-        this._$element.addClass(className);
+        domUtil.addClass(this._element, className);
     },
 
     /**
@@ -1223,12 +1268,12 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @param {string} className - Class name
      */
     removeCssClass: function(className) {
-        this._$element.removeClass(className);
+        domUtil.removeClass(this._element, className);
     },
 
     /**
-     * Returns date elements(jQuery) on calendar
-     * @returns {jQuery}
+     * Returns date elements on calendar
+     * @returns {HTMLElement[]}
      */
     getDateElements: function() {
         return this._calendar.getDateElements();
@@ -1251,7 +1296,7 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
     /**
      * Change language
      * @param {string} language - Language
-     * @see {@link DatePicker.localeTexts}
+     * @see {@link DatePicker#localeTexts}
      */
     changeLanguage: function(language) {
         this._language = language;
@@ -1268,7 +1313,7 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * Destroy
      */
     destroy: function() {
-        this._offDatePickerEvents(document);
+        this._removeDocumentEvents();
         this._calendar.destroy();
         if (this._timepicker) {
             this._timepicker.destroy();
@@ -1276,14 +1321,15 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
         if (this._datepickerInput) {
             this._datepickerInput.destroy();
         }
-        this._$element.remove();
+        this._removeEvents();
+        domUtil.removeElement(this._element);
         this.removeAllOpeners();
 
         this._calendar
             = this._timepicker
             = this._datepickerInput
-            = this._$container
-            = this._$element
+            = this._container
+            = this._element
             = this._date
             = this._rangeModel
             = this._openers

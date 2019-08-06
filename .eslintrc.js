@@ -6,7 +6,6 @@ module.exports = {
     "env": {
         "browser": true,
         "jasmine": true,
-        "jquery": true,
         "commonjs": true
     },
     "globals": {

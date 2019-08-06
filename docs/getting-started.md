@@ -1,6 +1,34 @@
+## v4.0.0 Migration Guide
+In v4.0.0, jQuery is removed. It might cause other components to fail if they pass a jQuery object as a container.
+
+Previously, you can use a `jQuery` to create an instance.
+```javascript
+// v3
+var instance = new tui.DatePicker($('#datepicker-wrapper'), {
+   // options
+});
+```
+
+Now, you have to use `selector` or `HTMLElement` as a container.
+```javascript
+// v4
+var instance = new tui.DatePicker('#datepicker-wrapper', {
+   // options
+});
+
+// or
+
+var container = document.getElementById('datepicker-wrapper');
+var instance = new tui.DatePicker(container, {
+    // options
+});
+```
+
 ## Load dependency files
-* Script - [jQuery](https://github.com/jquery/jquery) 1.11.0 or later
-* Script - [tui-code-snippet](https://github.com/nhn/tui.code-snippet) 1.2.5 or later
+* Script - [tui-code-snippet](https://github.com/nhn/tui.code-snippet) 1.5.0 or later
+* Script - [tui-dom](https://github.com/nhn/tui.dom) 3.0.0 or later
+    > If your project should support IE8, please use `tui-dom.js`, not `tui-dom.min.js`.
+* Script - [tui-time-picker](https://github.com/nhn/tui.time-picker) 2.0.0 or later
 
 ```html
 <html>
@@ -10,8 +38,8 @@
     </head>
     <body>
         ....
-        <script type="text/javascript" src="jquery.min.js"></script>
         <script type="text/javascript" src="tui-code-snippet.js"></script>
+        <script type="text/javascript" src="tui-dom.min.js"></script>
         <script type="text/javascript" src="tui-date-picker.js"></script>
         ....
     </body>
@@ -37,7 +65,7 @@ var instance = new tui.DatePicker('#datepicker-wrapper', {
 ### Datepicker
 * language (default 'en')
   * There are two supporting types by default - 'en' and 'ko'.
-  * For custom texts - See the [Datepicker.localeTexts](https://nhn.github.io/tui.date-picker/latest/DatePicker.html#.localeTexts)
+  * For custom texts - See the [Datepicker.localeTexts](https://nhn.github.io/tui.date-picker/latest/DatePicker#localeTexts)
   * If set both calendar-language and datepicker-language, will apply datepicker-language first.
 * showAlways (default false)
   * If true, the datepicker will not close until you call "close()".
@@ -51,7 +79,7 @@ var instance = new tui.DatePicker('#datepicker-wrapper', {
   * See the [Date-Time text format](#date-time-text-format)
 * type (default 'date')
   * Type of picker - 'date', 'month', year'
-  * See [examples](https://nhn.github.io/tui.date-picker/latest/tutorial-example05-picking-month.html) in API page
+  * See [examples](https://nhn.github.io/tui.date-picker/latest/tutorial-example05-picking-month) in API page
 * selectableRanges
   * Set selectable dates of datepicker
   * 2d-Array: `[[startDate1, endDate1], [startDate2, endDate2], ...]`
@@ -66,7 +94,7 @@ var instance = new tui.DatePicker('#datepicker-wrapper', {
 ### Calendar
 * language (default 'en')
   * There are two supporting types by default - 'en' and 'ko'.
-  * For custom texts - See the [Calendar.localeTexts](https://nhn.github.io/tui.date-picker/latest/Calendar.html#.localeTexts)
+  * For custom texts - See the [Calendar.localeTexts](https://nhn.github.io/tui.date-picker/latest/Calendar#localeTexts)
 * showToday (default true)
   * If true, calendar shows today
 * showJumpButtons

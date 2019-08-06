@@ -5,7 +5,6 @@
 
 'use strict';
 
-var $ = require('jquery');
 var snippet = require('tui-code-snippet');
 
 var bodyTmpl = require('./../../../template/calendar/dateLayer.hbs');
@@ -61,21 +60,23 @@ var DateLayer = snippet.defineClass(LayerBase, /** @lends DateLayer.prototype */
     /**
      * Render date-layer
      * @override
-     * @param {Date} date - Date to render
+     * @param {Date} date Date to render
+     * @param {HTMLElement} container A container element for the rendered element
      */
-    render: function(date) {
+    render: function(date, container) {
         var context = this._makeContext(date);
 
-        this._$element = $(bodyTmpl(context));
+        container.innerHTML = bodyTmpl(context);
+        this._element = container.firstChild;
     },
 
     /**
-     * Retunrs date elements
+     * Return date elements
      * @override
-     * @returns {jQuery}
+     * @returns {HTMLElement[]}
      */
     getDateElements: function() {
-        return this._$element.find(DATE_SELECTOR);
+        return this._element.querySelectorAll(DATE_SELECTOR);
     }
 });
 

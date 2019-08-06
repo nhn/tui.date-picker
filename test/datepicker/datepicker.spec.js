@@ -4,13 +4,17 @@
  */
 'use strict';
 
-var $ = require('jquery');
 var snippet = require('tui-code-snippet');
+var domUtil = require('tui-dom');
+
 var TimePicker = require('tui-time-picker');
 
 var DatePicker = require('../../src/js/datepicker');
 var Calendar = require('../../src/js/calendar');
 var constants = require('../../src/js/constants');
+
+var CLASS_NAME_SELECTABLE = 'tui-is-selectable';
+var CLASS_NAME_HIDDEN = 'tui-hidden';
 
 describe('Date Picker', function() {
     describe('date=null on constructor', function() {
@@ -89,7 +93,7 @@ describe('Date Picker', function() {
         var datepicker;
 
         beforeEach(function() {
-            datepicker = new DatePicker($('<div></div>'), {
+            datepicker = new DatePicker(document.createElement('div'), {
                 date: new Date(2017, 10, 27),
                 selectableRanges: [
                     [new Date(2016, 10, 27), new Date(2018, 10, 27)]
@@ -390,7 +394,7 @@ describe('Date Picker', function() {
 
         beforeEach(function() {
             input = document.createElement('input');
-            datepicker = new DatePicker($('<div></div>'), {
+            datepicker = new DatePicker(document.createElement('div'), {
                 input: {
                     element: input,
                     format: 'yy년 MM월 dd일'
@@ -406,14 +410,17 @@ describe('Date Picker', function() {
             datepicker.destroy();
         });
 
-        it('_onClickDate', function() {
+        it('click-date event should change the date', function() {
             var td = document.createElement('td');
-            var ev = {
-                target: td
-            };
             var today = new Date();
-            $(td).data('timestamp', today.setHours(0, 0, 0, 0)); // Calendar-date does not have hours
-            datepicker._onClickDate(ev);
+
+            domUtil.addClass(td, CLASS_NAME_SELECTABLE);
+            domUtil.setData(td, 'timestamp', today.setHours(0, 0, 0, 0)); // Calendar-date does not have hours
+            document.body.appendChild(td);
+
+            datepicker._onClickHandler({
+                target: td
+            });
 
             expect(datepicker.getDate().getTime()).toEqual(today.setHours(0, 0, 0, 0));
         });
@@ -426,21 +433,13 @@ describe('Date Picker', function() {
             expect(input.value).toEqual('17년 02월 03일');
         });
 
-        it('click-opener event should call "toggle"', function() {
-            var opener = document.createElement('button');
-
-            spyOn(datepicker, 'toggle');
-            datepicker.addOpener(opener);
-            $(opener).click();
-
-            expect(datepicker.toggle).toHaveBeenCalled();
-        });
-
         it('mousedown-document event should call "close" when showAlways=false', function() {
             spyOn(datepicker, 'close');
             datepicker.showAlways = false;
             datepicker.open();
-            $(document).mousedown();
+            datepicker._onMousedownDocument({
+                target: document
+            });
 
             expect(datepicker.close).toHaveBeenCalled();
         });
@@ -449,32 +448,39 @@ describe('Date Picker', function() {
             spyOn(datepicker, 'close');
             datepicker.showAlways = true;
             datepicker.open();
-            $(document).mousedown();
+            datepicker._onMousedownDocument({
+                target: document
+            });
 
             expect(datepicker.close).not.toHaveBeenCalled();
         });
 
         it('click-date event should call "close" when autoClose=true', function() {
-            var $el = $('<td data-timestamp="' + new Date(2017, 0, 1).getTime() + '"></td>');
+            var el = document.createElement('td');
+            domUtil.addClass(el, CLASS_NAME_SELECTABLE);
+            domUtil.setData(el, 'timestamp', new Date(2017, 0, 1).getTime());
+            document.body.appendChild(el);
 
             spyOn(datepicker, 'close');
             datepicker.autoClose = true;
             datepicker.open();
-            datepicker._onClickDate({
-                target: $el[0]
+            datepicker._onClickHandler({
+                target: el
             });
 
             expect(datepicker.close).toHaveBeenCalled();
         });
 
         it('click-date event should not call "close" when autoClose=false', function() {
-            var $el = $('<td data-timestamp="' + new Date(2017, 0, 1).getTime() + '"></td>');
+            var el = document.createElement('td');
+            domUtil.addClass(el, CLASS_NAME_SELECTABLE);
+            domUtil.setData(el, 'timestamp', new Date(2017, 0, 1).getTime());
 
             spyOn(datepicker, 'close');
             datepicker.autoClose = false;
             datepicker.open();
-            datepicker._onClickDate({
-                target: $el[0]
+            datepicker._onClickHandler({
+                target: el
             });
 
             expect(datepicker.close).not.toHaveBeenCalled();
@@ -559,15 +565,15 @@ describe('Date Picker', function() {
     });
 
     describe('about useless-buttons', function() {
-        var datepicker, $container;
+        var datepicker, container;
 
-        function isHidden($el) { // eslint-disable-line
-            return $el.css('display') === 'none';
+        function isHidden(el) { // eslint-disable-line
+            return domUtil.hasClass(el, CLASS_NAME_HIDDEN);
         }
 
         beforeEach(function() {
-            $container = $('<div></div>');
-            datepicker = new DatePicker($container, {
+            container = document.createElement('div');
+            datepicker = new DatePicker(container, {
                 date: new Date(2017, 6, 1),
                 calendar: {
                     showJumpButtons: true
@@ -580,65 +586,65 @@ describe('Date Picker', function() {
 
         afterEach(function() {
             datepicker.destroy();
-            $container.remove();
-            $container = null;
+            domUtil.removeElement(container);
+            container = null;
         });
 
         it('should hide the prev-year-btn out of selectables', function() {
-            var $btn = $container.find('.' + constants.CLASS_NAME_PREV_YEAR_BTN);
-            expect(isHidden($btn)).toBe(false);
+            var btn = container.querySelector('.' + constants.CLASS_NAME_PREV_YEAR_BTN);
+            expect(isHidden(btn)).toBe(false);
 
             datepicker.setDate(new Date(2017, 3, 1));
 
-            $btn = $container.find('.' + constants.CLASS_NAME_PREV_YEAR_BTN);
-            expect(isHidden($btn)).toBe(true);
+            btn = container.querySelector('.' + constants.CLASS_NAME_PREV_YEAR_BTN);
+            expect(isHidden(btn)).toBe(true);
         });
 
         it('should hide the prev-month-btn out of selectables', function() {
-            var $btn = $container.find('.' + constants.CLASS_NAME_PREV_MONTH_BTN);
-            expect(isHidden($btn)).toBe(false);
+            var btn = container.querySelector('.' + constants.CLASS_NAME_PREV_MONTH_BTN);
+            expect(isHidden(btn)).toBe(false);
 
             datepicker.setDate(new Date(2016, 4, 3));
 
-            $btn = $container.find('.' + constants.CLASS_NAME_PREV_MONTH_BTN);
-            expect(isHidden($btn)).toBe(true);
+            btn = container.querySelector('.' + constants.CLASS_NAME_PREV_MONTH_BTN);
+            expect(isHidden(btn)).toBe(true);
         });
 
         it('should hide the next-year-btn out of selectables', function() {
-            var $btn;
+            var btn;
             datepicker.setDate(new Date(2017, 4, 3));
 
-            $btn = $container.find('.' + constants.CLASS_NAME_NEXT_YEAR_BTN);
-            expect(isHidden($btn)).toBe(false);
+            btn = container.querySelector('.' + constants.CLASS_NAME_NEXT_YEAR_BTN);
+            expect(isHidden(btn)).toBe(false);
 
             datepicker.setDate(new Date(2017, 5, 3));
 
-            $btn = $container.find('.' + constants.CLASS_NAME_NEXT_YEAR_BTN);
-            expect(isHidden($btn)).toBe(true);
+            btn = container.querySelector('.' + constants.CLASS_NAME_NEXT_YEAR_BTN);
+            expect(isHidden(btn)).toBe(true);
         });
 
         it('should hide the next-month-btn out of selectables', function() {
-            var $btn = $container.find('.' + constants.CLASS_NAME_NEXT_MONTH_BTN);
-            expect(isHidden($btn)).toBe(false);
+            var btn = container.querySelector('.' + constants.CLASS_NAME_NEXT_MONTH_BTN);
+            expect(isHidden(btn)).toBe(false);
 
             datepicker.setDate(new Date(2018, 4, 1));
 
-            $btn = $container.find('.' + constants.CLASS_NAME_NEXT_MONTH_BTN);
-            expect(isHidden($btn)).toBe(true);
+            btn = container.querySelector('.' + constants.CLASS_NAME_NEXT_MONTH_BTN);
+            expect(isHidden(btn)).toBe(true);
         });
 
         it('should not hide next/prev-year-btn when equals to selectables minimum/maximum', function() {
-            var $btn;
+            var btn;
             datepicker.setRanges([
                 [new Date(2015, 0, 1), new Date(2017, 0, 1)]
             ]);
             datepicker.setDate(new Date(2016, 0, 1));
 
-            $btn = $container.find('.' + constants.CLASS_NAME_NEXT_YEAR_BTN);
-            expect(isHidden($btn)).toBe(false);
+            btn = container.querySelector('.' + constants.CLASS_NAME_NEXT_YEAR_BTN);
+            expect(isHidden(btn)).toBe(false);
 
-            $btn = $container.find('.' + constants.CLASS_NAME_PREV_YEAR_BTN);
-            expect(isHidden($btn)).toBe(false);
+            btn = container.querySelector('.' + constants.CLASS_NAME_PREV_YEAR_BTN);
+            expect(isHidden(btn)).toBe(false);
         });
     });
 });

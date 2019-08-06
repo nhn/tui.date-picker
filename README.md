@@ -213,6 +213,7 @@ For more information on PR's step, please see links of Contributing section.
 * [Getting Started](https://github.com/nhn/tui.date-picker/blob/production/docs/getting-started.md)
 * [Tutorials](https://github.com/nhn/tui.date-picker/tree/production/docs)
 * [APIs](https://nhn.github.io/tui.date-picker/latest)
+* [v4.0.0 Migration Guide](https://github.com/nhn/tui.date-picker/blob/master/docs/getting-started.md#v400-migration-guide)
 
 You can also see the older versions of API page on the [releases page](https://github.com/nhn/tui.date-picker/releases).
 
@@ -226,8 +227,8 @@ You can also see the older versions of API page on the [releases page](https://g
 
 ## 🔩 Dependency
 * [tui-code-snippet](https://github.com/nhn/tui.code-snippet) >=1.5.0
-* [tui-time-picker](https://github.com/nhn/tui.time-picker) >=1.3.0
-* [jquery](https://jquery.com/) >=1.11.0
+* [tui-dom](https://github.com/nhn/tui.dom) >=3.0.0
+* [tui-time-picker](https://github.com/nhn/tui.time-picker) >=2.0.0
 
 
 ## 📜 License

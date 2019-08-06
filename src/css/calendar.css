@@ -102,14 +102,17 @@
     vertical-align: top
 }
 
-.tui-calendar .tui-calendar-btn-prev-month, .tui-calendar .tui-calendar-btn-next-month, .tui-calendar .tui-calendar-btn-prev-year, .tui-calendar .tui-calendar-btn-next-year {
+.tui-calendar-btn {
     overflow: hidden;
     position: absolute;
     top: 0;
     width: 32px;
     height: 50px;
     line-height: 400px;
-    z-index: 10
+    z-index: 10;
+    cursor: pointer;
+    border: none;
+    background-color: #fff;
 }
 
 .tui-calendar .tui-calendar-btn-prev-month {
@@ -539,4 +542,8 @@
 
 .tui-dropdown-area .tui-datepicker-dropdown+.tui-datepicker-dropdown {
     margin-left: 5px
+}
+
+.tui-hidden {
+    display: none;
 }

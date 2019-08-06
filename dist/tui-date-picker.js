@@ -1,18 +1,18 @@
 /*!
  * tui-date-picker.js
- * @version 3.3.4
+ * @version 4.0.0
  * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  * @license MIT
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("jquery"), require("tui-code-snippet"), require("tui-time-picker"));
+		module.exports = factory(require("tui-code-snippet"), require("tui-dom"), require("tui-time-picker"));
 	else if(typeof define === 'function' && define.amd)
-		define(["jquery", "tui-code-snippet", "tui-time-picker"], factory);
+		define(["tui-code-snippet", "tui-dom", "tui-time-picker"], factory);
 	else if(typeof exports === 'object')
-		exports["DatePicker"] = factory(require("jquery"), require("tui-code-snippet"), require("tui-time-picker"));
+		exports["DatePicker"] = factory(require("tui-code-snippet"), require("tui-dom"), require("tui-time-picker"));
 	else
-		root["tui"] = root["tui"] || {}, root["tui"]["DatePicker"] = factory(root["$"], (root["tui"] && root["tui"]["util"]), (root["tui"] && root["tui"]["TimePicker"]));
+		root["tui"] = root["tui"] || {}, root["tui"]["DatePicker"] = factory((root["tui"] && root["tui"]["util"]), (root["tui"] && root["tui"]["dom"]), (root["tui"] && root["tui"]["TimePicker"]));
 })(this, function(__WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_4__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -68,15 +68,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var DatePicker = __webpack_require__(1);
-	var DateRangePicker = __webpack_require__(49);
+	var DateRangePicker = __webpack_require__(50);
 	var Calendar = __webpack_require__(5);
 
-	__webpack_require__(50);
+	__webpack_require__(51);
 
 	/**
 	 * Create a calendar component
 	 * @static
-	 * @param {HTMLElement|jQuery|string} wrapperElement - Wrapper element or selector
+	 * @param {HTMLElement|string} wrapperElement - Wrapper element or selector
 	 *     @param {Object} [options] - Options for initialize
 	 *     @param {string} [options.language = 'en'] - Calendar language - {@link Calendar.localeTexts}
 	 *     @param {boolean} [options.showToday] - If true, shows today
@@ -104,11 +104,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @static
 	 * @param {object} options - Date-Range picker options
 	 *     @param {object} options.startpicker - Startpicker options
-	 *     @param {Element|jQuery|string} options.startpicker.input - Startpicker input element
-	 *     @param {Element|jQuery|string} options.startpicker.container - Startpicker container element
+	 *     @param {HTMLElement|string} options.startpicker.input - Startpicker input element or selector
+	 *     @param {HTMLElement|string} options.startpicker.container - Startpicker container element or selector
 	 *     @param {object} options.endpicker - Endpicker options
-	 *     @param {Element|jQuery|string} options.endpicker.input - Endpicker input element
-	 *     @param {Element|jQuery|string} options.endpicker.container - Endpicker container element
+	 *     @param {HTMLElement|string} options.endpicker.input - Endpicker input element or selector
+	 *     @param {HTMLElement|string} options.endpicker.container - Endpicker container element or selector
 	 *     @param {string} options.format - Input date-string format
 	 *     @param {string} [options.type = 'date'] - DatePicker type - ('date' | 'month' | 'year')
 	 *     @param {string} [options.language='en'] - Language key
@@ -156,18 +156,19 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var $ = __webpack_require__(2);
-	var snippet = __webpack_require__(3);
+	var snippet = __webpack_require__(2);
+	var domUtil = __webpack_require__(3);
 	var TimePicker = __webpack_require__(4);
 
 	var Calendar = __webpack_require__(5);
-	var RangeModel = __webpack_require__(43);
+	var RangeModel = __webpack_require__(45);
 	var constants = __webpack_require__(31);
 	var localeTexts = __webpack_require__(27);
 	var dateUtil = __webpack_require__(30);
-	var setTouchClickEvent = __webpack_require__(45);
-	var tmpl = __webpack_require__(46);
-	var DatePickerInput = __webpack_require__(48);
+	var util = __webpack_require__(32);
+	var mouseTouchEvent = __webpack_require__(33);
+	var tmpl = __webpack_require__(47);
+	var DatePickerInput = __webpack_require__(49);
 
 	var DEFAULT_LANGUAGE_TYPE = constants.DEFAULT_LANGUAGE_TYPE;
 	var TYPE_DATE = constants.TYPE_DATE;
@@ -184,10 +185,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	var CLASS_NAME_CHECKED = 'tui-is-checked';
 	var CLASS_NAME_SELECTOR_BUTTON = 'tui-datepicker-selector-button';
 	var CLASS_NAME_TODAY = 'tui-calendar-today';
+	var CLASS_NAME_HIDDEN = 'tui-hidden';
 
 	var SELECTOR_BODY = '.tui-datepicker-body';
-	var SELECTOR_FOOTER = '.tui-datepicker-footer';
 	var SELECTOR_DATE_ICO = '.tui-ico-date';
+	var SELECTOR_CALENDAR_TITLE = '.tui-calendar-title';
+	var SELECTOR_CALENDAR_CONTAINER = '.tui-calendar-container';
+	var SELECTOR_TIMEPICKER_CONTAINER = '.tui-timepicker-container';
 
 	/**
 	 * Merge default option
@@ -236,7 +240,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @class
-	 * @param {HTMLElement|jQuery|string} container - Container element of datepicker
+	 * @param {HTMLElement|string} container - Container element or selector of datepicker
 	 * @param {Object} [options] - Options
 	 *      @param {Date|number} [options.date] - Initial date. Default - null for no initial date
 	 *      @param {string} [options.type = 'date'] - DatePicker type - ('date' | 'month' | 'year')
@@ -245,7 +249,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *                              [TimePicker]{@link https://nhn.github.io/tui.time-picker/latest} options
 	 *      @param {object} [options.calendar] - {@link Calendar} options
 	 *      @param {object} [options.input] - Input option
-	 *      @param {HTMLElement|string|jQuery} [options.input.element] - Input element
+	 *      @param {HTMLElement|string} [options.input.element] - Input element or selector
 	 *      @param {string} [options.input.format = 'yyyy-mm-dd'] - Date string format
 	 *      @param {Array.<Array.<Date|number>>} [options.selectableRanges = 1900/1/1 ~ 2999/12/31]
 	 *                                                                      - Selectable date ranges.
@@ -338,26 +342,30 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        /**
 	         * DatePicker container
-	         * @type {jQuery}
+	         * @type {HTMLElement}
 	         * @private
 	         */
-	        this._$container = $(container);
+	        this._container = util.getElement(container);
+	        this._container.innerHTML = tmpl(options);
 
 	        /**
 	         * DatePicker element
-	         * @type {jQuery}
+	         * @type {HTMLElement}
 	         * @private
 	         */
-	        this._$element = $(tmpl(options)).appendTo(this._$container);
+	        this._element = this._container.firstChild;
 
 	        /**
 	         * Calendar instance
 	         * @type {Calendar}
 	         * @private
 	         */
-	        this._calendar = new Calendar(this._$element.find(SELECTOR_BODY), snippet.extend(options.calendar, {
-	            usageStatistics: options.usageStatistics
-	        }));
+	        this._calendar = new Calendar(
+	            this._element.querySelector(SELECTOR_CALENDAR_CONTAINER),
+	            snippet.extend(options.calendar, {
+	                usageStatistics: options.usageStatistics
+	            })
+	        );
 
 	        /**
 	         * TimePicker instance
@@ -437,7 +445,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     */
 	    _initializeDatePicker: function(option) {
 	        this.setRanges(option.selectableRanges);
-	        this._setEvents(option);
+	        this._setEvents();
 	        this._initTimePicker(option.timepicker, option.usageStatistics);
 	        this.setInput(option.input.element);
 	        this.setDateFormat(option.input.format);
@@ -445,47 +453,65 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        snippet.forEach(option.openers, this.addOpener, this);
 	        if (!this.showAlways) {
-	            this._$element.hide();
+	            this._hide();
 	        }
 
 	        if (this.getType() === TYPE_DATE) {
-	            this._$element.find(SELECTOR_BODY).addClass('tui-datepicker-type-date');
+	            domUtil.addClass(this._element.querySelector(SELECTOR_BODY), 'tui-datepicker-type-date');
 	        }
 	    },
 
 	    /**
-	     * Set events
+	     * Set events on the date picker's element
 	     * @param {object} option - Constructor option
 	     * @private
 	     */
-	    _setEvents: function(option) {
-	        setTouchClickEvent(this._$element, $.proxy(this._onClickDate, this), {
-	            selector: '.' + CLASS_NAME_SELECTABLE,
-	            namespace: this._id
-	        });
-
-	        setTouchClickEvent(this._$element, $.proxy(this._onClickCalendarTitle, this), {
-	            selector: '.tui-calendar-title',
-	            namespace: this._id
-	        });
-
-	        if (option.timepicker && option.timepicker.layoutType === 'tab') {
-	            setTouchClickEvent(this._$element, $.proxy(this._onClickSelectorButton, this), {
-	                selector: '.' + CLASS_NAME_SELECTOR_BUTTON,
-	                namespace: this._id
-	            });
-	        }
-
+	    _setEvents: function() {
+	        mouseTouchEvent.on(this._element, 'click', this._onClickHandler, this);
 	        this._calendar.on('draw', this._onDrawCalendar, this);
 	    },
 
 	    /**
-	     * Off datepicker's events
-	     * @param {string|jQuery|Element} el - Element
+	     * Remove events on the date picker's element
 	     * @private
 	     */
-	    _offDatePickerEvents: function(el) {
-	        $(el).off('.' + this._id);
+	    _removeEvents: function() {
+	        mouseTouchEvent.off(this._element, 'click', this._onClickHandler, this);
+	        this._calendar.off();
+	    },
+
+	    /**
+	     * Set events on the document
+	     * @private
+	     */
+	    _setDocumentEvents: function() {
+	        mouseTouchEvent.on(document, 'mousedown', this._onMousedownDocument, this);
+	    },
+
+	    /**
+	     * Remove events on the document
+	     * @private
+	     */
+	    _removeDocumentEvents: function() {
+	        mouseTouchEvent.off(document, 'mousedown', this._onMousedownDocument);
+	    },
+
+	    /**
+	     * Set events on the opener
+	     * @param {HTMLElement} opener An opener to bind the events
+	     * @private
+	     */
+	    _setOpenerEvents: function(opener) {
+	        mouseTouchEvent.on(opener, 'click', this.toggle, this);
+	    },
+
+	    /**
+	     * Remove events on the opener
+	     * @param {HTMLElement} opener An opener to unbind the events
+	     * @private
+	     */
+	    _removeOpenerEvents: function(opener) {
+	        mouseTouchEvent.off(opener, 'click', this.toggle);
 	    },
 
 	    /**
@@ -510,11 +536,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	            };
 	        }
 
+	        this._timepicker = new TimePicker(this._element.querySelector(SELECTOR_TIMEPICKER_CONTAINER), opTimePicker);
+
 	        if (layoutType.toLowerCase() === 'tab') {
-	            this._timepicker = new TimePicker(this._$element.find(SELECTOR_BODY), opTimePicker);
 	            this._timepicker.hide();
-	        } else {
-	            this._timepicker = new TimePicker(this._$element.find(SELECTOR_FOOTER), opTimePicker);
 	        }
 
 	        this._timepicker.on('change', function(ev) {
@@ -527,22 +552,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    /**
-	     * Calendar-header click handler
+	     * Change picker's type by a selector button.
+	     * @param {HTMLElement} target A target element
 	     * @private
 	     */
-	    _onClickCalendarTitle: function() {
-	        this.drawUpperCalendar(this._date);
-	    },
-
-	    /**
-	     * Selector button click handler
-	     * @param {jQuery.Event} ev - Event object
-	     * @private
-	     */
-	    _onClickSelectorButton: function(ev) {
+	    _changePicker: function(target) {
 	        var btnSelector = '.' + CLASS_NAME_SELECTOR_BUTTON;
-	        var $selectedBtn = $(ev.target).closest(btnSelector);
-	        var isDate = !!$selectedBtn.find(SELECTOR_DATE_ICO).length;
+	        var selectedBtn = domUtil.closest(target, btnSelector);
+	        var isDate = selectedBtn.querySelector(SELECTOR_DATE_ICO);
 
 	        if (isDate) {
 	            this._calendar.show();
@@ -551,73 +568,73 @@ return /******/ (function(modules) { // webpackBootstrap
 	            this._calendar.hide();
 	            this._timepicker.show();
 	        }
-	        this._$element.find(btnSelector).removeClass(CLASS_NAME_CHECKED);
-	        $selectedBtn.addClass(CLASS_NAME_CHECKED);
+	        domUtil.removeClass(this._element.querySelector('.' + CLASS_NAME_CHECKED), CLASS_NAME_CHECKED);
+	        domUtil.addClass(selectedBtn, CLASS_NAME_CHECKED);
 	    },
 
 	    /**
 	     * Returns whether the element is opener
-	     * @param {string|jQuery|HTMLElement} element - Element
+	     * @param {string|HTMLElement} element - Element or selector
 	     * @returns {boolean}
 	     * @private
 	     */
 	    _isOpener: function(element) {
-	        var el = $(element)[0];
+	        var el = util.getElement(element);
 
 	        return snippet.inArray(el, this._openers) > -1;
 	    },
 
 	    /**
 	     * add/remove today-class-name to date element
-	     * @param {jQuery} $el - date element
+	     * @param {HTMLElement} el - date element
 	     * @private
 	     */
-	    _setTodayClassName: function($el) {
+	    _setTodayClassName: function(el) {
 	        var timestamp, isToday;
 
 	        if (this.getCalendarType() !== TYPE_DATE) {
 	            return;
 	        }
 
-	        timestamp = $el.data('timestamp');
+	        timestamp = Number(domUtil.getData(el, 'timestamp'));
 	        isToday = timestamp === new Date().setHours(0, 0, 0, 0);
 
 	        if (isToday) {
-	            $el.addClass(CLASS_NAME_TODAY);
+	            domUtil.addClass(el, CLASS_NAME_TODAY);
 	        } else {
-	            $el.removeClass(CLASS_NAME_TODAY);
+	            domUtil.removeClass(el, CLASS_NAME_TODAY);
 	        }
 	    },
 
 	    /**
 	     * add/remove selectable-class-name to date element
-	     * @param {jQuery} $el - date element
+	     * @param {HTMLElement} el - date element
 	     * @private
 	     */
-	    _setSelectableClassName: function($el) {
-	        var elDate = new Date($el.data('timestamp'));
+	    _setSelectableClassName: function(el) {
+	        var elDate = new Date(Number(domUtil.getData(el, 'timestamp')));
 
 	        if (this._isSelectableOnCalendar(elDate)) {
-	            $el.addClass(CLASS_NAME_SELECTABLE)
-	                .removeClass(CLASS_NAME_BLOCKED);
+	            domUtil.addClass(el, CLASS_NAME_SELECTABLE);
+	            domUtil.removeClass(el, CLASS_NAME_BLOCKED);
 	        } else {
-	            $el.addClass(CLASS_NAME_BLOCKED)
-	                .removeClass(CLASS_NAME_SELECTABLE);
+	            domUtil.removeClass(el, CLASS_NAME_SELECTABLE);
+	            domUtil.addClass(el, CLASS_NAME_BLOCKED);
 	        }
 	    },
 
 	    /**
 	     * add/remove selected-class-name to date element
-	     * @param {jQuery} $el - date element
+	     * @param {HTMLElement} el - date element
 	     * @private
 	     */
-	    _setSelectedClassName: function($el) {
-	        var elDate = new Date($el.data('timestamp'));
+	    _setSelectedClassName: function(el) {
+	        var elDate = new Date(Number(domUtil.getData(el, 'timestamp')));
 
 	        if (this._isSelectedOnCalendar(elDate)) {
-	            $el.addClass(CLASS_NAME_SELECTED);
+	            domUtil.addClass(el, CLASS_NAME_SELECTED);
 	        } else {
-	            $el.removeClass(CLASS_NAME_SELECTED);
+	            domUtil.removeClass(el, CLASS_NAME_SELECTED);
 	        }
 	    },
 
@@ -646,6 +663,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var calendarType = this.getCalendarType();
 
 	        return curDate && dateUtil.isSame(curDate, date, calendarType);
+	    },
+
+	    /**
+	     * Show the date picker element
+	     */
+	    _show: function() {
+	        domUtil.removeClass(this._element, CLASS_NAME_HIDDEN);
+	    },
+
+	    /**
+	     * Hide the date picker element
+	     */
+	    _hide: function() {
+	        domUtil.addClass(this._element, CLASS_NAME_HIDDEN);
 	    },
 
 	    /**
@@ -704,11 +735,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @private
 	     */
 	    _onMousedownDocument: function(ev) {
-	        var evTarget = ev.target;
-	        var isContains = $.contains(this._$element[0], evTarget);
-	        var isInput = this._datepickerInput.is(evTarget);
-	        var isInOpener = !!$(evTarget).closest(this._openers).length;
-	        var shouldClose = !(this.showAlways || isInput || isContains || isInOpener);
+	        var target = util.getTarget(ev);
+	        var selector = util.getSelector(target);
+	        var isContain = selector ? this._element.querySelector(selector) : false;
+	        var isInput = this._datepickerInput.is(target);
+	        var isInOpener = (snippet.inArray(target, this._openers) > -1);
+	        var shouldClose = !(this.showAlways || isInput || isContain || isInOpener);
 
 	        if (shouldClose) {
 	            this.close();
@@ -716,13 +748,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    /**
-	     * Event handler for click of calendar<br>
-	     * - Update date form event-target
-	     * @param {Event} ev - event object
+	     * Event handler for click of calendar
+	     * @param {Event} ev An event object
+	     */
+	    _onClickHandler: function(ev) {
+	        var target = util.getTarget(ev);
+
+	        if (domUtil.closest(target, '.' + CLASS_NAME_SELECTABLE)) {
+	            this._updateDate(target);
+	        } else if (domUtil.closest(target, SELECTOR_CALENDAR_TITLE)) {
+	            this.drawUpperCalendar(this._date);
+	        } else if (domUtil.closest(target, '.' + CLASS_NAME_SELECTOR_BUTTON)) {
+	            this._changePicker(target);
+	        }
+	    },
+
+	    /**
+	     * Update date from event-target
+	     * @param {HTMLElement} target An event target element
 	     * @private
 	     */
-	    _onClickDate: function(ev) {
-	        var timestamp = $(ev.target).data('timestamp');
+	    _updateDate: function(target) {
+	        var timestamp = Number(domUtil.getData(target, 'timestamp'));
 	        var newDate = new Date(timestamp);
 	        var timepicker = this._timepicker;
 	        var prevDate = this._date;
@@ -748,19 +795,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	    /**
 	     * Event handler for 'draw'-custom event of calendar
 	     * @param {Object} eventData - custom event data
-	     * @see {Calendar.draw}
+	     * @see {@link Calendar#draw}
 	     * @private
 	     */
 	    _onDrawCalendar: function(eventData) {
-	        var $dateElements = eventData.$dateElements;
-	        var self = this;
+	        var dateElements = snippet.toArray(eventData.dateElements);
 
-	        $dateElements.each(function(idx, el) {
-	            var $el = $(el);
-	            self._setTodayClassName($el);
-	            self._setSelectableClassName($el);
-	            self._setSelectedClassName($el);
-	        });
+	        snippet.forEach(dateElements, function(el) {
+	            this._setTodayClassName(el);
+	            this._setSelectableClassName(el);
+	            this._setSelectedClassName(el);
+	        }, this);
 	        this._setDisplayHeadButtons();
 
 	        /**
@@ -769,7 +814,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	         * @type {Object} evt - See {@link Calendar#event:draw}
 	         * @property {Date} date - Calendar date
 	         * @property {string} type - Calendar type
-	         * @property {jQuery} $dateElements - Calendar date elements
+	         * @property {HTMLElement} dateElements - Calendar date elements
 	         * @example
 	         *
 	         * datepicker.on('draw', function(evt) {
@@ -781,7 +826,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    /**
 	     * Hide useless buttons (next, next-year, prev, prev-year)
-	     * @see Don't save buttons reference. The buttons are rerendered every "calendar.darw".
+	     * @see Don't save buttons reference. The buttons are rerendered every "calendar.draw".
 	     * @private
 	     */
 	    _setDisplayHeadButtons: function() {
@@ -789,19 +834,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var prevYearDate = this._calendar.getPrevYearDate();
 	        var maxTimestamp = this._rangeModel.getMaximumValue();
 	        var minTimestamp = this._rangeModel.getMinimumValue();
-	        var $nextYearBtn = this._$element.find('.' + CLASS_NAME_NEXT_YEAR_BTN);
-	        var $prevYearBtn = this._$element.find('.' + CLASS_NAME_PREV_YEAR_BTN);
-	        var nextMonthDate, prevMonthDate, $nextMonBtn, $prevMonBtn;
+	        var nextYearBtn = this._element.querySelector('.' + CLASS_NAME_NEXT_YEAR_BTN);
+	        var prevYearBtn = this._element.querySelector('.' + CLASS_NAME_PREV_YEAR_BTN);
+	        var nextMonthDate, prevMonthDate, nextMonBtn, prevMonBtn;
 
 	        if (this.getCalendarType() === TYPE_DATE) {
 	            nextMonthDate = dateUtil.cloneWithStartOf(this._calendar.getNextDate(), TYPE_MONTH);
 	            prevMonthDate = dateUtil.cloneWithEndOf(this._calendar.getPrevDate(), TYPE_MONTH);
 
-	            $nextMonBtn = this._$element.find('.' + CLASS_NAME_NEXT_MONTH_BTN);
-	            $prevMonBtn = this._$element.find('.' + CLASS_NAME_PREV_MONTH_BTN);
+	            nextMonBtn = this._element.querySelector('.' + CLASS_NAME_NEXT_MONTH_BTN);
+	            prevMonBtn = this._element.querySelector('.' + CLASS_NAME_PREV_MONTH_BTN);
 
-	            this._setDisplay($nextMonBtn, nextMonthDate.getTime() <= maxTimestamp);
-	            this._setDisplay($prevMonBtn, prevMonthDate.getTime() >= minTimestamp);
+	            this._setDisplay(nextMonBtn, nextMonthDate.getTime() <= maxTimestamp);
+	            this._setDisplay(prevMonBtn, prevMonthDate.getTime() >= minTimestamp);
 
 	            prevYearDate.setDate(1);
 	            nextYearDate.setDate(1);
@@ -810,21 +855,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	            nextYearDate.setMonth(0, 1);
 	        }
 
-	        this._setDisplay($nextYearBtn, nextYearDate.getTime() <= maxTimestamp);
-	        this._setDisplay($prevYearBtn, prevYearDate.getTime() >= minTimestamp);
+	        this._setDisplay(nextYearBtn, nextYearDate.getTime() <= maxTimestamp);
+	        this._setDisplay(prevYearBtn, prevYearDate.getTime() >= minTimestamp);
 	    },
 
 	    /**
 	     * Set display show/hide by condition
-	     * @param {jQuery} $el - jQuery Element
+	     * @param {HTMLElement} el - An Element
 	     * @param {boolean} shouldShow - Condition
 	     * @private
 	     */
-	    _setDisplay: function($el, shouldShow) {
-	        if (shouldShow) {
-	            $el.show();
-	        } else {
-	            $el.hide();
+	    _setDisplay: function(el, shouldShow) {
+	        if (el) {
+	            if (shouldShow) {
+	                domUtil.removeClass(el, CLASS_NAME_HIDDEN);
+	            } else {
+	                domUtil.addClass(el, CLASS_NAME_HIDDEN);
+	            }
 	        }
 	    },
 
@@ -981,27 +1028,29 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    /**
 	     * Add opener
-	     * @param {HTMLElement|jQuery|string} opener - element or selector
+	     * @param {HTMLElement|string} opener - element or selector
 	     */
 	    addOpener: function(opener) {
+	        opener = util.getElement(opener);
+
 	        if (!this._isOpener(opener)) {
-	            this._openers.push($(opener)[0]);
-	            setTouchClickEvent(opener, $.proxy(this.toggle, this), {
-	                namespace: this._id
-	            });
+	            this._openers.push(opener);
+	            this._setOpenerEvents(opener);
 	        }
 	    },
 
 	    /**
 	     * Remove opener
-	     * @param {HTMLElement|jQuery|string} opener - element or selector
+	     * @param {HTMLElement|string} opener - element or selector
 	     */
 	    removeOpener: function(opener) {
-	        var $opener = $(opener);
-	        var index = snippet.inArray($opener[0], this._openers);
+	        var index;
+
+	        opener = util.getElement(opener);
+	        index = snippet.inArray(opener, this._openers);
 
 	        if (index > -1) {
-	            this._offDatePickerEvents(opener);
+	            this._removeOpenerEvents(opener);
 	            this._openers.splice(index, 1);
 	        }
 	    },
@@ -1010,7 +1059,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * Remove all openers
 	     */
 	    removeAllOpeners: function() {
-	        this._offDatePickerEvents(this._openers);
+	        snippet.forEach(this._openers, function(opener) {
+	            this._removeOpenerEvents(opener);
+	        }, this);
 	        this._openers = [];
 	    },
 
@@ -1020,7 +1071,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * datepicker.open();
 	     */
 	    open: function() {
-	        var docEvTypes;
 	        if (this.isOpened() || !this._isEnabled) {
 	            return;
 	        }
@@ -1029,11 +1079,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	            date: this._date,
 	            type: this._type
 	        });
-	        this._$element.show();
+	        this._show();
 
 	        if (!this.showAlways) {
-	            docEvTypes = 'touchstart.' + this._id + ' mousedown.' + this._id;
-	            $(document).on(docEvTypes, $.proxy(this._onMousedownDocument, this));
+	            this._setDocumentEvents();
 	        }
 
 	        /**
@@ -1103,8 +1152,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (!this.isOpened()) {
 	            return;
 	        }
-	        this._offDatePickerEvents(document);
-	        this._$element.hide();
+	        this._removeDocumentEvents();
+	        this._hide();
 
 	        /**
 	         * Close event - DatePicker
@@ -1123,9 +1172,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * datepicker.toggle();
 	     */
 	    toggle: function() {
-	        var isOpened = this.isOpened();
-
-	        if (isOpened) {
+	        if (this.isOpened()) {
 	            this.close();
 	        } else {
 	            this.open();
@@ -1226,7 +1273,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @example
 	     * datepicker.setDateFormat('yyyy-MM-dd');
 	     * datepicker.setDateFormat('MM-dd, yyyy');
-	     * datepicker.setDateFormat('y/M/d');
+	     * datepicker.setDateFormat('yy/M/d');
 	     * datepicker.setDateFormat('yy/MM/dd');
 	     */
 	    setDateFormat: function(format) {
@@ -1245,7 +1292,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * datepicker.isOpened(); // true
 	     */
 	    isOpened: function() {
-	        return this._$element.css('display') !== 'none';
+	        return !domUtil.hasClass(this._element, CLASS_NAME_HIDDEN);
 	    },
 
 	    /**
@@ -1276,7 +1323,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    /**
 	     * Set input element
-	     * @param {string|jQuery|HTMLElement} element - Input element
+	     * @param {string|HTMLElement} element - Input element or selector
 	     * @param {object} [options] - Input option
 	     * @param {string} [options.format = prevInput.format] - Input text format
 	     * @param {boolean} [options.syncFromInput = false] - Set date from input value
@@ -1324,10 +1371,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this._datepickerInput.enable();
 
 	        snippet.forEach(this._openers, function(opener) {
-	            $(opener).removeAttr('disabled');
-	            setTouchClickEvent(opener, $.proxy(this.toggle, this), {
-	                namespace: this._id
-	            });
+	            opener.removeAttribute('disabled');
+	            this._setOpenerEvents(opener);
 	        }, this);
 	    },
 
@@ -1346,9 +1391,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.close();
 	        this._datepickerInput.disable();
 
-	        this._offDatePickerEvents(this._openers);
 	        snippet.forEach(this._openers, function(opener) {
-	            $(opener).attr('disabled', true);
+	            opener.setAttribute('disabled', true);
+	            this._removeOpenerEvents(opener);
 	        }, this);
 	    },
 
@@ -1366,7 +1411,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @param {string} className - Class name
 	     */
 	    addCssClass: function(className) {
-	        this._$element.addClass(className);
+	        domUtil.addClass(this._element, className);
 	    },
 
 	    /**
@@ -1374,12 +1419,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @param {string} className - Class name
 	     */
 	    removeCssClass: function(className) {
-	        this._$element.removeClass(className);
+	        domUtil.removeClass(this._element, className);
 	    },
 
 	    /**
-	     * Returns date elements(jQuery) on calendar
-	     * @returns {jQuery}
+	     * Returns date elements on calendar
+	     * @returns {HTMLElement[]}
 	     */
 	    getDateElements: function() {
 	        return this._calendar.getDateElements();
@@ -1402,7 +1447,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    /**
 	     * Change language
 	     * @param {string} language - Language
-	     * @see {@link DatePicker.localeTexts}
+	     * @see {@link DatePicker#localeTexts}
 	     */
 	    changeLanguage: function(language) {
 	        this._language = language;
@@ -1419,7 +1464,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * Destroy
 	     */
 	    destroy: function() {
-	        this._offDatePickerEvents(document);
+	        this._removeDocumentEvents();
 	        this._calendar.destroy();
 	        if (this._timepicker) {
 	            this._timepicker.destroy();
@@ -1427,14 +1472,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (this._datepickerInput) {
 	            this._datepickerInput.destroy();
 	        }
-	        this._$element.remove();
+	        this._removeEvents();
+	        domUtil.removeElement(this._element);
 	        this.removeAllOpeners();
 
 	        this._calendar
 	            = this._timepicker
 	            = this._datepickerInput
-	            = this._$container
-	            = this._$element
+	            = this._container
+	            = this._element
 	            = this._date
 	            = this._rangeModel
 	            = this._openers
@@ -1477,15 +1523,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var $ = __webpack_require__(2);
-	var snippet = __webpack_require__(3);
+	var snippet = __webpack_require__(2);
+	var domUtil = __webpack_require__(3);
 
 	var tmpl = __webpack_require__(6);
 	var Header = __webpack_require__(26);
-	var Body = __webpack_require__(32);
+	var Body = __webpack_require__(34);
 	var localeTexts = __webpack_require__(27);
 	var constants = __webpack_require__(31);
 	var dateUtil = __webpack_require__(30);
+	var util = __webpack_require__(32);
 
 	var DEFAULT_LANGUAGE_TYPE = constants.DEFAULT_LANGUAGE_TYPE;
 
@@ -1500,15 +1547,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var CLASS_NAME_CALENDAR_MONTH = 'tui-calendar-month';
 	var CLASS_NAME_CALENDAR_YEAR = 'tui-calendar-year';
+	var CLASS_NAME_HIDDEN = 'tui-hidden';
 
 	var HEADER_SELECTOR = '.tui-calendar-header';
 	var BODY_SELECTOR = '.tui-calendar-body';
 
-	var util = snippet;
 	/**
 	 * Calendar class
 	 * @constructor
-	 * @param {HTMLElement|jQuery|string} wrapperElement - Wrapper element or selector
+	 * @param {HTMLElement|string} wrapperElement - Wrapper element or selector
 	 * @param {Object} [options] - Options for initialize
 	 *     @param {string} [options.language = 'en'] - Calendar language - {@link Calendar.localeTexts}
 	 *     @param {boolean} [options.showToday] - If true, shows today
@@ -1527,16 +1574,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * });
 	 *
 	 * calendar.on('draw', function(event) {
+	 *     var i, len;
 	 *     console.log(event.date);
 	 *     console.log(event.type);
-	 *     event.dateElements.each(function() {
-	 *         var $el = $(this);
-	 *         var date = new Date($el.data('timestamp'));
+	 *     for (i = 0, len = event.dateElements.length; i < len; i += 1) {
+	 *         var el = event.dateElements[i];
+	 *         var date = new Date(domUtil.getData(el, 'timestamp'));
 	 *         console.log(date);
-	 *     });
+	 *     }
 	 * });
 	 */
-	var Calendar = util.defineClass(/** @lends Calendar.prototype */ {
+	var Calendar = snippet.defineClass(/** @lends Calendar.prototype */ {
 	    static: {
 	        /**
 	         * Locale text data
@@ -1582,17 +1630,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        /**
 	         * Container element
-	         * @type {jQuery}
+	         * @type {HTMLElement}
 	         * @private
 	         */
-	        this._$container = $(container);
+	        this._container = util.getElement(container);
+	        this._container.innerHTML = tmpl(options);
 
 	        /**
 	         * Wrapper element
-	         * @type {jQuery}
+	         * @type {HTMLElement}
 	         * @private
 	         */
-	        this._$element = $(tmpl(options)).appendTo(this._$container);
+	        this._element = this._container.firstChild;
 
 	        /**
 	         * Date
@@ -1640,18 +1689,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @private
 	     */
 	    _initHeader: function(options) {
-	        var $headerContainer = this._$element.find(HEADER_SELECTOR);
+	        var headerContainer = this._element.querySelector(HEADER_SELECTOR);
 
-	        this._header = new Header($headerContainer, options);
+	        this._header = new Header(headerContainer, options);
 	        this._header.on('click', function(ev) {
-	            var $target = $(ev.target);
-	            if ($target.hasClass(CLASS_NAME_PREV_MONTH_BTN)) {
+	            var target = util.getTarget(ev);
+	            if (domUtil.hasClass(target, CLASS_NAME_PREV_MONTH_BTN)) {
 	                this.drawPrev();
-	            } else if ($target.hasClass(CLASS_NAME_PREV_YEAR_BTN)) {
+	            } else if (domUtil.hasClass(target, CLASS_NAME_PREV_YEAR_BTN)) {
 	                this._onClickPrevYear();
-	            } else if ($target.hasClass(CLASS_NAME_NEXT_MONTH_BTN)) {
+	            } else if (domUtil.hasClass(target, CLASS_NAME_NEXT_MONTH_BTN)) {
 	                this.drawNext();
-	            } else if ($target.hasClass(CLASS_NAME_NEXT_YEAR_BTN)) {
+	            } else if (domUtil.hasClass(target, CLASS_NAME_NEXT_YEAR_BTN)) {
 	                this._onClickNextYear();
 	            }
 	        }, this);
@@ -1663,9 +1712,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @private
 	     */
 	    _initBody: function(options) {
-	        var $bodyContainer = this._$element.find(BODY_SELECTOR);
+	        var bodyContainer = this._element.querySelector(BODY_SELECTOR);
 
-	        this._body = new Body($bodyContainer, options);
+	        this._body = new Body(bodyContainer, options);
 	    },
 
 	    /**
@@ -1745,14 +1794,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        this._header.render(date, type);
 	        this._body.render(date, type);
-	        this._$element.removeClass([CLASS_NAME_CALENDAR_MONTH, CLASS_NAME_CALENDAR_YEAR].join(' '));
+	        domUtil.removeClass(this._element, CLASS_NAME_CALENDAR_MONTH, CLASS_NAME_CALENDAR_YEAR);
 
 	        switch (type) {
 	            case TYPE_MONTH:
-	                this._$element.addClass(CLASS_NAME_CALENDAR_MONTH);
+	                domUtil.addClass(this._element, CLASS_NAME_CALENDAR_MONTH);
 	                break;
 	            case TYPE_YEAR:
-	                this._$element.addClass(CLASS_NAME_CALENDAR_YEAR);
+	                domUtil.addClass(this._element, CLASS_NAME_CALENDAR_YEAR);
 	                break;
 	            default: break;
 	        }
@@ -1805,7 +1854,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	         * @type {object} evt
 	         * @property {Date} date - Calendar date
 	         * @property {string} type - Calendar type
-	         * @property {jQuery} $dateElements - Calendar date elements
+	         * @property {HTMLElement} dateElements - Calendar date elements
 	         * @example
 	         * calendar.on('draw', function(evt) {
 	         *     console.error(evt.date);
@@ -1814,7 +1863,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.fire('draw', {
 	            date: this._date,
 	            type: type,
-	            $dateElements: this._body.getDateElements()
+	            dateElements: this._body.getDateElements()
 	        });
 	    },
 
@@ -1822,14 +1871,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * Show calendar
 	     */
 	    show: function() {
-	        this._$element.show();
+	        domUtil.removeClass(this._element, CLASS_NAME_HIDDEN);
 	    },
 
 	    /**
 	     * Hide calendar
 	     */
 	    hide: function() {
-	        this._$element.hide();
+	        domUtil.addClass(this._element, CLASS_NAME_HIDDEN);
 	    },
 
 	    /**
@@ -1916,7 +1965,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    /**
 	     * Change language
 	     * @param {string} language - Language
-	     * @see {@link Calendar.localeTexts}
+	     * @see {@link Calendar#localeTexts}
 	     */
 	    changeLanguage: function(language) {
 	        this._header.changeLanguage(language);
@@ -1941,8 +1990,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    /**
-	     * Returns date elements(jQuery) on body
-	     * @returns {jQuery}
+	     * Returns date elements on body
+	     * @returns {HTMLElement[]}
 	     */
 	    getDateElements: function() {
 	        return this._body.getDateElements();
@@ -1953,7 +2002,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @param {string} className - Class name
 	     */
 	    addCssClass: function(className) {
-	        this._$element.addClass(className);
+	        domUtil.addClass(this._element, className);
 	    },
 
 	    /**
@@ -1961,7 +2010,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @param {string} className - Class name
 	     */
 	    removeCssClass: function(className) {
-	        this._$element.removeClass(className);
+	        domUtil.removeClass(this._element, className);
 	    },
 
 	    /**
@@ -1970,13 +2019,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	    destroy: function() {
 	        this._header.destroy();
 	        this._body.destroy();
-	        this._$element.remove();
+	        domUtil.removeElement(this._element);
 
-	        this._type = this._date = this._$container = this._$element = this._header = this._body = null;
+	        this._type
+	            = this._date
+	            = this._container
+	            = this._element
+	            = this._header
+	            = this._body
+	            = null;
 	    }
 	});
 
-	util.CustomEvents.mixin(Calendar);
+	snippet.CustomEvents.mixin(Calendar);
 	module.exports = Calendar;
 
 
@@ -3192,33 +3247,34 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var $ = __webpack_require__(2);
-	var snippet = __webpack_require__(3);
+	var snippet = __webpack_require__(2);
+	var domUtil = __webpack_require__(3);
 
 	var localeTexts = __webpack_require__(27);
 	var headerTmpl = __webpack_require__(28);
 	var DateTimeFormatter = __webpack_require__(29);
 	var constants = __webpack_require__(31);
+	var util = __webpack_require__(32);
+	var mouseTouchEvent = __webpack_require__(33);
 
 	var TYPE_DATE = constants.TYPE_DATE;
 	var TYPE_MONTH = constants.TYPE_MONTH;
 	var TYPE_YEAR = constants.TYPE_YEAR;
 
-	var CLASS_NAME_PREV_MONTH_BTN = constants.CLASS_NAME_PREV_MONTH_BTN;
-	var CLASS_NAME_PREV_YEAR_BTN = constants.CLASS_NAME_PREV_YEAR_BTN;
-	var CLASS_NAME_NEXT_YEAR_BTN = constants.CLASS_NAME_NEXT_YEAR_BTN;
-	var CLASS_NAME_NEXT_MONTH_BTN = constants.CLASS_NAME_NEXT_MONTH_BTN;
-
 	var CLASS_NAME_TITLE_MONTH = 'tui-calendar-title-month';
 	var CLASS_NAME_TITLE_YEAR = 'tui-calendar-title-year';
 	var CLASS_NAME_TITLE_YEAR_TO_YEAR = 'tui-calendar-title-year-to-year';
+
+	var SELECTOR_INNER_ELEM = '.tui-calendar-header-inner';
+	var SELECTOR_INFO_ELEM = '.tui-calendar-header-info';
+	var SELECTOR_BTN = '.tui-calendar-btn';
 
 	var YEAR_TITLE_FORMAT = 'yyyy';
 
 	/**
 	 * @ignore
 	 * @class
-	 * @param {string|Element|jQuery} container - Header container
+	 * @param {string|HTMLElement} container - Header container or selector
 	 * @param {object} option - Header option
 	 * @param {string} option.language - Header language
 	 * @param {boolean} option.showToday - Has today box or not.
@@ -3228,17 +3284,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	    init: function(container, option) {
 	        /**
 	         * Container element
-	         * @type {jQuery}
+	         * @type {HTMLElement}
 	         * @private
 	         */
-	        this._$container = $(container);
+	        this._container = util.getElement(container);
 
 	        /**
-	         * headerElement
-	         * @type {jQuery}
+	         * Header inner element
+	         * @type {HTMLElement}
 	         * @private
 	         */
-	        this._$element = $();
+	        this._innerElement = null;
+
+	        /**
+	         * Header info element
+	         * @type {HTMLElement}
+	         * @private
+	         */
+	        this._infoElement = null;
 
 	        /**
 	         * Render today box or not
@@ -3280,7 +3343,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    /**
-	     * Set formatters
 	     * @param {object} localeText - Locale text
 	     * @private
 	     */
@@ -3291,29 +3353,35 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    /**
-	     * Set events for firing customEvents
 	     * @param {object} option - Constructor option
 	     * @private
 	     */
 	    _setEvents: function() {
-	        var self = this;
-	        var classNames = [
-	            CLASS_NAME_PREV_MONTH_BTN,
-	            CLASS_NAME_PREV_YEAR_BTN,
-	            CLASS_NAME_NEXT_MONTH_BTN,
-	            CLASS_NAME_NEXT_YEAR_BTN
-	        ];
-
-	        snippet.forEach(classNames, function(className) {
-	            self._$container.on('touchend.calendar click.calendar', '.' + className, function(ev) {
-	                self.fire('click', ev);
-	                ev.preventDefault(); // To prevent click after touchend
-	            });
-	        });
+	        mouseTouchEvent.on(this._container, 'click', this._onClickHandler, this);
 	    },
 
 	    /**
-	     * Returns title class
+	     * @private
+	     */
+	    _removeEvents: function() {
+	        this.off();
+	        mouseTouchEvent.off(this._container, 'click', this._onClickHandler);
+	    },
+
+	    /**
+	     * Fire customEvents
+	     * @param {Event} ev An event object
+	     * @private
+	     */
+	    _onClickHandler: function(ev) {
+	        var target = util.getTarget(ev);
+
+	        if (domUtil.closest(target, SELECTOR_BTN)) {
+	            this.fire('click', ev);
+	        }
+	    },
+
+	    /**
 	     * @param {string} type - Calendar type
 	     * @returns {string}
 	     * @private
@@ -3332,7 +3400,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    /**
-	     * Returns title text
 	     * @param {Date} date - date
 	     * @param {string} type - Calendar type
 	     * @returns {string}
@@ -3380,25 +3447,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	            title: this._getTitleText(date, type)
 	        };
 
-	        this._$element.remove();
-	        this._$element = $(headerTmpl(context));
-	        this._$element.appendTo(this._$container);
+	        this._container.innerHTML = headerTmpl(context).replace(/^\s+|\s+$/g, '');
+	        this._innerElement = this._container.querySelector(SELECTOR_INNER_ELEM);
+	        if (context.showToday) {
+	            this._infoElement = this._container.querySelector(SELECTOR_INFO_ELEM);
+	        }
 	    },
 
 	    /**
 	     * Destroy header
 	     */
 	    destroy: function() {
-	        this.off();
-	        this._$container.off('.calendar');
-	        this._$element.remove();
-	        this._$container
+	        this._removeEvents();
+	        domUtil.removeElement(this._innerElement);
+	        domUtil.removeElement(this._infoElement);
+	        this._container
 	            = this._showToday
 	            = this._showJumpButtons
 	            = this._yearMonthTitleFormatter
 	            = this._yearTitleFormatter
 	            = this._todayFormatter
-	            = this._$element
+	            = this._innerElement
+	            = this._infoElement
 	            = null;
 	    }
 	});
@@ -3462,27 +3532,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	},"2":function(container,depth0,helpers,partials,data) {
 	    var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
-	  return "        <div class=\"tui-calendar-header-inner tui-calendar-has-btns\">\n            <a href=\"#\" class=\"tui-calendar-btn-prev-year\">Prev year</a>\n            <a href=\"#\" class=\"tui-calendar-btn-prev-month\">Prev month</a>\n            <em class=\"tui-calendar-title "
+	  return "        <div class=\"tui-calendar-header-inner tui-calendar-has-btns\">\n            <button class=\"tui-calendar-btn tui-calendar-btn-prev-year\">Prev year</button>\n            <button class=\"tui-calendar-btn tui-calendar-btn-prev-month\">Prev month</button>\n            <em class=\"tui-calendar-title "
 	    + alias4(((helper = (helper = helpers.titleClass || (depth0 != null ? depth0.titleClass : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"titleClass","hash":{},"data":data}) : helper)))
 	    + "\">"
 	    + alias4(((helper = (helper = helpers.title || (depth0 != null ? depth0.title : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"title","hash":{},"data":data}) : helper)))
-	    + "</em>\n            <a href=\"#\" class=\"tui-calendar-btn-next-month\">Next month</a>\n            <a href=\"#\" class=\"tui-calendar-btn-next-year\">Next year</a>\n        </div>\n";
+	    + "</em>\n            <button class=\"tui-calendar-btn tui-calendar-btn-next-month\">Next month</button>\n            <button class=\"tui-calendar-btn tui-calendar-btn-next-year\">Next year</button>\n        </div>\n";
 	},"4":function(container,depth0,helpers,partials,data) {
 	    var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
-	  return "        <div class=\"tui-calendar-header-inner\">\n            <a href=\"#\" class=\"tui-calendar-btn-prev-month\">Prev month</a>\n            <em class=\"tui-calendar-title "
+	  return "        <div class=\"tui-calendar-header-inner\">\n            <button class=\"tui-calendar-btn tui-calendar-btn-prev-month\">Prev month</button>\n            <em class=\"tui-calendar-title "
 	    + alias4(((helper = (helper = helpers.titleClass || (depth0 != null ? depth0.titleClass : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"titleClass","hash":{},"data":data}) : helper)))
 	    + "\">"
 	    + alias4(((helper = (helper = helpers.title || (depth0 != null ? depth0.title : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"title","hash":{},"data":data}) : helper)))
-	    + "</em>\n            <a href=\"#\" class=\"tui-calendar-btn-next-month\">Next month</a>\n        </div>\n";
+	    + "</em>\n            <button class=\"tui-calendar-btn tui-calendar-btn-next-month\">Next month</button>\n        </div>\n";
 	},"6":function(container,depth0,helpers,partials,data) {
 	    var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
-	  return "    <div class=\"tui-calendar-header-inner\">\n        <a href=\"#\" class=\"tui-calendar-btn-prev-year\">Prev year</a>\n        <em class=\"tui-calendar-title "
+	  return "    <div class=\"tui-calendar-header-inner\">\n        <button class=\"tui-calendar-btn tui-calendar-btn-prev-year\">Prev year</button>\n        <em class=\"tui-calendar-title "
 	    + alias4(((helper = (helper = helpers.titleClass || (depth0 != null ? depth0.titleClass : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"titleClass","hash":{},"data":data}) : helper)))
 	    + "\">"
 	    + alias4(((helper = (helper = helpers.title || (depth0 != null ? depth0.title : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"title","hash":{},"data":data}) : helper)))
-	    + "</em>\n        <a href=\"#\" class=\"tui-calendar-btn-next-year\">Next year</a>\n    </div>\n";
+	    + "</em>\n        <button class=\"tui-calendar-btn tui-calendar-btn-next-year\">Next year</button>\n    </div>\n";
 	},"8":function(container,depth0,helpers,partials,data) {
 	    var helper;
 
@@ -3508,7 +3578,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var snippet = __webpack_require__(3);
+	var snippet = __webpack_require__(2);
 
 	var dateUtil = __webpack_require__(30);
 	var constants = __webpack_require__(31);
@@ -3792,12 +3862,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * @fileoverview Utils for DatePicker component
 	 * @author NHN. FE dev Lab. <dl_javascript@nhn.com>
-	 * @dependency tui-code-snippet ^1.0.2
 	 */
 
 	'use strict';
 
-	var snippet = __webpack_require__(3);
+	var snippet = __webpack_require__(2);
 
 	var constants = __webpack_require__(31);
 
@@ -4095,18 +4164,135 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
+	 * @fileoverview Utils for Datepicker component
+	 * @author NHN. FE Development Lab <dl_javascript@nhn.com>
+	 */
+
+	'use strict';
+
+	var snippet = __webpack_require__(2);
+
+	var utils = {
+	    /**
+	     * Get a target element
+	     * @param {Event} ev Event object
+	     * @returns {HTMLElement} An event target element
+	     */
+	    getTarget: function(ev) {
+	        return ev.target || ev.srcElement;
+	    },
+
+	    /**
+	     * Return the same element with an element or a matched element searched by a selector.
+	     * @param {HTMLElement|string} param HTMLElement or selector
+	     * @returns {HTMLElement} A matched element
+	     */
+	    getElement: function(param) {
+	        return snippet.isHTMLNode(param) ? param : document.querySelector(param);
+	    },
+
+	    /**
+	     * Get a selector of the element.
+	     * @param {HTMLElement} elem An element
+	     * @returns {string}
+	     */
+	    getSelector: function(elem) {
+	        var selector = '';
+	        if (elem.id) {
+	            selector = '#' + elem.id;
+	        } else if (elem.className) {
+	            selector = '.' + elem.className.split(' ')[0];
+	        }
+
+	        return selector;
+	    }
+	};
+
+	module.exports = utils;
+
+
+/***/ }),
+/* 33 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/**
+	 * @fileoverview Set mouse-touch event
+	 * @author NHN. FE Development Lab <dl_javascript@nhn.com>
+	 */
+
+	'use strict';
+
+	var domUtil = __webpack_require__(3);
+
+	var mouseTouchEvent = {
+	    /**
+	     * Detect mobile browser
+	     * @type {boolean} Whether using Mobile browser
+	     * @private
+	     */
+	    _isMobile: (function() {
+	        return /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
+	    })(),
+
+	    /**
+	     * Return a matched event type by a mouse event type 
+	     * @param {string} type A mouse event type - mousedown, click
+	     * @returns {string}
+	     * @private
+	     */
+	    _getEventType: function(type) {
+	        if (this._isMobile) {
+	            if (type === 'mousedown') {
+	                type = 'touchstart';
+	            } else if (type === 'click') {
+	                type = 'touchend';
+	            }
+	        }
+
+	        return type;
+	    },
+
+	    /**
+	     * Bind touch or mouse events
+	     * @param {HTMLElement} element An element to bind
+	     * @param {string} type A mouse event type - mousedown, click
+	     * @param {Function} handler A handler function
+	     * @param {object} [context] A context for handler.
+	     */
+	    on: function(element, type, handler, context) {
+	        domUtil.on(element, this._getEventType(type), handler, context);
+	    },
+
+	    /**
+	     * Unbind touch or mouse events
+	     * @param {HTMLElement} element - Target element
+	     * @param {string} type A mouse event type - mousedown, click
+	     * @param {Function} handler - Handler
+	     */
+	    off: function(element, type, handler) {
+	        domUtil.off(element, this._getEventType(type), handler);
+	    }
+	};
+
+	module.exports = mouseTouchEvent;
+
+
+/***/ }),
+/* 34 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/**
 	 * @fileoverview Calendar body
 	 * @author NHN. FE Development Lab <dl_javascript@nhn.com>
 	 */
 
 	'use strict';
 
-	var $ = __webpack_require__(2);
-	var snippet = __webpack_require__(3);
+	var snippet = __webpack_require__(2);
 
-	var DateLayer = __webpack_require__(33);
-	var MonthLayer = __webpack_require__(38);
-	var YearLayer = __webpack_require__(41);
+	var DateLayer = __webpack_require__(35);
+	var MonthLayer = __webpack_require__(40);
+	var YearLayer = __webpack_require__(43);
 	var constants = __webpack_require__(31);
 
 	var TYPE_DATE = constants.TYPE_DATE;
@@ -4123,10 +4309,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        /**
 	         * Body container element
-	         * @type {jQuery}
+	         * @type {HTMLElement}
 	         * @private
 	         */
-	        this._$container = $(bodyContainer);
+	        this._container = bodyContainer;
 
 	        /**
 	         * DateLayer
@@ -4205,15 +4391,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var prevLayer = this._currentLayer;
 
 	        prevLayer.remove();
-	        nextLayer.render(date);
-	        nextLayer.appendTo(this._$container);
+	        nextLayer.render(date, this._container);
 
 	        this._currentLayer = nextLayer;
 	    },
 
 	    /**
-	     * Returns date jQuery elements
-	     * @returns {jQuery}
+	     * Returns date elements
+	     * @returns {HTMLElement[]}
 	     */
 	    getDateElements: function() {
 	        return this._currentLayer.getDateElements();
@@ -4227,7 +4412,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            layer.remove();
 	        });
 
-	        this._$container = this._currentLayer = this._dateLayer = this._monthLayer = this._yearLayer = null;
+	        this._container = this._currentLayer = this._dateLayer = this._monthLayer = this._yearLayer = null;
 	    }
 	});
 
@@ -4235,7 +4420,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 33 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -4245,11 +4430,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var $ = __webpack_require__(2);
-	var snippet = __webpack_require__(3);
+	var snippet = __webpack_require__(2);
 
-	var bodyTmpl = __webpack_require__(34);
-	var LayerBase = __webpack_require__(37);
+	var bodyTmpl = __webpack_require__(36);
+	var LayerBase = __webpack_require__(39);
 	var TYPE_DATE = __webpack_require__(31).TYPE_DATE;
 
 	var DATE_SELECTOR = '.tui-calendar-date';
@@ -4301,21 +4485,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	    /**
 	     * Render date-layer
 	     * @override
-	     * @param {Date} date - Date to render
+	     * @param {Date} date Date to render
+	     * @param {HTMLElement} container A container element for the rendered element
 	     */
-	    render: function(date) {
+	    render: function(date, container) {
 	        var context = this._makeContext(date);
 
-	        this._$element = $(bodyTmpl(context));
+	        container.innerHTML = bodyTmpl(context);
+	        this._element = container.firstChild;
 	    },
 
 	    /**
-	     * Retunrs date elements
+	     * Return date elements
 	     * @override
-	     * @returns {jQuery}
+	     * @returns {HTMLElement[]}
 	     */
 	    getDateElements: function() {
-	        return this._$element.find(DATE_SELECTOR);
+	        return this._element.querySelectorAll(DATE_SELECTOR);
 	    }
 	});
 
@@ -4323,7 +4509,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 34 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var Handlebars = __webpack_require__(7);
@@ -4332,7 +4518,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var stack1;
 
 	  return "            <tr class=\"tui-calendar-week\">\n"
-	    + ((stack1 = __default(__webpack_require__(35)).call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.year : depth0),(depth0 != null ? depth0.month : depth0),(depth0 != null ? depth0.dates : depth0),{"name":"../helpers/week","hash":{},"fn":container.program(2, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+	    + ((stack1 = __default(__webpack_require__(37)).call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.year : depth0),(depth0 != null ? depth0.month : depth0),(depth0 != null ? depth0.dates : depth0),{"name":"../helpers/week","hash":{},"fn":container.program(2, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
 	    + "            </tr>\n";
 	},"2":function(container,depth0,helpers,partials,data) {
 	    var alias1=container.lambda, alias2=container.escapeExpression;
@@ -4362,12 +4548,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    + "</th>\n            <th class=\"tui-sat\" scope=\"col\">"
 	    + alias2(alias1((depth0 != null ? depth0.Sat : depth0), depth0))
 	    + "</th>\n        </tr>\n    </thead>\n    <tbody>\n"
-	    + ((stack1 = __default(__webpack_require__(36)).call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.year : depth0),(depth0 != null ? depth0.month : depth0),{"name":"../helpers/weeks","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+	    + ((stack1 = __default(__webpack_require__(38)).call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.year : depth0),(depth0 != null ? depth0.month : depth0),{"name":"../helpers/weeks","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
 	    + "    </tbody>\n</table>\n";
 	},"useData":true});
 
 /***/ }),
-/* 35 */
+/* 37 */
 /***/ (function(module, exports) {
 
 	/**
@@ -4420,7 +4606,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 36 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -4460,7 +4646,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 37 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -4470,7 +4656,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var snippet = __webpack_require__(3);
+	var snippet = __webpack_require__(2);
+	var domUtil = __webpack_require__(3);
 
 	var localeText = __webpack_require__(27);
 	var DEFAULT_LANGUAGE_TYPE = __webpack_require__(31).DEFAULT_LANGUAGE_TYPE;
@@ -4488,10 +4675,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        /**
 	         * Layer element
-	         * @type {jQuery}
+	         * @type {HTMLElement}
 	         * @private
 	         */
-	        this._$element = null;
+	        this._element = null;
 
 	        /**
 	         * Language type
@@ -4532,7 +4719,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * Returns date elements
 	     * @abstract
 	     * @throws {Error}
-	     * @returns {jQuery}
+	     * @returns {HTMLElement[]}
 	     */
 	    getDateElements: function() {
 	        throwOverrideError(this.getType(), 'getDateElements');
@@ -4555,22 +4742,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    /**
-	     * Append to parent element
-	     * @param {string|HTMLElement|jQuery} parent - Parent element
-	     * @returns {jQuery}
-	     */
-	    appendTo: function(parent) {
-	        return this._$element.appendTo(parent);
-	    },
-
-	    /**
 	     * Remove elements
 	     */
 	    remove: function() {
-	        if (this._$element) {
-	            this._$element.remove();
+	        if (this._element) {
+	            domUtil.removeElement(this._element);
 	        }
-	        this._$element = null;
+	        this._element = null;
 	    }
 	});
 
@@ -4589,7 +4767,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 38 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -4599,11 +4777,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var $ = __webpack_require__(2);
-	var snippet = __webpack_require__(3);
+	var snippet = __webpack_require__(2);
 
-	var bodyTmpl = __webpack_require__(39);
-	var LayerBase = __webpack_require__(37);
+	var bodyTmpl = __webpack_require__(41);
+	var LayerBase = __webpack_require__(39);
 	var TYPE_MONTH = __webpack_require__(31).TYPE_MONTH;
 
 	var DATE_SELECTOR = '.tui-calendar-month';
@@ -4654,20 +4831,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	    /**
 	     * Render month-layer element
 	     * @override
+	     * @param {Date} date Date to render
+	     * @param {HTMLElement} container A container element for the rendered element
 	     */
-	    render: function(date) {
+	    render: function(date, container) {
 	        var context = this._makeContext(date);
 
-	        this._$element = $(bodyTmpl(context));
+	        container.innerHTML = bodyTmpl(context);
+	        this._element = container.firstChild;
 	    },
 
 	    /**
 	     * Returns month elements
 	     * @override
-	     * @returns {jQuery}
+	     * @returns {HTMLElement[]}
 	     */
 	    getDateElements: function() {
-	        return this._$element.find(DATE_SELECTOR);
+	        return this._element.querySelectorAll(DATE_SELECTOR);
 	    }
 	});
 
@@ -4675,7 +4855,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 39 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var Handlebars = __webpack_require__(7);
@@ -4684,58 +4864,58 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var alias1=depth0 != null ? depth0 : {}, alias2=container.escapeExpression, alias3=container.lambda;
 
 	  return "<table class=\"tui-calendar-body-inner\">\n    <caption><span>Months</span></caption>\n    <tbody>\n    <tr class=\"tui-calendar-month-group\">\n        <td class=\"tui-calendar-month\" data-timestamp="
-	    + alias2(__default(__webpack_require__(40)).call(alias1,(depth0 != null ? depth0.year : depth0),0,{"name":"../helpers/timestamp","hash":{},"data":data}))
+	    + alias2(__default(__webpack_require__(42)).call(alias1,(depth0 != null ? depth0.year : depth0),0,{"name":"../helpers/timestamp","hash":{},"data":data}))
 	    + ">"
 	    + alias2(alias3((depth0 != null ? depth0.Jan : depth0), depth0))
 	    + "</td>\n        <td class=\"tui-calendar-month\" data-timestamp="
-	    + alias2(__default(__webpack_require__(40)).call(alias1,(depth0 != null ? depth0.year : depth0),1,{"name":"../helpers/timestamp","hash":{},"data":data}))
+	    + alias2(__default(__webpack_require__(42)).call(alias1,(depth0 != null ? depth0.year : depth0),1,{"name":"../helpers/timestamp","hash":{},"data":data}))
 	    + ">"
 	    + alias2(alias3((depth0 != null ? depth0.Feb : depth0), depth0))
 	    + "</td>\n        <td class=\"tui-calendar-month\" data-timestamp="
-	    + alias2(__default(__webpack_require__(40)).call(alias1,(depth0 != null ? depth0.year : depth0),2,{"name":"../helpers/timestamp","hash":{},"data":data}))
+	    + alias2(__default(__webpack_require__(42)).call(alias1,(depth0 != null ? depth0.year : depth0),2,{"name":"../helpers/timestamp","hash":{},"data":data}))
 	    + ">"
 	    + alias2(alias3((depth0 != null ? depth0.Mar : depth0), depth0))
 	    + "</td>\n        <td class=\"tui-calendar-month\" data-timestamp="
-	    + alias2(__default(__webpack_require__(40)).call(alias1,(depth0 != null ? depth0.year : depth0),3,{"name":"../helpers/timestamp","hash":{},"data":data}))
+	    + alias2(__default(__webpack_require__(42)).call(alias1,(depth0 != null ? depth0.year : depth0),3,{"name":"../helpers/timestamp","hash":{},"data":data}))
 	    + ">"
 	    + alias2(alias3((depth0 != null ? depth0.Apr : depth0), depth0))
 	    + "</td>\n    </tr>\n    <tr class=\"tui-calendar-month-group\">\n        <td class=\"tui-calendar-month\" data-timestamp="
-	    + alias2(__default(__webpack_require__(40)).call(alias1,(depth0 != null ? depth0.year : depth0),4,{"name":"../helpers/timestamp","hash":{},"data":data}))
+	    + alias2(__default(__webpack_require__(42)).call(alias1,(depth0 != null ? depth0.year : depth0),4,{"name":"../helpers/timestamp","hash":{},"data":data}))
 	    + ">"
 	    + alias2(alias3((depth0 != null ? depth0.May : depth0), depth0))
 	    + "</td>\n        <td class=\"tui-calendar-month\" data-timestamp="
-	    + alias2(__default(__webpack_require__(40)).call(alias1,(depth0 != null ? depth0.year : depth0),5,{"name":"../helpers/timestamp","hash":{},"data":data}))
+	    + alias2(__default(__webpack_require__(42)).call(alias1,(depth0 != null ? depth0.year : depth0),5,{"name":"../helpers/timestamp","hash":{},"data":data}))
 	    + ">"
 	    + alias2(alias3((depth0 != null ? depth0.Jun : depth0), depth0))
 	    + "</td>\n        <td class=\"tui-calendar-month\" data-timestamp="
-	    + alias2(__default(__webpack_require__(40)).call(alias1,(depth0 != null ? depth0.year : depth0),6,{"name":"../helpers/timestamp","hash":{},"data":data}))
+	    + alias2(__default(__webpack_require__(42)).call(alias1,(depth0 != null ? depth0.year : depth0),6,{"name":"../helpers/timestamp","hash":{},"data":data}))
 	    + ">"
 	    + alias2(alias3((depth0 != null ? depth0.Jul : depth0), depth0))
 	    + "</td>\n        <td class=\"tui-calendar-month\" data-timestamp="
-	    + alias2(__default(__webpack_require__(40)).call(alias1,(depth0 != null ? depth0.year : depth0),7,{"name":"../helpers/timestamp","hash":{},"data":data}))
+	    + alias2(__default(__webpack_require__(42)).call(alias1,(depth0 != null ? depth0.year : depth0),7,{"name":"../helpers/timestamp","hash":{},"data":data}))
 	    + ">"
 	    + alias2(alias3((depth0 != null ? depth0.Aug : depth0), depth0))
 	    + "</td>\n    </tr>\n    <tr class=\"tui-calendar-month-group\">\n        <td class=\"tui-calendar-month\" data-timestamp="
-	    + alias2(__default(__webpack_require__(40)).call(alias1,(depth0 != null ? depth0.year : depth0),8,{"name":"../helpers/timestamp","hash":{},"data":data}))
+	    + alias2(__default(__webpack_require__(42)).call(alias1,(depth0 != null ? depth0.year : depth0),8,{"name":"../helpers/timestamp","hash":{},"data":data}))
 	    + ">"
 	    + alias2(alias3((depth0 != null ? depth0.Sep : depth0), depth0))
 	    + "</td>\n        <td class=\"tui-calendar-month\" data-timestamp="
-	    + alias2(__default(__webpack_require__(40)).call(alias1,(depth0 != null ? depth0.year : depth0),9,{"name":"../helpers/timestamp","hash":{},"data":data}))
+	    + alias2(__default(__webpack_require__(42)).call(alias1,(depth0 != null ? depth0.year : depth0),9,{"name":"../helpers/timestamp","hash":{},"data":data}))
 	    + ">"
 	    + alias2(alias3((depth0 != null ? depth0.Oct : depth0), depth0))
 	    + "</td>\n        <td class=\"tui-calendar-month\" data-timestamp="
-	    + alias2(__default(__webpack_require__(40)).call(alias1,(depth0 != null ? depth0.year : depth0),10,{"name":"../helpers/timestamp","hash":{},"data":data}))
+	    + alias2(__default(__webpack_require__(42)).call(alias1,(depth0 != null ? depth0.year : depth0),10,{"name":"../helpers/timestamp","hash":{},"data":data}))
 	    + ">"
 	    + alias2(alias3((depth0 != null ? depth0.Nov : depth0), depth0))
 	    + "</td>\n        <td class=\"tui-calendar-month\" data-timestamp="
-	    + alias2(__default(__webpack_require__(40)).call(alias1,(depth0 != null ? depth0.year : depth0),11,{"name":"../helpers/timestamp","hash":{},"data":data}))
+	    + alias2(__default(__webpack_require__(42)).call(alias1,(depth0 != null ? depth0.year : depth0),11,{"name":"../helpers/timestamp","hash":{},"data":data}))
 	    + ">"
 	    + alias2(alias3((depth0 != null ? depth0.Dec : depth0), depth0))
 	    + "</td>\n    </tr>\n    </tbody>\n</table>\n";
 	},"useData":true});
 
 /***/ }),
-/* 40 */
+/* 42 */
 /***/ (function(module, exports) {
 
 	/**
@@ -4757,7 +4937,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 41 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -4767,11 +4947,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var $ = __webpack_require__(2);
-	var snippet = __webpack_require__(3);
+	var snippet = __webpack_require__(2);
 
-	var bodyTmpl = __webpack_require__(42);
-	var LayerBase = __webpack_require__(37);
+	var bodyTmpl = __webpack_require__(44);
+	var LayerBase = __webpack_require__(39);
 	var TYPE_YEAR = __webpack_require__(31).TYPE_YEAR;
 	var dateUtil = __webpack_require__(30);
 
@@ -4813,22 +4992,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    /**
-	     * Render month-layer element
+	     * Render year-layer element
 	     * @override
+	     * @param {Date} date Date to render
+	     * @param {HTMLElement} container A container element for the rendered element
 	     */
-	    render: function(date) {
+	    render: function(date, container) {
 	        var context = this._makeContext(date);
 
-	        this._$element = $(bodyTmpl(context));
+	        container.innerHTML = bodyTmpl(context);
+	        this._element = container.firstChild;
 	    },
 
 	    /**
 	     * Returns year elements
 	     * @override
-	     * @returns {jQuery}
+	     * @returns {HTMLElement[]}
 	     */
 	    getDateElements: function() {
-	        return this._$element.find(DATE_SELECTOR);
+	        return this._element.querySelectorAll(DATE_SELECTOR);
 	    }
 	});
 
@@ -4836,7 +5018,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 42 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var Handlebars = __webpack_require__(7);
@@ -4851,7 +5033,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var alias1=container.escapeExpression;
 
 	  return "                    <td class=\"tui-calendar-year\" data-timestamp="
-	    + alias1(__default(__webpack_require__(40)).call(depth0 != null ? depth0 : {},blockParams[0][0],0,{"name":"../helpers/timestamp","hash":{},"data":data,"blockParams":blockParams}))
+	    + alias1(__default(__webpack_require__(42)).call(depth0 != null ? depth0 : {},blockParams[0][0],0,{"name":"../helpers/timestamp","hash":{},"data":data,"blockParams":blockParams}))
 	    + ">\n                        "
 	    + alias1(container.lambda(blockParams[0][0], depth0))
 	    + "\n                    </td>\n";
@@ -4864,7 +5046,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	},"useData":true,"useBlockParams":true});
 
 /***/ }),
-/* 43 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -4874,9 +5056,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var snippet = __webpack_require__(3);
+	var snippet = __webpack_require__(2);
 
-	var Range = __webpack_require__(44);
+	var Range = __webpack_require__(46);
 
 	/**
 	 * @class
@@ -5042,7 +5224,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 44 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -5052,7 +5234,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var snippet = __webpack_require__(3);
+	var snippet = __webpack_require__(2);
 
 	var isNumber = snippet.isNumber;
 
@@ -5159,54 +5341,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 45 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	/**
-	 * @fileoverview Set mouse-touch event
-	 * @author NHN. FE Development Lab <dl_javascript@nhn.com>
-	 */
-
-	'use strict';
-
-	var $ = __webpack_require__(2);
-
-	/**
-	 * Detect mobile browser
-	 * @private
-	 * @returns {boolean} Whether using Mobile browser
-	 */
-	function isMobile() {
-	    return /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
-	}
-
-	/**
-	 * For using one - Touch or Mouse Events
-	 * @param {jQuery|string|Element} target - Target element
-	 * @param {Function} handler - Handler
-	 * @param {object} [option] - Option
-	 * @param {string} option.selector - Selector
-	 * @param {string} option.namespace - Event namespace
-	 */
-	module.exports = function(target, handler, option) {
-	    var $target = $(target);
-	    var eventType = isMobile() ? 'touchend' : 'click';
-	    var selector, namespace;
-
-	    option = option || {};
-	    selector = option.selector || null;
-	    namespace = option.namespace || '';
-
-	    if (namespace) {
-	        eventType = eventType + '.' + namespace;
-	    }
-
-	    $target.on(eventType, selector, handler);
-	};
-
-
-/***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var Handlebars = __webpack_require__(7);
@@ -5214,7 +5349,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = (Handlebars["default"] || Handlebars).template({"1":function(container,depth0,helpers,partials,data) {
 	    var stack1, alias1=depth0 != null ? depth0 : {};
 
-	  return ((stack1 = helpers["if"].call(alias1,__default(__webpack_require__(47)).call(alias1,((stack1 = (depth0 != null ? depth0.timepicker : depth0)) != null ? stack1.layoutType : stack1),"tab",{"name":"../helpers/equals","hash":{},"data":data}),{"name":"if","hash":{},"fn":container.program(2, data, 0),"inverse":container.program(4, data, 0),"data":data})) != null ? stack1 : "");
+	  return ((stack1 = helpers["if"].call(alias1,__default(__webpack_require__(48)).call(alias1,((stack1 = (depth0 != null ? depth0.timepicker : depth0)) != null ? stack1.layoutType : stack1),"tab",{"name":"../helpers/equals","hash":{},"data":data}),{"name":"if","hash":{},"fn":container.program(2, data, 0),"inverse":container.program(4, data, 0),"data":data})) != null ? stack1 : "");
 	},"2":function(container,depth0,helpers,partials,data) {
 	    var stack1, alias1=container.lambda, alias2=container.escapeExpression;
 
@@ -5222,11 +5357,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    + alias2(alias1(((stack1 = (depth0 != null ? depth0.localeText : depth0)) != null ? stack1.date : stack1), depth0))
 	    + "\n                </button>\n                <button type=\"button\" class=\"tui-datepicker-selector-button\">\n                    <span class=\"tui-ico-time\"></span>"
 	    + alias2(alias1(((stack1 = (depth0 != null ? depth0.localeText : depth0)) != null ? stack1.time : stack1), depth0))
-	    + "\n                </button>\n            </div>\n            <div class=\"tui-datepicker-body\"></div>\n";
+	    + "\n                </button>\n            </div>\n            <div class=\"tui-datepicker-body\">\n                <div class=\"tui-calendar-container\"></div>\n                <div class=\"tui-timepicker-container\"></div>\n            </div>\n";
 	},"4":function(container,depth0,helpers,partials,data) {
-	    return "            <div class=\"tui-datepicker-body\"></div>\n            <div class=\"tui-datepicker-footer\"></div>\n";
+	    return "            <div class=\"tui-datepicker-body\">\n                <div class=\"tui-calendar-container\"></div>\n            </div>\n            <div class=\"tui-datepicker-footer\">\n                <div class=\"tui-timepicker-container\"></div>\n            </div>\n";
 	},"6":function(container,depth0,helpers,partials,data) {
-	    return "        <div class=\"tui-datepicker-body\"></div>\n";
+	    return "        <div class=\"tui-datepicker-body\">\n            <div class=\"tui-calendar-container\"></div>\n        </div>\n";
 	},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
 	    var stack1;
 
@@ -5236,7 +5371,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	},"useData":true});
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports) {
 
 	/**
@@ -5257,7 +5392,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -5267,11 +5402,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var $ = __webpack_require__(2);
-	var snippet = __webpack_require__(3);
+	var snippet = __webpack_require__(2);
+	var domUtil = __webpack_require__(3);
 
 	var DateTimeFormatter = __webpack_require__(29);
-	var setTouchClickEvent = __webpack_require__(45);
+	var mouseTouchEvent = __webpack_require__(33);
+	var util = __webpack_require__(32);
 
 	var DEFAULT_FORMAT = 'yyyy-MM-dd';
 
@@ -5279,7 +5415,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * DatePicker Input
 	 * @ignore
 	 * @class
-	 * @param {string|jQuery|HTMLElement} inputElement - Input element
+	 * @param {string|HTMLElement} inputElement - Input element or selector
 	 * @param {object} option - Option
 	 * @param {string} option.id - Id
 	 * @param {string} option.format - Text format
@@ -5290,10 +5426,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        /**
 	         * Input element
-	         * @type {jQuery}
+	         * @type {HTMLElement}
 	         * @private
 	         */
-	        this._$input = $(inputElement);
+	        this._input = util.getElement(inputElement);
 
 	        /**
 	         * Id
@@ -5332,34 +5468,64 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @private
 	     */
 	    _setEvents: function() {
-	        this._$input.on('change.' + this._id, $.proxy(this.fire, this, 'change'));
-
-	        setTouchClickEvent(this._$input, $.proxy(this.fire, this, 'click'), {
-	            namespace: this._id
-	        });
+	        if (this._input) {
+	            domUtil.on(this._input, 'change', this._onChangeHandler, this);
+	            mouseTouchEvent.on(this._input, 'click', this._onClickHandler, this);
+	        }
 	    },
 
 	    /**
-	     * @see {@link http://api.jquery.com/is/}
-	     * @param {string|jQuery|HTMLElement|function} el - To check matched set of elements
+	     * Remove events
+	     * @private
+	     */
+	    _removeEvents: function() {
+	        this.off();
+
+	        if (this._input) {
+	            domUtil.off(this._input, 'change', this._onChangeHandler);
+	            mouseTouchEvent.off(this._input, 'click', this._onClickHandler);
+	        }
+	    },
+
+	    /**
+	     * Onchange handler
+	     */
+	    _onChangeHandler: function() {
+	        this.fire('change');
+	    },
+
+	    /**
+	     * Onclick handler
+	     */
+	    _onClickHandler: function() {
+	        this.fire('click');
+	    },
+
+	    /**
+	     * Check element is same as the input element.
+	     * @param {HTMLElement} el - To check matched set of elements
 	     * @returns {boolean}
 	     */
 	    is: function(el) {
-	        return this._$input.is(el);
+	        return this._input === el;
 	    },
 
 	    /**
 	     * Enable input
 	     */
 	    enable: function() {
-	        this._$input.removeAttr('disabled');
+	        if (this._input) {
+	            this._input.removeAttribute('disabled');
+	        }
 	    },
 
 	    /**
 	     * Disable input
 	     */
 	    disable: function() {
-	        this._$input.attr('disabled', true);
+	        if (this._input) {
+	            this._input.setAttribute('disabled', true);
+	        }
 	    },
 
 	    /**
@@ -5386,7 +5552,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * Clear text
 	     */
 	    clearText: function() {
-	        this._$input.val('');
+	        if (this._input) {
+	            this._input.value = '';
+	        }
 	    },
 
 	    /**
@@ -5394,7 +5562,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @param {Date} date - Date
 	     */
 	    setDate: function(date) {
-	        this._$input.val(this._formatter.format(date));
+	        if (this._input) {
+	            this._input.value = this._formatter.format(date);
+	        }
 	    },
 
 	    /**
@@ -5403,7 +5573,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @throws {Error}
 	     */
 	    getDate: function() {
-	        var value = this._$input.val();
+	        var value = '';
+
+	        if (this._input) {
+	            value = this._input.value;
+	        }
 
 	        return this._formatter.parse(value);
 	    },
@@ -5412,12 +5586,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * Destroy
 	     */
 	    destroy: function() {
-	        var evNamespace = '.' + this._id;
+	        this._removeEvents();
 
-	        this.off();
-	        this._$input.off(evNamespace);
-
-	        this._$input
+	        this._input
 	            = this._id
 	            = this._formatter
 	            = null;
@@ -5429,7 +5600,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -5439,12 +5610,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var $ = __webpack_require__(2);
-	var snippet = __webpack_require__(3);
+	var snippet = __webpack_require__(2);
+	var domUtil = __webpack_require__(3);
 
 	var DatePicker = __webpack_require__(1);
 	var dateUtil = __webpack_require__(30);
 	var constants = __webpack_require__(31);
+	var util = __webpack_require__(32);
 
 	var CLASS_NAME_RANGE_PICKER = 'tui-rangepicker';
 	var CLASS_NAME_SELECTED = constants.CLASS_NAME_SELECTED;
@@ -5454,11 +5626,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @class
 	 * @param {object} options - Date-Range picker options
 	 *     @param {object} options.startpicker - Startpicker options
-	 *     @param {Element|jQuery|string} options.startpicker.input - Startpicker input element
-	 *     @param {Element|jQuery|string} options.startpicker.container - Startpicker container element
+	 *     @param {HTMLElement|string} options.startpicker.input - Startpicker input element or selector
+	 *     @param {HTMLElement|string} options.startpicker.container - Startpicker container element or selector
 	 *     @param {object} options.endpicker - Endpicker options
-	 *     @param {Element|jQuery|string} options.endpicker.input - Endpicker input element
-	 *     @param {Element|jQuery|string} options.endpicker.container - Endpicker container element
+	 *     @param {HTMLElement|string} options.endpicker.input - Endpicker input element or selector
+	 *     @param {HTMLElement|string} options.endpicker.container - Endpicker container element or selector
 	 *     @param {string} options.format - Input date-string format
 	 *     @param {string} [options.type = 'date'] - DatePicker type - ('date' | 'month' | 'year')
 	 *     @param {string} [options.language='en'] - Language key
@@ -5529,30 +5701,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @private
 	     */
 	    _initializePickers: function(options) {
-	        var $startpickerContainer = $(options.startpicker.container);
-	        var $endpickerContainer = $(options.endpicker.container);
-	        var $startInput = $(options.startpicker.input);
-	        var $endInput = $(options.endpicker.input);
+	        var startpickerContainer = util.getElement(options.startpicker.container);
+	        var endpickerContainer = util.getElement(options.endpicker.container);
+	        var startInput = util.getElement(options.startpicker.input);
+	        var endInput = util.getElement(options.endpicker.input);
 
 	        var startpickerOpt = snippet.extend({}, options, {
 	            input: {
-	                element: $startInput,
+	                element: startInput,
 	                format: options.format
 	            }
 	        });
 	        var endpickerOpt = snippet.extend({}, options, {
 	            input: {
-	                element: $endInput,
+	                element: endInput,
 	                format: options.format
 	            }
 	        });
 
-	        this._startpicker = new DatePicker($startpickerContainer, startpickerOpt);
+	        this._startpicker = new DatePicker(startpickerContainer, startpickerOpt);
 	        this._startpicker.addCssClass(CLASS_NAME_RANGE_PICKER);
 	        this._startpicker.on('change', this._onChangeStartpicker, this);
 	        this._startpicker.on('draw', this._onDrawPicker, this);
 
-	        this._endpicker = new DatePicker($endpickerContainer, endpickerOpt);
+	        this._endpicker = new DatePicker(endpickerContainer, endpickerOpt);
 	        this._endpicker.addCssClass(CLASS_NAME_RANGE_PICKER);
 	        this._endpicker.on('change', this._onChangeEndpicker, this);
 	        this._endpicker.on('draw', this._onDrawPicker, this);
@@ -5564,9 +5736,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @private
 	     */
 	    _onDrawPicker: function(eventData) {
-	        var self = this;
 	        var calendarType = eventData.type;
-	        var $dateElements = eventData.$dateElements;
+	        var dateElements = snippet.toArray(eventData.dateElements);
 	        var startDate = this._startpicker.getDate();
 	        var endDate = this._endpicker.getDate();
 
@@ -5579,45 +5750,44 @@ return /******/ (function(modules) { // webpackBootstrap
 	            endDate = new Date(NaN);
 	        }
 
-	        $dateElements.each(function(idx, el) {
-	            var $el = $(el);
-	            var elDate = new Date($el.data('timestamp'));
+	        snippet.forEach(dateElements, function(el) {
+	            var elDate = new Date(Number(domUtil.getData(el, 'timestamp')));
 	            var isInRange = dateUtil.inRange(startDate, endDate, elDate, calendarType);
 	            var isSelected = (
 	                dateUtil.isSame(startDate, elDate, calendarType)
 	                || dateUtil.isSame(endDate, elDate, calendarType)
 	            );
 
-	            self._setRangeClass($el, isInRange);
-	            self._setSelectedClass($el, isSelected);
-	        });
+	            this._setRangeClass(el, isInRange);
+	            this._setSelectedClass(el, isSelected);
+	        }, this);
 	    },
 
 	    /**
 	     * Set range class to element
-	     * @param {jQuery} $el - Element
+	     * @param {HTMLElement} el - Element
 	     * @param {boolean} isInRange - In range
 	     * @private
 	     */
-	    _setRangeClass: function($el, isInRange) {
+	    _setRangeClass: function(el, isInRange) {
 	        if (isInRange) {
-	            $el.addClass(CLASS_NAME_SELECTED_RANGE);
+	            domUtil.addClass(el, CLASS_NAME_SELECTED_RANGE);
 	        } else {
-	            $el.removeClass(CLASS_NAME_SELECTED_RANGE);
+	            domUtil.removeClass(el, CLASS_NAME_SELECTED_RANGE);
 	        }
 	    },
 
 	    /**
 	     * Set selected class to element
-	     * @param {jQuery} $el - Element
+	     * @param {HTMLElement} el - Element
 	     * @param {boolean} isSelected - Is selected
 	     * @private
 	     */
-	    _setSelectedClass: function($el, isSelected) {
+	    _setSelectedClass: function(el, isSelected) {
 	        if (isSelected) {
-	            $el.addClass(CLASS_NAME_SELECTED);
+	            domUtil.addClass(el, CLASS_NAME_SELECTED);
 	        } else {
-	            $el.removeClass(CLASS_NAME_SELECTED);
+	            domUtil.removeClass(el, CLASS_NAME_SELECTED);
 	        }
 	    },
 
@@ -5729,7 +5899,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    /**
 	     * Set selectable ranges
 	     * @param {Array.<Array.<number|Date>>} ranges - Selectable ranges
-	     * @see DatePicker#setRanges
+	     * @see {@link DatePicker#setRanges}
 	     */
 	    setRanges: function(ranges) {
 	        this._startpicker.setRanges(ranges);
@@ -5740,7 +5910,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * Add a range
 	     * @param {Date|number} start - startDate
 	     * @param {Date|number} end - endDate
-	     * @see DatePicker#addRange
+	     * @see {@link DatePicker#addRange}
 	     */
 	    addRange: function(start, end) {
 	        this._startpicker.addRange(start, end);
@@ -5752,7 +5922,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @param {Date|number} start - startDate
 	     * @param {Date|number} end - endDate
 	     * @param {null|'date'|'month'|'year'} type - Range type, If falsy -> Use strict timestamp;
-	     * @see DatePicker#removeRange
+	     * @see {@link DatePicker#removeRange}
 	     */
 	    removeRange: function(start, end, type) {
 	        this._startpicker.removeRange(start, end, type);
@@ -5762,7 +5932,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    /**
 	     * Change language
 	     * @param {string} language - Language
-	     * @see {@link DatePicker.localeTexts}
+	     * @see {@link DatePicker#localeTexts}
 	     */
 	    changeLanguage: function(language) {
 	        this._startpicker.changeLanguage(language);
@@ -5787,7 +5957,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

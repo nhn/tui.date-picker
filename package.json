@@ -12,8 +12,7 @@
     "bundle": "webpack & webpack --production",
     "serve": "webpack-dev-server --inline --hot -d",
     "serve:ie8": "webpack-dev-server -d",
-    "doc:dev": "tuidoc --dev",
-    "doc": "tuidoc"
+    "doc": "tuidoc && tuidoc --serv"
   },
   "repository": {
     "type": "git",

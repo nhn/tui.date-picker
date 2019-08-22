@@ -48,7 +48,7 @@
     "karma-jasmine": "^1.0.2",
     "karma-junit-reporter": "^1.2.0",
     "karma-sourcemap-loader": "^0.3.7",
-    "karma-webdriver-launcher": "git+https://github.com/nhn/karma-webdriver-launcher.git#v1.1.0",
+    "karma-webdriver-launcher": "git+https://github.com/nhn/karma-webdriver-launcher.git#v1.2.0",
     "karma-webpack": "^1.8.0",
     "safe-umd-webpack-plugin": "^0.0.1",
     "style-loader": "^0.13.1",

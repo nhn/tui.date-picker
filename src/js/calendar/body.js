@@ -20,44 +20,45 @@ var TYPE_YEAR = constants.TYPE_YEAR;
  * @ignore
  * @class
  */
-var Body = snippet.defineClass(/** @lends Body.prototype */{
+var Body = snippet.defineClass(
+  /** @lends Body.prototype */ {
     init: function(bodyContainer, option) {
-        var language = option.language;
+      var language = option.language;
 
-        /**
-         * Body container element
-         * @type {HTMLElement}
-         * @private
-         */
-        this._container = bodyContainer;
+      /**
+       * Body container element
+       * @type {HTMLElement}
+       * @private
+       */
+      this._container = bodyContainer;
 
-        /**
-         * DateLayer
-         * @type {DateLayer}
-         * @private
-         */
-        this._dateLayer = new DateLayer(language);
+      /**
+       * DateLayer
+       * @type {DateLayer}
+       * @private
+       */
+      this._dateLayer = new DateLayer(language);
 
-        /**
-         * MonthLayer
-         * @type {MonthLayer}
-         * @private
-         */
-        this._monthLayer = new MonthLayer(language);
+      /**
+       * MonthLayer
+       * @type {MonthLayer}
+       * @private
+       */
+      this._monthLayer = new MonthLayer(language);
 
-        /**
-         * YearLayer
-         * @type {YearLayer}
-         * @private
-         */
-        this._yearLayer = new YearLayer(language);
+      /**
+       * YearLayer
+       * @type {YearLayer}
+       * @private
+       */
+      this._yearLayer = new YearLayer(language);
 
-        /**
-         * Current Layer
-         * @type {DateLayer|MonthLayer|YearLayer}
-         * @private
-         */
-        this._currentLayer = this._dateLayer;
+      /**
+       * Current Layer
+       * @type {DateLayer|MonthLayer|YearLayer}
+       * @private
+       */
+      this._currentLayer = this._dateLayer;
     },
 
     /**
@@ -67,16 +68,16 @@ var Body = snippet.defineClass(/** @lends Body.prototype */{
      * @private
      */
     _getLayer: function(type) {
-        switch (type) {
-            case TYPE_DATE:
-                return this._dateLayer;
-            case TYPE_MONTH:
-                return this._monthLayer;
-            case TYPE_YEAR:
-                return this._yearLayer;
-            default:
-                return this._currentLayer;
-        }
+      switch (type) {
+        case TYPE_DATE:
+          return this._dateLayer;
+        case TYPE_MONTH:
+          return this._monthLayer;
+        case TYPE_YEAR:
+          return this._yearLayer;
+        default:
+          return this._currentLayer;
+      }
     },
 
     /**
@@ -85,7 +86,7 @@ var Body = snippet.defineClass(/** @lends Body.prototype */{
      * @private
      */
     _eachLayer: function(fn) {
-        snippet.forEach([this._dateLayer, this._monthLayer, this._yearLayer], fn);
+      snippet.forEach([this._dateLayer, this._monthLayer, this._yearLayer], fn);
     },
 
     /**
@@ -93,9 +94,9 @@ var Body = snippet.defineClass(/** @lends Body.prototype */{
      * @param {string} language - Language
      */
     changeLanguage: function(language) {
-        this._eachLayer(function(layer) {
-            layer.changeLanguage(language);
-        });
+      this._eachLayer(function(layer) {
+        layer.changeLanguage(language);
+      });
     },
 
     /**
@@ -104,13 +105,13 @@ var Body = snippet.defineClass(/** @lends Body.prototype */{
      * @param {string} type - Layer type
      */
     render: function(date, type) {
-        var nextLayer = this._getLayer(type);
-        var prevLayer = this._currentLayer;
+      var nextLayer = this._getLayer(type);
+      var prevLayer = this._currentLayer;
 
-        prevLayer.remove();
-        nextLayer.render(date, this._container);
+      prevLayer.remove();
+      nextLayer.render(date, this._container);
 
-        this._currentLayer = nextLayer;
+      this._currentLayer = nextLayer;
     },
 
     /**
@@ -118,19 +119,20 @@ var Body = snippet.defineClass(/** @lends Body.prototype */{
      * @returns {HTMLElement[]}
      */
     getDateElements: function() {
-        return this._currentLayer.getDateElements();
+      return this._currentLayer.getDateElements();
     },
 
     /**
      * Destory
      */
     destroy: function() {
-        this._eachLayer(function(layer) {
-            layer.remove();
-        });
+      this._eachLayer(function(layer) {
+        layer.remove();
+      });
 
-        this._container = this._currentLayer = this._dateLayer = this._monthLayer = this._yearLayer = null;
+      this._container = this._currentLayer = this._dateLayer = this._monthLayer = this._yearLayer = null;
     }
-});
+  }
+);
 
 module.exports = Body;

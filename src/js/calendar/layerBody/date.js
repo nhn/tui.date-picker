@@ -19,9 +19,11 @@ var DATE_SELECTOR = '.tui-calendar-date';
  * @extends LayerBase
  * @param {string} language - Initial language
  */
-var DateLayer = snippet.defineClass(LayerBase, /** @lends DateLayer.prototype */{
+var DateLayer = snippet.defineClass(
+  LayerBase,
+  /** @lends DateLayer.prototype */ {
     init: function(language) {
-        LayerBase.call(this, language);
+      LayerBase.call(this, language);
     },
 
     /**
@@ -37,24 +39,24 @@ var DateLayer = snippet.defineClass(LayerBase, /** @lends DateLayer.prototype */
      * @returns {object} Template context
      */
     _makeContext: function(date) {
-        var daysShort = this._localeText.titles.D;
-        var year, month;
+      var daysShort = this._localeText.titles.D;
+      var year, month;
 
-        date = date || new Date();
-        year = date.getFullYear();
-        month = date.getMonth() + 1;
+      date = date || new Date();
+      year = date.getFullYear();
+      month = date.getMonth() + 1;
 
-        return {
-            Sun: daysShort[0],
-            Mon: daysShort[1],
-            Tue: daysShort[2],
-            Wed: daysShort[3],
-            Thu: daysShort[4],
-            Fri: daysShort[5],
-            Sat: daysShort[6],
-            year: year,
-            month: month
-        };
+      return {
+        Sun: daysShort[0],
+        Mon: daysShort[1],
+        Tue: daysShort[2],
+        Wed: daysShort[3],
+        Thu: daysShort[4],
+        Fri: daysShort[5],
+        Sat: daysShort[6],
+        year: year,
+        month: month
+      };
     },
 
     /**
@@ -64,10 +66,10 @@ var DateLayer = snippet.defineClass(LayerBase, /** @lends DateLayer.prototype */
      * @param {HTMLElement} container A container element for the rendered element
      */
     render: function(date, container) {
-        var context = this._makeContext(date);
+      var context = this._makeContext(date);
 
-        container.innerHTML = bodyTmpl(context);
-        this._element = container.firstChild;
+      container.innerHTML = bodyTmpl(context);
+      this._element = container.firstChild;
     },
 
     /**
@@ -76,8 +78,9 @@ var DateLayer = snippet.defineClass(LayerBase, /** @lends DateLayer.prototype */
      * @returns {HTMLElement[]}
      */
     getDateElements: function() {
-        return this._element.querySelectorAll(DATE_SELECTOR);
+      return this._element.querySelectorAll(DATE_SELECTOR);
     }
-});
+  }
+);
 
 module.exports = DateLayer;

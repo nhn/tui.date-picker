@@ -49,42 +49,45 @@ var SELECTOR_TIMEPICKER_CONTAINER = '.tui-timepicker-container';
  * @returns {object}
  */
 var mergeDefaultOption = function(option) {
-    option = snippet.extend({
-        language: DEFAULT_LANGUAGE_TYPE,
-        calendar: {},
-        input: {
-            element: null,
-            format: null
-        },
-        timepicker: null,
-        date: null,
-        showAlways: false,
-        type: TYPE_DATE,
-        selectableRanges: null,
-        openers: [],
-        autoClose: true,
-        usageStatistics: true
-    }, option);
+  option = snippet.extend(
+    {
+      language: DEFAULT_LANGUAGE_TYPE,
+      calendar: {},
+      input: {
+        element: null,
+        format: null
+      },
+      timepicker: null,
+      date: null,
+      showAlways: false,
+      type: TYPE_DATE,
+      selectableRanges: null,
+      openers: [],
+      autoClose: true,
+      usageStatistics: true
+    },
+    option
+  );
 
-    option.selectableRanges = option.selectableRanges || [[constants.MIN_DATE, constants.MAX_DATE]];
+  option.selectableRanges = option.selectableRanges || [[constants.MIN_DATE, constants.MAX_DATE]];
 
-    if (!snippet.isObject(option.calendar)) {
-        throw new Error('Calendar option must be an object');
-    }
-    if (!snippet.isObject(option.input)) {
-        throw new Error('Input option must be an object');
-    }
-    if (!snippet.isArray(option.selectableRanges)) {
-        throw new Error('Selectable-ranges must be a 2d-array');
-    }
+  if (!snippet.isObject(option.calendar)) {
+    throw new Error('Calendar option must be an object');
+  }
+  if (!snippet.isObject(option.input)) {
+    throw new Error('Input option must be an object');
+  }
+  if (!snippet.isArray(option.selectableRanges)) {
+    throw new Error('Selectable-ranges must be a 2d-array');
+  }
 
-    option.localeText = localeTexts[option.language];
+  option.localeText = localeTexts[option.language];
 
-    // override calendar option
-    option.calendar.language = option.language;
-    option.calendar.type = option.type;
+  // override calendar option
+  option.calendar.language = option.language;
+  option.calendar.type = option.type;
 
-    return option;
+  return option;
 };
 
 /**
@@ -143,148 +146,149 @@ var mergeDefaultOption = function(option) {
  *     openers: ['#opener']
  * });
  */
-var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
+var DatePicker = snippet.defineClass(
+  /** @lends DatePicker.prototype */ {
     static: {
-        /**
-         * Locale text data
-         * @type {object}
-         * @memberof DatePicker
-         * @static
-         * @example
-         * var DatePicker = tui.DatePicker; // or require('tui-date-picker');
-         *
-         * DatePicker.localeTexts['customKey'] = {
-         *     titles: {
-         *         // days
-         *         DD: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-         *         // daysShort
-         *         D: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fir', 'Sat'],
-         *         // months
-         *         MMMM: [
-         *             'January', 'February', 'March', 'April', 'May', 'June',
-         *             'July', 'August', 'September', 'October', 'November', 'December'
-         *         ],
-         *         // monthsShort
-         *         MMM: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-         *     },
-         *     titleFormat: 'MMM yyyy',
-         *     todayFormat: 'D, MMMM dd, yyyy',
-         *     date: 'Date',
-         *     time: 'Time'
-         * };
-         *
-         * var datepicker = new tui.DatePicker('#datepicker-container', {
-         *     language: 'customKey'
-         * });
-         */
-        localeTexts: localeTexts
+      /**
+       * Locale text data
+       * @type {object}
+       * @memberof DatePicker
+       * @static
+       * @example
+       * var DatePicker = tui.DatePicker; // or require('tui-date-picker');
+       *
+       * DatePicker.localeTexts['customKey'] = {
+       *     titles: {
+       *         // days
+       *         DD: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+       *         // daysShort
+       *         D: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fir', 'Sat'],
+       *         // months
+       *         MMMM: [
+       *             'January', 'February', 'March', 'April', 'May', 'June',
+       *             'July', 'August', 'September', 'October', 'November', 'December'
+       *         ],
+       *         // monthsShort
+       *         MMM: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+       *     },
+       *     titleFormat: 'MMM yyyy',
+       *     todayFormat: 'D, MMMM dd, yyyy',
+       *     date: 'Date',
+       *     time: 'Time'
+       * };
+       *
+       * var datepicker = new tui.DatePicker('#datepicker-container', {
+       *     language: 'customKey'
+       * });
+       */
+      localeTexts: localeTexts
     },
     init: function(container, options) {
-        options = mergeDefaultOption(options);
+      options = mergeDefaultOption(options);
 
-        /**
-         * Language type
-         * @type {string}
-         * @private
-         */
-        this._language = options.language;
+      /**
+       * Language type
+       * @type {string}
+       * @private
+       */
+      this._language = options.language;
 
-        /**
-         * DatePicker container
-         * @type {HTMLElement}
-         * @private
-         */
-        this._container = util.getElement(container);
-        this._container.innerHTML = tmpl(options);
+      /**
+       * DatePicker container
+       * @type {HTMLElement}
+       * @private
+       */
+      this._container = util.getElement(container);
+      this._container.innerHTML = tmpl(options);
 
-        /**
-         * DatePicker element
-         * @type {HTMLElement}
-         * @private
-         */
-        this._element = this._container.firstChild;
+      /**
+       * DatePicker element
+       * @type {HTMLElement}
+       * @private
+       */
+      this._element = this._container.firstChild;
 
-        /**
-         * Calendar instance
-         * @type {Calendar}
-         * @private
-         */
-        this._calendar = new Calendar(
-            this._element.querySelector(SELECTOR_CALENDAR_CONTAINER),
-            snippet.extend(options.calendar, {
-                usageStatistics: options.usageStatistics
-            })
-        );
+      /**
+       * Calendar instance
+       * @type {Calendar}
+       * @private
+       */
+      this._calendar = new Calendar(
+        this._element.querySelector(SELECTOR_CALENDAR_CONTAINER),
+        snippet.extend(options.calendar, {
+          usageStatistics: options.usageStatistics
+        })
+      );
 
-        /**
-         * TimePicker instance
-         * @type {TimePicker}
-         * @private
-         */
-        this._timepicker = null;
+      /**
+       * TimePicker instance
+       * @type {TimePicker}
+       * @private
+       */
+      this._timepicker = null;
 
-        /**
-         * DatePicker input
-         * @type {DatePickerInput}
-         * @private
-         */
-        this._datepickerInput = null;
+      /**
+       * DatePicker input
+       * @type {DatePickerInput}
+       * @private
+       */
+      this._datepickerInput = null;
 
-        /**
-         * Object having date values
-         * @type {Date}
-         * @private
-         */
-        this._date = null;
+      /**
+       * Object having date values
+       * @type {Date}
+       * @private
+       */
+      this._date = null;
 
-        /**
-         * Selectable date-ranges model
-         * @type {RangeModel}
-         * @private
-         */
-        this._rangeModel = null;
+      /**
+       * Selectable date-ranges model
+       * @type {RangeModel}
+       * @private
+       */
+      this._rangeModel = null;
 
-        /**
-         * openers - opener list
-         * @type {Array}
-         * @private
-         */
-        this._openers = [];
+      /**
+       * openers - opener list
+       * @type {Array}
+       * @private
+       */
+      this._openers = [];
 
-        /**
-         * State of picker enable
-         * @type {boolean}
-         * @private
-         */
-        this._isEnabled = true;
+      /**
+       * State of picker enable
+       * @type {boolean}
+       * @private
+       */
+      this._isEnabled = true;
 
-        /**
-         * ID of instance
-         * @private
-         * @type {number}
-         */
-        this._id = 'tui-datepicker-' + snippet.stamp(this);
+      /**
+       * ID of instance
+       * @private
+       * @type {number}
+       */
+      this._id = 'tui-datepicker-' + snippet.stamp(this);
 
-        /**
-         * DatePicker type
-         * @type {TYPE_DATE|TYPE_MONTH|TYPE_YEAR}
-         * @private
-         */
-        this._type = options.type;
+      /**
+       * DatePicker type
+       * @type {TYPE_DATE|TYPE_MONTH|TYPE_YEAR}
+       * @private
+       */
+      this._type = options.type;
 
-        /**
-         * Show always or not
-         * @type {boolean}
-         */
-        this.showAlways = options.showAlways;
+      /**
+       * Show always or not
+       * @type {boolean}
+       */
+      this.showAlways = options.showAlways;
 
-        /**
-         * Close after select a date
-         * @type {boolean}
-         */
-        this.autoClose = options.autoClose;
+      /**
+       * Close after select a date
+       * @type {boolean}
+       */
+      this.autoClose = options.autoClose;
 
-        this._initializeDatePicker(options);
+      this._initializeDatePicker(options);
     },
 
     /**
@@ -293,21 +297,21 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @private
      */
     _initializeDatePicker: function(option) {
-        this.setRanges(option.selectableRanges);
-        this._setEvents();
-        this._initTimePicker(option.timepicker, option.usageStatistics);
-        this.setInput(option.input.element);
-        this.setDateFormat(option.input.format);
-        this.setDate(option.date);
+      this.setRanges(option.selectableRanges);
+      this._setEvents();
+      this._initTimePicker(option.timepicker, option.usageStatistics);
+      this.setInput(option.input.element);
+      this.setDateFormat(option.input.format);
+      this.setDate(option.date);
 
-        snippet.forEach(option.openers, this.addOpener, this);
-        if (!this.showAlways) {
-            this._hide();
-        }
+      snippet.forEach(option.openers, this.addOpener, this);
+      if (!this.showAlways) {
+        this._hide();
+      }
 
-        if (this.getType() === TYPE_DATE) {
-            domUtil.addClass(this._element.querySelector(SELECTOR_BODY), 'tui-datepicker-type-date');
-        }
+      if (this.getType() === TYPE_DATE) {
+        domUtil.addClass(this._element.querySelector(SELECTOR_BODY), 'tui-datepicker-type-date');
+      }
     },
 
     /**
@@ -316,8 +320,8 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @private
      */
     _setEvents: function() {
-        mouseTouchEvent.on(this._element, 'click', this._onClickHandler, this);
-        this._calendar.on('draw', this._onDrawCalendar, this);
+      mouseTouchEvent.on(this._element, 'click', this._onClickHandler, this);
+      this._calendar.on('draw', this._onDrawCalendar, this);
     },
 
     /**
@@ -325,8 +329,8 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @private
      */
     _removeEvents: function() {
-        mouseTouchEvent.off(this._element, 'click', this._onClickHandler, this);
-        this._calendar.off();
+      mouseTouchEvent.off(this._element, 'click', this._onClickHandler, this);
+      this._calendar.off();
     },
 
     /**
@@ -334,7 +338,7 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @private
      */
     _setDocumentEvents: function() {
-        mouseTouchEvent.on(document, 'mousedown', this._onMousedownDocument, this);
+      mouseTouchEvent.on(document, 'mousedown', this._onMousedownDocument, this);
     },
 
     /**
@@ -342,7 +346,7 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @private
      */
     _removeDocumentEvents: function() {
-        mouseTouchEvent.off(document, 'mousedown', this._onMousedownDocument);
+      mouseTouchEvent.off(document, 'mousedown', this._onMousedownDocument);
     },
 
     /**
@@ -351,7 +355,7 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @private
      */
     _setOpenerEvents: function(opener) {
-        mouseTouchEvent.on(opener, 'click', this.toggle, this);
+      mouseTouchEvent.on(opener, 'click', this.toggle, this);
     },
 
     /**
@@ -360,7 +364,7 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @private
      */
     _removeOpenerEvents: function(opener) {
-        mouseTouchEvent.off(opener, 'click', this.toggle);
+      mouseTouchEvent.off(opener, 'click', this.toggle);
     },
 
     /**
@@ -370,34 +374,41 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @private
      */
     _initTimePicker: function(opTimePicker, usageStatistics) {
-        var layoutType;
-        if (!opTimePicker) {
-            return;
-        }
+      var layoutType;
+      if (!opTimePicker) {
+        return;
+      }
 
-        layoutType = opTimePicker.layoutType || '';
+      layoutType = opTimePicker.layoutType || '';
 
-        if (snippet.isObject(opTimePicker)) {
-            opTimePicker.usageStatistics = usageStatistics;
-        } else {
-            opTimePicker = {
-                usageStatistics: usageStatistics
-            };
-        }
+      if (snippet.isObject(opTimePicker)) {
+        opTimePicker.usageStatistics = usageStatistics;
+      } else {
+        opTimePicker = {
+          usageStatistics: usageStatistics
+        };
+      }
 
-        this._timepicker = new TimePicker(this._element.querySelector(SELECTOR_TIMEPICKER_CONTAINER), opTimePicker);
+      this._timepicker = new TimePicker(
+        this._element.querySelector(SELECTOR_TIMEPICKER_CONTAINER),
+        opTimePicker
+      );
 
-        if (layoutType.toLowerCase() === 'tab') {
-            this._timepicker.hide();
-        }
+      if (layoutType.toLowerCase() === 'tab') {
+        this._timepicker.hide();
+      }
 
-        this._timepicker.on('change', function(ev) {
-            var prevDate;
-            if (this._date) {
-                prevDate = new Date(this._date);
-                this.setDate(prevDate.setHours(ev.hour, ev.minute));
-            }
-        }, this);
+      this._timepicker.on(
+        'change',
+        function(ev) {
+          var prevDate;
+          if (this._date) {
+            prevDate = new Date(this._date);
+            this.setDate(prevDate.setHours(ev.hour, ev.minute));
+          }
+        },
+        this
+      );
     },
 
     /**
@@ -406,19 +417,22 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @private
      */
     _changePicker: function(target) {
-        var btnSelector = '.' + CLASS_NAME_SELECTOR_BUTTON;
-        var selectedBtn = domUtil.closest(target, btnSelector);
-        var isDate = selectedBtn.querySelector(SELECTOR_DATE_ICO);
+      var btnSelector = '.' + CLASS_NAME_SELECTOR_BUTTON;
+      var selectedBtn = domUtil.closest(target, btnSelector);
+      var isDate = selectedBtn.querySelector(SELECTOR_DATE_ICO);
 
-        if (isDate) {
-            this._calendar.show();
-            this._timepicker.hide();
-        } else {
-            this._calendar.hide();
-            this._timepicker.show();
-        }
-        domUtil.removeClass(this._element.querySelector('.' + CLASS_NAME_CHECKED), CLASS_NAME_CHECKED);
-        domUtil.addClass(selectedBtn, CLASS_NAME_CHECKED);
+      if (isDate) {
+        this._calendar.show();
+        this._timepicker.hide();
+      } else {
+        this._calendar.hide();
+        this._timepicker.show();
+      }
+      domUtil.removeClass(
+        this._element.querySelector('.' + CLASS_NAME_CHECKED),
+        CLASS_NAME_CHECKED
+      );
+      domUtil.addClass(selectedBtn, CLASS_NAME_CHECKED);
     },
 
     /**
@@ -428,9 +442,9 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @private
      */
     _isOpener: function(element) {
-        var el = util.getElement(element);
+      var el = util.getElement(element);
 
-        return snippet.inArray(el, this._openers) > -1;
+      return snippet.inArray(el, this._openers) > -1;
     },
 
     /**
@@ -439,20 +453,20 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @private
      */
     _setTodayClassName: function(el) {
-        var timestamp, isToday;
+      var timestamp, isToday;
 
-        if (this.getCalendarType() !== TYPE_DATE) {
-            return;
-        }
+      if (this.getCalendarType() !== TYPE_DATE) {
+        return;
+      }
 
-        timestamp = Number(domUtil.getData(el, 'timestamp'));
-        isToday = timestamp === new Date().setHours(0, 0, 0, 0);
+      timestamp = Number(domUtil.getData(el, 'timestamp'));
+      isToday = timestamp === new Date().setHours(0, 0, 0, 0);
 
-        if (isToday) {
-            domUtil.addClass(el, CLASS_NAME_TODAY);
-        } else {
-            domUtil.removeClass(el, CLASS_NAME_TODAY);
-        }
+      if (isToday) {
+        domUtil.addClass(el, CLASS_NAME_TODAY);
+      } else {
+        domUtil.removeClass(el, CLASS_NAME_TODAY);
+      }
     },
 
     /**
@@ -461,15 +475,15 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @private
      */
     _setSelectableClassName: function(el) {
-        var elDate = new Date(Number(domUtil.getData(el, 'timestamp')));
+      var elDate = new Date(Number(domUtil.getData(el, 'timestamp')));
 
-        if (this._isSelectableOnCalendar(elDate)) {
-            domUtil.addClass(el, CLASS_NAME_SELECTABLE);
-            domUtil.removeClass(el, CLASS_NAME_BLOCKED);
-        } else {
-            domUtil.removeClass(el, CLASS_NAME_SELECTABLE);
-            domUtil.addClass(el, CLASS_NAME_BLOCKED);
-        }
+      if (this._isSelectableOnCalendar(elDate)) {
+        domUtil.addClass(el, CLASS_NAME_SELECTABLE);
+        domUtil.removeClass(el, CLASS_NAME_BLOCKED);
+      } else {
+        domUtil.removeClass(el, CLASS_NAME_SELECTABLE);
+        domUtil.addClass(el, CLASS_NAME_BLOCKED);
+      }
     },
 
     /**
@@ -478,13 +492,13 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @private
      */
     _setSelectedClassName: function(el) {
-        var elDate = new Date(Number(domUtil.getData(el, 'timestamp')));
+      var elDate = new Date(Number(domUtil.getData(el, 'timestamp')));
 
-        if (this._isSelectedOnCalendar(elDate)) {
-            domUtil.addClass(el, CLASS_NAME_SELECTED);
-        } else {
-            domUtil.removeClass(el, CLASS_NAME_SELECTED);
-        }
+      if (this._isSelectedOnCalendar(elDate)) {
+        domUtil.addClass(el, CLASS_NAME_SELECTED);
+      } else {
+        domUtil.removeClass(el, CLASS_NAME_SELECTED);
+      }
     },
 
     /**
@@ -494,11 +508,11 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @private
      */
     _isSelectableOnCalendar: function(date) {
-        var type = this.getCalendarType();
-        var start = dateUtil.cloneWithStartOf(date, type).getTime();
-        var end = dateUtil.cloneWithEndOf(date, type).getTime();
+      var type = this.getCalendarType();
+      var start = dateUtil.cloneWithStartOf(date, type).getTime();
+      var end = dateUtil.cloneWithEndOf(date, type).getTime();
 
-        return this._rangeModel.hasOverlap(start, end);
+      return this._rangeModel.hasOverlap(start, end);
     },
 
     /**
@@ -508,24 +522,24 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @private
      */
     _isSelectedOnCalendar: function(date) {
-        var curDate = this.getDate();
-        var calendarType = this.getCalendarType();
+      var curDate = this.getDate();
+      var calendarType = this.getCalendarType();
 
-        return curDate && dateUtil.isSame(curDate, date, calendarType);
+      return curDate && dateUtil.isSame(curDate, date, calendarType);
     },
 
     /**
      * Show the date picker element
      */
     _show: function() {
-        domUtil.removeClass(this._element, CLASS_NAME_HIDDEN);
+      domUtil.removeClass(this._element, CLASS_NAME_HIDDEN);
     },
 
     /**
      * Hide the date picker element
      */
     _hide: function() {
-        domUtil.addClass(this._element, CLASS_NAME_HIDDEN);
+      domUtil.addClass(this._element, CLASS_NAME_HIDDEN);
     },
 
     /**
@@ -533,11 +547,11 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @private
      */
     _syncToInput: function() {
-        if (!this._date) {
-            return;
-        }
+      if (!this._date) {
+        return;
+      }
 
-        this._datepickerInput.setDate(this._date);
+      this._datepickerInput.setDate(this._date);
     },
 
     /**
@@ -546,35 +560,35 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @private
      */
     _syncFromInput: function(shouldRollback) {
-        var isFailed = false;
-        var date;
+      var isFailed = false;
+      var date;
 
-        try {
-            date = this._datepickerInput.getDate();
+      try {
+        date = this._datepickerInput.getDate();
 
-            if (this.isSelectable(date)) {
-                if (this._timepicker) {
-                    this._timepicker.setTime(date.getHours(), date.getMinutes());
-                }
-                this.setDate(date);
-            } else {
-                isFailed = true;
-            }
-        } catch (err) {
-            this.fire('error', {
-                type: 'ParsingError',
-                message: err.message
-            });
-            isFailed = true;
-        } finally {
-            if (isFailed) {
-                if (shouldRollback) {
-                    this._syncToInput();
-                } else {
-                    this.setNull();
-                }
-            }
+        if (this.isSelectable(date)) {
+          if (this._timepicker) {
+            this._timepicker.setTime(date.getHours(), date.getMinutes());
+          }
+          this.setDate(date);
+        } else {
+          isFailed = true;
         }
+      } catch (err) {
+        this.fire('error', {
+          type: 'ParsingError',
+          message: err.message
+        });
+        isFailed = true;
+      } finally {
+        if (isFailed) {
+          if (shouldRollback) {
+            this._syncToInput();
+          } else {
+            this.setNull();
+          }
+        }
+      }
     },
 
     /**
@@ -584,16 +598,16 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @private
      */
     _onMousedownDocument: function(ev) {
-        var target = util.getTarget(ev);
-        var selector = util.getSelector(target);
-        var isContain = selector ? this._element.querySelector(selector) : false;
-        var isInput = this._datepickerInput.is(target);
-        var isInOpener = (snippet.inArray(target, this._openers) > -1);
-        var shouldClose = !(this.showAlways || isInput || isContain || isInOpener);
+      var target = util.getTarget(ev);
+      var selector = util.getSelector(target);
+      var isContain = selector ? this._element.querySelector(selector) : false;
+      var isInput = this._datepickerInput.is(target);
+      var isInOpener = snippet.inArray(target, this._openers) > -1;
+      var shouldClose = !(this.showAlways || isInput || isContain || isInOpener);
 
-        if (shouldClose) {
-            this.close();
-        }
+      if (shouldClose) {
+        this.close();
+      }
     },
 
     /**
@@ -601,15 +615,15 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @param {Event} ev An event object
      */
     _onClickHandler: function(ev) {
-        var target = util.getTarget(ev);
+      var target = util.getTarget(ev);
 
-        if (domUtil.closest(target, '.' + CLASS_NAME_SELECTABLE)) {
-            this._updateDate(target);
-        } else if (domUtil.closest(target, SELECTOR_CALENDAR_TITLE)) {
-            this.drawUpperCalendar(this._date);
-        } else if (domUtil.closest(target, '.' + CLASS_NAME_SELECTOR_BUTTON)) {
-            this._changePicker(target);
-        }
+      if (domUtil.closest(target, '.' + CLASS_NAME_SELECTABLE)) {
+        this._updateDate(target);
+      } else if (domUtil.closest(target, SELECTOR_CALENDAR_TITLE)) {
+        this.drawUpperCalendar(this._date);
+      } else if (domUtil.closest(target, '.' + CLASS_NAME_SELECTOR_BUTTON)) {
+        this._changePicker(target);
+      }
     },
 
     /**
@@ -618,27 +632,27 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @private
      */
     _updateDate: function(target) {
-        var timestamp = Number(domUtil.getData(target, 'timestamp'));
-        var newDate = new Date(timestamp);
-        var timepicker = this._timepicker;
-        var prevDate = this._date;
-        var calendarType = this.getCalendarType();
-        var pickerType = this.getType();
+      var timestamp = Number(domUtil.getData(target, 'timestamp'));
+      var newDate = new Date(timestamp);
+      var timepicker = this._timepicker;
+      var prevDate = this._date;
+      var calendarType = this.getCalendarType();
+      var pickerType = this.getType();
 
-        if (calendarType !== pickerType) {
-            this.drawLowerCalendar(newDate);
-        } else {
-            if (timepicker) {
-                newDate.setHours(timepicker.getHour(), timepicker.getMinute());
-            } else if (prevDate) {
-                newDate.setHours(prevDate.getHours(), prevDate.getMinutes());
-            }
-            this.setDate(newDate);
-
-            if (!this.showAlways && this.autoClose) {
-                this.close();
-            }
+      if (calendarType !== pickerType) {
+        this.drawLowerCalendar(newDate);
+      } else {
+        if (timepicker) {
+          newDate.setHours(timepicker.getHour(), timepicker.getMinute());
+        } else if (prevDate) {
+          newDate.setHours(prevDate.getHours(), prevDate.getMinutes());
         }
+        this.setDate(newDate);
+
+        if (!this.showAlways && this.autoClose) {
+          this.close();
+        }
+      }
     },
 
     /**
@@ -648,29 +662,33 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @private
      */
     _onDrawCalendar: function(eventData) {
-        var dateElements = snippet.toArray(eventData.dateElements);
+      var dateElements = snippet.toArray(eventData.dateElements);
 
-        snippet.forEach(dateElements, function(el) {
-            this._setTodayClassName(el);
-            this._setSelectableClassName(el);
-            this._setSelectedClassName(el);
-        }, this);
-        this._setDisplayHeadButtons();
+      snippet.forEach(
+        dateElements,
+        function(el) {
+          this._setTodayClassName(el);
+          this._setSelectableClassName(el);
+          this._setSelectedClassName(el);
+        },
+        this
+      );
+      this._setDisplayHeadButtons();
 
-        /**
-         * Fires after calendar drawing
-         * @event DatePicker#draw
-         * @type {Object} evt - See {@link Calendar#event:draw}
-         * @property {Date} date - Calendar date
-         * @property {string} type - Calendar type
-         * @property {HTMLElement} dateElements - Calendar date elements
-         * @example
-         *
-         * datepicker.on('draw', function(evt) {
-         *     console.log(evt.date);
-         * });
-         */
-        this.fire('draw', eventData);
+      /**
+       * Fires after calendar drawing
+       * @event DatePicker#draw
+       * @type {Object} evt - See {@link Calendar#event:draw}
+       * @property {Date} date - Calendar date
+       * @property {string} type - Calendar type
+       * @property {HTMLElement} dateElements - Calendar date elements
+       * @example
+       *
+       * datepicker.on('draw', function(evt) {
+       *     console.log(evt.date);
+       * });
+       */
+      this.fire('draw', eventData);
     },
 
     /**
@@ -679,33 +697,33 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @private
      */
     _setDisplayHeadButtons: function() {
-        var nextYearDate = this._calendar.getNextYearDate();
-        var prevYearDate = this._calendar.getPrevYearDate();
-        var maxTimestamp = this._rangeModel.getMaximumValue();
-        var minTimestamp = this._rangeModel.getMinimumValue();
-        var nextYearBtn = this._element.querySelector('.' + CLASS_NAME_NEXT_YEAR_BTN);
-        var prevYearBtn = this._element.querySelector('.' + CLASS_NAME_PREV_YEAR_BTN);
-        var nextMonthDate, prevMonthDate, nextMonBtn, prevMonBtn;
+      var nextYearDate = this._calendar.getNextYearDate();
+      var prevYearDate = this._calendar.getPrevYearDate();
+      var maxTimestamp = this._rangeModel.getMaximumValue();
+      var minTimestamp = this._rangeModel.getMinimumValue();
+      var nextYearBtn = this._element.querySelector('.' + CLASS_NAME_NEXT_YEAR_BTN);
+      var prevYearBtn = this._element.querySelector('.' + CLASS_NAME_PREV_YEAR_BTN);
+      var nextMonthDate, prevMonthDate, nextMonBtn, prevMonBtn;
 
-        if (this.getCalendarType() === TYPE_DATE) {
-            nextMonthDate = dateUtil.cloneWithStartOf(this._calendar.getNextDate(), TYPE_MONTH);
-            prevMonthDate = dateUtil.cloneWithEndOf(this._calendar.getPrevDate(), TYPE_MONTH);
+      if (this.getCalendarType() === TYPE_DATE) {
+        nextMonthDate = dateUtil.cloneWithStartOf(this._calendar.getNextDate(), TYPE_MONTH);
+        prevMonthDate = dateUtil.cloneWithEndOf(this._calendar.getPrevDate(), TYPE_MONTH);
 
-            nextMonBtn = this._element.querySelector('.' + CLASS_NAME_NEXT_MONTH_BTN);
-            prevMonBtn = this._element.querySelector('.' + CLASS_NAME_PREV_MONTH_BTN);
+        nextMonBtn = this._element.querySelector('.' + CLASS_NAME_NEXT_MONTH_BTN);
+        prevMonBtn = this._element.querySelector('.' + CLASS_NAME_PREV_MONTH_BTN);
 
-            this._setDisplay(nextMonBtn, nextMonthDate.getTime() <= maxTimestamp);
-            this._setDisplay(prevMonBtn, prevMonthDate.getTime() >= minTimestamp);
+        this._setDisplay(nextMonBtn, nextMonthDate.getTime() <= maxTimestamp);
+        this._setDisplay(prevMonBtn, prevMonthDate.getTime() >= minTimestamp);
 
-            prevYearDate.setDate(1);
-            nextYearDate.setDate(1);
-        } else {
-            prevYearDate.setMonth(12, 0);
-            nextYearDate.setMonth(0, 1);
-        }
+        prevYearDate.setDate(1);
+        nextYearDate.setDate(1);
+      } else {
+        prevYearDate.setMonth(12, 0);
+        nextYearDate.setMonth(0, 1);
+      }
 
-        this._setDisplay(nextYearBtn, nextYearDate.getTime() <= maxTimestamp);
-        this._setDisplay(prevYearBtn, prevYearDate.getTime() >= minTimestamp);
+      this._setDisplay(nextYearBtn, nextYearDate.getTime() <= maxTimestamp);
+      this._setDisplay(prevYearBtn, prevYearDate.getTime() >= minTimestamp);
     },
 
     /**
@@ -715,13 +733,13 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @private
      */
     _setDisplay: function(el, shouldShow) {
-        if (el) {
-            if (shouldShow) {
-                domUtil.removeClass(el, CLASS_NAME_HIDDEN);
-            } else {
-                domUtil.addClass(el, CLASS_NAME_HIDDEN);
-            }
+      if (el) {
+        if (shouldShow) {
+          domUtil.removeClass(el, CLASS_NAME_HIDDEN);
+        } else {
+          domUtil.addClass(el, CLASS_NAME_HIDDEN);
         }
+      }
     },
 
     /**
@@ -730,7 +748,7 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @throws {Error}
      */
     _onChangeInput: function() {
-        this._syncFromInput(true);
+      this._syncFromInput(true);
     },
 
     /**
@@ -740,9 +758,9 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @private
      */
     _isChanged: function(date) {
-        var prevDate = this.getDate();
+      var prevDate = this.getDate();
 
-        return !prevDate || (date.getTime() !== prevDate.getTime());
+      return !prevDate || date.getTime() !== prevDate.getTime();
     },
 
     /**
@@ -750,11 +768,11 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @private
      */
     _refreshFromRanges: function() {
-        if (!this.isSelectable(this._date)) {
-            this.setNull();
-        } else {
-            this._calendar.draw(); // view update
-        }
+      if (!this.isSelectable(this._date)) {
+        this.setNull();
+      } else {
+        this._calendar.draw(); // view update
+      }
     },
 
     /**
@@ -762,7 +780,7 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @returns {'date'|'month'|'year'}
      */
     getCalendarType: function() {
-        return this._calendar.getType();
+      return this._calendar.getType();
     },
 
     /**
@@ -770,7 +788,7 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @returns {'date'|'month'|'year'}
      */
     getType: function() {
-        return this._type;
+      return this._type;
     },
 
     /**
@@ -779,16 +797,16 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @returns {boolean}
      */
     isSelectable: function(date) {
-        var type = this.getType();
-        var start, end;
+      var type = this.getType();
+      var start, end;
 
-        if (!dateUtil.isValidDate(date)) {
-            return false;
-        }
-        start = dateUtil.cloneWithStartOf(date, type).getTime();
-        end = dateUtil.cloneWithEndOf(date, type).getTime();
+      if (!dateUtil.isValidDate(date)) {
+        return false;
+      }
+      start = dateUtil.cloneWithStartOf(date, type).getTime();
+      end = dateUtil.cloneWithEndOf(date, type).getTime();
 
-        return this._rangeModel.hasOverlap(start, end);
+      return this._rangeModel.hasOverlap(start, end);
     },
 
     /**
@@ -797,7 +815,7 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @returns {boolean}
      */
     isSelected: function(date) {
-        return dateUtil.isValidDate(date) && dateUtil.isSame(this._date, date, this.getType());
+      return dateUtil.isValidDate(date) && dateUtil.isSame(this._date, date, this.getType());
     },
 
     /**
@@ -811,15 +829,15 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * ]);
      */
     setRanges: function(ranges) {
-        ranges = snippet.map(ranges, function(range) {
-            var start = new Date(range[0]).getTime();
-            var end = new Date(range[1]).getTime();
+      ranges = snippet.map(ranges, function(range) {
+        var start = new Date(range[0]).getTime();
+        var end = new Date(range[1]).getTime();
 
-            return [start, end];
-        });
+        return [start, end];
+      });
 
-        this._rangeModel = new RangeModel(ranges);
-        this._refreshFromRanges();
+      this._rangeModel = new RangeModel(ranges);
+      this._refreshFromRanges();
     },
 
     /**
@@ -829,7 +847,7 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * datepicker.setType('month');
      */
     setType: function(type) {
-        this._type = type;
+      this._type = type;
     },
 
     /**
@@ -843,11 +861,11 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * datepicker.addRange(start, end);
      */
     addRange: function(start, end) {
-        start = new Date(start).getTime();
-        end = new Date(end).getTime();
+      start = new Date(start).getTime();
+      end = new Date(end).getTime();
 
-        this._rangeModel.add(start, end);
-        this._refreshFromRanges();
+      this._rangeModel.add(start, end);
+      this._refreshFromRanges();
     },
 
     /**
@@ -862,17 +880,17 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * datepicker.removeRange(start, end);
      */
     removeRange: function(start, end, type) {
-        start = new Date(start);
-        end = new Date(end);
+      start = new Date(start);
+      end = new Date(end);
 
-        if (type) {
-            // @todo Consider time-range on timepicker
-            start = dateUtil.cloneWithStartOf(start, type);
-            end = dateUtil.cloneWithEndOf(end, type);
-        }
+      if (type) {
+        // @todo Consider time-range on timepicker
+        start = dateUtil.cloneWithStartOf(start, type);
+        end = dateUtil.cloneWithEndOf(end, type);
+      }
 
-        this._rangeModel.exclude(start.getTime(), end.getTime());
-        this._refreshFromRanges();
+      this._rangeModel.exclude(start.getTime(), end.getTime());
+      this._refreshFromRanges();
     },
 
     /**
@@ -880,12 +898,12 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @param {HTMLElement|string} opener - element or selector
      */
     addOpener: function(opener) {
-        opener = util.getElement(opener);
+      opener = util.getElement(opener);
 
-        if (!this._isOpener(opener)) {
-            this._openers.push(opener);
-            this._setOpenerEvents(opener);
-        }
+      if (!this._isOpener(opener)) {
+        this._openers.push(opener);
+        this._setOpenerEvents(opener);
+      }
     },
 
     /**
@@ -893,25 +911,29 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @param {HTMLElement|string} opener - element or selector
      */
     removeOpener: function(opener) {
-        var index;
+      var index;
 
-        opener = util.getElement(opener);
-        index = snippet.inArray(opener, this._openers);
+      opener = util.getElement(opener);
+      index = snippet.inArray(opener, this._openers);
 
-        if (index > -1) {
-            this._removeOpenerEvents(opener);
-            this._openers.splice(index, 1);
-        }
+      if (index > -1) {
+        this._removeOpenerEvents(opener);
+        this._openers.splice(index, 1);
+      }
     },
 
     /**
      * Remove all openers
      */
     removeAllOpeners: function() {
-        snippet.forEach(this._openers, function(opener) {
-            this._removeOpenerEvents(opener);
-        }, this);
-        this._openers = [];
+      snippet.forEach(
+        this._openers,
+        function(opener) {
+          this._removeOpenerEvents(opener);
+        },
+        this
+      );
+      this._openers = [];
     },
 
     /**
@@ -920,28 +942,28 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * datepicker.open();
      */
     open: function() {
-        if (this.isOpened() || !this._isEnabled) {
-            return;
-        }
+      if (this.isOpened() || !this._isEnabled) {
+        return;
+      }
 
-        this._calendar.draw({
-            date: this._date,
-            type: this._type
-        });
-        this._show();
+      this._calendar.draw({
+        date: this._date,
+        type: this._type
+      });
+      this._show();
 
-        if (!this.showAlways) {
-            this._setDocumentEvents();
-        }
+      if (!this.showAlways) {
+        this._setDocumentEvents();
+      }
 
-        /**
-         * @event DatePicker#open
-         * @example
-         * datepicker.on('open', function() {
-         *     alert('open');
-         * });
-         */
-        this.fire('open');
+      /**
+       * @event DatePicker#open
+       * @example
+       * datepicker.on('open', function() {
+       *     alert('open');
+       * });
+       */
+      this.fire('open');
     },
 
     /**
@@ -950,19 +972,19 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @param {Date} date - Date
      */
     drawUpperCalendar: function(date) {
-        var calendarType = this.getCalendarType();
+      var calendarType = this.getCalendarType();
 
-        if (calendarType === TYPE_DATE) {
-            this._calendar.draw({
-                date: date,
-                type: TYPE_MONTH
-            });
-        } else if (calendarType === TYPE_MONTH) {
-            this._calendar.draw({
-                date: date,
-                type: TYPE_YEAR
-            });
-        }
+      if (calendarType === TYPE_DATE) {
+        this._calendar.draw({
+          date: date,
+          type: TYPE_MONTH
+        });
+      } else if (calendarType === TYPE_MONTH) {
+        this._calendar.draw({
+          date: date,
+          type: TYPE_YEAR
+        });
+      }
     },
 
     /**
@@ -971,25 +993,25 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @param {Date} date - Date
      */
     drawLowerCalendar: function(date) {
-        var calendarType = this.getCalendarType();
-        var pickerType = this.getType();
-        var isLast = calendarType === pickerType;
+      var calendarType = this.getCalendarType();
+      var pickerType = this.getType();
+      var isLast = calendarType === pickerType;
 
-        if (isLast) {
-            return;
-        }
+      if (isLast) {
+        return;
+      }
 
-        if (calendarType === TYPE_MONTH) {
-            this._calendar.draw({
-                date: date,
-                type: TYPE_DATE
-            });
-        } else if (calendarType === TYPE_YEAR) {
-            this._calendar.draw({
-                date: date,
-                type: TYPE_MONTH
-            });
-        }
+      if (calendarType === TYPE_MONTH) {
+        this._calendar.draw({
+          date: date,
+          type: TYPE_DATE
+        });
+      } else if (calendarType === TYPE_YEAR) {
+        this._calendar.draw({
+          date: date,
+          type: TYPE_MONTH
+        });
+      }
     },
 
     /**
@@ -998,21 +1020,21 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * datepicker.close();
      */
     close: function() {
-        if (!this.isOpened()) {
-            return;
-        }
-        this._removeDocumentEvents();
-        this._hide();
+      if (!this.isOpened()) {
+        return;
+      }
+      this._removeDocumentEvents();
+      this._hide();
 
-        /**
-         * Close event - DatePicker
-         * @event DatePicker#close
-         * @example
-         * datepicker.on('close', function() {
-         *     alert('close');
-         * });
-         */
-        this.fire('close');
+      /**
+       * Close event - DatePicker
+       * @event DatePicker#close
+       * @example
+       * datepicker.on('close', function() {
+       *     alert('close');
+       * });
+       */
+      this.fire('close');
     },
 
     /**
@@ -1021,11 +1043,11 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * datepicker.toggle();
      */
     toggle: function() {
-        if (this.isOpened()) {
-            this.close();
-        } else {
-            this.open();
-        }
+      if (this.isOpened()) {
+        this.close();
+      } else {
+        this.open();
+      }
     },
 
     /**
@@ -1036,11 +1058,11 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * datepicker.getDate(); // new Date(2015, 3, 13)
      */
     getDate: function() {
-        if (!this._date) {
-            return null;
-        }
+      if (!this._date) {
+        return null;
+      }
 
-        return new Date(this._date);
+      return new Date(this._date);
     },
 
     /**
@@ -1049,71 +1071,72 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @example
      * datepicker.setDate(new Date()); // Set today
      */
-    setDate: function(date) { // eslint-disable-line complexity
-        var isValidInput, newDate, shouldUpdate;
+    // eslint-disable-next-line complexity
+    setDate: function(date) {
+      var isValidInput, newDate, shouldUpdate;
 
-        if (date === null) {
-            this.setNull();
+      if (date === null) {
+        this.setNull();
 
-            return;
-        }
+        return;
+      }
 
-        isValidInput = snippet.isNumber(date) || snippet.isDate(date);
+      isValidInput = snippet.isNumber(date) || snippet.isDate(date);
+      newDate = new Date(date);
+      shouldUpdate = isValidInput && this._isChanged(newDate) && this.isSelectable(newDate);
+
+      if (shouldUpdate) {
         newDate = new Date(date);
-        shouldUpdate = isValidInput && this._isChanged(newDate) && this.isSelectable(newDate);
-
-        if (shouldUpdate) {
-            newDate = new Date(date);
-            this._date = newDate;
-            this._calendar.draw({date: newDate});
-            if (this._timepicker) {
-                this._timepicker.setTime(newDate.getHours(), newDate.getMinutes());
-            }
-            this._syncToInput();
-
-            /**
-             * Change event
-             * @event DatePicker#change
-             * @example
-             *
-             * datepicker.on('change', function() {
-             *     var newDate = datepicker.getDate();
-             *
-             *     console.log(newDate);
-             * });
-             */
-            this.fire('change');
+        this._date = newDate;
+        this._calendar.draw({date: newDate});
+        if (this._timepicker) {
+          this._timepicker.setTime(newDate.getHours(), newDate.getMinutes());
         }
+        this._syncToInput();
+
+        /**
+         * Change event
+         * @event DatePicker#change
+         * @example
+         *
+         * datepicker.on('change', function() {
+         *     var newDate = datepicker.getDate();
+         *
+         *     console.log(newDate);
+         * });
+         */
+        this.fire('change');
+      }
     },
 
     /**
      * Set null date
      */
     setNull: function() {
-        var calendarDate = this._calendar.getDate();
-        var isChagned = this._date !== null;
+      var calendarDate = this._calendar.getDate();
+      var isChagned = this._date !== null;
 
-        this._date = null;
+      this._date = null;
 
-        if (this._datepickerInput) {
-            this._datepickerInput.clearText();
-        }
-        if (this._timepicker) {
-            this._timepicker.setTime(0, 0);
-        }
+      if (this._datepickerInput) {
+        this._datepickerInput.clearText();
+      }
+      if (this._timepicker) {
+        this._timepicker.setTime(0, 0);
+      }
 
-        // View update
-        if (!this.isSelectable(calendarDate)) {
-            this._calendar.draw({
-                date: new Date(this._rangeModel.getMinimumValue())
-            });
-        } else {
-            this._calendar.draw();
-        }
+      // View update
+      if (!this.isSelectable(calendarDate)) {
+        this._calendar.draw({
+          date: new Date(this._rangeModel.getMinimumValue())
+        });
+      } else {
+        this._calendar.draw();
+      }
 
-        if (isChagned) {
-            this.fire('change');
-        }
+      if (isChagned) {
+        this.fire('change');
+      }
     },
 
     /**
@@ -1126,8 +1149,8 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * datepicker.setDateFormat('yy/MM/dd');
      */
     setDateFormat: function(format) {
-        this._datepickerInput.setFormat(format);
-        this._syncToInput();
+      this._datepickerInput.setFormat(format);
+      this._syncToInput();
     },
 
     /**
@@ -1141,7 +1164,7 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * datepicker.isOpened(); // true
      */
     isOpened: function() {
-        return !domUtil.hasClass(this._element, CLASS_NAME_HIDDEN);
+      return !domUtil.hasClass(this._element, CLASS_NAME_HIDDEN);
     },
 
     /**
@@ -1151,7 +1174,7 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * var timepicker = this.getTimePicker();
      */
     getTimePicker: function() {
-        return this._timepicker;
+      return this._timepicker;
     },
 
     /**
@@ -1159,7 +1182,7 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @returns {Calendar}
      */
     getCalendar: function() {
-        return this._calendar;
+      return this._calendar;
     },
 
     /**
@@ -1167,7 +1190,7 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @returns {object}
      */
     getLocaleText: function() {
-        return localeTexts[this._language] || localeTexts[DEFAULT_LANGUAGE_TYPE];
+      return localeTexts[this._language] || localeTexts[DEFAULT_LANGUAGE_TYPE];
     },
 
     /**
@@ -1178,32 +1201,35 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @param {boolean} [options.syncFromInput = false] - Set date from input value
      */
     setInput: function(element, options) {
-        var prev = this._datepickerInput;
-        var localeText = this.getLocaleText();
-        var prevFormat;
-        options = options || {};
+      var prev = this._datepickerInput;
+      var localeText = this.getLocaleText();
+      var prevFormat;
+      options = options || {};
 
-        if (prev) {
-            prevFormat = prev.getFormat();
-            prev.destroy();
-        }
+      if (prev) {
+        prevFormat = prev.getFormat();
+        prev.destroy();
+      }
 
-        this._datepickerInput = new DatePickerInput(element, {
-            format: options.format || prevFormat,
-            id: this._id,
-            localeText: localeText
-        });
+      this._datepickerInput = new DatePickerInput(element, {
+        format: options.format || prevFormat,
+        id: this._id,
+        localeText: localeText
+      });
 
-        this._datepickerInput.on({
-            change: this._onChangeInput,
-            click: this.open
-        }, this);
+      this._datepickerInput.on(
+        {
+          change: this._onChangeInput,
+          click: this.open
+        },
+        this
+      );
 
-        if (options.syncFromInput) {
-            this._syncFromInput();
-        } else {
-            this._syncToInput();
-        }
+      if (options.syncFromInput) {
+        this._syncFromInput();
+      } else {
+        this._syncToInput();
+      }
     },
 
     /**
@@ -1213,16 +1239,20 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * datepicker.enable();
      */
     enable: function() {
-        if (this._isEnabled) {
-            return;
-        }
-        this._isEnabled = true;
-        this._datepickerInput.enable();
+      if (this._isEnabled) {
+        return;
+      }
+      this._isEnabled = true;
+      this._datepickerInput.enable();
 
-        snippet.forEach(this._openers, function(opener) {
-            opener.removeAttribute('disabled');
-            this._setOpenerEvents(opener);
-        }, this);
+      snippet.forEach(
+        this._openers,
+        function(opener) {
+          opener.removeAttribute('disabled');
+          this._setOpenerEvents(opener);
+        },
+        this
+      );
     },
 
     /**
@@ -1232,18 +1262,22 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * datepicker.disable();
      */
     disable: function() {
-        if (!this._isEnabled) {
-            return;
-        }
+      if (!this._isEnabled) {
+        return;
+      }
 
-        this._isEnabled = false;
-        this.close();
-        this._datepickerInput.disable();
+      this._isEnabled = false;
+      this.close();
+      this._datepickerInput.disable();
 
-        snippet.forEach(this._openers, function(opener) {
-            opener.setAttribute('disabled', true);
-            this._removeOpenerEvents(opener);
-        }, this);
+      snippet.forEach(
+        this._openers,
+        function(opener) {
+          opener.setAttribute('disabled', true);
+          this._removeOpenerEvents(opener);
+        },
+        this
+      );
     },
 
     /**
@@ -1251,8 +1285,8 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @returns {boolean}
      */
     isDisabled: function() {
-        // @todo this._isEnabled --> this._isDisabled
-        return !this._isEnabled;
+      // @todo this._isEnabled --> this._isDisabled
+      return !this._isEnabled;
     },
 
     /**
@@ -1260,7 +1294,7 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @param {string} className - Class name
      */
     addCssClass: function(className) {
-        domUtil.addClass(this._element, className);
+      domUtil.addClass(this._element, className);
     },
 
     /**
@@ -1268,7 +1302,7 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @param {string} className - Class name
      */
     removeCssClass: function(className) {
-        domUtil.removeClass(this._element, className);
+      domUtil.removeClass(this._element, className);
     },
 
     /**
@@ -1276,7 +1310,7 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @returns {HTMLElement[]}
      */
     getDateElements: function() {
-        return this._calendar.getDateElements();
+      return this._calendar.getDateElements();
     },
 
     /**
@@ -1286,11 +1320,11 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @returns {Array.<Date>} - [startDate, endDate]
      */
     findOverlappedRange: function(startDate, endDate) {
-        var startTimestamp = new Date(startDate).getTime();
-        var endTimestamp = new Date(endDate).getTime();
-        var overlappedRange = this._rangeModel.findOverlappedRange(startTimestamp, endTimestamp);
+      var startTimestamp = new Date(startDate).getTime();
+      var endTimestamp = new Date(endDate).getTime();
+      var overlappedRange = this._rangeModel.findOverlappedRange(startTimestamp, endTimestamp);
 
-        return [new Date(overlappedRange[0]), new Date(overlappedRange[1])];
+      return [new Date(overlappedRange[0]), new Date(overlappedRange[1])];
     },
 
     /**
@@ -1299,45 +1333,46 @@ var DatePicker = snippet.defineClass(/** @lends DatePicker.prototype */{
      * @see {@link DatePicker#localeTexts}
      */
     changeLanguage: function(language) {
-        this._language = language;
-        this._calendar.changeLanguage(this._language);
-        this._datepickerInput.changeLocaleTitles(this.getLocaleText().titles);
-        this.setDateFormat(this._datepickerInput.getFormat());
+      this._language = language;
+      this._calendar.changeLanguage(this._language);
+      this._datepickerInput.changeLocaleTitles(this.getLocaleText().titles);
+      this.setDateFormat(this._datepickerInput.getFormat());
 
-        if (this._timepicker) {
-            this._timepicker.changeLanguage(this._language);
-        }
+      if (this._timepicker) {
+        this._timepicker.changeLanguage(this._language);
+      }
     },
 
     /**
      * Destroy
      */
     destroy: function() {
-        this._removeDocumentEvents();
-        this._calendar.destroy();
-        if (this._timepicker) {
-            this._timepicker.destroy();
-        }
-        if (this._datepickerInput) {
-            this._datepickerInput.destroy();
-        }
-        this._removeEvents();
-        domUtil.removeElement(this._element);
-        this.removeAllOpeners();
+      this._removeDocumentEvents();
+      this._calendar.destroy();
+      if (this._timepicker) {
+        this._timepicker.destroy();
+      }
+      if (this._datepickerInput) {
+        this._datepickerInput.destroy();
+      }
+      this._removeEvents();
+      domUtil.removeElement(this._element);
+      this.removeAllOpeners();
 
-        this._calendar
-            = this._timepicker
-            = this._datepickerInput
-            = this._container
-            = this._element
-            = this._date
-            = this._rangeModel
-            = this._openers
-            = this._isEnabled
-            = this._id
-            = null;
+      this._calendar
+        = this._timepicker
+        = this._datepickerInput
+        = this._container
+        = this._element
+        = this._date
+        = this._rangeModel
+        = this._openers
+        = this._isEnabled
+        = this._id
+        = null;
     }
-});
+  }
+);
 
 snippet.CustomEvents.mixin(DatePicker);
 module.exports = DatePicker;

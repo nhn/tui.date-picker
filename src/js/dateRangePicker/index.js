@@ -55,39 +55,40 @@ var CLASS_NAME_SELECTED_RANGE = 'tui-is-selected-range';
  *     ]
  * });
  */
-var DateRangePicker = snippet.defineClass(/** @lends DateRangePicker.prototype */{
+var DateRangePicker = snippet.defineClass(
+  /** @lends DateRangePicker.prototype */ {
     init: function(options) {
-        var startpickerOpt, endpickerOpt;
+      var startpickerOpt, endpickerOpt;
 
-        options = options || {};
-        startpickerOpt = options.startpicker;
-        endpickerOpt = options.endpicker;
+      options = options || {};
+      startpickerOpt = options.startpicker;
+      endpickerOpt = options.endpicker;
 
-        if (!startpickerOpt) {
-            throw new Error('The "startpicker" option is required.');
-        }
-        if (!endpickerOpt) {
-            throw new Error('The "endpicker" option is required.');
-        }
+      if (!startpickerOpt) {
+        throw new Error('The "startpicker" option is required.');
+      }
+      if (!endpickerOpt) {
+        throw new Error('The "endpicker" option is required.');
+      }
 
-        /**
-         * Start picker
-         * @type {DatePicker}
-         * @private
-         */
-        this._startpicker = null;
+      /**
+       * Start picker
+       * @type {DatePicker}
+       * @private
+       */
+      this._startpicker = null;
 
-        /**
-         * End picker
-         * @type {DatePicker}
-         * @private
-         */
-        this._endpicker = null;
+      /**
+       * End picker
+       * @type {DatePicker}
+       * @private
+       */
+      this._endpicker = null;
 
-        this._initializePickers(options);
-        this.setStartDate(startpickerOpt.date);
-        this.setEndDate(endpickerOpt.date);
-        this._syncRangesToEndpicker();
+      this._initializePickers(options);
+      this.setStartDate(startpickerOpt.date);
+      this.setEndDate(endpickerOpt.date);
+      this._syncRangesToEndpicker();
     },
 
     /**
@@ -96,33 +97,33 @@ var DateRangePicker = snippet.defineClass(/** @lends DateRangePicker.prototype *
      * @private
      */
     _initializePickers: function(options) {
-        var startpickerContainer = util.getElement(options.startpicker.container);
-        var endpickerContainer = util.getElement(options.endpicker.container);
-        var startInput = util.getElement(options.startpicker.input);
-        var endInput = util.getElement(options.endpicker.input);
+      var startpickerContainer = util.getElement(options.startpicker.container);
+      var endpickerContainer = util.getElement(options.endpicker.container);
+      var startInput = util.getElement(options.startpicker.input);
+      var endInput = util.getElement(options.endpicker.input);
 
-        var startpickerOpt = snippet.extend({}, options, {
-            input: {
-                element: startInput,
-                format: options.format
-            }
-        });
-        var endpickerOpt = snippet.extend({}, options, {
-            input: {
-                element: endInput,
-                format: options.format
-            }
-        });
+      var startpickerOpt = snippet.extend({}, options, {
+        input: {
+          element: startInput,
+          format: options.format
+        }
+      });
+      var endpickerOpt = snippet.extend({}, options, {
+        input: {
+          element: endInput,
+          format: options.format
+        }
+      });
 
-        this._startpicker = new DatePicker(startpickerContainer, startpickerOpt);
-        this._startpicker.addCssClass(CLASS_NAME_RANGE_PICKER);
-        this._startpicker.on('change', this._onChangeStartpicker, this);
-        this._startpicker.on('draw', this._onDrawPicker, this);
+      this._startpicker = new DatePicker(startpickerContainer, startpickerOpt);
+      this._startpicker.addCssClass(CLASS_NAME_RANGE_PICKER);
+      this._startpicker.on('change', this._onChangeStartpicker, this);
+      this._startpicker.on('draw', this._onDrawPicker, this);
 
-        this._endpicker = new DatePicker(endpickerContainer, endpickerOpt);
-        this._endpicker.addCssClass(CLASS_NAME_RANGE_PICKER);
-        this._endpicker.on('change', this._onChangeEndpicker, this);
-        this._endpicker.on('draw', this._onDrawPicker, this);
+      this._endpicker = new DatePicker(endpickerContainer, endpickerOpt);
+      this._endpicker.addCssClass(CLASS_NAME_RANGE_PICKER);
+      this._endpicker.on('change', this._onChangeEndpicker, this);
+      this._endpicker.on('draw', this._onDrawPicker, this);
     },
 
     /**
@@ -131,31 +132,34 @@ var DateRangePicker = snippet.defineClass(/** @lends DateRangePicker.prototype *
      * @private
      */
     _onDrawPicker: function(eventData) {
-        var calendarType = eventData.type;
-        var dateElements = snippet.toArray(eventData.dateElements);
-        var startDate = this._startpicker.getDate();
-        var endDate = this._endpicker.getDate();
+      var calendarType = eventData.type;
+      var dateElements = snippet.toArray(eventData.dateElements);
+      var startDate = this._startpicker.getDate();
+      var endDate = this._endpicker.getDate();
 
-        if (!startDate) {
-            return;
-        }
+      if (!startDate) {
+        return;
+      }
 
-        if (!endDate) {
-            // Convert null to invaild date.
-            endDate = new Date(NaN);
-        }
+      if (!endDate) {
+        // Convert null to invaild date.
+        endDate = new Date(NaN);
+      }
 
-        snippet.forEach(dateElements, function(el) {
-            var elDate = new Date(Number(domUtil.getData(el, 'timestamp')));
-            var isInRange = dateUtil.inRange(startDate, endDate, elDate, calendarType);
-            var isSelected = (
-                dateUtil.isSame(startDate, elDate, calendarType)
-                || dateUtil.isSame(endDate, elDate, calendarType)
-            );
+      snippet.forEach(
+        dateElements,
+        function(el) {
+          var elDate = new Date(Number(domUtil.getData(el, 'timestamp')));
+          var isInRange = dateUtil.inRange(startDate, endDate, elDate, calendarType);
+          var isSelected =
+            dateUtil.isSame(startDate, elDate, calendarType) ||
+            dateUtil.isSame(endDate, elDate, calendarType);
 
-            this._setRangeClass(el, isInRange);
-            this._setSelectedClass(el, isSelected);
-        }, this);
+          this._setRangeClass(el, isInRange);
+          this._setSelectedClass(el, isSelected);
+        },
+        this
+      );
     },
 
     /**
@@ -165,11 +169,11 @@ var DateRangePicker = snippet.defineClass(/** @lends DateRangePicker.prototype *
      * @private
      */
     _setRangeClass: function(el, isInRange) {
-        if (isInRange) {
-            domUtil.addClass(el, CLASS_NAME_SELECTED_RANGE);
-        } else {
-            domUtil.removeClass(el, CLASS_NAME_SELECTED_RANGE);
-        }
+      if (isInRange) {
+        domUtil.addClass(el, CLASS_NAME_SELECTED_RANGE);
+      } else {
+        domUtil.removeClass(el, CLASS_NAME_SELECTED_RANGE);
+      }
     },
 
     /**
@@ -179,11 +183,11 @@ var DateRangePicker = snippet.defineClass(/** @lends DateRangePicker.prototype *
      * @private
      */
     _setSelectedClass: function(el, isSelected) {
-        if (isSelected) {
-            domUtil.addClass(el, CLASS_NAME_SELECTED);
-        } else {
-            domUtil.removeClass(el, CLASS_NAME_SELECTED);
-        }
+      if (isSelected) {
+        domUtil.addClass(el, CLASS_NAME_SELECTED);
+      } else {
+        domUtil.removeClass(el, CLASS_NAME_SELECTED);
+      }
     },
 
     /**
@@ -191,23 +195,21 @@ var DateRangePicker = snippet.defineClass(/** @lends DateRangePicker.prototype *
      * @private
      */
     _syncRangesToEndpicker: function() {
-        var startDate = this._startpicker.getDate();
-        var overlappedRange;
+      var startDate = this._startpicker.getDate();
+      var overlappedRange;
 
-        if (startDate) {
-            overlappedRange = this._startpicker.findOverlappedRange(
-                dateUtil.cloneWithStartOf(startDate).getTime(),
-                dateUtil.cloneWithEndOf(startDate).getTime()
-            );
+      if (startDate) {
+        overlappedRange = this._startpicker.findOverlappedRange(
+          dateUtil.cloneWithStartOf(startDate).getTime(),
+          dateUtil.cloneWithEndOf(startDate).getTime()
+        );
 
-            this._endpicker.enable();
-            this._endpicker.setRanges([
-                [startDate.getTime(), overlappedRange[1].getTime()]
-            ]);
-        } else {
-            this._endpicker.setNull();
-            this._endpicker.disable();
-        }
+        this._endpicker.enable();
+        this._endpicker.setRanges([[startDate.getTime(), overlappedRange[1].getTime()]]);
+      } else {
+        this._endpicker.setNull();
+        this._endpicker.disable();
+      }
     },
 
     /**
@@ -215,16 +217,16 @@ var DateRangePicker = snippet.defineClass(/** @lends DateRangePicker.prototype *
      * @private
      */
     _onChangeStartpicker: function() {
-        this._syncRangesToEndpicker();
-        /**
-         * @event DateRangePicker#change:start
-         * @example
-         *
-         * rangepicker.on('change:start', function() {
-         *     console.log(rangepicker.getStartDate());
-         * });
-         */
-        this.fire('change:start');
+      this._syncRangesToEndpicker();
+      /**
+       * @event DateRangePicker#change:start
+       * @example
+       *
+       * rangepicker.on('change:start', function() {
+       *     console.log(rangepicker.getStartDate());
+       * });
+       */
+      this.fire('change:start');
     },
 
     /**
@@ -232,15 +234,15 @@ var DateRangePicker = snippet.defineClass(/** @lends DateRangePicker.prototype *
      * @private
      */
     _onChangeEndpicker: function() {
-        /**
-         * @event DateRangePicker#change:end
-         * @example
-         *
-         * rangepicker.on('change:end', function() {
-         *     console.log(rangepicker.getEndDate());
-         * });
-         */
-        this.fire('change:end');
+      /**
+       * @event DateRangePicker#change:end
+       * @example
+       *
+       * rangepicker.on('change:end', function() {
+       *     console.log(rangepicker.getEndDate());
+       * });
+       */
+      this.fire('change:end');
     },
 
     /**
@@ -248,7 +250,7 @@ var DateRangePicker = snippet.defineClass(/** @lends DateRangePicker.prototype *
      * @returns {DatePicker}
      */
     getStartpicker: function() {
-        return this._startpicker;
+      return this._startpicker;
     },
 
     /**
@@ -256,7 +258,7 @@ var DateRangePicker = snippet.defineClass(/** @lends DateRangePicker.prototype *
      * @returns {DatePicker}
      */
     getEndpicker: function() {
-        return this._endpicker;
+      return this._endpicker;
     },
 
     /**
@@ -264,7 +266,7 @@ var DateRangePicker = snippet.defineClass(/** @lends DateRangePicker.prototype *
      * @param {Date} date - Start date
      */
     setStartDate: function(date) {
-        this._startpicker.setDate(date);
+      this._startpicker.setDate(date);
     },
 
     /**
@@ -272,7 +274,7 @@ var DateRangePicker = snippet.defineClass(/** @lends DateRangePicker.prototype *
      * @returns {?Date}
      */
     getStartDate: function() {
-        return this._startpicker.getDate();
+      return this._startpicker.getDate();
     },
 
     /**
@@ -280,7 +282,7 @@ var DateRangePicker = snippet.defineClass(/** @lends DateRangePicker.prototype *
      * @returns {?Date}
      */
     getEndDate: function() {
-        return this._endpicker.getDate();
+      return this._endpicker.getDate();
     },
 
     /**
@@ -288,7 +290,7 @@ var DateRangePicker = snippet.defineClass(/** @lends DateRangePicker.prototype *
      * @param {Date} date - End date
      */
     setEndDate: function(date) {
-        this._endpicker.setDate(date);
+      this._endpicker.setDate(date);
     },
 
     /**
@@ -297,8 +299,8 @@ var DateRangePicker = snippet.defineClass(/** @lends DateRangePicker.prototype *
      * @see {@link DatePicker#setRanges}
      */
     setRanges: function(ranges) {
-        this._startpicker.setRanges(ranges);
-        this._syncRangesToEndpicker();
+      this._startpicker.setRanges(ranges);
+      this._syncRangesToEndpicker();
     },
 
     /**
@@ -308,8 +310,8 @@ var DateRangePicker = snippet.defineClass(/** @lends DateRangePicker.prototype *
      * @see {@link DatePicker#addRange}
      */
     addRange: function(start, end) {
-        this._startpicker.addRange(start, end);
-        this._syncRangesToEndpicker();
+      this._startpicker.addRange(start, end);
+      this._syncRangesToEndpicker();
     },
 
     /**
@@ -320,8 +322,8 @@ var DateRangePicker = snippet.defineClass(/** @lends DateRangePicker.prototype *
      * @see {@link DatePicker#removeRange}
      */
     removeRange: function(start, end, type) {
-        this._startpicker.removeRange(start, end, type);
-        this._syncRangesToEndpicker();
+      this._startpicker.removeRange(start, end, type);
+      this._syncRangesToEndpicker();
     },
 
     /**
@@ -330,22 +332,21 @@ var DateRangePicker = snippet.defineClass(/** @lends DateRangePicker.prototype *
      * @see {@link DatePicker#localeTexts}
      */
     changeLanguage: function(language) {
-        this._startpicker.changeLanguage(language);
-        this._endpicker.changeLanguage(language);
+      this._startpicker.changeLanguage(language);
+      this._endpicker.changeLanguage(language);
     },
 
     /**
      * Destroy date-range picker
      */
     destroy: function() {
-        this.off();
-        this._startpicker.destroy();
-        this._endpicker.destroy();
-        this._startpicker
-            = this._endpicker
-            = null;
+      this.off();
+      this._startpicker.destroy();
+      this._endpicker.destroy();
+      this._startpicker = this._endpicker = null;
     }
-});
+  }
+);
 
 snippet.CustomEvents.mixin(DateRangePicker);
 module.exports = DateRangePicker;

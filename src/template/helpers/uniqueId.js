@@ -12,7 +12,7 @@ var uniqueId = 0;
  * @returns {number}
  */
 module.exports = function() {
-    uniqueId += 1;
+  uniqueId += 1;
 
-    return uniqueId;
+  return uniqueId;
 };

@@ -9,7 +9,7 @@
   "scripts": {
     "test": "karma start --no-single-run",
     "test:ne": "KARMA_SERVER=ne karma start",
-    "bundle": "webpack & webpack --production",
+    "bundle": "webpack & webpack -p",
     "serve": "webpack-dev-server --inline --hot -d",
     "serve:ie8": "webpack-dev-server -d",
     "doc:serve": "tuidoc --serv",

@@ -8,24 +8,21 @@
 [![code with hearth by NHN](https://img.shields.io/badge/%3C%2F%3E%20with%20%E2%99%A5%20by-NHN-ff1414.svg)](https://github.com/nhn)
 
 
+<p><a href="https://nhn.github.io/tui.date-picker/latest/"><img src="https://user-images.githubusercontent.com/8615506/64501774-cc709580-d2fd-11e9-98f0-f7b89376c986.gif" /></a></p>
+
+
 ## 🚩 Table of Contents
-* [Browser Support](#-browser-support)
+* [Collect statistics on the use of open source](#Collect-statistics-on-the-use-of-open-source)
+* [Documents](#-documents)
 * [Features](#-features)
 * [Examples](#-examples)
 * [Install](#-install)
-    * [Via Package Manager](#via-package-manager)
-    * [Via Contents Delivery Network (CDN)](#via-contents-delivery-network-cdn)
-    * [Download Source Files](#download-source-files)
 * [Usage](#-usage)
-    * [HTML](#html)
-    * [JavaScript](#javascript)
-* [Pull Request Steps](#-pull-request-steps)
-    * [Setup](#setup)
-    * [Develop](#develop)
-    * [Pull Request Steps](#pull-request)
-* [Documents](#-documents)
-* [Contributing](#-contributing)
 * [Dependency](#-dependency)
+* [Browser Support](#-browser-support)
+* [Pull Request Steps](#-pull-request-steps)
+* [Contributing](#-contributing)
+* [TOAST UI Family](#-toast-ui-family)
 * [License](#-license)
 
 
@@ -52,10 +49,13 @@ tui.usageStatistics = false;
 ```
 
 
-## 🌏 Browser Support
-| <img src="https://user-images.githubusercontent.com/1215767/34348387-a2e64588-ea4d-11e7-8267-a43365103afe.png" alt="Chrome" width="16px" height="16px" /> Chrome | <img src="https://user-images.githubusercontent.com/1215767/34348590-250b3ca2-ea4f-11e7-9efb-da953359321f.png" alt="IE" width="16px" height="16px" /> Internet Explorer | <img src="https://user-images.githubusercontent.com/1215767/34348380-93e77ae8-ea4d-11e7-8696-9a989ddbbbf5.png" alt="Edge" width="16px" height="16px" /> Edge | <img src="https://user-images.githubusercontent.com/1215767/34348394-a981f892-ea4d-11e7-9156-d128d58386b9.png" alt="Safari" width="16px" height="16px" /> Safari | <img src="https://user-images.githubusercontent.com/1215767/34348383-9e7ed492-ea4d-11e7-910c-03b39d52f496.png" alt="Firefox" width="16px" height="16px" /> Firefox |
-| :---------: | :---------: | :---------: | :---------: | :---------: |
-| Yes | 8+ | Yes | Yes | Yes |
+## 📙 Documents
+* [Getting Started](https://github.com/nhn/tui.date-picker/blob/production/docs/getting-started.md)
+* [Tutorials](https://github.com/nhn/tui.date-picker/tree/production/docs)
+* [APIs](https://nhn.github.io/tui.date-picker/latest)
+* [v4.0.0 Migration Guide](https://github.com/nhn/tui.date-picker/blob/master/docs/getting-started.md#v400-migration-guide)
+
+You can also see the older versions of API page on the [releases page](https://github.com/nhn/tui.date-picker/releases).
 
 
 ## 🎨 Features
@@ -131,8 +131,6 @@ tui.date-picker/
 * [Download all sources for each version](https://github.com/nhn/tui.date-picker/releases)
 
 
-
-
 ## 🔨 Usage
 
 ### HTML
@@ -187,6 +185,18 @@ instance.getDate();
 For more information about the API, please see [here](http://nhn.github.io/tui.date-picker/latest/DatePicker).
 
 
+## 🔩 Dependency
+* [tui-code-snippet](https://github.com/nhn/tui.code-snippet) >=1.5.0
+* [tui-dom](https://github.com/nhn/tui.dom) >=3.0.0
+* [tui-time-picker](https://github.com/nhn/tui.time-picker) >=2.0.0
+
+
+## 🌏 Browser Support
+| <img src="https://user-images.githubusercontent.com/1215767/34348387-a2e64588-ea4d-11e7-8267-a43365103afe.png" alt="Chrome" width="16px" height="16px" /> Chrome | <img src="https://user-images.githubusercontent.com/1215767/34348590-250b3ca2-ea4f-11e7-9efb-da953359321f.png" alt="IE" width="16px" height="16px" /> Internet Explorer | <img src="https://user-images.githubusercontent.com/1215767/34348380-93e77ae8-ea4d-11e7-8696-9a989ddbbbf5.png" alt="Edge" width="16px" height="16px" /> Edge | <img src="https://user-images.githubusercontent.com/1215767/34348394-a981f892-ea4d-11e7-9156-d128d58386b9.png" alt="Safari" width="16px" height="16px" /> Safari | <img src="https://user-images.githubusercontent.com/1215767/34348383-9e7ed492-ea4d-11e7-910c-03b39d52f496.png" alt="Firefox" width="16px" height="16px" /> Firefox |
+| :---------: | :---------: | :---------: | :---------: | :---------: |
+| Yes | 8+ | Yes | Yes | Yes |
+
+
 ## 🔧 Pull Request Steps
 
 TOAST UI products are open source, so you can create a pull request(PR) after you fix issues.
@@ -232,15 +242,6 @@ If it has no error, commit and then push it!
 For more information on PR's step, please see links of Contributing section.
 
 
-## 📙 Documents
-* [Getting Started](https://github.com/nhn/tui.date-picker/blob/production/docs/getting-started.md)
-* [Tutorials](https://github.com/nhn/tui.date-picker/tree/production/docs)
-* [APIs](https://nhn.github.io/tui.date-picker/latest)
-* [v4.0.0 Migration Guide](https://github.com/nhn/tui.date-picker/blob/master/docs/getting-started.md#v400-migration-guide)
-
-You can also see the older versions of API page on the [releases page](https://github.com/nhn/tui.date-picker/releases).
-
-
 ## 💬 Contributing
 * [Code of Conduct](https://github.com/nhn/tui.date-picker/blob/production/CODE_OF_CONDUCT.md)
 * [Contributing guideline](https://github.com/nhn/tui.date-picker/blob/production/CONTRIBUTING.md)
@@ -248,10 +249,14 @@ You can also see the older versions of API page on the [releases page](https://g
 * [Commit convention](https://github.com/nhn/tui.date-picker/blob/production/docs/COMMIT_MESSAGE_CONVENTION.md)
 
 
-## 🔩 Dependency
-* [tui-code-snippet](https://github.com/nhn/tui.code-snippet) >=1.5.0
-* [tui-dom](https://github.com/nhn/tui.dom) >=3.0.0
-* [tui-time-picker](https://github.com/nhn/tui.time-picker) >=2.0.0
+## 🍞 TOAST UI Family
+
+* [TOAST UI Editor](https://github.com/nhn/tui.editor)
+* [TOAST UI Calendar](https://github.com/nhn/tui.calendar)
+* [TOAST UI Chart](https://github.com/nhn/tui.chart)
+* [TOAST UI Image-Editor](https://github.com/nhn/tui.image-editor)
+* [TOAST UI Grid](https://github.com/nhn/tui.grid)
+* [TOAST UI Components](https://github.com/nhn)
 
 
 ## 📜 License

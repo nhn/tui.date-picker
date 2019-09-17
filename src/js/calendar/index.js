@@ -66,103 +66,107 @@ var BODY_SELECTOR = '.tui-calendar-body';
  *     }
  * });
  */
-var Calendar = snippet.defineClass(/** @lends Calendar.prototype */ {
+var Calendar = snippet.defineClass(
+  /** @lends Calendar.prototype */ {
     static: {
-        /**
-         * Locale text data
-         * @type {object}
-         * @memberof Calendar
-         * @static
-         * @example
-         * var DatePicker = tui.DatePicker; // or require('tui-date-picker');
-         *
-         * DatePicker.localeTexts['customKey'] = {
-         *     titles: {
-         *         // days
-         *         DD: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-         *         // daysShort
-         *         D: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fir', 'Sat'],
-         *         // months
-         *         MMMM: [
-         *             'January', 'February', 'March', 'April', 'May', 'June',
-         *             'July', 'August', 'September', 'October', 'November', 'December'
-         *         ],
-         *         // monthsShort
-         *         MMM: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-         *     },
-         *     titleFormat: 'MMM yyyy',
-         *     todayFormat: 'D, MMMM dd, yyyy'
-         * };
-         *
-         * var calendar = DatePicker.createCalendar('#calendar-wrapper', {
-         *     language: 'customKey',
-         * });
-         */
-        localeTexts: localeTexts
+      /**
+       * Locale text data
+       * @type {object}
+       * @memberof Calendar
+       * @static
+       * @example
+       * var DatePicker = tui.DatePicker; // or require('tui-date-picker');
+       *
+       * DatePicker.localeTexts['customKey'] = {
+       *     titles: {
+       *         // days
+       *         DD: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+       *         // daysShort
+       *         D: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fir', 'Sat'],
+       *         // months
+       *         MMMM: [
+       *             'January', 'February', 'March', 'April', 'May', 'June',
+       *             'July', 'August', 'September', 'October', 'November', 'December'
+       *         ],
+       *         // monthsShort
+       *         MMM: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+       *     },
+       *     titleFormat: 'MMM yyyy',
+       *     todayFormat: 'D, MMMM dd, yyyy'
+       * };
+       *
+       * var calendar = DatePicker.createCalendar('#calendar-wrapper', {
+       *     language: 'customKey',
+       * });
+       */
+      localeTexts: localeTexts
     },
     init: function(container, options) {
-        options = snippet.extend({
-            language: DEFAULT_LANGUAGE_TYPE,
-            showToday: true,
-            showJumpButtons: false,
-            date: new Date(),
-            type: TYPE_DATE,
-            usageStatistics: true
-        }, options);
+      options = snippet.extend(
+        {
+          language: DEFAULT_LANGUAGE_TYPE,
+          showToday: true,
+          showJumpButtons: false,
+          date: new Date(),
+          type: TYPE_DATE,
+          usageStatistics: true
+        },
+        options
+      );
 
-        /**
-         * Container element
-         * @type {HTMLElement}
-         * @private
-         */
-        this._container = util.getElement(container);
-        this._container.innerHTML = tmpl(options);
+      /**
+       * Container element
+       * @type {HTMLElement}
+       * @private
+       */
+      this._container = util.getElement(container);
+      this._container.innerHTML = tmpl(options);
 
-        /**
-         * Wrapper element
-         * @type {HTMLElement}
-         * @private
-         */
-        this._element = this._container.firstChild;
+      /**
+       * Wrapper element
+       * @type {HTMLElement}
+       * @private
+       */
+      this._element = this._container.firstChild;
 
-        /**
-         * Date
-         * @type {Date}
-         * @private
-         */
-        this._date = null;
+      /**
+       * Date
+       * @type {Date}
+       * @private
+       */
+      this._date = null;
 
-        /**
-         * Layer type
-         * @type {string}
-         * @private
-         */
-        this._type = null;
+      /**
+       * Layer type
+       * @type {string}
+       * @private
+       */
+      this._type = null;
 
-        /**
-         * Header box
-         * @type {Header}
-         * @private
-         */
-        this._header = null;
+      /**
+       * Header box
+       * @type {Header}
+       * @private
+       */
+      this._header = null;
 
-        /**
-         * Body box
-         * @type {Body}
-         * @private
-         */
-        this._body = null;
+      /**
+       * Body box
+       * @type {Body}
+       * @private
+       */
+      this._body = null;
 
-        this._initHeader(options);
-        this._initBody(options);
-        this.draw({
-            date: options.date,
-            type: options.type
-        });
+      this._initHeader(options);
+      this._initBody(options);
+      this.draw({
+        date: options.date,
+        type: options.type
+      });
 
-        if (options.usageStatistics) {
-            snippet.sendHostname('date-picker', 'UA-129987462-1');
-        }
+      if (options.usageStatistics) {
+        snippet.sendHostname('date-picker', 'UA-129987462-1');
+      }
     },
 
     /**
@@ -171,21 +175,25 @@ var Calendar = snippet.defineClass(/** @lends Calendar.prototype */ {
      * @private
      */
     _initHeader: function(options) {
-        var headerContainer = this._element.querySelector(HEADER_SELECTOR);
+      var headerContainer = this._element.querySelector(HEADER_SELECTOR);
 
-        this._header = new Header(headerContainer, options);
-        this._header.on('click', function(ev) {
-            var target = util.getTarget(ev);
-            if (domUtil.hasClass(target, CLASS_NAME_PREV_MONTH_BTN)) {
-                this.drawPrev();
-            } else if (domUtil.hasClass(target, CLASS_NAME_PREV_YEAR_BTN)) {
-                this._onClickPrevYear();
-            } else if (domUtil.hasClass(target, CLASS_NAME_NEXT_MONTH_BTN)) {
-                this.drawNext();
-            } else if (domUtil.hasClass(target, CLASS_NAME_NEXT_YEAR_BTN)) {
-                this._onClickNextYear();
-            }
-        }, this);
+      this._header = new Header(headerContainer, options);
+      this._header.on(
+        'click',
+        function(ev) {
+          var target = util.getTarget(ev);
+          if (domUtil.hasClass(target, CLASS_NAME_PREV_MONTH_BTN)) {
+            this.drawPrev();
+          } else if (domUtil.hasClass(target, CLASS_NAME_PREV_YEAR_BTN)) {
+            this._onClickPrevYear();
+          } else if (domUtil.hasClass(target, CLASS_NAME_NEXT_MONTH_BTN)) {
+            this.drawNext();
+          } else if (domUtil.hasClass(target, CLASS_NAME_NEXT_YEAR_BTN)) {
+            this._onClickNextYear();
+          }
+        },
+        this
+      );
     },
 
     /**
@@ -194,9 +202,9 @@ var Calendar = snippet.defineClass(/** @lends Calendar.prototype */ {
      * @private
      */
     _initBody: function(options) {
-        var bodyContainer = this._element.querySelector(BODY_SELECTOR);
+      var bodyContainer = this._element.querySelector(BODY_SELECTOR);
 
-        this._body = new Body(bodyContainer, options);
+      this._body = new Body(bodyContainer, options);
     },
 
     /**
@@ -204,13 +212,13 @@ var Calendar = snippet.defineClass(/** @lends Calendar.prototype */ {
      * @private
      */
     _onClickPrevYear: function() {
-        if (this.getType() === TYPE_DATE) {
-            this.draw({
-                date: this._getRelativeDate(-12)
-            });
-        } else {
-            this.drawPrev();
-        }
+      if (this.getType() === TYPE_DATE) {
+        this.draw({
+          date: this._getRelativeDate(-12)
+        });
+      } else {
+        this.drawPrev();
+      }
     },
 
     /**
@@ -218,13 +226,13 @@ var Calendar = snippet.defineClass(/** @lends Calendar.prototype */ {
      * @private
      */
     _onClickNextYear: function() {
-        if (this.getType() === TYPE_DATE) {
-            this.draw({
-                date: this._getRelativeDate(12)
-            });
-        } else {
-            this.drawNext();
-        }
+      if (this.getType() === TYPE_DATE) {
+        this.draw({
+          date: this._getRelativeDate(12)
+        });
+      } else {
+        this.drawNext();
+      }
     },
 
     /**
@@ -234,11 +242,7 @@ var Calendar = snippet.defineClass(/** @lends Calendar.prototype */ {
      * @private
      */
     _isValidType: function(type) {
-        return (
-            type === TYPE_DATE
-            || type === TYPE_MONTH
-            || type === TYPE_YEAR
-        );
+      return type === TYPE_DATE || type === TYPE_MONTH || type === TYPE_YEAR;
     },
 
     /**
@@ -248,22 +252,22 @@ var Calendar = snippet.defineClass(/** @lends Calendar.prototype */ {
      * @private
      */
     _shouldUpdate: function(date, type) {
-        var prevDate = this._date;
+      var prevDate = this._date;
 
-        if (!dateUtil.isValidDate(date)) {
-            throw new Error('Invalid date');
-        }
+      if (!dateUtil.isValidDate(date)) {
+        throw new Error('Invalid date');
+      }
 
-        if (!this._isValidType(type)) {
-            throw new Error('Invalid layer type');
-        }
+      if (!this._isValidType(type)) {
+        throw new Error('Invalid layer type');
+      }
 
-        return (
-            !prevDate
-            || prevDate.getFullYear() !== date.getFullYear()
-            || prevDate.getMonth() !== date.getMonth()
-            || this.getType() !== type
-        );
+      return (
+        !prevDate ||
+        prevDate.getFullYear() !== date.getFullYear() ||
+        prevDate.getMonth() !== date.getMonth() ||
+        this.getType() !== type
+      );
     },
 
     /**
@@ -271,22 +275,23 @@ var Calendar = snippet.defineClass(/** @lends Calendar.prototype */ {
      * @private
      */
     _render: function() {
-        var date = this._date;
-        var type = this.getType();
+      var date = this._date;
+      var type = this.getType();
 
-        this._header.render(date, type);
-        this._body.render(date, type);
-        domUtil.removeClass(this._element, CLASS_NAME_CALENDAR_MONTH, CLASS_NAME_CALENDAR_YEAR);
+      this._header.render(date, type);
+      this._body.render(date, type);
+      domUtil.removeClass(this._element, CLASS_NAME_CALENDAR_MONTH, CLASS_NAME_CALENDAR_YEAR);
 
-        switch (type) {
-            case TYPE_MONTH:
-                domUtil.addClass(this._element, CLASS_NAME_CALENDAR_MONTH);
-                break;
-            case TYPE_YEAR:
-                domUtil.addClass(this._element, CLASS_NAME_CALENDAR_YEAR);
-                break;
-            default: break;
-        }
+      switch (type) {
+        case TYPE_MONTH:
+          domUtil.addClass(this._element, CLASS_NAME_CALENDAR_MONTH);
+          break;
+        case TYPE_YEAR:
+          domUtil.addClass(this._element, CLASS_NAME_CALENDAR_YEAR);
+          break;
+        default:
+          break;
+      }
     },
 
     /**
@@ -296,9 +301,9 @@ var Calendar = snippet.defineClass(/** @lends Calendar.prototype */ {
      * @private
      */
     _getRelativeDate: function(step) {
-        var prev = this._date;
+      var prev = this._date;
 
-        return new Date(prev.getFullYear(), prev.getMonth() + step);
+      return new Date(prev.getFullYear(), prev.getMonth() + step);
     },
 
     /**
@@ -319,48 +324,48 @@ var Calendar = snippet.defineClass(/** @lends Calendar.prototype */ {
      * });
      */
     draw: function(options) {
-        var date, type;
+      var date, type;
 
-        options = options || {};
-        date = options.date || this._date;
-        type = (options.type || this.getType()).toLowerCase();
+      options = options || {};
+      date = options.date || this._date;
+      type = (options.type || this.getType()).toLowerCase();
 
-        if (this._shouldUpdate(date, type)) {
-            this._date = date;
-            this._type = type;
-            this._render();
-        }
+      if (this._shouldUpdate(date, type)) {
+        this._date = date;
+        this._type = type;
+        this._render();
+      }
 
-        /**
-         * @event Calendar#draw
-         * @type {object} evt
-         * @property {Date} date - Calendar date
-         * @property {string} type - Calendar type
-         * @property {HTMLElement} dateElements - Calendar date elements
-         * @example
-         * calendar.on('draw', function(evt) {
-         *     console.error(evt.date);
-         * });
-         */
-        this.fire('draw', {
-            date: this._date,
-            type: type,
-            dateElements: this._body.getDateElements()
-        });
+      /**
+       * @event Calendar#draw
+       * @type {object} evt
+       * @property {Date} date - Calendar date
+       * @property {string} type - Calendar type
+       * @property {HTMLElement} dateElements - Calendar date elements
+       * @example
+       * calendar.on('draw', function(evt) {
+       *     console.error(evt.date);
+       * });
+       */
+      this.fire('draw', {
+        date: this._date,
+        type: type,
+        dateElements: this._body.getDateElements()
+      });
     },
 
     /**
      * Show calendar
      */
     show: function() {
-        domUtil.removeClass(this._element, CLASS_NAME_HIDDEN);
+      domUtil.removeClass(this._element, CLASS_NAME_HIDDEN);
     },
 
     /**
      * Hide calendar
      */
     hide: function() {
-        domUtil.addClass(this._element, CLASS_NAME_HIDDEN);
+      domUtil.addClass(this._element, CLASS_NAME_HIDDEN);
     },
 
     /**
@@ -370,9 +375,9 @@ var Calendar = snippet.defineClass(/** @lends Calendar.prototype */ {
      * calendar.drawNext();
      */
     drawNext: function() {
-        this.draw({
-            date: this.getNextDate()
-        });
+      this.draw({
+        date: this.getNextDate()
+      });
     },
 
     /**
@@ -383,9 +388,9 @@ var Calendar = snippet.defineClass(/** @lends Calendar.prototype */ {
      * calendar.drawPrev();
      */
     drawPrev: function() {
-        this.draw({
-            date: this.getPrevDate()
-        });
+      this.draw({
+        date: this.getPrevDate()
+      });
     },
 
     /**
@@ -393,11 +398,11 @@ var Calendar = snippet.defineClass(/** @lends Calendar.prototype */ {
      * @returns {Date}
      */
     getNextDate: function() {
-        if (this.getType() === TYPE_DATE) {
-            return this._getRelativeDate(1);
-        }
+      if (this.getType() === TYPE_DATE) {
+        return this._getRelativeDate(1);
+      }
 
-        return this.getNextYearDate();
+      return this.getNextYearDate();
     },
 
     /**
@@ -405,11 +410,11 @@ var Calendar = snippet.defineClass(/** @lends Calendar.prototype */ {
      * @returns {Date}
      */
     getPrevDate: function() {
-        if (this.getType() === TYPE_DATE) {
-            return this._getRelativeDate(-1);
-        }
+      if (this.getType() === TYPE_DATE) {
+        return this._getRelativeDate(-1);
+      }
 
-        return this.getPrevYearDate();
+      return this.getPrevYearDate();
     },
 
     /**
@@ -417,15 +422,15 @@ var Calendar = snippet.defineClass(/** @lends Calendar.prototype */ {
      * @returns {Date}
      */
     getNextYearDate: function() {
-        switch (this.getType()) {
-            case TYPE_DATE:
-            case TYPE_MONTH:
-                return this._getRelativeDate(12); // 12 months = 1 year
-            case TYPE_YEAR:
-                return this._getRelativeDate(108); // 108 months = 9 years = 12 * 9
-            default:
-                throw new Error('Unknown layer type');
-        }
+      switch (this.getType()) {
+        case TYPE_DATE:
+        case TYPE_MONTH:
+          return this._getRelativeDate(12); // 12 months = 1 year
+        case TYPE_YEAR:
+          return this._getRelativeDate(108); // 108 months = 9 years = 12 * 9
+        default:
+          throw new Error('Unknown layer type');
+      }
     },
 
     /**
@@ -433,15 +438,15 @@ var Calendar = snippet.defineClass(/** @lends Calendar.prototype */ {
      * @returns {Date}
      */
     getPrevYearDate: function() {
-        switch (this.getType()) {
-            case TYPE_DATE:
-            case TYPE_MONTH:
-                return this._getRelativeDate(-12); // 12 months = 1 year
-            case TYPE_YEAR:
-                return this._getRelativeDate(-108); // 108 months = 9 years = 12 * 9
-            default:
-                throw new Error('Unknown layer type');
-        }
+      switch (this.getType()) {
+        case TYPE_DATE:
+        case TYPE_MONTH:
+          return this._getRelativeDate(-12); // 12 months = 1 year
+        case TYPE_YEAR:
+          return this._getRelativeDate(-108); // 108 months = 9 years = 12 * 9
+        default:
+          throw new Error('Unknown layer type');
+      }
     },
 
     /**
@@ -450,9 +455,9 @@ var Calendar = snippet.defineClass(/** @lends Calendar.prototype */ {
      * @see {@link Calendar#localeTexts}
      */
     changeLanguage: function(language) {
-        this._header.changeLanguage(language);
-        this._body.changeLanguage(language);
-        this._render();
+      this._header.changeLanguage(language);
+      this._body.changeLanguage(language);
+      this._render();
     },
 
     /**
@@ -460,7 +465,7 @@ var Calendar = snippet.defineClass(/** @lends Calendar.prototype */ {
      * @returns {Date}
      */
     getDate: function() {
-        return new Date(this._date);
+      return new Date(this._date);
     },
 
     /**
@@ -468,7 +473,7 @@ var Calendar = snippet.defineClass(/** @lends Calendar.prototype */ {
      * @returns {('date'|'month'|'year')}
      */
     getType: function() {
-        return this._type;
+      return this._type;
     },
 
     /**
@@ -476,7 +481,7 @@ var Calendar = snippet.defineClass(/** @lends Calendar.prototype */ {
      * @returns {HTMLElement[]}
      */
     getDateElements: function() {
-        return this._body.getDateElements();
+      return this._body.getDateElements();
     },
 
     /**
@@ -484,7 +489,7 @@ var Calendar = snippet.defineClass(/** @lends Calendar.prototype */ {
      * @param {string} className - Class name
      */
     addCssClass: function(className) {
-        domUtil.addClass(this._element, className);
+      domUtil.addClass(this._element, className);
     },
 
     /**
@@ -492,26 +497,21 @@ var Calendar = snippet.defineClass(/** @lends Calendar.prototype */ {
      * @param {string} className - Class name
      */
     removeCssClass: function(className) {
-        domUtil.removeClass(this._element, className);
+      domUtil.removeClass(this._element, className);
     },
 
     /**
      * Destroy calendar
      */
     destroy: function() {
-        this._header.destroy();
-        this._body.destroy();
-        domUtil.removeElement(this._element);
+      this._header.destroy();
+      this._body.destroy();
+      domUtil.removeElement(this._element);
 
-        this._type
-            = this._date
-            = this._container
-            = this._element
-            = this._header
-            = this._body
-            = null;
+      this._type = this._date = this._container = this._element = this._header = this._body = null;
     }
-});
+  }
+);
 
 snippet.CustomEvents.mixin(Calendar);
 module.exports = Calendar;

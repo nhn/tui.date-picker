@@ -19,9 +19,11 @@ var DATE_SELECTOR = '.tui-calendar-month';
  * @param {string} language - Initial language
  * @ignore
  */
-var MonthLayer = snippet.defineClass(LayerBase, /** @lends MonthLayer.prototype */{
+var MonthLayer = snippet.defineClass(
+  LayerBase,
+  /** @lends MonthLayer.prototype */ {
     init: function(language) {
-        LayerBase.call(this, language);
+      LayerBase.call(this, language);
     },
 
     /**
@@ -37,23 +39,23 @@ var MonthLayer = snippet.defineClass(LayerBase, /** @lends MonthLayer.prototype 
      * @private
      */
     _makeContext: function(date) {
-        var monthsShort = this._localeText.titles.MMM;
+      var monthsShort = this._localeText.titles.MMM;
 
-        return {
-            year: date.getFullYear(),
-            Jan: monthsShort[0],
-            Feb: monthsShort[1],
-            Mar: monthsShort[2],
-            Apr: monthsShort[3],
-            May: monthsShort[4],
-            Jun: monthsShort[5],
-            Jul: monthsShort[6],
-            Aug: monthsShort[7],
-            Sep: monthsShort[8],
-            Oct: monthsShort[9],
-            Nov: monthsShort[10],
-            Dec: monthsShort[11]
-        };
+      return {
+        year: date.getFullYear(),
+        Jan: monthsShort[0],
+        Feb: monthsShort[1],
+        Mar: monthsShort[2],
+        Apr: monthsShort[3],
+        May: monthsShort[4],
+        Jun: monthsShort[5],
+        Jul: monthsShort[6],
+        Aug: monthsShort[7],
+        Sep: monthsShort[8],
+        Oct: monthsShort[9],
+        Nov: monthsShort[10],
+        Dec: monthsShort[11]
+      };
     },
 
     /**
@@ -63,10 +65,10 @@ var MonthLayer = snippet.defineClass(LayerBase, /** @lends MonthLayer.prototype 
      * @param {HTMLElement} container A container element for the rendered element
      */
     render: function(date, container) {
-        var context = this._makeContext(date);
+      var context = this._makeContext(date);
 
-        container.innerHTML = bodyTmpl(context);
-        this._element = container.firstChild;
+      container.innerHTML = bodyTmpl(context);
+      this._element = container.firstChild;
     },
 
     /**
@@ -75,8 +77,9 @@ var MonthLayer = snippet.defineClass(LayerBase, /** @lends MonthLayer.prototype 
      * @returns {HTMLElement[]}
      */
     getDateElements: function() {
-        return this._element.querySelectorAll(DATE_SELECTOR);
+      return this._element.querySelectorAll(DATE_SELECTOR);
     }
-});
+  }
+);
 
 module.exports = MonthLayer;

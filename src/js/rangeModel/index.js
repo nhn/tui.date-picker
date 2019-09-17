@@ -14,19 +14,24 @@ var Range = require('./range');
  * @ignore
  * @param {Array.<Array.<number>>} ranges - Ranges
  */
-var RangeModel = snippet.defineClass(/** @lends RangeModel.prototype */{
+var RangeModel = snippet.defineClass(
+  /** @lends RangeModel.prototype */ {
     init: function(ranges) {
-        ranges = ranges || [];
+      ranges = ranges || [];
 
-        /**
-         * @type {Array.<Range>}
-         * @private
-         */
-        this._ranges = [];
+      /**
+       * @type {Array.<Range>}
+       * @private
+       */
+      this._ranges = [];
 
-        snippet.forEach(ranges, function(range) {
-            this.add(range[0], range[1]);
-        }, this);
+      snippet.forEach(
+        ranges,
+        function(range) {
+          this.add(range[0], range[1]);
+        },
+        this
+      );
     },
 
     /**
@@ -36,18 +41,18 @@ var RangeModel = snippet.defineClass(/** @lends RangeModel.prototype */{
      * @returns {boolean}
      */
     contains: function(start, end) {
-        var i = 0;
-        var length = this._ranges.length;
-        var range;
+      var i = 0;
+      var length = this._ranges.length;
+      var range;
 
-        for (; i < length; i += 1) {
-            range = this._ranges[i];
-            if (range.contains(start, end)) {
-                return true;
-            }
+      for (; i < length; i += 1) {
+        range = this._ranges[i];
+        if (range.contains(start, end)) {
+          return true;
         }
+      }
 
-        return false;
+      return false;
     },
 
     /**
@@ -57,18 +62,18 @@ var RangeModel = snippet.defineClass(/** @lends RangeModel.prototype */{
      * @returns {boolean}
      */
     hasOverlap: function(start, end) {
-        var i = 0;
-        var length = this._ranges.length;
-        var range;
+      var i = 0;
+      var length = this._ranges.length;
+      var range;
 
-        for (; i < length; i += 1) {
-            range = this._ranges[i];
-            if (range.isOverlapped(start, end)) {
-                return true;
-            }
+      for (; i < length; i += 1) {
+        range = this._ranges[i];
+        if (range.isOverlapped(start, end)) {
+          return true;
         }
+      }
 
-        return false;
+      return false;
     },
 
     /**
@@ -77,28 +82,28 @@ var RangeModel = snippet.defineClass(/** @lends RangeModel.prototype */{
      * @param {number} [end] - End
      */
     add: function(start, end) {
-        var overlapped = false;
-        var i = 0;
-        var len = this._ranges.length;
-        var range;
+      var overlapped = false;
+      var i = 0;
+      var len = this._ranges.length;
+      var range;
 
-        for (; i < len; i += 1) {
-            range = this._ranges[i];
-            overlapped = range.isOverlapped(start, end);
+      for (; i < len; i += 1) {
+        range = this._ranges[i];
+        overlapped = range.isOverlapped(start, end);
 
-            if (overlapped) {
-                range.merge(start, end);
-                break;
-            }
-
-            if (start < range.start) {
-                break;
-            }
+        if (overlapped) {
+          range.merge(start, end);
+          break;
         }
 
-        if (!overlapped) {
-            this._ranges.splice(i, 0, new Range(start, end));
+        if (start < range.start) {
+          break;
         }
+      }
+
+      if (!overlapped) {
+        this._ranges.splice(i, 0, new Range(start, end));
+      }
     },
 
     /**
@@ -106,7 +111,7 @@ var RangeModel = snippet.defineClass(/** @lends RangeModel.prototype */{
      * @returns {number}
      */
     getMinimumValue: function() {
-        return this._ranges[0].start;
+      return this._ranges[0].start;
     },
 
     /**
@@ -114,9 +119,9 @@ var RangeModel = snippet.defineClass(/** @lends RangeModel.prototype */{
      * @returns {number}
      */
     getMaximumValue: function() {
-        var length = this._ranges.length;
+      var length = this._ranges.length;
 
-        return this._ranges[length - 1].end;
+      return this._ranges[length - 1].end;
     },
 
     /**
@@ -124,27 +129,31 @@ var RangeModel = snippet.defineClass(/** @lends RangeModel.prototype */{
      * @param {number} [end] - End
      */
     exclude: function(start, end) {
-        if (!snippet.isNumber(end)) {
-            end = start;
-        }
+      if (!snippet.isNumber(end)) {
+        end = start;
+      }
 
-        snippet.forEach(this._ranges, function(range) {
-            var rangeEnd;
+      snippet.forEach(
+        this._ranges,
+        function(range) {
+          var rangeEnd;
 
-            if (range.isOverlapped(start, end)) {
-                rangeEnd = range.end; // Save before excluding
-                range.exclude(start, end);
+          if (range.isOverlapped(start, end)) {
+            rangeEnd = range.end; // Save before excluding
+            range.exclude(start, end);
 
-                if (end + 1 <= rangeEnd) {
-                    this.add(end + 1, rangeEnd); // Add split range
-                }
+            if (end + 1 <= rangeEnd) {
+              this.add(end + 1, rangeEnd); // Add split range
             }
-        }, this);
+          }
+        },
+        this
+      );
 
-        // Reduce empty ranges
-        this._ranges = snippet.filter(this._ranges, function(range) {
-            return !range.isEmpty();
-        });
+      // Reduce empty ranges
+      this._ranges = snippet.filter(this._ranges, function(range) {
+        return !range.isEmpty();
+      });
     },
 
     /**
@@ -154,19 +163,20 @@ var RangeModel = snippet.defineClass(/** @lends RangeModel.prototype */{
      * @returns {Array.<number>} - [start, end]
      */
     findOverlappedRange: function(start, end) {
-        var i = 0;
-        var len = this._ranges.length;
-        var range;
+      var i = 0;
+      var len = this._ranges.length;
+      var range;
 
-        for (; i < len; i += 1) {
-            range = this._ranges[i];
-            if (range.isOverlapped(start, end)) {
-                return [range.start, range.end];
-            }
+      for (; i < len; i += 1) {
+        range = this._ranges[i];
+        if (range.isOverlapped(start, end)) {
+          return [range.start, range.end];
         }
+      }
 
-        return null;
+      return null;
     }
-});
+  }
+);
 
 module.exports = RangeModel;

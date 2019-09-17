@@ -34,7 +34,7 @@ require('../css/calendar.css');
  * });
  */
 DatePicker.createCalendar = function(wrapperElement, options) {
-    return new Calendar(wrapperElement, options);
+  return new Calendar(wrapperElement, options);
 };
 
 /**
@@ -77,7 +77,7 @@ DatePicker.createCalendar = function(wrapperElement, options) {
  * });
  */
 DatePicker.createRangePicker = function(options) {
-    return new DateRangePicker(options);
+  return new DateRangePicker(options);
 };
 
 module.exports = DatePicker;

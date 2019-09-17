@@ -18,30 +18,31 @@ var DEFAULT_LANGUAGE_TYPE = require('../../constants').DEFAULT_LANGUAGE_TYPE;
  * @param {string} language - Initial language
  * Layer base
  */
-var LayerBase = snippet.defineClass(/** @lends LayerBase.prototype */{
+var LayerBase = snippet.defineClass(
+  /** @lends LayerBase.prototype */ {
     init: function(language) {
-        language = language || DEFAULT_LANGUAGE_TYPE;
+      language = language || DEFAULT_LANGUAGE_TYPE;
 
-        /**
-         * Layer element
-         * @type {HTMLElement}
-         * @private
-         */
-        this._element = null;
+      /**
+       * Layer element
+       * @type {HTMLElement}
+       * @private
+       */
+      this._element = null;
 
-        /**
-         * Language type
-         * @type {string}
-         * @private
-         */
-        this._localeText = localeText[language];
+      /**
+       * Language type
+       * @type {string}
+       * @private
+       */
+      this._localeText = localeText[language];
 
-        /**
-         * Layer type
-         * @type {string}
-         * @private
-         */
-        this._type = 'base';
+      /**
+       * Layer type
+       * @type {string}
+       * @private
+       */
+      this._type = 'base';
     },
 
     /**
@@ -52,7 +53,7 @@ var LayerBase = snippet.defineClass(/** @lends LayerBase.prototype */{
      * @private
      */
     _makeContext: function() {
-        throwOverrideError(this.getType(), '_makeContext');
+      throwOverrideError(this.getType(), '_makeContext');
     },
 
     /**
@@ -61,7 +62,7 @@ var LayerBase = snippet.defineClass(/** @lends LayerBase.prototype */{
      * @throws {Error}
      */
     render: function() {
-        throwOverrideError(this.getType(), 'render');
+      throwOverrideError(this.getType(), 'render');
     },
 
     /**
@@ -71,7 +72,7 @@ var LayerBase = snippet.defineClass(/** @lends LayerBase.prototype */{
      * @returns {HTMLElement[]}
      */
     getDateElements: function() {
-        throwOverrideError(this.getType(), 'getDateElements');
+      throwOverrideError(this.getType(), 'getDateElements');
     },
 
     /**
@@ -79,7 +80,7 @@ var LayerBase = snippet.defineClass(/** @lends LayerBase.prototype */{
      * @returns {string}
      */
     getType: function() {
-        return this._type;
+      return this._type;
     },
 
     /**
@@ -87,19 +88,20 @@ var LayerBase = snippet.defineClass(/** @lends LayerBase.prototype */{
      * @param {string} language - Language name
      */
     changeLanguage: function(language) {
-        this._localeText = localeText[language];
+      this._localeText = localeText[language];
     },
 
     /**
      * Remove elements
      */
     remove: function() {
-        if (this._element) {
-            domUtil.removeElement(this._element);
-        }
-        this._element = null;
+      if (this._element) {
+        domUtil.removeElement(this._element);
+      }
+      this._element = null;
     }
-});
+  }
+);
 
 /**
  * Throw - method override error
@@ -109,7 +111,7 @@ var LayerBase = snippet.defineClass(/** @lends LayerBase.prototype */{
  * @throws {Error}
  */
 function throwOverrideError(layerType, methodName) {
-    throw new Error(layerType + ' layer does not have the "' + methodName + '" method.');
+  throw new Error(layerType + ' layer does not have the "' + methodName + '" method.');
 }
 
 module.exports = LayerBase;

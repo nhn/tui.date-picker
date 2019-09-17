@@ -20,9 +20,11 @@ var DATE_SELECTOR = '.tui-calendar-year';
  * @param {string} language - Initial language
  * @ignore
  */
-var YearLayer = snippet.defineClass(LayerBase, /** @lends YearLayer.prototype */{
+var YearLayer = snippet.defineClass(
+  LayerBase,
+  /** @lends YearLayer.prototype */ {
     init: function(language) {
-        LayerBase.call(this, language);
+      LayerBase.call(this, language);
     },
 
     /**
@@ -38,15 +40,15 @@ var YearLayer = snippet.defineClass(LayerBase, /** @lends YearLayer.prototype */
      * @private
      */
     _makeContext: function(date) {
-        var year = date.getFullYear();
+      var year = date.getFullYear();
 
-        return {
-            yearGroups: [
-                dateUtil.getRangeArr(year - 4, year - 2),
-                dateUtil.getRangeArr(year - 1, year + 1),
-                dateUtil.getRangeArr(year + 2, year + 4)
-            ]
-        };
+      return {
+        yearGroups: [
+          dateUtil.getRangeArr(year - 4, year - 2),
+          dateUtil.getRangeArr(year - 1, year + 1),
+          dateUtil.getRangeArr(year + 2, year + 4)
+        ]
+      };
     },
 
     /**
@@ -56,10 +58,10 @@ var YearLayer = snippet.defineClass(LayerBase, /** @lends YearLayer.prototype */
      * @param {HTMLElement} container A container element for the rendered element
      */
     render: function(date, container) {
-        var context = this._makeContext(date);
+      var context = this._makeContext(date);
 
-        container.innerHTML = bodyTmpl(context);
-        this._element = container.firstChild;
+      container.innerHTML = bodyTmpl(context);
+      this._element = container.firstChild;
     },
 
     /**
@@ -68,8 +70,9 @@ var YearLayer = snippet.defineClass(LayerBase, /** @lends YearLayer.prototype */
      * @returns {HTMLElement[]}
      */
     getDateElements: function() {
-        return this._element.querySelectorAll(DATE_SELECTOR);
+      return this._element.querySelectorAll(DATE_SELECTOR);
     }
-});
+  }
+);
 
 module.exports = YearLayer;

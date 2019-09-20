@@ -97,7 +97,7 @@ describe('Date Picker', function() {
         date: new Date(2017, 10, 27),
         selectableRanges: [[new Date(2016, 10, 27), new Date(2018, 10, 27)]],
         openers: [document.createElement('button')],
-        timepicker: {
+        timePicker: {
           showMeridiem: true
         }
       });
@@ -191,7 +191,7 @@ describe('Date Picker', function() {
       expect(datepicker.isSelected(new Date(2017, 2, 12))).toBe(true);
     });
 
-    it('timepicker.setTime -> input text', function() {
+    it('timePicker.setTime -> input text', function() {
       var input = document.createElement('input');
 
       datepicker.setInput(input);

@@ -50,7 +50,7 @@ DatePicker.createCalendar = function(wrapperElement, options) {
  *     @param {string} options.format - Input date-string format
  *     @param {string} [options.type = 'date'] - DatePicker type - ('date' | 'month' | 'year')
  *     @param {string} [options.language='en'] - Language key
- *     @param {object|boolean} [options.timePicker] - [TimePicker](https://nhn.github.io/tui.time-picker/latest) options. This option's name is changed from 'timepicker' and 'timepicker' will be deprecated in v4.1.0.
+ *     @param {object|boolean} [options.timePicker] - [TimePicker](https://nhn.github.io/tui.time-picker/latest) options. This option's name is changed from 'timepicker' and 'timepicker' will be deprecated in v5.0.0.
  *     @param {object} [options.calendar] - {@link Calendar} option
  *     @param {Array.<Array.<Date|number>>} [options.selectableRanges] - Selectable ranges
  *     @param {boolean} [options.showAlways = false] - Whether the datepicker shows always

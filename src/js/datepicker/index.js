@@ -87,7 +87,7 @@ var mergeDefaultOption = function(option) {
   option.calendar.language = option.language;
   option.calendar.type = option.type;
 
-  // @TODO: after v4.1.0, remove option.timepicker
+  // @TODO: after v5.0.0, remove option.timepicker
   option.timePicker = option.timePicker || option.timepicker;
 
   return option;
@@ -100,7 +100,7 @@ var mergeDefaultOption = function(option) {
  *      @param {Date|number} [options.date] - Initial date. Default - null for no initial date
  *      @param {string} [options.type = 'date'] - DatePicker type - ('date' | 'month' | 'year')
  *      @param {string} [options.language='en'] - Language key
- *      @param {object|boolean} [options.timePicker] - [TimePicker](https://nhn.github.io/tui.time-picker/latest) options. This option's name is changed from 'timepicker' and 'timepicker' will be deprecated in v4.1.0.
+ *      @param {object|boolean} [options.timePicker] - [TimePicker](https://nhn.github.io/tui.time-picker/latest) options. This option's name is changed from 'timepicker' and 'timepicker' will be deprecated in v5.0.0.
  *      @param {object} [options.calendar] - {@link Calendar} options
  *      @param {object} [options.input] - Input option
  *      @param {HTMLElement|string} [options.input.element] - Input element or selector

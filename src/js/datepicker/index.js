@@ -57,7 +57,7 @@ var mergeDefaultOption = function(option) {
         element: null,
         format: null
       },
-      timepicker: null,
+      timePicker: null,
       date: null,
       showAlways: false,
       type: TYPE_DATE,
@@ -87,6 +87,9 @@ var mergeDefaultOption = function(option) {
   option.calendar.language = option.language;
   option.calendar.type = option.type;
 
+  // @TODO: after v5.0.0, remove option.timepicker
+  option.timePicker = option.timePicker || option.timepicker;
+
   return option;
 };
 
@@ -97,8 +100,7 @@ var mergeDefaultOption = function(option) {
  *      @param {Date|number} [options.date] - Initial date. Default - null for no initial date
  *      @param {string} [options.type = 'date'] - DatePicker type - ('date' | 'month' | 'year')
  *      @param {string} [options.language='en'] - Language key
- *      @param {object|boolean} [options.timePicker] -
- *                              [TimePicker]{@link https://nhn.github.io/tui.time-picker/latest} options
+ *      @param {object|boolean} [options.timePicker] - [TimePicker](https://nhn.github.io/tui.time-picker/latest) options. This option's name is changed from 'timepicker' and 'timepicker' will be deprecated in v5.0.0.
  *      @param {object} [options.calendar] - {@link Calendar} options
  *      @param {object} [options.input] - Input option
  *      @param {HTMLElement|string} [options.input.element] - Input element or selector
@@ -121,7 +123,7 @@ var mergeDefaultOption = function(option) {
  *
  * var picker2 = new DatePicker('#datepicker-container2', {
  *    showAlways: true,
- *    timepicker: true
+ *    timePicker: true
  * });
  *
  * var picker3 = new DatePicker('#datepicker-container3', {
@@ -131,7 +133,7 @@ var mergeDefaultOption = function(option) {
  *     calendar: {
  *         showToday: true
  *     },
- *     timepicker: {
+ *     timePicker: {
  *         showMeridiem: true,
  *         defaultHour: 13,
  *         defaultMinute: 24
@@ -225,7 +227,7 @@ var DatePicker = snippet.defineClass(
        * @type {TimePicker}
        * @private
        */
-      this._timepicker = null;
+      this._timePicker = null;
 
       /**
        * DatePicker input
@@ -299,7 +301,7 @@ var DatePicker = snippet.defineClass(
     _initializeDatePicker: function(option) {
       this.setRanges(option.selectableRanges);
       this._setEvents();
-      this._initTimePicker(option.timepicker, option.usageStatistics);
+      this._initTimePicker(option.timePicker, option.usageStatistics);
       this.setInput(option.input.element);
       this.setDateFormat(option.input.format);
       this.setDate(option.date);
@@ -389,16 +391,16 @@ var DatePicker = snippet.defineClass(
         };
       }
 
-      this._timepicker = new TimePicker(
+      this._timePicker = new TimePicker(
         this._element.querySelector(SELECTOR_TIMEPICKER_CONTAINER),
         opTimePicker
       );
 
       if (layoutType.toLowerCase() === 'tab') {
-        this._timepicker.hide();
+        this._timePicker.hide();
       }
 
-      this._timepicker.on(
+      this._timePicker.on(
         'change',
         function(ev) {
           var prevDate;
@@ -423,10 +425,10 @@ var DatePicker = snippet.defineClass(
 
       if (isDate) {
         this._calendar.show();
-        this._timepicker.hide();
+        this._timePicker.hide();
       } else {
         this._calendar.hide();
-        this._timepicker.show();
+        this._timePicker.show();
       }
       domUtil.removeClass(
         this._element.querySelector('.' + CLASS_NAME_CHECKED),
@@ -567,8 +569,8 @@ var DatePicker = snippet.defineClass(
         date = this._datepickerInput.getDate();
 
         if (this.isSelectable(date)) {
-          if (this._timepicker) {
-            this._timepicker.setTime(date.getHours(), date.getMinutes());
+          if (this._timePicker) {
+            this._timePicker.setTime(date.getHours(), date.getMinutes());
           }
           this.setDate(date);
         } else {
@@ -634,7 +636,7 @@ var DatePicker = snippet.defineClass(
     _updateDate: function(target) {
       var timestamp = Number(domUtil.getData(target, 'timestamp'));
       var newDate = new Date(timestamp);
-      var timepicker = this._timepicker;
+      var timePicker = this._timePicker;
       var prevDate = this._date;
       var calendarType = this.getCalendarType();
       var pickerType = this.getType();
@@ -642,8 +644,8 @@ var DatePicker = snippet.defineClass(
       if (calendarType !== pickerType) {
         this.drawLowerCalendar(newDate);
       } else {
-        if (timepicker) {
-          newDate.setHours(timepicker.getHour(), timepicker.getMinute());
+        if (timePicker) {
+          newDate.setHours(timePicker.getHour(), timePicker.getMinute());
         } else if (prevDate) {
           newDate.setHours(prevDate.getHours(), prevDate.getMinutes());
         }
@@ -884,7 +886,7 @@ var DatePicker = snippet.defineClass(
       end = new Date(end);
 
       if (type) {
-        // @todo Consider time-range on timepicker
+        // @todo Consider time-range on timePicker
         start = dateUtil.cloneWithStartOf(start, type);
         end = dateUtil.cloneWithEndOf(end, type);
       }
@@ -1089,8 +1091,8 @@ var DatePicker = snippet.defineClass(
         newDate = new Date(date);
         this._date = newDate;
         this._calendar.draw({date: newDate});
-        if (this._timepicker) {
-          this._timepicker.setTime(newDate.getHours(), newDate.getMinutes());
+        if (this._timePicker) {
+          this._timePicker.setTime(newDate.getHours(), newDate.getMinutes());
         }
         this._syncToInput();
 
@@ -1121,8 +1123,8 @@ var DatePicker = snippet.defineClass(
       if (this._datepickerInput) {
         this._datepickerInput.clearText();
       }
-      if (this._timepicker) {
-        this._timepicker.setTime(0, 0);
+      if (this._timePicker) {
+        this._timePicker.setTime(0, 0);
       }
 
       // View update
@@ -1168,13 +1170,13 @@ var DatePicker = snippet.defineClass(
     },
 
     /**
-     * Returns timepicker instance
+     * Returns timePicker instance
      * @returns {?TimePicker} - TimePicker instance
      * @example
-     * var timepicker = this.getTimePicker();
+     * var timePicker = this.getTimePicker();
      */
     getTimePicker: function() {
-      return this._timepicker;
+      return this._timePicker;
     },
 
     /**
@@ -1338,8 +1340,8 @@ var DatePicker = snippet.defineClass(
       this._datepickerInput.changeLocaleTitles(this.getLocaleText().titles);
       this.setDateFormat(this._datepickerInput.getFormat());
 
-      if (this._timepicker) {
-        this._timepicker.changeLanguage(this._language);
+      if (this._timePicker) {
+        this._timePicker.changeLanguage(this._language);
       }
     },
 
@@ -1349,8 +1351,8 @@ var DatePicker = snippet.defineClass(
     destroy: function() {
       this._removeDocumentEvents();
       this._calendar.destroy();
-      if (this._timepicker) {
-        this._timepicker.destroy();
+      if (this._timePicker) {
+        this._timePicker.destroy();
       }
       if (this._datepickerInput) {
         this._datepickerInput.destroy();
@@ -1360,7 +1362,7 @@ var DatePicker = snippet.defineClass(
       this.removeAllOpeners();
 
       this._calendar
-        = this._timepicker
+        = this._timePicker
         = this._datepickerInput
         = this._container
         = this._element

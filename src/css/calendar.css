@@ -374,7 +374,7 @@
     box-sizing: border-box;
 }
 
-.tui-datepicker-input input {
+.tui-datepicker-input > input {
     width: 100%;
     height: 100%;
     padding: 6px 27px 6px 10px;
@@ -385,7 +385,7 @@
     color: #333
 }
 
-.tui-datepicker-input .tui-ico-date {
+.tui-datepicker-input > .tui-ico-date {
     position: absolute;
     top: 50%;
     right: 8px;

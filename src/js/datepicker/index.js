@@ -532,6 +532,7 @@ var DatePicker = snippet.defineClass(
 
     /**
      * Show the date picker element
+     * @private
      */
     _show: function() {
       domUtil.removeClass(this._element, CLASS_NAME_HIDDEN);
@@ -539,6 +540,7 @@ var DatePicker = snippet.defineClass(
 
     /**
      * Hide the date picker element
+     * @private
      */
     _hide: function() {
       domUtil.addClass(this._element, CLASS_NAME_HIDDEN);
@@ -615,6 +617,7 @@ var DatePicker = snippet.defineClass(
     /**
      * Event handler for click of calendar
      * @param {Event} ev An event object
+     * @private
      */
     _onClickHandler: function(ev) {
       var target = util.getTarget(ev);

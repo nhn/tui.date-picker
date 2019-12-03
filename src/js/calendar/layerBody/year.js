@@ -5,7 +5,7 @@
 
 'use strict';
 
-var snippet = require('tui-code-snippet');
+var defineClass = require('tui-code-snippet/defineClass/defineClass');
 
 var bodyTmpl = require('../../../template/calendar/yearLayer.hbs');
 var LayerBase = require('./base');
@@ -20,7 +20,7 @@ var DATE_SELECTOR = '.tui-calendar-year';
  * @param {string} language - Initial language
  * @ignore
  */
-var YearLayer = snippet.defineClass(
+var YearLayer = defineClass(
   LayerBase,
   /** @lends YearLayer.prototype */ {
     init: function(language) {

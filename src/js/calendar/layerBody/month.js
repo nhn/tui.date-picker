@@ -5,7 +5,7 @@
 
 'use strict';
 
-var snippet = require('tui-code-snippet');
+var defineClass = require('tui-code-snippet/defineClass/defineClass');
 
 var bodyTmpl = require('./../../../template/calendar/monthLayer.hbs');
 var LayerBase = require('./base');
@@ -19,7 +19,7 @@ var DATE_SELECTOR = '.tui-calendar-month';
  * @param {string} language - Initial language
  * @ignore
  */
-var MonthLayer = snippet.defineClass(
+var MonthLayer = defineClass(
   LayerBase,
   /** @lends MonthLayer.prototype */ {
     init: function(language) {

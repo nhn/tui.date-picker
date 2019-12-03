@@ -4,8 +4,6 @@
  */
 'use strict';
 
-var snippet = require('tui-code-snippet');
-
 var Calendar = require('../../src/js/calendar');
 
 describe('Calendar', function() {
@@ -209,27 +207,6 @@ describe('Calendar', function() {
       expect(nContainer.children.length).toBe(0);
       expect(nCalendar._header).toBeNull();
       expect(nCalendar._body).toBeNull();
-    });
-  });
-
-  describe('usageStatistics', function() {
-    var nCalendar;
-    it('should send hostname by default', function() {
-      spyOn(snippet, 'sendHostname');
-      nCalendar = new Calendar(document.createElement('div'));
-
-      expect(snippet.sendHostname).toHaveBeenCalled();
-    });
-
-    it('should not send hostname on usageStatistics option false', function() {
-      spyOn(snippet, 'sendHostname');
-      nCalendar = new Calendar(document.createElement('div'), {usageStatistics: false});
-
-      expect(snippet.sendHostname).not.toHaveBeenCalled();
-    });
-
-    afterEach(function() {
-      nCalendar.destroy();
     });
   });
 });

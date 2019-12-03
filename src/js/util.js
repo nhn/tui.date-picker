@@ -5,7 +5,9 @@
 
 'use strict';
 
-var snippet = require('tui-code-snippet');
+var isHTMLNode = require('tui-code-snippet/type/isHTMLNode');
+
+var currentId = 0;
 
 var utils = {
   /**
@@ -23,7 +25,7 @@ var utils = {
    * @returns {HTMLElement} A matched element
    */
   getElement: function(param) {
-    return snippet.isHTMLNode(param) ? param : document.querySelector(param);
+    return isHTMLNode(param) ? param : document.querySelector(param);
   },
 
   /**
@@ -40,6 +42,16 @@ var utils = {
     }
 
     return selector;
+  },
+
+  /**
+   * Create an unique id.
+   * @returns {number}
+   */
+  generateId: function() {
+    currentId += 1;
+
+    return currentId;
   }
 };
 

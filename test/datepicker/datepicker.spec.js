@@ -4,8 +4,11 @@
  */
 'use strict';
 
-var snippet = require('tui-code-snippet');
-var domUtil = require('tui-dom');
+var inArray = require('tui-code-snippet/array/inArray');
+var addClass = require('tui-code-snippet/domUtil/addClass');
+var hasClass = require('tui-code-snippet/domUtil/hasClass');
+var removeElement = require('tui-code-snippet/domUtil/removeElement');
+var setData = require('tui-code-snippet/domUtil/setData');
 
 var TimePicker = require('tui-time-picker');
 
@@ -52,40 +55,6 @@ describe('Date Picker', function() {
       datepicker.setDate(new Date(2016, 11, 3));
 
       expect(datepicker.getDate()).toEqual(new Date(2016, 11, 3));
-    });
-  });
-
-  describe('usageStatistics', function() {
-    var datepicker;
-    var container = document.createElement('div');
-    var input = document.createElement('input');
-    it('should send hostname by default', function() {
-      spyOn(snippet, 'sendHostname');
-      datepicker = new DatePicker(container, {
-        input: {
-          element: input
-        },
-        date: null
-      });
-
-      expect(snippet.sendHostname).toHaveBeenCalled();
-    });
-
-    it('should not send hostname on usageStatistics option false', function() {
-      spyOn(snippet, 'imagePing');
-      datepicker = new DatePicker(container, {
-        input: {
-          element: input
-        },
-        date: null,
-        usageStatistics: false
-      });
-
-      expect(snippet.imagePing).not.toHaveBeenCalled();
-    });
-
-    afterEach(function() {
-      datepicker.destroy();
     });
   });
 
@@ -206,7 +175,7 @@ describe('Date Picker', function() {
 
       datepicker.addOpener(btn);
 
-      expect(snippet.inArray(btn, datepicker._openers)).not.toEqual(-1);
+      expect(inArray(btn, datepicker._openers)).not.toEqual(-1);
     });
 
     it('removeOpener', function() {
@@ -215,7 +184,7 @@ describe('Date Picker', function() {
       datepicker.addOpener(btn);
       datepicker.removeOpener(btn);
 
-      expect(snippet.inArray(btn, datepicker._openers)).toEqual(-1);
+      expect(inArray(btn, datepicker._openers)).toEqual(-1);
     });
 
     it('setRanges', function() {
@@ -402,8 +371,8 @@ describe('Date Picker', function() {
       var td = document.createElement('td');
       var today = new Date();
 
-      domUtil.addClass(td, CLASS_NAME_SELECTABLE);
-      domUtil.setData(td, 'timestamp', today.setHours(0, 0, 0, 0)); // Calendar-date does not have hours
+      addClass(td, CLASS_NAME_SELECTABLE);
+      setData(td, 'timestamp', today.setHours(0, 0, 0, 0)); // Calendar-date does not have hours
       document.body.appendChild(td);
 
       datepicker._onClickHandler({
@@ -445,8 +414,8 @@ describe('Date Picker', function() {
 
     it('click-date event should call "close" when autoClose=true', function() {
       var el = document.createElement('td');
-      domUtil.addClass(el, CLASS_NAME_SELECTABLE);
-      domUtil.setData(el, 'timestamp', new Date(2017, 0, 1).getTime());
+      addClass(el, CLASS_NAME_SELECTABLE);
+      setData(el, 'timestamp', new Date(2017, 0, 1).getTime());
       document.body.appendChild(el);
 
       spyOn(datepicker, 'close');
@@ -461,8 +430,8 @@ describe('Date Picker', function() {
 
     it('click-date event should not call "close" when autoClose=false', function() {
       var el = document.createElement('td');
-      domUtil.addClass(el, CLASS_NAME_SELECTABLE);
-      domUtil.setData(el, 'timestamp', new Date(2017, 0, 1).getTime());
+      addClass(el, CLASS_NAME_SELECTABLE);
+      setData(el, 'timestamp', new Date(2017, 0, 1).getTime());
 
       spyOn(datepicker, 'close');
       datepicker.autoClose = false;
@@ -547,7 +516,7 @@ describe('Date Picker', function() {
 
     function isHidden(el) {
       // eslint-disable-line
-      return domUtil.hasClass(el, CLASS_NAME_HIDDEN);
+      return hasClass(el, CLASS_NAME_HIDDEN);
     }
 
     beforeEach(function() {
@@ -563,7 +532,7 @@ describe('Date Picker', function() {
 
     afterEach(function() {
       datepicker.destroy();
-      domUtil.removeElement(container);
+      removeElement(container);
       container = null;
     });
 

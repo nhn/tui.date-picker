@@ -5,8 +5,14 @@
 
 'use strict';
 
-var snippet = require('tui-code-snippet');
-var domUtil = require('tui-dom');
+var defineClass = require('tui-code-snippet/defineClass/defineClass');
+var CustomEvents = require('tui-code-snippet/customEvents/customEvents');
+var addClass = require('tui-code-snippet/domUtil/addClass');
+var hasClass = require('tui-code-snippet/domUtil/hasClass');
+var removeClass = require('tui-code-snippet/domUtil/removeClass');
+var removeElement = require('tui-code-snippet/domUtil/removeElement');
+var extend = require('tui-code-snippet/object/extend');
+var sendHostname = require('tui-code-snippet/request/sendHostname');
 
 var tmpl = require('./../../template/calendar/index.hbs');
 var Header = require('./header');
@@ -61,12 +67,12 @@ var BODY_SELECTOR = '.tui-calendar-body';
  *     console.log(event.type);
  *     for (i = 0, len = event.dateElements.length; i < len; i += 1) {
  *         var el = event.dateElements[i];
- *         var date = new Date(domUtil.getData(el, 'timestamp'));
+ *         var date = new Date(getData(el, 'timestamp'));
  *         console.log(date);
  *     }
  * });
  */
-var Calendar = snippet.defineClass(
+var Calendar = defineClass(
   /** @lends Calendar.prototype */ {
     static: {
       /**
@@ -102,7 +108,7 @@ var Calendar = snippet.defineClass(
       localeTexts: localeTexts
     },
     init: function(container, options) {
-      options = snippet.extend(
+      options = extend(
         {
           language: DEFAULT_LANGUAGE_TYPE,
           showToday: true,
@@ -165,7 +171,7 @@ var Calendar = snippet.defineClass(
       });
 
       if (options.usageStatistics) {
-        snippet.sendHostname('date-picker', 'UA-129987462-1');
+        sendHostname('date-picker', 'UA-129987462-1');
       }
     },
 
@@ -182,13 +188,13 @@ var Calendar = snippet.defineClass(
         'click',
         function(ev) {
           var target = util.getTarget(ev);
-          if (domUtil.hasClass(target, CLASS_NAME_PREV_MONTH_BTN)) {
+          if (hasClass(target, CLASS_NAME_PREV_MONTH_BTN)) {
             this.drawPrev();
-          } else if (domUtil.hasClass(target, CLASS_NAME_PREV_YEAR_BTN)) {
+          } else if (hasClass(target, CLASS_NAME_PREV_YEAR_BTN)) {
             this._onClickPrevYear();
-          } else if (domUtil.hasClass(target, CLASS_NAME_NEXT_MONTH_BTN)) {
+          } else if (hasClass(target, CLASS_NAME_NEXT_MONTH_BTN)) {
             this.drawNext();
-          } else if (domUtil.hasClass(target, CLASS_NAME_NEXT_YEAR_BTN)) {
+          } else if (hasClass(target, CLASS_NAME_NEXT_YEAR_BTN)) {
             this._onClickNextYear();
           }
         },
@@ -280,14 +286,14 @@ var Calendar = snippet.defineClass(
 
       this._header.render(date, type);
       this._body.render(date, type);
-      domUtil.removeClass(this._element, CLASS_NAME_CALENDAR_MONTH, CLASS_NAME_CALENDAR_YEAR);
+      removeClass(this._element, CLASS_NAME_CALENDAR_MONTH, CLASS_NAME_CALENDAR_YEAR);
 
       switch (type) {
         case TYPE_MONTH:
-          domUtil.addClass(this._element, CLASS_NAME_CALENDAR_MONTH);
+          addClass(this._element, CLASS_NAME_CALENDAR_MONTH);
           break;
         case TYPE_YEAR:
-          domUtil.addClass(this._element, CLASS_NAME_CALENDAR_YEAR);
+          addClass(this._element, CLASS_NAME_CALENDAR_YEAR);
           break;
         default:
           break;
@@ -358,14 +364,14 @@ var Calendar = snippet.defineClass(
      * Show calendar
      */
     show: function() {
-      domUtil.removeClass(this._element, CLASS_NAME_HIDDEN);
+      removeClass(this._element, CLASS_NAME_HIDDEN);
     },
 
     /**
      * Hide calendar
      */
     hide: function() {
-      domUtil.addClass(this._element, CLASS_NAME_HIDDEN);
+      addClass(this._element, CLASS_NAME_HIDDEN);
     },
 
     /**
@@ -489,7 +495,7 @@ var Calendar = snippet.defineClass(
      * @param {string} className - Class name
      */
     addCssClass: function(className) {
-      domUtil.addClass(this._element, className);
+      addClass(this._element, className);
     },
 
     /**
@@ -497,7 +503,7 @@ var Calendar = snippet.defineClass(
      * @param {string} className - Class name
      */
     removeCssClass: function(className) {
-      domUtil.removeClass(this._element, className);
+      removeClass(this._element, className);
     },
 
     /**
@@ -506,12 +512,12 @@ var Calendar = snippet.defineClass(
     destroy: function() {
       this._header.destroy();
       this._body.destroy();
-      domUtil.removeElement(this._element);
+      removeElement(this._element);
 
       this._type = this._date = this._container = this._element = this._header = this._body = null;
     }
   }
 );
 
-snippet.CustomEvents.mixin(Calendar);
+CustomEvents.mixin(Calendar);
 module.exports = Calendar;

@@ -5,8 +5,8 @@
 
 'use strict';
 
-var snippet = require('tui-code-snippet');
-var domUtil = require('tui-dom');
+var defineClass = require('tui-code-snippet/defineClass/defineClass');
+var removeElement = require('tui-code-snippet/domUtil/removeElement');
 
 var localeText = require('../../localeTexts');
 var DEFAULT_LANGUAGE_TYPE = require('../../constants').DEFAULT_LANGUAGE_TYPE;
@@ -18,7 +18,7 @@ var DEFAULT_LANGUAGE_TYPE = require('../../constants').DEFAULT_LANGUAGE_TYPE;
  * @param {string} language - Initial language
  * Layer base
  */
-var LayerBase = snippet.defineClass(
+var LayerBase = defineClass(
   /** @lends LayerBase.prototype */ {
     init: function(language) {
       language = language || DEFAULT_LANGUAGE_TYPE;
@@ -96,7 +96,7 @@ var LayerBase = snippet.defineClass(
      */
     remove: function() {
       if (this._element) {
-        domUtil.removeElement(this._element);
+        removeElement(this._element);
       }
       this._element = null;
     }

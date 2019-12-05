@@ -30,7 +30,7 @@ var localeTexts = require('../localeTexts');
 var dateUtil = require('../dateUtil');
 var util = require('../util');
 var mouseTouchEvent = require('../mouseTouchEvent');
-var tmpl = require('../../template/datepicker/index.hbs');
+var tmpl = require('../../template/datepicker/index');
 var DatePickerInput = require('./input');
 
 var DEFAULT_LANGUAGE_TYPE = constants.DEFAULT_LANGUAGE_TYPE;
@@ -215,7 +215,9 @@ var DatePicker = defineClass(
        * @private
        */
       this._container = util.getElement(container);
-      this._container.innerHTML = tmpl(options);
+      this._container.innerHTML = tmpl(extend(options, {
+        isTab: options.timePicker && options.timePicker.layoutType === 'tab'
+      }));
 
       /**
        * DatePicker element

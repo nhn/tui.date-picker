@@ -7,9 +7,10 @@
 
 var defineClass = require('tui-code-snippet/defineClass/defineClass');
 
-var bodyTmpl = require('./../../../template/calendar/monthLayer.hbs');
+var bodyTmpl = require('./../../../template/calendar/monthLayer');
 var LayerBase = require('./base');
 var TYPE_MONTH = require('../../constants').TYPE_MONTH;
+var dateUtil = require('../../dateUtil');
 
 var DATE_SELECTOR = '.tui-calendar-month';
 
@@ -54,7 +55,8 @@ var MonthLayer = defineClass(
         Sep: monthsShort[8],
         Oct: monthsShort[9],
         Nov: monthsShort[10],
-        Dec: monthsShort[11]
+        Dec: monthsShort[11],
+        getFirstDayTimestamp: dateUtil.getFirstDayTimestamp
       };
     },
 

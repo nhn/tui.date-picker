@@ -7,7 +7,7 @@
 
 var defineClass = require('tui-code-snippet/defineClass/defineClass');
 
-var bodyTmpl = require('../../../template/calendar/yearLayer.hbs');
+var bodyTmpl = require('../../../template/calendar/yearLayer');
 var LayerBase = require('./base');
 var TYPE_YEAR = require('../../constants').TYPE_YEAR;
 var dateUtil = require('../../dateUtil');
@@ -47,7 +47,8 @@ var YearLayer = defineClass(
           dateUtil.getRangeArr(year - 4, year - 2),
           dateUtil.getRangeArr(year - 1, year + 1),
           dateUtil.getRangeArr(year + 2, year + 4)
-        ]
+        ],
+        getFirstDayTimestamp: dateUtil.getFirstDayTimestamp
       };
     },
 

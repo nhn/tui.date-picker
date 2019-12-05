@@ -52,6 +52,16 @@ var utils = {
   },
 
   /**
+   * Get timestamp of the first day.
+   * @param {number} year A year
+   * @param {number} month A month
+   * @returns {number} timestamp
+   */
+  getFirstDayTimestamp: function(year, month) {
+    return new Date(year, month, 1).getTime();
+  },
+
+  /**
    * Get last date by parameters that include year and month information.
    * @param {number} year A year
    * @param {number} month A month

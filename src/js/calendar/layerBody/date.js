@@ -7,7 +7,8 @@
 
 var defineClass = require('tui-code-snippet/defineClass/defineClass');
 
-var bodyTmpl = require('./../../../template/calendar/dateLayer.hbs');
+var dateUtil = require('../../dateUtil');
+var bodyTmpl = require('./../../../template/calendar/dateLayer');
 var LayerBase = require('./base');
 var TYPE_DATE = require('../../constants').TYPE_DATE;
 
@@ -55,8 +56,84 @@ var DateLayer = defineClass(
         Fri: daysShort[5],
         Sat: daysShort[6],
         year: year,
-        month: month
+        month: month,
+        weeks: this._getWeeks(year, month)
       };
+    },
+
+    /**
+     * weeks (templating) for date-calendar
+     * @param {number} year - Year
+     * @param {number} month - Month
+     * @returns {Array.<Array.<Date>>}
+     * @private
+     */
+    _getWeeks: function(year, month) {
+      var weekNumber = 0;
+      var weeksCount = 6; // Fix for no changing height
+      var weeks = [];
+
+      for (; weekNumber < weeksCount; weekNumber += 1) {
+        weeks.push(this._getWeek(year, month, [
+          dateUtil.getDateOfWeek(year, month, weekNumber, 0),
+          dateUtil.getDateOfWeek(year, month, weekNumber, 1),
+          dateUtil.getDateOfWeek(year, month, weekNumber, 2),
+          dateUtil.getDateOfWeek(year, month, weekNumber, 3),
+          dateUtil.getDateOfWeek(year, month, weekNumber, 4),
+          dateUtil.getDateOfWeek(year, month, weekNumber, 5),
+          dateUtil.getDateOfWeek(year, month, weekNumber, 6)
+        ]));
+      }
+
+      return weeks;
+    },
+
+    /**
+     * week (templating) for date-calendar
+     * @param {number} currentYear 
+     * @param {number} currentMonth 
+     * @param {Array.<Date>} dates
+     * @private
+     */
+    _getWeek: function(currentYear, currentMonth, dates) {
+      var firstDateOfCurrentMonth = new Date(currentYear, currentMonth - 1, 1);
+      var lastDateOfCurrentMonth = new Date(currentYear, currentMonth, 0);
+      var contexts = [];
+      var i = 0;
+      var length = dates.length;
+      var date, className;
+
+      for (; i < length; i += 1) {
+        className = 'tui-calendar-date';
+        date = dates[i];
+
+        if (date < firstDateOfCurrentMonth) {
+          className += ' tui-calendar-prev-month';
+        }
+
+        if (date > lastDateOfCurrentMonth) {
+          className += ' tui-calendar-next-month';
+        }
+
+        switch (date.getDay()) {
+          case 0:
+            className += ' tui-calendar-sun';
+            break;
+          case 6:
+            className += ' tui-calendar-sat';
+            break;
+          default:
+            break;
+        }
+
+        contexts.push({
+          dayInMonth: date.getDate(),
+          className: className,
+          timestamp: date.getTime()
+        });
+      }
+
+      return contexts;
     },
 
     /**

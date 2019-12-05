@@ -14,7 +14,6 @@ var removeElement = require('tui-code-snippet/domUtil/removeElement');
 var extend = require('tui-code-snippet/object/extend');
 var sendHostname = require('tui-code-snippet/request/sendHostname');
 
-var tmpl = require('./../../template/calendar/index.hbs');
 var Header = require('./header');
 var Body = require('./body');
 var localeTexts = require('../localeTexts');
@@ -126,7 +125,11 @@ var Calendar = defineClass(
        * @private
        */
       this._container = util.getElement(container);
-      this._container.innerHTML = tmpl(options);
+      this._container.innerHTML =
+          '<div class="tui-calendar">'
+        + '    <div class="tui-calendar-header"></div>'
+        + '    <div class="tui-calendar-body"></div>'
+        + '</div>';
 
       /**
        * Wrapper element

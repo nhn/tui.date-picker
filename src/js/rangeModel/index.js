@@ -10,6 +10,7 @@ var defineClass = require('tui-code-snippet/defineClass/defineClass');
 var isNumber = require('tui-code-snippet/type/isNumber');
 
 var Range = require('./range');
+var util = require('../util');
 
 /**
  * @class
@@ -131,8 +132,6 @@ var RangeModel = defineClass(
      * @param {number} [end] - End
      */
     exclude: function(start, end) {
-      var result = [];
-
       if (!isNumber(end)) {
         end = start;
       }
@@ -155,12 +154,9 @@ var RangeModel = defineClass(
       );
 
       // Reduce empty ranges
-      forEachArray(this._ranges, function(range) {
-        if (!range.isEmpty()) {
-          result.push(range);
-        }
+      this._ranges = util.filter(this._ranges, function(range) {
+        return !range.isEmpty();
       });
-      this._ranges = result;
     },
 
     /**

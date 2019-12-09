@@ -9,6 +9,7 @@ var inArray = require('tui-code-snippet/array/inArray');
 var forEachArray = require('tui-code-snippet/collection/forEachArray');
 var defineClass = require('tui-code-snippet/defineClass/defineClass');
 
+var util = require('./util');
 var dateUtil = require('./dateUtil');
 var constants = require('./constants');
 var localeTexts = require('./localeTexts');
@@ -148,15 +149,17 @@ var DateTimeFormatter = defineClass(
       var matchedKeys = this._rawStr.match(rFormableKeys);
       var keyOrder = [];
 
-      forEachArray(matchedKeys, function(key, index) {
-        if (key[0] !== '\\') {
-          if (!/m/i.test(key)) {
-            key = key.toLowerCase();
-          }
+      matchedKeys = util.filter(matchedKeys, function(key) {
+        return key[0] !== '\\';
+      });
 
-          regExpStr += mapForConverting[key].expression + '[\\D\\s]*';
-          keyOrder[index] = mapForConverting[key].type;
+      forEachArray(matchedKeys, function(key, index) {
+        if (!/m/i.test(key)) {
+          key = key.toLowerCase();
         }
+
+        regExpStr += mapForConverting[key].expression + '[\\D\\s]*';
+        keyOrder[index] = mapForConverting[key].type;
       });
 
       // This formatter does not allow additional numbers at the end of string.

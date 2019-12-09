@@ -12,7 +12,6 @@ var hasClass = require('tui-code-snippet/domUtil/hasClass');
 var removeClass = require('tui-code-snippet/domUtil/removeClass');
 var removeElement = require('tui-code-snippet/domUtil/removeElement');
 var extend = require('tui-code-snippet/object/extend');
-var sendHostname = require('tui-code-snippet/request/sendHostname');
 
 var Header = require('./header');
 var Body = require('./body');
@@ -174,7 +173,7 @@ var Calendar = defineClass(
       });
 
       if (options.usageStatistics) {
-        sendHostname('date-picker', 'UA-129987462-1');
+        util.sendHostName();
       }
     },
 

@@ -72,17 +72,14 @@ var DateLayer = defineClass(
       var weekNumber = 0;
       var weeksCount = 6; // Fix for no changing height
       var weeks = [];
+      var dates, i;
 
       for (; weekNumber < weeksCount; weekNumber += 1) {
-        weeks.push(this._getWeek(year, month, [
-          dateUtil.getDateOfWeek(year, month, weekNumber, 0),
-          dateUtil.getDateOfWeek(year, month, weekNumber, 1),
-          dateUtil.getDateOfWeek(year, month, weekNumber, 2),
-          dateUtil.getDateOfWeek(year, month, weekNumber, 3),
-          dateUtil.getDateOfWeek(year, month, weekNumber, 4),
-          dateUtil.getDateOfWeek(year, month, weekNumber, 5),
-          dateUtil.getDateOfWeek(year, month, weekNumber, 6)
-        ]));
+        dates = [];
+        for (i = 0; i < 7; i += 1) {
+          dates.push(dateUtil.getDateOfWeek(year, month, weekNumber, i));
+        }
+        weeks.push(this._getWeek(year, month, dates));
       }
 
       return weeks;
@@ -115,15 +112,10 @@ var DateLayer = defineClass(
           className += ' tui-calendar-next-month';
         }
 
-        switch (date.getDay()) {
-          case 0:
-            className += ' tui-calendar-sun';
-            break;
-          case 6:
-            className += ' tui-calendar-sat';
-            break;
-          default:
-            break;
+        if (date.getDay() === 0) {
+          className += ' tui-calendar-sun';
+        } else if (date.getDay() === 6) {
+          className += ' tui-calendar-sat';
         }
 
         contexts.push({

@@ -5,7 +5,9 @@
 
 'use strict';
 
+var forEachArray = require('tui-code-snippet/collection/forEachArray');
 var isHTMLNode = require('tui-code-snippet/type/isHTMLNode');
+var sendHostname = require('tui-code-snippet/request/sendHostname');
 
 var currentId = 0;
 
@@ -52,6 +54,32 @@ var utils = {
     currentId += 1;
 
     return currentId;
+  },
+
+  /**
+   * Create a new array with all elements that pass the test implemented by the provided function.
+   * @param {Array} arr - Array that will be traversed
+   * @param {function} iteratee - iteratee callback function
+   * @returns {Array}
+   */
+  filter: function(arr, iteratee) {
+    var result = [];
+
+    forEachArray(arr, function(item) {
+      if (iteratee(item)) {
+        result.push(item);
+      }
+    });
+
+    return result;
+  },
+
+  /**
+   * Send hostname for GA
+   * @ignore
+   */
+  sendHostName: function() {
+    sendHostname('date-picker', 'UA-129987462-1');
   }
 };
 

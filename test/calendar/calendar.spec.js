@@ -5,6 +5,7 @@
 'use strict';
 
 var Calendar = require('../../src/js/calendar');
+var util = require('../../src/js/util');
 
 describe('Calendar', function() {
   describe('Api', function() {
@@ -207,6 +208,27 @@ describe('Calendar', function() {
       expect(nContainer.children.length).toBe(0);
       expect(nCalendar._header).toBeNull();
       expect(nCalendar._body).toBeNull();
+    });
+  });
+
+  describe('usageStatistics', function() {
+    var nCalendar;
+    it('should send hostname by default', function() {
+      spyOn(util, 'sendHostName');
+      nCalendar = new Calendar(document.createElement('div'));
+
+      expect(util.sendHostName).toHaveBeenCalled();
+    });
+
+    it('should not send hostname on usageStatistics option false', function() {
+      spyOn(util, 'sendHostName');
+      nCalendar = new Calendar(document.createElement('div'), {usageStatistics: false});
+
+      expect(util.sendHostName).not.toHaveBeenCalled();
+    });
+
+    afterEach(function() {
+      nCalendar.destroy();
     });
   });
 });

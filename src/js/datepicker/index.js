@@ -437,7 +437,7 @@ var DatePicker = defineClass(
     _changePicker: function(target) {
       var btnSelector = '.' + CLASS_NAME_SELECTOR_BUTTON;
       var selectedBtn = closest(target, btnSelector);
-      var isDateElement = selectedBtn.querySelector(SELECTOR_DATE_ICO);
+      var isDateElement = !!selectedBtn.querySelector(SELECTOR_DATE_ICO);
 
       if (isDateElement) {
         this._calendar.show();

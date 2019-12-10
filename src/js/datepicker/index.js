@@ -7,6 +7,7 @@
 
 var inArray = require('tui-code-snippet/array/inArray');
 var forEachArray = require('tui-code-snippet/collection/forEachArray');
+var toArray = require('tui-code-snippet/collection/toArray');
 var defineClass = require('tui-code-snippet/defineClass/defineClass');
 var CustomEvents = require('tui-code-snippet/customEvents/customEvents');
 var addClass = require('tui-code-snippet/domUtil/addClass');
@@ -684,7 +685,7 @@ var DatePicker = defineClass(
      */
     _onDrawCalendar: function(eventData) {
       forEachArray(
-        eventData.dateElements,
+        toArray(eventData.dateElements),
         function(el) {
           this._setTodayClassName(el);
           this._setSelectableClassName(el);

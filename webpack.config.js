@@ -31,18 +31,6 @@ module.exports = function(env, argv) {
       filename: FILENAME
     },
     externals: {
-      'tui-code-snippet': {
-        commonjs: 'tui-code-snippet',
-        commonjs2: 'tui-code-snippet',
-        amd: 'tui-code-snippet',
-        root: ['tui', 'util']
-      },
-      'tui-dom': {
-        commonjs: 'tui-dom',
-        commonjs2: 'tui-dom',
-        amd: 'tui-dom',
-        root: ['tui', 'dom']
-      },
       'tui-time-picker': {
         commonjs: 'tui-time-picker',
         commonjs2: 'tui-time-picker',
@@ -60,11 +48,6 @@ module.exports = function(env, argv) {
           options: {
             failOnError: isProduction
           }
-        },
-        {
-          test: /\.hbs$/,
-          exclude: /(node_modules)/,
-          loader: 'handlebars-loader'
         },
         {
           test: /\.css/,

@@ -42,7 +42,7 @@ var options = {
 var instance = new DatePicker(container, options);
 ```
 
-Or, include [`tui-code-snippet`](https://github.com/nhn/tui.code-snippet)(**v1.5.0** or **later**) and then immediately write the options as follows:
+Or, include [`tui-code-snippet`](https://github.com/nhn/tui.code-snippet)(**v2.2.0** or **later**) and then immediately write the options as follows:
 
 ```js
 tui.usageStatistics = false;
@@ -186,9 +186,8 @@ For more information about the API, please see [here](http://nhn.github.io/tui.d
 
 
 ## 🔩 Dependency
-* [tui-code-snippet](https://github.com/nhn/tui.code-snippet) >=1.5.0
-* [tui-dom](https://github.com/nhn/tui.dom) >=3.0.0
-* [tui-time-picker](https://github.com/nhn/tui.time-picker) >=2.0.0
+* [tui-code-snippet](https://github.com/nhn/tui.code-snippet) >= 2.2.0
+* [tui-time-picker](https://github.com/nhn/tui.time-picker) >= 2.0.3
 
 
 ## 🌏 Browser Support

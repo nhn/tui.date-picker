@@ -121,8 +121,9 @@ tui.date-picker/
 ├─ latest
 │  ├─ tui-date-picker.css
 │  ├─ tui-date-picker.js
-│  ├─ tui-date-picker.min.js
-├─ v3.0.0/
+│  ├─ tui-date-picker.min.css
+│  └─ tui-date-picker.min.js
+├─ v4.0.0/
 │  ├─ ...
 ```
 

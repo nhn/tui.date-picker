@@ -12,7 +12,7 @@ var MiniCssExtractPlugin = require('mini-css-extract-plugin');
 var TerserPlugin = require('terser-webpack-plugin');
 var OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
-function setOptimization(isMinified) {
+function getOptimization(isMinified) {
   if (isMinified) {
     return {
       minimizer: [
@@ -89,7 +89,7 @@ module.exports = function(env, argv) {
       new webpack.BannerPlugin(BANNER),
       new MiniCssExtractPlugin({filename: FILENAME + '.css'})
     ],
-    optimization: setOptimization(isMinified),
+    optimization: getOptimization(isMinified),
     devServer: {
       historyApiFallback: false,
       progress: true,

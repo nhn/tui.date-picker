@@ -1,6 +1,6 @@
 {
   "name": "tui-date-picker",
-  "version": "4.0.2",
+  "version": "4.0.3",
   "description": "TOAST UI Components: DatePicker",
   "main": "dist/tui-date-picker",
   "files": [
@@ -13,7 +13,8 @@
     "serve": "webpack-dev-server --inline --hot -d",
     "serve:ie8": "webpack-dev-server -d",
     "doc:serve": "tuidoc --serv",
-    "doc": "tuidoc"
+    "doc": "tuidoc",
+    "note": "tui-note"
   },
   "repository": {
     "type": "git",

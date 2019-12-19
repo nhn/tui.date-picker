@@ -4,9 +4,8 @@
  */
 'use strict';
 
-var snippet = require('tui-code-snippet');
-
 var Calendar = require('../../src/js/calendar');
+var util = require('../../src/js/util');
 
 describe('Calendar', function() {
   describe('Api', function() {
@@ -215,17 +214,17 @@ describe('Calendar', function() {
   describe('usageStatistics', function() {
     var nCalendar;
     it('should send hostname by default', function() {
-      spyOn(snippet, 'sendHostname');
+      spyOn(util, 'sendHostName');
       nCalendar = new Calendar(document.createElement('div'));
 
-      expect(snippet.sendHostname).toHaveBeenCalled();
+      expect(util.sendHostName).toHaveBeenCalled();
     });
 
     it('should not send hostname on usageStatistics option false', function() {
-      spyOn(snippet, 'sendHostname');
+      spyOn(util, 'sendHostName');
       nCalendar = new Calendar(document.createElement('div'), {usageStatistics: false});
 
-      expect(snippet.sendHostname).not.toHaveBeenCalled();
+      expect(util.sendHostName).not.toHaveBeenCalled();
     });
 
     afterEach(function() {

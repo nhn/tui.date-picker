@@ -5,8 +5,11 @@
 
 'use strict';
 
-var snippet = require('tui-code-snippet');
+var inArray = require('tui-code-snippet/array/inArray');
+var forEachArray = require('tui-code-snippet/collection/forEachArray');
+var defineClass = require('tui-code-snippet/defineClass/defineClass');
 
+var util = require('./util');
 var dateUtil = require('./dateUtil');
 var constants = require('./constants');
 var localeTexts = require('./localeTexts');
@@ -103,7 +106,7 @@ var mapForConverting = {
  * @class
  * @ignore
  */
-var DateTimeFormatter = snippet.defineClass(
+var DateTimeFormatter = defineClass(
   /** @lends DateTimeFormatter.prototype */ {
     init: function(rawStr, titles) {
       /**
@@ -146,11 +149,11 @@ var DateTimeFormatter = snippet.defineClass(
       var matchedKeys = this._rawStr.match(rFormableKeys);
       var keyOrder = [];
 
-      matchedKeys = snippet.filter(matchedKeys, function(key) {
-        return key[0] !== '\\'; // escape character
+      matchedKeys = util.filter(matchedKeys, function(key) {
+        return key[0] !== '\\';
       });
 
-      snippet.forEach(matchedKeys, function(key, index) {
+      forEachArray(matchedKeys, function(key, index) {
         if (!/m/i.test(key)) {
           key = key.toLowerCase();
         }
@@ -192,7 +195,7 @@ var DateTimeFormatter = snippet.defineClass(
       }
 
       // eslint-disable-next-line complexity
-      snippet.forEach(this._keyOrder, function(name, index) {
+      forEachArray(this._keyOrder, function(name, index) {
         var value = matched[index + 1];
 
         if (name === constants.TYPE_MERIDIEM && /[ap]m/i.test(value)) {
@@ -253,7 +256,7 @@ var DateTimeFormatter = snippet.defineClass(
       var meridiem = 'a'; // Default value for unusing meridiem format
       var replaceMap;
 
-      if (snippet.inArray(constants.TYPE_MERIDIEM, this._keyOrder) > -1) {
+      if (inArray(constants.TYPE_MERIDIEM, this._keyOrder) > -1) {
         meridiem = hour >= 12 ? 'pm' : 'am';
         hour = dateUtil.getMeridiemHour(hour);
       }

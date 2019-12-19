@@ -5,11 +5,13 @@
 
 'use strict';
 
-var snippet = require('tui-code-snippet');
-var domUtil = require('tui-dom');
+var defineClass = require('tui-code-snippet/defineClass/defineClass');
+var CustomEvents = require('tui-code-snippet/customEvents/customEvents');
+var closest = require('tui-code-snippet/domUtil/closest');
+var removeElement = require('tui-code-snippet/domUtil/removeElement');
 
 var localeTexts = require('./../localeTexts');
-var headerTmpl = require('./../../template/calendar/header.hbs');
+var headerTmpl = require('./../../template/calendar/header');
 var DateTimeFormatter = require('../dateTimeFormatter');
 var constants = require('../constants');
 var util = require('../util');
@@ -38,7 +40,7 @@ var YEAR_TITLE_FORMAT = 'yyyy';
  * @param {boolean} option.showToday - Has today box or not.
  * @param {boolean} option.showJumpButtons - Has jump buttons or not.
  */
-var Header = snippet.defineClass(
+var Header = defineClass(
   /** @lends Header.prototype */ {
     init: function(container, option) {
       /**
@@ -138,7 +140,7 @@ var Header = snippet.defineClass(
     _onClickHandler: function(ev) {
       var target = util.getTarget(ev);
 
-      if (domUtil.closest(target, SELECTOR_BTN)) {
+      if (closest(target, SELECTOR_BTN)) {
         this.fire('click', ev);
       }
     },
@@ -223,8 +225,8 @@ var Header = snippet.defineClass(
      */
     destroy: function() {
       this._removeEvents();
-      domUtil.removeElement(this._innerElement);
-      domUtil.removeElement(this._infoElement);
+      removeElement(this._innerElement);
+      removeElement(this._infoElement);
       this._container
         = this._showToday
         = this._showJumpButtons
@@ -238,5 +240,5 @@ var Header = snippet.defineClass(
   }
 );
 
-snippet.CustomEvents.mixin(Header);
+CustomEvents.mixin(Header);
 module.exports = Header;

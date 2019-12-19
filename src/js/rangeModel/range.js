@@ -5,9 +5,8 @@
 
 'use strict';
 
-var snippet = require('tui-code-snippet');
-
-var isNumber = snippet.isNumber;
+var defineClass = require('tui-code-snippet/defineClass/defineClass');
+var isNumber = require('tui-code-snippet/type/isNumber');
 
 /**
  * @class
@@ -15,7 +14,7 @@ var isNumber = snippet.isNumber;
  * @param {number} start - Start of range
  * @param {number} [end] - End of range
  */
-var Range = snippet.defineClass(
+var Range = defineClass(
   /** @lends Range.prototype */ {
     init: function(start, end) {
       this.setRange(start, end);

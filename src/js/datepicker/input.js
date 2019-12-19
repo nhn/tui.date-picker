@@ -5,8 +5,10 @@
 
 'use strict';
 
-var snippet = require('tui-code-snippet');
-var domUtil = require('tui-dom');
+var defineClass = require('tui-code-snippet/defineClass/defineClass');
+var CustomEvents = require('tui-code-snippet/customEvents/customEvents');
+var on = require('tui-code-snippet/domEvent/on');
+var off = require('tui-code-snippet/domEvent/off');
 
 var DateTimeFormatter = require('../dateTimeFormatter');
 var mouseTouchEvent = require('../mouseTouchEvent');
@@ -23,7 +25,7 @@ var DEFAULT_FORMAT = 'yyyy-MM-dd';
  * @param {string} option.id - Id
  * @param {string} option.format - Text format
  */
-var DatePickerInput = snippet.defineClass(
+var DatePickerInput = defineClass(
   /** @lends DatePickerInput.prototype */ {
     init: function(inputElement, option) {
       option.format = option.format || DEFAULT_FORMAT;
@@ -73,7 +75,7 @@ var DatePickerInput = snippet.defineClass(
      */
     _setEvents: function() {
       if (this._input) {
-        domUtil.on(this._input, 'change', this._onChangeHandler, this);
+        on(this._input, 'change', this._onChangeHandler, this);
         mouseTouchEvent.on(this._input, 'click', this._onClickHandler, this);
       }
     },
@@ -86,7 +88,7 @@ var DatePickerInput = snippet.defineClass(
       this.off();
 
       if (this._input) {
-        domUtil.off(this._input, 'change', this._onChangeHandler);
+        off(this._input, 'change', this._onChangeHandler);
         mouseTouchEvent.off(this._input, 'click', this._onClickHandler);
       }
     },
@@ -197,5 +199,5 @@ var DatePickerInput = snippet.defineClass(
   }
 );
 
-snippet.CustomEvents.mixin(DatePickerInput);
+CustomEvents.mixin(DatePickerInput);
 module.exports = DatePickerInput;

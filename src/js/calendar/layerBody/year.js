@@ -5,9 +5,9 @@
 
 'use strict';
 
-var snippet = require('tui-code-snippet');
+var defineClass = require('tui-code-snippet/defineClass/defineClass');
 
-var bodyTmpl = require('../../../template/calendar/yearLayer.hbs');
+var bodyTmpl = require('../../../template/calendar/yearLayer');
 var LayerBase = require('./base');
 var TYPE_YEAR = require('../../constants').TYPE_YEAR;
 var dateUtil = require('../../dateUtil');
@@ -20,7 +20,7 @@ var DATE_SELECTOR = '.tui-calendar-year';
  * @param {string} language - Initial language
  * @ignore
  */
-var YearLayer = snippet.defineClass(
+var YearLayer = defineClass(
   LayerBase,
   /** @lends YearLayer.prototype */ {
     init: function(language) {
@@ -47,7 +47,8 @@ var YearLayer = snippet.defineClass(
           dateUtil.getRangeArr(year - 4, year - 2),
           dateUtil.getRangeArr(year - 1, year + 1),
           dateUtil.getRangeArr(year + 2, year + 4)
-        ]
+        ],
+        getFirstDayTimestamp: dateUtil.getFirstDayTimestamp
       };
     },
 

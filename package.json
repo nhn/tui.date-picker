@@ -9,7 +9,7 @@
   "scripts": {
     "test": "karma start --no-single-run",
     "test:ne": "KARMA_SERVER=ne karma start",
-    "bundle": "webpack & webpack -p",
+    "bundle": "webpack --mode=production & webpack --mode=production --minify",
     "serve": "webpack-dev-server --inline --hot -d",
     "serve:ie8": "webpack-dev-server -d",
     "doc:serve": "tuidoc --serv",
@@ -31,6 +31,7 @@
   "author": "NHN. FE Development Lab <dl_javascript@nhn.com>",
   "license": "MIT",
   "devDependencies": {
+    "@toast-ui/release-notes": "^2.0.1",
     "css-loader": "^1.0.1",
     "es5-shim": "^4.5.13",
     "eslint": "^5.12.0",
@@ -38,8 +39,6 @@
     "eslint-config-tui": "^2.2.0",
     "eslint-loader": "^3.0.0",
     "file-loader": "^0.9.0",
-    "handlebars": "4.0.6",
-    "handlebars-loader": "^1.4.0",
     "istanbul-instrumenter-loader": "^1.0.0",
     "jasmine-core": "^2.4.1",
     "karma": "^4.3.0",
@@ -52,16 +51,17 @@
     "karma-webdriver-launcher": "git+https://github.com/nhn/karma-webdriver-launcher.git#v1.2.0",
     "karma-webpack": "^4.0.2",
     "mini-css-extract-plugin": "^0.8.0",
+    "optimize-css-assets-webpack-plugin": "^5.0.3",
     "prettier": "^1.18.2",
     "style-loader": "^0.13.1",
+    "terser-webpack-plugin": "^2.2.3",
     "url-loader": "^0.5.7",
     "webpack": "^4.39.3",
     "webpack-cli": "^3.3.7",
     "webpack-dev-server": "^3.8.0"
   },
   "dependencies": {
-    "tui-code-snippet": "^1.5.0",
-    "tui-dom": "^3.0.0",
-    "tui-time-picker": "^2.0.2"
+    "tui-code-snippet": "^2.2.0",
+    "tui-time-picker": "^2.0.3"
   }
 }

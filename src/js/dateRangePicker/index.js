@@ -5,8 +5,13 @@
 
 'use strict';
 
-var snippet = require('tui-code-snippet');
-var domUtil = require('tui-dom');
+var forEachArray = require('tui-code-snippet/collection/forEachArray');
+var defineClass = require('tui-code-snippet/defineClass/defineClass');
+var CustomEvents = require('tui-code-snippet/customEvents/customEvents');
+var addClass = require('tui-code-snippet/domUtil/addClass');
+var getData = require('tui-code-snippet/domUtil/getData');
+var removeClass = require('tui-code-snippet/domUtil/removeClass');
+var extend = require('tui-code-snippet/object/extend');
 
 var DatePicker = require('../datepicker');
 var dateUtil = require('../dateUtil');
@@ -54,7 +59,7 @@ var CLASS_NAME_SELECTED_RANGE = 'tui-is-selected-range';
  *     ]
  * });
  */
-var DateRangePicker = snippet.defineClass(
+var DateRangePicker = defineClass(
   /** @lends DateRangePicker.prototype */ {
     init: function(options) {
       var startpickerOpt, endpickerOpt;
@@ -101,13 +106,13 @@ var DateRangePicker = snippet.defineClass(
       var startInput = util.getElement(options.startpicker.input);
       var endInput = util.getElement(options.endpicker.input);
 
-      var startpickerOpt = snippet.extend({}, options, {
+      var startpickerOpt = extend({}, options, {
         input: {
           element: startInput,
           format: options.format
         }
       });
-      var endpickerOpt = snippet.extend({}, options, {
+      var endpickerOpt = extend({}, options, {
         input: {
           element: endInput,
           format: options.format
@@ -132,7 +137,6 @@ var DateRangePicker = snippet.defineClass(
      */
     _onDrawPicker: function(eventData) {
       var calendarType = eventData.type;
-      var dateElements = snippet.toArray(eventData.dateElements);
       var startDate = this._startpicker.getDate();
       var endDate = this._endpicker.getDate();
 
@@ -145,10 +149,10 @@ var DateRangePicker = snippet.defineClass(
         endDate = new Date(NaN);
       }
 
-      snippet.forEach(
-        dateElements,
+      forEachArray(
+        eventData.dateElements,
         function(el) {
-          var elDate = new Date(Number(domUtil.getData(el, 'timestamp')));
+          var elDate = new Date(Number(getData(el, 'timestamp')));
           var isInRange = dateUtil.inRange(startDate, endDate, elDate, calendarType);
           var isSelected =
             dateUtil.isSame(startDate, elDate, calendarType) ||
@@ -169,9 +173,9 @@ var DateRangePicker = snippet.defineClass(
      */
     _setRangeClass: function(el, isInRange) {
       if (isInRange) {
-        domUtil.addClass(el, CLASS_NAME_SELECTED_RANGE);
+        addClass(el, CLASS_NAME_SELECTED_RANGE);
       } else {
-        domUtil.removeClass(el, CLASS_NAME_SELECTED_RANGE);
+        removeClass(el, CLASS_NAME_SELECTED_RANGE);
       }
     },
 
@@ -183,9 +187,9 @@ var DateRangePicker = snippet.defineClass(
      */
     _setSelectedClass: function(el, isSelected) {
       if (isSelected) {
-        domUtil.addClass(el, CLASS_NAME_SELECTED);
+        addClass(el, CLASS_NAME_SELECTED);
       } else {
-        domUtil.removeClass(el, CLASS_NAME_SELECTED);
+        removeClass(el, CLASS_NAME_SELECTED);
       }
     },
 
@@ -347,5 +351,5 @@ var DateRangePicker = snippet.defineClass(
   }
 );
 
-snippet.CustomEvents.mixin(DateRangePicker);
+CustomEvents.mixin(DateRangePicker);
 module.exports = DateRangePicker;

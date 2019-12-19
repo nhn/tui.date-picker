@@ -5,16 +5,19 @@
 
 'use strict';
 
-var snippet = require('tui-code-snippet');
+var forEachArray = require('tui-code-snippet/collection/forEachArray');
+var defineClass = require('tui-code-snippet/defineClass/defineClass');
+var isNumber = require('tui-code-snippet/type/isNumber');
 
 var Range = require('./range');
+var util = require('../util');
 
 /**
  * @class
  * @ignore
  * @param {Array.<Array.<number>>} ranges - Ranges
  */
-var RangeModel = snippet.defineClass(
+var RangeModel = defineClass(
   /** @lends RangeModel.prototype */ {
     init: function(ranges) {
       ranges = ranges || [];
@@ -25,7 +28,7 @@ var RangeModel = snippet.defineClass(
        */
       this._ranges = [];
 
-      snippet.forEach(
+      forEachArray(
         ranges,
         function(range) {
           this.add(range[0], range[1]);
@@ -129,11 +132,11 @@ var RangeModel = snippet.defineClass(
      * @param {number} [end] - End
      */
     exclude: function(start, end) {
-      if (!snippet.isNumber(end)) {
+      if (!isNumber(end)) {
         end = start;
       }
 
-      snippet.forEach(
+      forEachArray(
         this._ranges,
         function(range) {
           var rangeEnd;
@@ -151,7 +154,7 @@ var RangeModel = snippet.defineClass(
       );
 
       // Reduce empty ranges
-      this._ranges = snippet.filter(this._ranges, function(range) {
+      this._ranges = util.filter(this._ranges, function(range) {
         return !range.isEmpty();
       });
     },

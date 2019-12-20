@@ -9,10 +9,33 @@ var path = require('path');
 var pkg = require('./package.json');
 var webpack = require('webpack');
 var MiniCssExtractPlugin = require('mini-css-extract-plugin');
+var TerserPlugin = require('terser-webpack-plugin');
+var OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+
+function getOptimization(isMinified) {
+  if (isMinified) {
+    return {
+      minimizer: [
+        new TerserPlugin({
+          cache: true,
+          parallel: true,
+          sourceMap: false,
+          extractComments: false
+        }),
+        new OptimizeCSSAssetsPlugin()
+      ]
+    };
+  }
+
+  return {
+    minimize: false
+  };
+}
 
 module.exports = function(env, argv) {
   var isProduction = argv.mode === 'production';
-  var FILENAME = pkg.name + (isProduction ? '.min.js' : '.js');
+  var isMinified = !!argv.minify;
+  var FILENAME = pkg.name + (isMinified ? '.min' : '');
   var BANNER = [
     'TOAST UI Date Picker',
     '@version ' + pkg.version,
@@ -21,28 +44,16 @@ module.exports = function(env, argv) {
   ].join('\n');
 
   return {
-    mode: 'development',
+    mode: isProduction ? 'production' : 'development',
     entry: './src/js/index.js',
     output: {
       library: ['tui', 'DatePicker'],
       libraryTarget: 'umd',
       path: path.resolve(__dirname, 'dist'),
       publicPath: 'dist',
-      filename: FILENAME
+      filename: FILENAME + '.js'
     },
     externals: {
-      'tui-code-snippet': {
-        commonjs: 'tui-code-snippet',
-        commonjs2: 'tui-code-snippet',
-        amd: 'tui-code-snippet',
-        root: ['tui', 'util']
-      },
-      'tui-dom': {
-        commonjs: 'tui-dom',
-        commonjs2: 'tui-dom',
-        amd: 'tui-dom',
-        root: ['tui', 'dom']
-      },
       'tui-time-picker': {
         commonjs: 'tui-time-picker',
         commonjs2: 'tui-time-picker',
@@ -62,11 +73,6 @@ module.exports = function(env, argv) {
           }
         },
         {
-          test: /\.hbs$/,
-          exclude: /(node_modules)/,
-          loader: 'handlebars-loader'
-        },
-        {
           test: /\.css/,
           use: [
             MiniCssExtractPlugin.loader,
@@ -81,8 +87,9 @@ module.exports = function(env, argv) {
     },
     plugins: [
       new webpack.BannerPlugin(BANNER),
-      new MiniCssExtractPlugin({filename: pkg.name + '.css'})
+      new MiniCssExtractPlugin({filename: FILENAME + '.css'})
     ],
+    optimization: getOptimization(isMinified),
     devServer: {
       historyApiFallback: false,
       progress: true,

@@ -5,7 +5,11 @@
 
 'use strict';
 
-var snippet = require('tui-code-snippet');
+var forEachArray = require('tui-code-snippet/collection/forEachArray');
+var isHTMLNode = require('tui-code-snippet/type/isHTMLNode');
+var sendHostname = require('tui-code-snippet/request/sendHostname');
+
+var currentId = 0;
 
 var utils = {
   /**
@@ -23,7 +27,7 @@ var utils = {
    * @returns {HTMLElement} A matched element
    */
   getElement: function(param) {
-    return snippet.isHTMLNode(param) ? param : document.querySelector(param);
+    return isHTMLNode(param) ? param : document.querySelector(param);
   },
 
   /**
@@ -40,6 +44,42 @@ var utils = {
     }
 
     return selector;
+  },
+
+  /**
+   * Create an unique id.
+   * @returns {number}
+   */
+  generateId: function() {
+    currentId += 1;
+
+    return currentId;
+  },
+
+  /**
+   * Create a new array with all elements that pass the test implemented by the provided function.
+   * @param {Array} arr - Array that will be traversed
+   * @param {function} iteratee - iteratee callback function
+   * @returns {Array}
+   */
+  filter: function(arr, iteratee) {
+    var result = [];
+
+    forEachArray(arr, function(item) {
+      if (iteratee(item)) {
+        result.push(item);
+      }
+    });
+
+    return result;
+  },
+
+  /**
+   * Send hostname for GA
+   * @ignore
+   */
+  sendHostName: function() {
+    sendHostname('date-picker', 'UA-129987462-1');
   }
 };
 

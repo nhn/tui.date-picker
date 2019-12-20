@@ -5,7 +5,8 @@
 
 'use strict';
 
-var snippet = require('tui-code-snippet');
+var isDate = require('tui-code-snippet/type/isDate');
+var isNumber = require('tui-code-snippet/type/isNumber');
 
 var constants = require('./constants');
 
@@ -37,7 +38,7 @@ var utils = {
    * @returns {boolean}
    */
   isValidDate: function(date) {
-    return snippet.isDate(date) && !isNaN(date.getTime());
+    return isDate(date) && !isNaN(date.getTime());
   },
 
   /**
@@ -48,6 +49,16 @@ var utils = {
    */
   getFirstDay: function(year, month) {
     return new Date(year, month - 1, 1).getDay();
+  },
+
+  /**
+   * Get timestamp of the first day.
+   * @param {number} year A year
+   * @param {number} month A month
+   * @returns {number} timestamp
+   */
+  getFirstDayTimestamp: function(year, month) {
+    return new Date(year, month, 1).getTime();
   },
 
   /**
@@ -102,7 +113,7 @@ var utils = {
    * @returns {number}
    */
   getSafeNumber: function(any, defaultNumber) {
-    if (isNaN(defaultNumber) || !snippet.isNumber(defaultNumber)) {
+    if (isNaN(defaultNumber) || !isNumber(defaultNumber)) {
       throw Error('The defaultNumber must be a valid number.');
     }
     if (isNaN(any)) {

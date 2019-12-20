@@ -7,7 +7,6 @@
         "dist/tui-date-picker.js",
         "dist/tui-date-picker.css"
     ],
-    "version": "3.3.4",
     "license": "MIT",
     "ignore": [
         "**/.*",
@@ -16,15 +15,14 @@
         "examples",
         "src",
         "test",
-        "jsdoc.conf.json",
+        "tui-note.config.js",
+        "tuidoc.config.json",
         "karma.conf.js",
         "webpack.config.js",
         "package.json",
         "package-lock.json"
     ],
     "dependencies": {
-        "tui-code-snippet": "^1.5.0",
-        "tui-dom": "^3.0.0",
-        "tui-time-picker": "^2.0.0"
+        "tui-time-picker": "^2.0.3"
     }
 }

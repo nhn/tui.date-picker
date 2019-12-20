@@ -25,21 +25,18 @@ var instance = new tui.DatePicker(container, {
 ```
 
 ## Load dependency files
-* Script - [tui-code-snippet](https://github.com/nhn/tui.code-snippet) 1.5.0 or later
-* Script - [tui-dom](https://github.com/nhn/tui.dom) 3.0.0 or later
-    > If your project should support IE8, please use `tui-dom.js`, not `tui-dom.min.js`.
-* Script - [tui-time-picker](https://github.com/nhn/tui.time-picker) 2.0.0 or later
+* Script - [tui-time-picker](https://github.com/nhn/tui.time-picker) 2.0.3 or later
 
 ```html
 <html>
     <head>
         ....
+        <link href="tui-time-picker.css" rel="stylesheet">
         <link href="tui-date-picker.css" rel="stylesheet">
     </head>
     <body>
         ....
-        <script type="text/javascript" src="tui-code-snippet.js"></script>
-        <script type="text/javascript" src="tui-dom.min.js"></script>
+        <script type="text/javascript" src="tui-time-picker.js"></script>
         <script type="text/javascript" src="tui-date-picker.js"></script>
         ....
     </body>

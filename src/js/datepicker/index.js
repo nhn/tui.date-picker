@@ -5,8 +5,22 @@
 
 'use strict';
 
-var snippet = require('tui-code-snippet');
-var domUtil = require('tui-dom');
+var inArray = require('tui-code-snippet/array/inArray');
+var forEachArray = require('tui-code-snippet/collection/forEachArray');
+var defineClass = require('tui-code-snippet/defineClass/defineClass');
+var CustomEvents = require('tui-code-snippet/customEvents/customEvents');
+var addClass = require('tui-code-snippet/domUtil/addClass');
+var closest = require('tui-code-snippet/domUtil/closest');
+var getData = require('tui-code-snippet/domUtil/getData');
+var hasClass = require('tui-code-snippet/domUtil/hasClass');
+var removeClass = require('tui-code-snippet/domUtil/removeClass');
+var removeElement = require('tui-code-snippet/domUtil/removeElement');
+var extend = require('tui-code-snippet/object/extend');
+var isArray = require('tui-code-snippet/type/isArray');
+var isDate = require('tui-code-snippet/type/isDate');
+var isNumber = require('tui-code-snippet/type/isNumber');
+var isObject = require('tui-code-snippet/type/isObject');
+
 var TimePicker = require('tui-time-picker');
 
 var Calendar = require('../calendar');
@@ -16,7 +30,7 @@ var localeTexts = require('../localeTexts');
 var dateUtil = require('../dateUtil');
 var util = require('../util');
 var mouseTouchEvent = require('../mouseTouchEvent');
-var tmpl = require('../../template/datepicker/index.hbs');
+var tmpl = require('../../template/datepicker/index');
 var DatePickerInput = require('./input');
 
 var DEFAULT_LANGUAGE_TYPE = constants.DEFAULT_LANGUAGE_TYPE;
@@ -49,7 +63,7 @@ var SELECTOR_TIMEPICKER_CONTAINER = '.tui-timepicker-container';
  * @returns {object}
  */
 var mergeDefaultOption = function(option) {
-  option = snippet.extend(
+  option = extend(
     {
       language: DEFAULT_LANGUAGE_TYPE,
       calendar: {},
@@ -71,13 +85,13 @@ var mergeDefaultOption = function(option) {
 
   option.selectableRanges = option.selectableRanges || [[constants.MIN_DATE, constants.MAX_DATE]];
 
-  if (!snippet.isObject(option.calendar)) {
+  if (!isObject(option.calendar)) {
     throw new Error('Calendar option must be an object');
   }
-  if (!snippet.isObject(option.input)) {
+  if (!isObject(option.input)) {
     throw new Error('Input option must be an object');
   }
-  if (!snippet.isArray(option.selectableRanges)) {
+  if (!isArray(option.selectableRanges)) {
     throw new Error('Selectable-ranges must be a 2d-array');
   }
 
@@ -148,7 +162,7 @@ var mergeDefaultOption = function(option) {
  *     openers: ['#opener']
  * });
  */
-var DatePicker = snippet.defineClass(
+var DatePicker = defineClass(
   /** @lends DatePicker.prototype */ {
     static: {
       /**
@@ -201,7 +215,9 @@ var DatePicker = snippet.defineClass(
        * @private
        */
       this._container = util.getElement(container);
-      this._container.innerHTML = tmpl(options);
+      this._container.innerHTML = tmpl(extend(options, {
+        isTab: options.timePicker && options.timePicker.layoutType === 'tab'
+      }));
 
       /**
        * DatePicker element
@@ -217,7 +233,7 @@ var DatePicker = snippet.defineClass(
        */
       this._calendar = new Calendar(
         this._element.querySelector(SELECTOR_CALENDAR_CONTAINER),
-        snippet.extend(options.calendar, {
+        extend(options.calendar, {
           usageStatistics: options.usageStatistics
         })
       );
@@ -269,7 +285,7 @@ var DatePicker = snippet.defineClass(
        * @private
        * @type {number}
        */
-      this._id = 'tui-datepicker-' + snippet.stamp(this);
+      this._id = 'tui-datepicker-' + util.generateId();
 
       /**
        * DatePicker type
@@ -306,13 +322,13 @@ var DatePicker = snippet.defineClass(
       this.setDateFormat(option.input.format);
       this.setDate(option.date);
 
-      snippet.forEach(option.openers, this.addOpener, this);
+      forEachArray(option.openers, this.addOpener, this);
       if (!this.showAlways) {
         this._hide();
       }
 
       if (this.getType() === TYPE_DATE) {
-        domUtil.addClass(this._element.querySelector(SELECTOR_BODY), 'tui-datepicker-type-date');
+        addClass(this._element.querySelector(SELECTOR_BODY), 'tui-datepicker-type-date');
       }
     },
 
@@ -383,7 +399,7 @@ var DatePicker = snippet.defineClass(
 
       layoutType = opTimePicker.layoutType || '';
 
-      if (snippet.isObject(opTimePicker)) {
+      if (isObject(opTimePicker)) {
         opTimePicker.usageStatistics = usageStatistics;
       } else {
         opTimePicker = {
@@ -420,21 +436,21 @@ var DatePicker = snippet.defineClass(
      */
     _changePicker: function(target) {
       var btnSelector = '.' + CLASS_NAME_SELECTOR_BUTTON;
-      var selectedBtn = domUtil.closest(target, btnSelector);
-      var isDate = selectedBtn.querySelector(SELECTOR_DATE_ICO);
+      var selectedBtn = closest(target, btnSelector);
+      var isDateElement = !!selectedBtn.querySelector(SELECTOR_DATE_ICO);
 
-      if (isDate) {
+      if (isDateElement) {
         this._calendar.show();
         this._timePicker.hide();
       } else {
         this._calendar.hide();
         this._timePicker.show();
       }
-      domUtil.removeClass(
+      removeClass(
         this._element.querySelector('.' + CLASS_NAME_CHECKED),
         CLASS_NAME_CHECKED
       );
-      domUtil.addClass(selectedBtn, CLASS_NAME_CHECKED);
+      addClass(selectedBtn, CLASS_NAME_CHECKED);
     },
 
     /**
@@ -446,7 +462,7 @@ var DatePicker = snippet.defineClass(
     _isOpener: function(element) {
       var el = util.getElement(element);
 
-      return snippet.inArray(el, this._openers) > -1;
+      return inArray(el, this._openers) > -1;
     },
 
     /**
@@ -461,13 +477,13 @@ var DatePicker = snippet.defineClass(
         return;
       }
 
-      timestamp = Number(domUtil.getData(el, 'timestamp'));
+      timestamp = Number(getData(el, 'timestamp'));
       isToday = timestamp === new Date().setHours(0, 0, 0, 0);
 
       if (isToday) {
-        domUtil.addClass(el, CLASS_NAME_TODAY);
+        addClass(el, CLASS_NAME_TODAY);
       } else {
-        domUtil.removeClass(el, CLASS_NAME_TODAY);
+        removeClass(el, CLASS_NAME_TODAY);
       }
     },
 
@@ -477,14 +493,14 @@ var DatePicker = snippet.defineClass(
      * @private
      */
     _setSelectableClassName: function(el) {
-      var elDate = new Date(Number(domUtil.getData(el, 'timestamp')));
+      var elDate = new Date(Number(getData(el, 'timestamp')));
 
       if (this._isSelectableOnCalendar(elDate)) {
-        domUtil.addClass(el, CLASS_NAME_SELECTABLE);
-        domUtil.removeClass(el, CLASS_NAME_BLOCKED);
+        addClass(el, CLASS_NAME_SELECTABLE);
+        removeClass(el, CLASS_NAME_BLOCKED);
       } else {
-        domUtil.removeClass(el, CLASS_NAME_SELECTABLE);
-        domUtil.addClass(el, CLASS_NAME_BLOCKED);
+        removeClass(el, CLASS_NAME_SELECTABLE);
+        addClass(el, CLASS_NAME_BLOCKED);
       }
     },
 
@@ -494,12 +510,12 @@ var DatePicker = snippet.defineClass(
      * @private
      */
     _setSelectedClassName: function(el) {
-      var elDate = new Date(Number(domUtil.getData(el, 'timestamp')));
+      var elDate = new Date(Number(getData(el, 'timestamp')));
 
       if (this._isSelectedOnCalendar(elDate)) {
-        domUtil.addClass(el, CLASS_NAME_SELECTED);
+        addClass(el, CLASS_NAME_SELECTED);
       } else {
-        domUtil.removeClass(el, CLASS_NAME_SELECTED);
+        removeClass(el, CLASS_NAME_SELECTED);
       }
     },
 
@@ -532,16 +548,18 @@ var DatePicker = snippet.defineClass(
 
     /**
      * Show the date picker element
+     * @private
      */
     _show: function() {
-      domUtil.removeClass(this._element, CLASS_NAME_HIDDEN);
+      removeClass(this._element, CLASS_NAME_HIDDEN);
     },
 
     /**
      * Hide the date picker element
+     * @private
      */
     _hide: function() {
-      domUtil.addClass(this._element, CLASS_NAME_HIDDEN);
+      addClass(this._element, CLASS_NAME_HIDDEN);
     },
 
     /**
@@ -604,7 +622,7 @@ var DatePicker = snippet.defineClass(
       var selector = util.getSelector(target);
       var isContain = selector ? this._element.querySelector(selector) : false;
       var isInput = this._datepickerInput.is(target);
-      var isInOpener = snippet.inArray(target, this._openers) > -1;
+      var isInOpener = inArray(target, this._openers) > -1;
       var shouldClose = !(this.showAlways || isInput || isContain || isInOpener);
 
       if (shouldClose) {
@@ -615,15 +633,16 @@ var DatePicker = snippet.defineClass(
     /**
      * Event handler for click of calendar
      * @param {Event} ev An event object
+     * @private
      */
     _onClickHandler: function(ev) {
       var target = util.getTarget(ev);
 
-      if (domUtil.closest(target, '.' + CLASS_NAME_SELECTABLE)) {
+      if (closest(target, '.' + CLASS_NAME_SELECTABLE)) {
         this._updateDate(target);
-      } else if (domUtil.closest(target, SELECTOR_CALENDAR_TITLE)) {
+      } else if (closest(target, SELECTOR_CALENDAR_TITLE)) {
         this.drawUpperCalendar(this._date);
-      } else if (domUtil.closest(target, '.' + CLASS_NAME_SELECTOR_BUTTON)) {
+      } else if (closest(target, '.' + CLASS_NAME_SELECTOR_BUTTON)) {
         this._changePicker(target);
       }
     },
@@ -634,7 +653,7 @@ var DatePicker = snippet.defineClass(
      * @private
      */
     _updateDate: function(target) {
-      var timestamp = Number(domUtil.getData(target, 'timestamp'));
+      var timestamp = Number(getData(target, 'timestamp'));
       var newDate = new Date(timestamp);
       var timePicker = this._timePicker;
       var prevDate = this._date;
@@ -664,10 +683,8 @@ var DatePicker = snippet.defineClass(
      * @private
      */
     _onDrawCalendar: function(eventData) {
-      var dateElements = snippet.toArray(eventData.dateElements);
-
-      snippet.forEach(
-        dateElements,
+      forEachArray(
+        eventData.dateElements,
         function(el) {
           this._setTodayClassName(el);
           this._setSelectableClassName(el);
@@ -737,9 +754,9 @@ var DatePicker = snippet.defineClass(
     _setDisplay: function(el, shouldShow) {
       if (el) {
         if (shouldShow) {
-          domUtil.removeClass(el, CLASS_NAME_HIDDEN);
+          removeClass(el, CLASS_NAME_HIDDEN);
         } else {
-          domUtil.addClass(el, CLASS_NAME_HIDDEN);
+          addClass(el, CLASS_NAME_HIDDEN);
         }
       }
     },
@@ -831,14 +848,15 @@ var DatePicker = snippet.defineClass(
      * ]);
      */
     setRanges: function(ranges) {
-      ranges = snippet.map(ranges, function(range) {
+      var result = [];
+      forEachArray(ranges, function(range) {
         var start = new Date(range[0]).getTime();
         var end = new Date(range[1]).getTime();
 
-        return [start, end];
+        result.push([start, end]);
       });
 
-      this._rangeModel = new RangeModel(ranges);
+      this._rangeModel = new RangeModel(result);
       this._refreshFromRanges();
     },
 
@@ -916,7 +934,7 @@ var DatePicker = snippet.defineClass(
       var index;
 
       opener = util.getElement(opener);
-      index = snippet.inArray(opener, this._openers);
+      index = inArray(opener, this._openers);
 
       if (index > -1) {
         this._removeOpenerEvents(opener);
@@ -928,7 +946,7 @@ var DatePicker = snippet.defineClass(
      * Remove all openers
      */
     removeAllOpeners: function() {
-      snippet.forEach(
+      forEachArray(
         this._openers,
         function(opener) {
           this._removeOpenerEvents(opener);
@@ -1083,7 +1101,7 @@ var DatePicker = snippet.defineClass(
         return;
       }
 
-      isValidInput = snippet.isNumber(date) || snippet.isDate(date);
+      isValidInput = isNumber(date) || isDate(date);
       newDate = new Date(date);
       shouldUpdate = isValidInput && this._isChanged(newDate) && this.isSelectable(newDate);
 
@@ -1166,7 +1184,7 @@ var DatePicker = snippet.defineClass(
      * datepicker.isOpened(); // true
      */
     isOpened: function() {
-      return !domUtil.hasClass(this._element, CLASS_NAME_HIDDEN);
+      return !hasClass(this._element, CLASS_NAME_HIDDEN);
     },
 
     /**
@@ -1247,7 +1265,7 @@ var DatePicker = snippet.defineClass(
       this._isEnabled = true;
       this._datepickerInput.enable();
 
-      snippet.forEach(
+      forEachArray(
         this._openers,
         function(opener) {
           opener.removeAttribute('disabled');
@@ -1272,7 +1290,7 @@ var DatePicker = snippet.defineClass(
       this.close();
       this._datepickerInput.disable();
 
-      snippet.forEach(
+      forEachArray(
         this._openers,
         function(opener) {
           opener.setAttribute('disabled', true);
@@ -1296,7 +1314,7 @@ var DatePicker = snippet.defineClass(
      * @param {string} className - Class name
      */
     addCssClass: function(className) {
-      domUtil.addClass(this._element, className);
+      addClass(this._element, className);
     },
 
     /**
@@ -1304,7 +1322,7 @@ var DatePicker = snippet.defineClass(
      * @param {string} className - Class name
      */
     removeCssClass: function(className) {
-      domUtil.removeClass(this._element, className);
+      removeClass(this._element, className);
     },
 
     /**
@@ -1358,7 +1376,7 @@ var DatePicker = snippet.defineClass(
         this._datepickerInput.destroy();
       }
       this._removeEvents();
-      domUtil.removeElement(this._element);
+      removeElement(this._element);
       this.removeAllOpeners();
 
       this._calendar
@@ -1376,5 +1394,5 @@ var DatePicker = snippet.defineClass(
   }
 );
 
-snippet.CustomEvents.mixin(DatePicker);
+CustomEvents.mixin(DatePicker);
 module.exports = DatePicker;

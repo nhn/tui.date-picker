@@ -5,7 +5,8 @@
 
 'use strict';
 
-var domUtil = require('tui-dom');
+var on = require('tui-code-snippet/domEvent/on');
+var off = require('tui-code-snippet/domEvent/off');
 
 var mouseTouchEvent = {
   /**
@@ -45,7 +46,7 @@ var mouseTouchEvent = {
    * @param {object} [context] A context for handler.
    */
   on: function(element, type, handler, context) {
-    domUtil.on(element, this._getEventType(type), handler, context);
+    on(element, this._getEventType(type), handler, context);
   },
 
   /**
@@ -55,7 +56,7 @@ var mouseTouchEvent = {
    * @param {Function} handler - Handler
    */
   off: function(element, type, handler) {
-    domUtil.off(element, this._getEventType(type), handler);
+    off(element, this._getEventType(type), handler);
   }
 };
 

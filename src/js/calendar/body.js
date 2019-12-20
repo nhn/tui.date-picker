@@ -5,7 +5,8 @@
 
 'use strict';
 
-var snippet = require('tui-code-snippet');
+var forEachArray = require('tui-code-snippet/collection/forEachArray');
+var defineClass = require('tui-code-snippet/defineClass/defineClass');
 
 var DateLayer = require('./layerBody/date');
 var MonthLayer = require('./layerBody/month');
@@ -20,7 +21,7 @@ var TYPE_YEAR = constants.TYPE_YEAR;
  * @ignore
  * @class
  */
-var Body = snippet.defineClass(
+var Body = defineClass(
   /** @lends Body.prototype */ {
     init: function(bodyContainer, option) {
       var language = option.language;
@@ -86,7 +87,7 @@ var Body = snippet.defineClass(
      * @private
      */
     _eachLayer: function(fn) {
-      snippet.forEach([this._dateLayer, this._monthLayer, this._yearLayer], fn);
+      forEachArray([this._dateLayer, this._monthLayer, this._yearLayer], fn);
     },
 
     /**

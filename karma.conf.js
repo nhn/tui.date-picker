@@ -125,14 +125,9 @@ module.exports = function(config) {
           },
           {
             test: /\.js$/,
-            exclude: /(bower_components|node_modules)/,
+            exclude: /(bower_components|node_modules|dist)/,
             loader: 'eslint-loader',
             enforce: 'pre'
-          },
-          {
-            test: /\.hbs$/,
-            exclude: /(node_modules)/,
-            loader: 'handlebars-loader'
           },
           {
             test: /\.css/,

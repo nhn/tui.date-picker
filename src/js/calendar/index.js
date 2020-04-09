@@ -86,7 +86,7 @@ var Calendar = defineClass(
        *         // days
        *         DD: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
        *         // daysShort
-       *         D: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fir', 'Sat'],
+       *         D: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
        *         // months
        *         MMMM: [
        *             'January', 'February', 'March', 'April', 'May', 'June',

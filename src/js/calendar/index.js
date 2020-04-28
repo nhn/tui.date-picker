@@ -39,20 +39,25 @@ var HEADER_SELECTOR = '.tui-calendar-header';
 var BODY_SELECTOR = '.tui-calendar-body';
 
 /**
- * Calendar class
- * @constructor
- * @param {HTMLElement|string} wrapperElement - Wrapper element or selector
- * @param {Object} [options] - Options for initialize
- *     @param {string} [options.language = 'en'] - Calendar language - {@link Calendar.localeTexts}
- *     @param {boolean} [options.showToday] - If true, shows today
- *     @param {boolean} [options.showJumpButtons] - If true, shows jump buttons (next,prev-year in 'date'-Calendar)
- *     @param {Date} [options.date = new Date()] - Initial date
- *     @param {string} [options.type = 'date'] - Calendar types - 'date', 'month', 'year'
- *     @param {Boolean} [options.usageStatistics=true|false] send hostname to google analytics (default value is true)
+ * @class
+ * @description
+ * Create a calendar by {@link DatePicker#createCalendar DatePicker.createCalendar()}.
+ * @see {@link /tutorial-example07-calendar Calendar example}
+ * @param {HTMLElement|string} container - Container or selector of the Calendar
+ * @param {Object} [options] - Calendar options
+ *     @param {Date} [options.date = new Date()] - Initial date (default: today)
+ *     @param {('date'|'month'|'year')} [options.type = 'date'] - Calendar type. Determine whether to show a date, month, or year.
+ *     @param {string} [options.language = 'en'] - Language code. English('en') and Korean('ko') are provided as default. To use the other languages, use {@link DatePicker#localeTexts DatePicker.localeTexts}.
+ *     @param {boolean} [options.showToday = true] - Show today.
+ *     @param {boolean} [options.showJumpButtons = false] - Show the yearly jump buttons (move to the previous and next year in 'date' Calendar)
+ *     @param {boolean} [options.usageStatistics = true] - Send a hostname to Google Analytics (default: true)
  * @example
- * var DatePicker = tui.DatePicker; // or require('tui-date-picker');
- * var calendar = DatePicker.createCalendar('#calendar-wrapper', {
- *     language: 'en', // There are two supporting types by default - 'en' and 'ko'.
+ * import DatePicker from 'tui-date-picker' // ES6
+ * // const DatePicker = require('tui-date-picker'); // CommonJS
+ * // const DatePicker = tui.DatePicker;
+ * 
+ * const calendar = DatePicker.createCalendar('#calendar-wrapper', {
+ *     language: 'en',
  *     showToday: true,
  *     showJumpButtons: false,
  *     date: new Date(),
@@ -60,12 +65,11 @@ var BODY_SELECTOR = '.tui-calendar-body';
  * });
  *
  * calendar.on('draw', function(event) {
- *     var i, len;
  *     console.log(event.date);
  *     console.log(event.type);
- *     for (i = 0, len = event.dateElements.length; i < len; i += 1) {
- *         var el = event.dateElements[i];
- *         var date = new Date(getData(el, 'timestamp'));
+ *     for (let i = 0, len = event.dateElements.length; i < len; i += 1) {
+ *         const el = event.dateElements[i];
+ *         const date = new Date(getData(el, 'timestamp'));
  *         console.log(date);
  *     }
  * });
@@ -73,36 +77,6 @@ var BODY_SELECTOR = '.tui-calendar-body';
 var Calendar = defineClass(
   /** @lends Calendar.prototype */ {
     static: {
-      /**
-       * Locale text data
-       * @type {object}
-       * @memberof Calendar
-       * @static
-       * @example
-       * var DatePicker = tui.DatePicker; // or require('tui-date-picker');
-       *
-       * DatePicker.localeTexts['customKey'] = {
-       *     titles: {
-       *         // days
-       *         DD: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-       *         // daysShort
-       *         D: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-       *         // months
-       *         MMMM: [
-       *             'January', 'February', 'March', 'April', 'May', 'June',
-       *             'July', 'August', 'September', 'October', 'November', 'December'
-       *         ],
-       *         // monthsShort
-       *         MMM: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-       *     },
-       *     titleFormat: 'MMM yyyy',
-       *     todayFormat: 'D, MMMM dd, yyyy'
-       * };
-       *
-       * var calendar = DatePicker.createCalendar('#calendar-wrapper', {
-       *     language: 'customKey',
-       * });
-       */
       localeTexts: localeTexts
     },
     init: function(container, options) {
@@ -315,10 +289,11 @@ var Calendar = defineClass(
     },
 
     /**
-     * Draw calendar
-     * @param {?object} options - Draw options
+     * Draw the calendar.
+     * @param {Object} [options] - Draw options
+     *   @param {Date} [options.date] - Date to set
+     *   @param {('date'|'month'|'year')} [options.type = 'date'] - Calendar type. Determine whether to show a date, month, or year.
      * @example
-     *
      * calendar.draw();
      * calendar.draw({
      *     date: new Date()
@@ -345,15 +320,22 @@ var Calendar = defineClass(
       }
 
       /**
+       * Occur after the calendar draws.
        * @event Calendar#draw
-       * @type {object} evt
+       * @see {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents#on calendar.on()} to bind event handlers.
+       * @see {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents#off calendar.off()} to unbind event handlers.
+       * @see Refer to {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents CustomEvents from tui-code-snippet} for more methods. Calendar mixes in the methods from CustomEvents. 
        * @property {Date} date - Calendar date
-       * @property {string} type - Calendar type
-       * @property {HTMLElement} dateElements - Calendar date elements
+       * @property {('date'|'month'|'year')} type - Calendar type
+       * @property {HTMLElement[]} dateElements - elements for dates
        * @example
-       * calendar.on('draw', function(evt) {
-       *     console.error(evt.date);
+       * // bind the 'draw' event
+       * calendar.on('draw', function({type, date}) {
+       *     console.log(`Draw the ${type} calendar and its date is ${date}.`);
        * });
+       * 
+       * // unbind the 'draw' event
+       * calendar.off('draw');
        */
       this.fire('draw', {
         date: this._date,
@@ -363,24 +345,21 @@ var Calendar = defineClass(
     },
 
     /**
-     * Show calendar
+     * Show the calendar.
      */
     show: function() {
       removeClass(this._element, CLASS_NAME_HIDDEN);
     },
 
     /**
-     * Hide calendar
+     * Hide the calendar.
      */
     hide: function() {
       addClass(this._element, CLASS_NAME_HIDDEN);
     },
 
     /**
-     * Draw next page
-     * @example
-     *
-     * calendar.drawNext();
+     * Draw the next page.
      */
     drawNext: function() {
       this.draw({
@@ -389,11 +368,7 @@ var Calendar = defineClass(
     },
 
     /**
-     * Draw previous page
-     *
-     * @example
-     *
-     * calendar.drawPrev();
+     * Draw the previous page.
      */
     drawPrev: function() {
       this.draw({
@@ -402,7 +377,7 @@ var Calendar = defineClass(
     },
 
     /**
-     * Returns next date
+     * Return the next date.
      * @returns {Date}
      */
     getNextDate: function() {
@@ -414,7 +389,7 @@ var Calendar = defineClass(
     },
 
     /**
-     * Returns prev date
+     * Return the previous date.
      * @returns {Date}
      */
     getPrevDate: function() {
@@ -426,7 +401,7 @@ var Calendar = defineClass(
     },
 
     /**
-     * Returns next year date
+     * Return the date a year later.
      * @returns {Date}
      */
     getNextYearDate: function() {
@@ -442,7 +417,7 @@ var Calendar = defineClass(
     },
 
     /**
-     * Returns prev year date
+     * Return the date a year previously.
      * @returns {Date}
      */
     getPrevYearDate: function() {
@@ -458,9 +433,9 @@ var Calendar = defineClass(
     },
 
     /**
-     * Change language
-     * @param {string} language - Language
-     * @see {@link Calendar#localeTexts}
+     * Change language.
+     * @param {string} language - Language code. English('en') and Korean('ko') are provided as default.
+     * @see To set to the other languages, use {@link DatePicker#localeTexts DatePicker.localeTexts}.
      */
     changeLanguage: function(language) {
       this._header.changeLanguage(language);
@@ -469,7 +444,7 @@ var Calendar = defineClass(
     },
 
     /**
-     * Returns rendered date
+     * Return the rendered date.
      * @returns {Date}
      */
     getDate: function() {
@@ -477,7 +452,7 @@ var Calendar = defineClass(
     },
 
     /**
-     * Returns rendered layer type
+     * Return the calendar's type.
      * @returns {('date'|'month'|'year')}
      */
     getType: function() {
@@ -485,7 +460,7 @@ var Calendar = defineClass(
     },
 
     /**
-     * Returns date elements on body
+     * Returns HTML elements for dates.
      * @returns {HTMLElement[]}
      */
     getDateElements: function() {
@@ -493,7 +468,7 @@ var Calendar = defineClass(
     },
 
     /**
-     * Add calendar css class
+     * Apply a CSS class to the calendar.
      * @param {string} className - Class name
      */
     addCssClass: function(className) {
@@ -501,7 +476,7 @@ var Calendar = defineClass(
     },
 
     /**
-     * Remove calendar css class
+     * Remove a CSS class from the calendar.
      * @param {string} className - Class name
      */
     removeCssClass: function(className) {
@@ -509,7 +484,7 @@ var Calendar = defineClass(
     },
 
     /**
-     * Destroy calendar
+     * Destroy the calendar.
      */
     destroy: function() {
       this._header.destroy();

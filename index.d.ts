@@ -1,3 +1,6 @@
+// Type definitions for TOAST UI DatePicker v4.0.3
+// TypeScript Version: 3.8.3
+
 export type CalendarType = 'date' | 'month' | 'year';
 export type DatePickerEventType = 'change' | 'close' | 'draw' | 'open';
 export type DateRangePickerEventType = 'change:start' | 'change:end';

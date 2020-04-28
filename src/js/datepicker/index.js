@@ -109,40 +109,43 @@ var mergeDefaultOption = function(option) {
 
 /**
  * @class
- * @param {HTMLElement|string} container - Container element or selector of datepicker
+ * @description
+ * Create a date picker.
+ * @see {@link /tutorial-example01-basic DatePicker example}
+ * @param {HTMLElement|string} container - Container element or selector of DatePicker
  * @param {Object} [options] - Options
- *      @param {Date|number} [options.date] - Initial date. Default - null for no initial date
- *      @param {string} [options.type = 'date'] - DatePicker type - ('date' | 'month' | 'year')
- *      @param {string} [options.language='en'] - Language key
- *      @param {object|boolean} [options.timePicker] - [TimePicker](https://nhn.github.io/tui.time-picker/latest) options. This option's name is changed from 'timepicker' and 'timepicker' will be deprecated in v5.0.0.
- *      @param {object} [options.calendar] - {@link Calendar} options
+ *      @param {Date|number} [options.date = null] - Initial date. Set by a Date instance or a number(timestamp). (default: no initial date)
+ *      @param {('date'|'month'|'year')} [options.type = 'date'] - DatePicker type. Determine whether to choose a date, month, or year.
+ *      @param {string} [options.language='en'] - Language code. English('en') and Korean('ko') are provided as default. To set to the other languages, use {@link DatePicker#localeTexts DatePicker.localeTexts}.
+ *      @param {object|boolean} [options.timePicker] - [TimePicker](https://nhn.github.io/tui.time-picker/latest) options. Refer to the [TimePicker instance's options](https://nhn.github.io/tui.time-picker/latest/TimePicker). To create the TimePicker without customization, set to true.
+ *      @param {object} [options.calendar] - {@link Calendar} options. Refer to the {@link Calendar Calendar instance's options}.
  *      @param {object} [options.input] - Input option
  *      @param {HTMLElement|string} [options.input.element] - Input element or selector
- *      @param {string} [options.input.format = 'yyyy-mm-dd'] - Date string format
+ *      @param {string} [options.input.format = 'yyyy-mm-dd'] - Format of the Date string
  *      @param {Array.<Array.<Date|number>>} [options.selectableRanges = 1900/1/1 ~ 2999/12/31]
- *                                                                      - Selectable date ranges.
- *      @param {Array} [options.openers = []] - Opener button list (example - icon, button, etc.)
- *      @param {boolean} [options.showAlways = false] - Whether the datepicker shows always
- *      @param {boolean} [options.autoClose = true] - Close after click a date
- *      @param {Boolean} [options.usageStatistics=true|false] send hostname to google analytics (default value is true)
+ *        - Ranges of selectable date. Set by Date instances or numbers(timestamp).
+ *      @param {Array<HTMLElement|string>} [options.openers = []] - List of the openers to open the DatePicker (example - icon, button, etc.)
+ *      @param {boolean} [options.showAlways = false] - Show the DatePicker always
+ *      @param {boolean} [options.autoClose = true] - Close the DatePicker after clicking the date
+ *      @param {boolean} [options.usageStatistics = true] - Send a hostname to Google Analytics (default: true)
  * @example
- * var DatePicker = tui.DatePicker; // or require('tui-date-picker');
+ * import DatePicker from 'tui-date-picker' // ES6
+ * // const DatePicker = require('tui-date-picker'); // CommonJS
+ * // const DatePicker = tui.DatePicker;
+ * 
+ * const range1 = [new Date(2015, 2, 1), new Date(2015, 3, 1)];
+ * const range2 = [1465570800000, 1481266182155]; // timestamps
  *
- * var range1 = [new Date(2015, 2, 1), new Date(2015, 3, 1)];
- * var range2 = [1465570800000, 1481266182155]; // timestamps
- *
- * var picker1 = new DatePicker('#datepicker-container1', {
+ * const picker1 = new DatePicker('#datepicker-container1', {
  *     showAlways: true
  * });
  *
- * var picker2 = new DatePicker('#datepicker-container2', {
+ * const picker2 = new DatePicker('#datepicker-container2', {
  *    showAlways: true,
  *    timePicker: true
  * });
  *
- * var picker3 = new DatePicker('#datepicker-container3', {
- *     // There are two supporting types by default - 'en' and 'ko'.
- *     // See "{@link DatePicker.localeTexts}"
+ * const picker3 = new DatePicker('#datepicker-container3', {
  *     language: 'ko',
  *     calendar: {
  *         showToday: true
@@ -157,7 +160,7 @@ var mergeDefaultOption = function(option) {
  *         format: 'yyyy년 MM월 dd일 hh:mm A'
  *     }
  *     type: 'date',
- *     date: new Date(2015, 0, 1) // or timestamp. (default: null-(no initial date))
+ *     date: new Date(2015, 0, 1)
  *     selectableRanges: [range1, range2],
  *     openers: ['#opener']
  * });
@@ -166,13 +169,11 @@ var DatePicker = defineClass(
   /** @lends DatePicker.prototype */ {
     static: {
       /**
-       * Locale text data
+       * Locale text data. English('en') and Korean('ko') are provided as default.
        * @type {object}
        * @memberof DatePicker
        * @static
        * @example
-       * var DatePicker = tui.DatePicker; // or require('tui-date-picker');
-       *
        * DatePicker.localeTexts['customKey'] = {
        *     titles: {
        *         // days
@@ -193,7 +194,7 @@ var DatePicker = defineClass(
        *     time: 'Time'
        * };
        *
-       * var datepicker = new tui.DatePicker('#datepicker-container', {
+       * const datepicker = new DatePicker('#datepicker-container', {
        *     language: 'customKey'
        * });
        */
@@ -282,8 +283,8 @@ var DatePicker = defineClass(
 
       /**
        * ID of instance
-       * @private
        * @type {number}
+       * @private
        */
       this._id = 'tui-datepicker-' + util.generateId();
 
@@ -695,17 +696,22 @@ var DatePicker = defineClass(
       this._setDisplayHeadButtons();
 
       /**
-       * Fires after calendar drawing
+       * Occur after the calendar is drawn.
        * @event DatePicker#draw
-       * @type {Object} evt - See {@link Calendar#event:draw}
+       * @see {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents#on datepicker.on()} to bind event handlers.
+       * @see {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents#off datepicker.off()} to unbind event handlers.
+       * @see Refer to {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents CustomEvents from tui-code-snippet} for more methods. DatePicker mixes in the methods from CustomEvents. 
        * @property {Date} date - Calendar date
-       * @property {string} type - Calendar type
-       * @property {HTMLElement} dateElements - Calendar date elements
+       * @property {('date'|'month'|'year')} type - Calendar type
+       * @property {HTMLElement[]} dateElements - elements for dates
        * @example
-       *
-       * datepicker.on('draw', function(evt) {
-       *     console.log(evt.date);
+       * // bind the 'draw' event
+       * datepicker.on('draw', function(event) {
+       *     console.log(`Draw the ${event.type} calendar and its date is ${event.date}.`);
        * });
+       * 
+       * // unbind the 'draw' event
+       * datepicker.off('draw');
        */
       this.fire('draw', eventData);
     },
@@ -795,24 +801,24 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Returns current calendar type
-     * @returns {'date'|'month'|'year'}
+     * Return the current calendar's type.
+     * @returns {('date'|'month'|'year')}
      */
     getCalendarType: function() {
       return this._calendar.getType();
     },
 
     /**
-     * Returns datepicker type
-     * @returns {'date'|'month'|'year'}
+     * Return the date picker's type.
+     * @returns {('date'|'month'|'year')}
      */
     getType: function() {
       return this._type;
     },
 
     /**
-     * Whether the date is selectable
-     * @param {Date} date - Date instance
+     * Return whether the date is selectable.
+     * @param {Date} date - Date to check
      * @returns {boolean}
      */
     isSelectable: function(date) {
@@ -829,8 +835,8 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Returns whether the date is selected
-     * @param {Date} date - Date instance
+     * Return whether the date is selected.
+     * @param {Date} date - Date to check
      * @returns {boolean}
      */
     isSelected: function(date) {
@@ -838,10 +844,9 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Set selectable ranges (prev ranges will be removed)
-     * @param {Array.<Array<Date|number>>} ranges - (2d-array) Selectable ranges
+     * Set selectable ranges. Previous ranges will be removed. 
+     * @param {Array.<Array<Date|number>>} ranges - Selectable ranges. Use Date instances or numbers(timestamp).
      * @example
-     *
      * datepicker.setRanges([
      *     [new Date(2017, 0, 1), new Date(2018, 0, 2)],
      *     [new Date(2015, 2, 3), new Date(2016, 4, 2)]
@@ -861,8 +866,8 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Set calendar type
-     * @param {string} type - set type
+     * Set the calendar's type.
+     * @param {('date'|'month'|'year')} type - Calendar type
      * @example
      * datepicker.setType('month');
      */
@@ -871,12 +876,12 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Add a range
-     * @param {Date|number} start - startDate
-     * @param {Date|number} end - endDate
+     * Add a selectable range. Use Date instances or numbers(timestamp).
+     * @param {Date|number} start - the start date
+     * @param {Date|number} end - the end date
      * @example
-     * var start = new Date(2015, 1, 3);
-     * var end = new Date(2015, 2, 6);
+     * const start = new Date(2015, 1, 3);
+     * const end = new Date(2015, 2, 6);
      *
      * datepicker.addRange(start, end);
      */
@@ -889,13 +894,13 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Remove a range
-     * @param {Date|number} start - startDate
-     * @param {Date|number} end - endDate
-     * @param {null|'date'|'month'|'year'} type - Range type, If falsy -> Use strict timestamp;
+     * Remove a range. Use Date instances or numbers(timestamp).
+     * @param {Date|number} start - the start date
+     * @param {Date|number} end - the end date
+     * @param {null|'date'|'month'|'year'} type - Range type. If falsy, start and end values are considered as timestamp
      * @example
-     * var start = new Date(2015, 1, 3);
-     * var end = new Date(2015, 2, 6);
+     * const start = new Date(2015, 1, 3);
+     * const end = new Date(2015, 2, 6);
      *
      * datepicker.removeRange(start, end);
      */
@@ -914,8 +919,8 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Add opener
-     * @param {HTMLElement|string} opener - element or selector
+     * Add an opener.
+     * @param {HTMLElement|string} opener - element or selector of opener
      */
     addOpener: function(opener) {
       opener = util.getElement(opener);
@@ -927,8 +932,8 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Remove opener
-     * @param {HTMLElement|string} opener - element or selector
+     * Remove an opener.
+     * @param {HTMLElement|string} opener - element or selector of opener
      */
     removeOpener: function(opener) {
       var index;
@@ -943,7 +948,7 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Remove all openers
+     * Remove all openers.
      */
     removeAllOpeners: function() {
       forEachArray(
@@ -957,7 +962,7 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Open datepicker
+     * Open the date picker.
      * @example
      * datepicker.open();
      */
@@ -977,19 +982,26 @@ var DatePicker = defineClass(
       }
 
       /**
+       * Occur after the date picker opens.
        * @event DatePicker#open
+       * @see {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents#on datepicker.on()} to bind event handlers.
+       * @see {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents#off datepicker.off()} to unbind event handlers.
+       * @see Refer to {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents CustomEvents from tui-code-snippet} for more methods. DatePicker mixes in the methods from CustomEvents. 
        * @example
+       * // bind the 'open' event
        * datepicker.on('open', function() {
        *     alert('open');
        * });
+       * 
+       * // unbind the 'open' event
+       * datepicker.off('open');
        */
       this.fire('open');
     },
 
     /**
-     * Raise calendar type
-     *  - DATE --> MONTH --> YEAR
-     * @param {Date} date - Date
+     * Raise the calendar type. (date -> month -> year)
+     * @param {Date} date - Date to set
      */
     drawUpperCalendar: function(date) {
       var calendarType = this.getCalendarType();
@@ -1008,9 +1020,8 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Lower calendar type
-     *  - YEAR --> MONTH --> DATE
-     * @param {Date} date - Date
+     * Lower the calendar type. (year -> month -> date)
+     * @param {Date} date - Date to set
      */
     drawLowerCalendar: function(date) {
       var calendarType = this.getCalendarType();
@@ -1035,7 +1046,7 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Close datepicker
+     * Close the date picker.
      * @exmaple
      * datepicker.close();
      */
@@ -1047,18 +1058,25 @@ var DatePicker = defineClass(
       this._hide();
 
       /**
-       * Close event - DatePicker
+       * Occur after the date picker closes.
        * @event DatePicker#close
+       * @see {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents#on datepicker.on()} to bind event handlers.
+       * @see {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents#off datepicker.off()} to unbind event handlers.
+       * @see Refer to {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents CustomEvents from tui-code-snippet} for more methods. DatePicker mixes in the methods from CustomEvents. 
        * @example
+       * // bind the 'close' event
        * datepicker.on('close', function() {
        *     alert('close');
        * });
+       * 
+       * // unbind the 'close' event
+       * datepicker.off('close');
        */
       this.fire('close');
     },
 
     /**
-     * Toggle: open-close
+     * Toggle the date picker.
      * @example
      * datepicker.toggle();
      */
@@ -1071,8 +1089,8 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Returns date object
-     * @returns {?Date} - Date
+     * Return the selected date.
+     * @returns {?Date} - selected date
      * @example
      * // 2015-04-13
      * datepicker.getDate(); // new Date(2015, 3, 13)
@@ -1086,8 +1104,8 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Set date and then fire 'update' custom event
-     * @param {Date|number} date - Date instance or timestamp
+     * Select the date.
+     * @param {Date|number} date - Date instance or timestamp to set
      * @example
      * datepicker.setDate(new Date()); // Set today
      */
@@ -1115,22 +1133,26 @@ var DatePicker = defineClass(
         this._syncToInput();
 
         /**
-         * Change event
+         * Occur after the selected date is changed. 
          * @event DatePicker#change
+         * @see {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents#on datepicker.on()} to bind event handlers.
+       * @see {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents#off datepicker.off()} to unbind event handlers.
+       * @see Refer to {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents CustomEvents from tui-code-snippet} for more methods. DatePicker mixes in the methods from CustomEvents. 
          * @example
-         *
+         * // bind the 'change' event
          * datepicker.on('change', function() {
-         *     var newDate = datepicker.getDate();
-         *
-         *     console.log(newDate);
+         *     console.log(`Selected date: ${datepicker.getDate()}`);
          * });
+         * 
+         * // unbind the 'change' event
+         * datepicker.off('change');
          */
         this.fire('change');
       }
     },
 
     /**
-     * Set null date
+     * Set no date to be selected. (Selected date: null)
      */
     setNull: function() {
       var calendarDate = this._calendar.getDate();
@@ -1160,8 +1182,8 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Set or update date-form
-     * @param {String} [format] - date-format
+     * Select the date by the date string format.
+     * @param {String} [format] - Date string format
      * @example
      * datepicker.setDateFormat('yyyy-MM-dd');
      * datepicker.setDateFormat('MM-dd, yyyy');
@@ -1174,7 +1196,7 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Return whether the datepicker is opened or not
+     * Return whether the datepicker opens or not
      * @returns {boolean}
      * @example
      * datepicker.close();
@@ -1188,17 +1210,19 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Returns timePicker instance
+     * Return the time picker instance
      * @returns {?TimePicker} - TimePicker instance
+     * @see {@link https://nhn.github.io/tui.time-picker/latest tui-time-picker}
      * @example
-     * var timePicker = this.getTimePicker();
+     * const timePicker = this.getTimePicker();
      */
     getTimePicker: function() {
       return this._timePicker;
     },
 
     /**
-     * Returns calendar instance
+     * Return the calendar instance.
+     * @see {@link calendar Calendar}
      * @returns {Calendar}
      */
     getCalendar: function() {
@@ -1206,7 +1230,8 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Returns locale text object
+     * Return the locale text object.
+     * @see {@link DatePicker#localeTexts DatePicker.localeTexts}
      * @returns {object}
      */
     getLocaleText: function() {
@@ -1214,11 +1239,11 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Set input element
+     * Set the input element
      * @param {string|HTMLElement} element - Input element or selector
      * @param {object} [options] - Input option
-     * @param {string} [options.format = prevInput.format] - Input text format
-     * @param {boolean} [options.syncFromInput = false] - Set date from input value
+     * @param {string} [options.format = prevInput.format] - Format of the Date string in the input
+     * @param {boolean} [options.syncFromInput = false] - Whether set the date from the input
      */
     setInput: function(element, options) {
       var prev = this._datepickerInput;
@@ -1253,10 +1278,7 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Enable
-     * @example
-     * datepicker.disable();
-     * datepicker.enable();
+     * Enable the date picker.
      */
     enable: function() {
       if (this._isEnabled) {
@@ -1276,10 +1298,7 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Disable
-     * @example
-     * datepicker.enable();
-     * datepicker.disable();
+     * Disable the date picker.
      */
     disable: function() {
       if (!this._isEnabled) {
@@ -1301,7 +1320,7 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Returns whether the datepicker is disabled
+     * Return whether the date picker is disabled
      * @returns {boolean}
      */
     isDisabled: function() {
@@ -1310,7 +1329,7 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Add datepicker css class
+     * Apply a CSS class to the date picker.
      * @param {string} className - Class name
      */
     addCssClass: function(className) {
@@ -1318,7 +1337,7 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Remove datepicker css class
+     * Remove a CSS class from the date picker.
      * @param {string} className - Class name
      */
     removeCssClass: function(className) {
@@ -1326,7 +1345,7 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Returns date elements on calendar
+     * Return the date elements on the calendar.
      * @returns {HTMLElement[]}
      */
     getDateElements: function() {
@@ -1334,10 +1353,10 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Returns the first overlapped range from the point or range
+     * Return the first overlapped range from the point or range.
      * @param {Date|number} startDate - Start date to find overlapped range
      * @param {Date|number} endDate - End date to find overlapped range
-     * @returns {Array.<Date>} - [startDate, endDate]
+     * @returns {Array.<Date>} - \[startDate, endDate]
      */
     findOverlappedRange: function(startDate, endDate) {
       var startTimestamp = new Date(startDate).getTime();
@@ -1348,9 +1367,9 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Change language
-     * @param {string} language - Language
-     * @see {@link DatePicker#localeTexts}
+     * Change language.
+     * @param {string} language - Language code. English('en') and Korean('ko') are provided as default.
+     * @see To set to the other languages, use {@link DatePicker#localeTexts DatePicker.localeTexts}.
      */
     changeLanguage: function(language) {
       this._language = language;
@@ -1364,7 +1383,7 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Destroy
+     * Destroy the date picker.
      */
     destroy: function() {
       this._removeDocumentEvents();

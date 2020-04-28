@@ -24,25 +24,31 @@ var CLASS_NAME_SELECTED_RANGE = 'tui-is-selected-range';
 
 /**
  * @class
- * @param {object} options - Date-Range picker options
+ * @description
+ * Create a date-range picker by {@link DatePicker#createRangePicker DatePicker.createRangePicker()}.
+ * @see {@link /tutorial-example08-daterangepicker DateRangePicker example}
+ * @param {object} options - DateRangePicker options
  *     @param {object} options.startpicker - Startpicker options
  *     @param {HTMLElement|string} options.startpicker.input - Startpicker input element or selector
  *     @param {HTMLElement|string} options.startpicker.container - Startpicker container element or selector
  *     @param {object} options.endpicker - Endpicker options
  *     @param {HTMLElement|string} options.endpicker.input - Endpicker input element or selector
  *     @param {HTMLElement|string} options.endpicker.container - Endpicker container element or selector
- *     @param {string} options.format - Input date-string format
- *     @param {string} [options.type = 'date'] - DatePicker type - ('date' | 'month' | 'year')
- *     @param {string} [options.language='en'] - Language key
- *     @param {object|boolean} [options.timePicker] - [TimePicker](https://nhn.github.io/tui.time-picker/latest) options. This option's name is changed from 'timepicker' and 'timepicker' will be deprecated in v5.0.0.
- *     @param {object} [options.calendar] - {@link Calendar} options
- *     @param {Array.<Array.<Date|number>>} [options.selectableRanges] - Selectable ranges
- *     @param {boolean} [options.showAlways = false] - Whether the datepicker shows always
- *     @param {boolean} [options.autoClose = true] - Close after click a date
- *     @param {Boolean} [options.usageStatistics=true|false] send hostname to google analytics [default value is true]
+ *     @param {('date'|'month'|'year')} [options.type = 'date'] - DatePicker type. Determine whether to choose a date, month, or year.
+ *     @param {string} [options.language='en'] - Language code. English('en') and Korean('ko') are provided as default. To use the other languages, use {@link DatePicker#localeTexts DatePicker.localeTexts}.
+ *     @param {object|boolean} [options.timePicker] - [TimePicker](https://nhn.github.io/tui.time-picker/latest) options. Refer to the [TimePicker instance's options](https://nhn.github.io/tui.time-picker/latest/TimePicker). To create the TimePicker without customization, set to true.
+ *     @param {object} [options.calendar] - {@link Calendar} options. Refer to the {@link Calendar Calendar instance's options}.
+ *     @param {string} [options.format = 'yyyy-mm-dd'] - Format of the Date string
+ *     @param {Array.<Array.<Date|number>>} [options.selectableRanges] - Ranges of selectable date. Set by Date instances or numbers(timestamp).
+ *     @param {boolean} [options.showAlways = false] - Show the DateRangePicker always
+ *     @param {boolean} [options.autoClose = true] - Close the DateRangePicker after clicking the date
+ *     @param {boolean} [options.usageStatistics = true] - Send a hostname to Google Analytics (default: true)
  * @example
- * var DatePicker = tui.DatePicker; // or require('tui-date-picker');
- * var rangepicker = DatePicker.createRangePicker({
+ * import DatePicker from 'tui-date-picker' // ES6
+ * // const DatePicker = require('tui-date-picker'); // CommonJS
+ * // const DatePicker = tui.DatePicker;
+ * 
+ * const rangePicker = DatePicker.createRangePicker({
  *     startpicker: {
  *         input: '#start-input',
  *         container: '#start-container'
@@ -222,12 +228,19 @@ var DateRangePicker = defineClass(
     _onChangeStartpicker: function() {
       this._syncRangesToEndpicker();
       /**
+       * Occur after the start date is changed.
        * @event DateRangePicker#change:start
+       * @see {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents#on rangePicker.on()} to bind event handlers.
+       * @see {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents#off rangePicker.off()} to unbind event handlers.
+       * @see Refer to {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents CustomEvents} for more methods. DateRangePicker mixes in the methods from CustomEvents.
        * @example
-       *
-       * rangepicker.on('change:start', function() {
-       *     console.log(rangepicker.getStartDate());
+       * // bind the 'change:start' event
+       * rangePicker.on('change:start', function() {
+       *     console.log(`Start date: ${rangePicker.getStartDate()}`);
        * });
+       * 
+       * // unbind the 'change:start' event
+       * rangePicker.off('change:start');
        */
       this.fire('change:start');
     },
@@ -238,18 +251,25 @@ var DateRangePicker = defineClass(
      */
     _onChangeEndpicker: function() {
       /**
+       * Occur after the end date is changed.
        * @event DateRangePicker#change:end
+       * @see {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents#on rangePicker.on()} to bind event handlers.
+       * @see {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents#off rangePicker.off()} to unbind event handlers.
+       * @see Refer to {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents CustomEvents} for more methods. DateRangePicker mixes in the methods from CustomEvents.
        * @example
-       *
-       * rangepicker.on('change:end', function() {
-       *     console.log(rangepicker.getEndDate());
+       * // bind the 'change:end' event
+       * rangePicker.on('change:end', function() {
+       *     console.log(`End date: ${rangePicker.getEndDate()}`);
        * });
+       * 
+       * // unbind the 'change:end' event
+       * rangePicker.off('change:end');
        */
       this.fire('change:end');
     },
 
     /**
-     * Returns start-datepicker
+     * Return a start-datepicker.
      * @returns {DatePicker}
      */
     getStartpicker: function() {
@@ -257,7 +277,7 @@ var DateRangePicker = defineClass(
     },
 
     /**
-     * Returns end-datepicker
+     * Return a end-datepicker.
      * @returns {DatePicker}
      */
     getEndpicker: function() {
@@ -265,7 +285,7 @@ var DateRangePicker = defineClass(
     },
 
     /**
-     * Set start date
+     * Set the start date.
      * @param {Date} date - Start date
      */
     setStartDate: function(date) {
@@ -273,7 +293,7 @@ var DateRangePicker = defineClass(
     },
 
     /**
-     * Returns start-date
+     * Return the start date.
      * @returns {?Date}
      */
     getStartDate: function() {
@@ -281,7 +301,7 @@ var DateRangePicker = defineClass(
     },
 
     /**
-     * Returns end-date
+     * Return the end date.
      * @returns {?Date}
      */
     getEndDate: function() {
@@ -289,7 +309,7 @@ var DateRangePicker = defineClass(
     },
 
     /**
-     * Set end date
+     * Set the end date.
      * @param {Date} date - End date
      */
     setEndDate: function(date) {
@@ -297,9 +317,8 @@ var DateRangePicker = defineClass(
     },
 
     /**
-     * Set selectable ranges
-     * @param {Array.<Array.<number|Date>>} ranges - Selectable ranges
-     * @see {@link DatePicker#setRanges}
+     * Set selectable ranges.
+     * @param {Array.<Array.<number|Date>>} ranges - Selectable ranges. Use Date instances or numbers(timestamp).
      */
     setRanges: function(ranges) {
       this._startpicker.setRanges(ranges);
@@ -307,10 +326,9 @@ var DateRangePicker = defineClass(
     },
 
     /**
-     * Add a range
-     * @param {Date|number} start - startDate
-     * @param {Date|number} end - endDate
-     * @see {@link DatePicker#addRange}
+     * Add a selectable range. Use Date instances or numbers(timestamp).
+     * @param {Date|number} start - the start date
+     * @param {Date|number} end - the end date
      */
     addRange: function(start, end) {
       this._startpicker.addRange(start, end);
@@ -318,11 +336,10 @@ var DateRangePicker = defineClass(
     },
 
     /**
-     * Remove a range
-     * @param {Date|number} start - startDate
-     * @param {Date|number} end - endDate
-     * @param {null|'date'|'month'|'year'} type - Range type, If falsy -> Use strict timestamp;
-     * @see {@link DatePicker#removeRange}
+     * Remove a range. Use Date instances or numbers(timestamp).
+     * @param {Date|number} start - the start date
+     * @param {Date|number} end - the end date
+     * @param {null|'date'|'month'|'year'} type - Range type. If falsy, start and end values are considered as timestamp
      */
     removeRange: function(start, end, type) {
       this._startpicker.removeRange(start, end, type);
@@ -330,9 +347,9 @@ var DateRangePicker = defineClass(
     },
 
     /**
-     * Change language
-     * @param {string} language - Language
-     * @see {@link DatePicker#localeTexts}
+     * Change language.
+     * @param {string} language - Language code. English('en') and Korean('ko') are provided as default.
+     * @see To set to the other languages, use {@link DatePicker#localeTexts DatePicker.localeTexts}.
      */
     changeLanguage: function(language) {
       this._startpicker.changeLanguage(language);
@@ -340,7 +357,7 @@ var DateRangePicker = defineClass(
     },
 
     /**
-     * Destroy date-range picker
+     * Destroy the date-range picker.
      */
     destroy: function() {
       this.off();

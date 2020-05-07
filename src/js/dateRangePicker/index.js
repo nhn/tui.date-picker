@@ -29,11 +29,13 @@ var CLASS_NAME_SELECTED_RANGE = 'tui-is-selected-range';
  * @see {@link /tutorial-example08-daterangepicker DateRangePicker example}
  * @param {object} options - DateRangePicker options
  *     @param {object} options.startpicker - Startpicker options
- *     @param {HTMLElement|string} options.startpicker.input - Startpicker input element or selector
- *     @param {HTMLElement|string} options.startpicker.container - Startpicker container element or selector
+ *         @param {HTMLElement|string} options.startpicker.input - Startpicker input element or selector
+ *         @param {HTMLElement|string} options.startpicker.container - Startpicker container element or selector
+ *         @param {Date|number} [options.startpicker.date] - Initial date of the start picker. Set by a Date instance or a number(timestamp). (default: no initial date)
  *     @param {object} options.endpicker - Endpicker options
- *     @param {HTMLElement|string} options.endpicker.input - Endpicker input element or selector
- *     @param {HTMLElement|string} options.endpicker.container - Endpicker container element or selector
+ *         @param {HTMLElement|string} options.endpicker.input - Endpicker input element or selector
+ *         @param {HTMLElement|string} options.endpicker.container - Endpicker container element or selector
+ *         @param {Date|number} [options.endpicker.date] - Initial date of the end picker. Set by a Date instance or a number(timestamp). (default: no initial date)
  *     @param {('date'|'month'|'year')} [options.type = 'date'] - DatePicker type. Determine whether to choose a date, month, or year.
  *     @param {string} [options.language='en'] - Language code. English('en') and Korean('ko') are provided as default. To use the other languages, use {@link DatePicker#localeTexts DatePicker.localeTexts}.
  *     @param {object|boolean} [options.timePicker] - [TimePicker](https://nhn.github.io/tui.time-picker/latest) options. Refer to the [TimePicker instance's options](https://nhn.github.io/tui.time-picker/latest/TimePicker). To create the TimePicker without customization, set to true.
@@ -52,6 +54,7 @@ var CLASS_NAME_SELECTED_RANGE = 'tui-is-selected-range';
  *     startpicker: {
  *         input: '#start-input',
  *         container: '#start-container'
+ *         date: new Date(2019, 3, 1)
  *     },
  *     endpicker: {
  *         input: '#end-input',
@@ -96,8 +99,6 @@ var DateRangePicker = defineClass(
       this._endpicker = null;
 
       this._initializePickers(options);
-      this.setStartDate(startpickerOpt.date);
-      this.setEndDate(endpickerOpt.date);
       this._syncRangesToEndpicker();
     },
 
@@ -116,13 +117,15 @@ var DateRangePicker = defineClass(
         input: {
           element: startInput,
           format: options.format
-        }
+        },
+        date: options.startpicker.date
       });
       var endpickerOpt = extend({}, options, {
         input: {
           element: endInput,
           format: options.format
-        }
+        },
+        date: options.endpicker.date
       });
 
       this._startpicker = new DatePicker(startpickerContainer, startpickerOpt);

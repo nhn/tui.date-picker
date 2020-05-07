@@ -1,4 +1,4 @@
-// Type definitions for TOAST UI Date Picker v4.0.3
+// Type definitions for TOAST UI Date Picker v4.1.0
 // TypeScript Version: 3.8.3
 
 export type CalendarType = 'date' | 'month' | 'year';

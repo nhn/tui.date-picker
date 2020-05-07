@@ -1,5 +1,6 @@
 module.exports = {
-  extends: 'tui',
+  extends: ['tui', 'plugin:prettier/recommended'],
+  plugins: ['prettier'],
   parserOptions: {
     ecmaVersion: 3
   },

@@ -227,15 +227,7 @@ var Header = defineClass(
       this._removeEvents();
       removeElement(this._innerElement);
       removeElement(this._infoElement);
-      this._container
-        = this._showToday
-        = this._showJumpButtons
-        = this._yearMonthTitleFormatter
-        = this._yearTitleFormatter
-        = this._todayFormatter
-        = this._innerElement
-        = this._infoElement
-        = null;
+      this._container = this._showToday = this._showJumpButtons = this._yearMonthTitleFormatter = this._yearTitleFormatter = this._todayFormatter = this._innerElement = this._infoElement = null;
     }
   }
 );

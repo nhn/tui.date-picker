@@ -55,7 +55,7 @@ var BODY_SELECTOR = '.tui-calendar-body';
  * import DatePicker from 'tui-date-picker' // ES6
  * // const DatePicker = require('tui-date-picker'); // CommonJS
  * // const DatePicker = tui.DatePicker;
- * 
+ *
  * const calendar = DatePicker.createCalendar('#calendar-wrapper', {
  *     language: 'en',
  *     showToday: true,
@@ -99,10 +99,10 @@ var Calendar = defineClass(
        */
       this._container = util.getElement(container);
       this._container.innerHTML =
-          '<div class="tui-calendar">'
-        + '    <div class="tui-calendar-header"></div>'
-        + '    <div class="tui-calendar-body"></div>'
-        + '</div>';
+        '<div class="tui-calendar">' +
+        '    <div class="tui-calendar-header"></div>' +
+        '    <div class="tui-calendar-body"></div>' +
+        '</div>';
 
       /**
        * Wrapper element
@@ -324,7 +324,7 @@ var Calendar = defineClass(
        * @event Calendar#draw
        * @see {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents#on calendar.on()} to bind event handlers.
        * @see {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents#off calendar.off()} to unbind event handlers.
-       * @see Refer to {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents CustomEvents from tui-code-snippet} for more methods. Calendar mixes in the methods from CustomEvents. 
+       * @see Refer to {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents CustomEvents from tui-code-snippet} for more methods. Calendar mixes in the methods from CustomEvents.
        * @property {Date} date - Calendar date
        * @property {('date'|'month'|'year')} type - Calendar type
        * @property {HTMLElement[]} dateElements - elements for dates
@@ -333,7 +333,7 @@ var Calendar = defineClass(
        * calendar.on('draw', function({type, date}) {
        *     console.log(`Draw the ${type} calendar and its date is ${date}.`);
        * });
-       * 
+       *
        * // unbind the 'draw' event
        * calendar.off('draw');
        */

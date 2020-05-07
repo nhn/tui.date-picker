@@ -132,7 +132,7 @@ var mergeDefaultOption = function(option) {
  * import DatePicker from 'tui-date-picker' // ES6
  * // const DatePicker = require('tui-date-picker'); // CommonJS
  * // const DatePicker = tui.DatePicker;
- * 
+ *
  * const range1 = [new Date(2015, 2, 1), new Date(2015, 3, 1)];
  * const range2 = [1465570800000, 1481266182155]; // timestamps
  *
@@ -216,9 +216,11 @@ var DatePicker = defineClass(
        * @private
        */
       this._container = util.getElement(container);
-      this._container.innerHTML = tmpl(extend(options, {
-        isTab: options.timePicker && options.timePicker.layoutType === 'tab'
-      }));
+      this._container.innerHTML = tmpl(
+        extend(options, {
+          isTab: options.timePicker && options.timePicker.layoutType === 'tab'
+        })
+      );
 
       /**
        * DatePicker element
@@ -447,10 +449,7 @@ var DatePicker = defineClass(
         this._calendar.hide();
         this._timePicker.show();
       }
-      removeClass(
-        this._element.querySelector('.' + CLASS_NAME_CHECKED),
-        CLASS_NAME_CHECKED
-      );
+      removeClass(this._element.querySelector('.' + CLASS_NAME_CHECKED), CLASS_NAME_CHECKED);
       addClass(selectedBtn, CLASS_NAME_CHECKED);
     },
 
@@ -700,7 +699,7 @@ var DatePicker = defineClass(
        * @event DatePicker#draw
        * @see {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents#on datepicker.on()} to bind event handlers.
        * @see {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents#off datepicker.off()} to unbind event handlers.
-       * @see Refer to {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents CustomEvents from tui-code-snippet} for more methods. DatePicker mixes in the methods from CustomEvents. 
+       * @see Refer to {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents CustomEvents from tui-code-snippet} for more methods. DatePicker mixes in the methods from CustomEvents.
        * @property {Date} date - Calendar date
        * @property {('date'|'month'|'year')} type - Calendar type
        * @property {HTMLElement[]} dateElements - elements for dates
@@ -709,7 +708,7 @@ var DatePicker = defineClass(
        * datepicker.on('draw', function(event) {
        *     console.log(`Draw the ${event.type} calendar and its date is ${event.date}.`);
        * });
-       * 
+       *
        * // unbind the 'draw' event
        * datepicker.off('draw');
        */
@@ -844,7 +843,7 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Set selectable ranges. Previous ranges will be removed. 
+     * Set selectable ranges. Previous ranges will be removed.
      * @param {Array.<Array<Date|number>>} ranges - Selectable ranges. Use Date instances or numbers(timestamp).
      * @example
      * datepicker.setRanges([
@@ -986,13 +985,13 @@ var DatePicker = defineClass(
        * @event DatePicker#open
        * @see {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents#on datepicker.on()} to bind event handlers.
        * @see {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents#off datepicker.off()} to unbind event handlers.
-       * @see Refer to {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents CustomEvents from tui-code-snippet} for more methods. DatePicker mixes in the methods from CustomEvents. 
+       * @see Refer to {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents CustomEvents from tui-code-snippet} for more methods. DatePicker mixes in the methods from CustomEvents.
        * @example
        * // bind the 'open' event
        * datepicker.on('open', function() {
        *     alert('open');
        * });
-       * 
+       *
        * // unbind the 'open' event
        * datepicker.off('open');
        */
@@ -1062,13 +1061,13 @@ var DatePicker = defineClass(
        * @event DatePicker#close
        * @see {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents#on datepicker.on()} to bind event handlers.
        * @see {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents#off datepicker.off()} to unbind event handlers.
-       * @see Refer to {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents CustomEvents from tui-code-snippet} for more methods. DatePicker mixes in the methods from CustomEvents. 
+       * @see Refer to {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents CustomEvents from tui-code-snippet} for more methods. DatePicker mixes in the methods from CustomEvents.
        * @example
        * // bind the 'close' event
        * datepicker.on('close', function() {
        *     alert('close');
        * });
-       * 
+       *
        * // unbind the 'close' event
        * datepicker.off('close');
        */
@@ -1126,14 +1125,14 @@ var DatePicker = defineClass(
       if (shouldUpdate) {
         newDate = new Date(date);
         this._date = newDate;
-        this._calendar.draw({date: newDate});
+        this._calendar.draw({ date: newDate });
         if (this._timePicker) {
           this._timePicker.setTime(newDate.getHours(), newDate.getMinutes());
         }
         this._syncToInput();
 
         /**
-         * Occur after the selected date is changed. 
+         * Occur after the selected date is changed.
          * @event DatePicker#change
          * @see {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents#on datepicker.on()} to bind event handlers.
          * @see {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents#off datepicker.off()} to unbind event handlers.
@@ -1143,7 +1142,7 @@ var DatePicker = defineClass(
          * datepicker.on('change', function() {
          *     console.log(`Selected date: ${datepicker.getDate()}`);
          * });
-         * 
+         *
          * // unbind the 'change' event
          * datepicker.off('change');
          */
@@ -1398,17 +1397,7 @@ var DatePicker = defineClass(
       removeElement(this._element);
       this.removeAllOpeners();
 
-      this._calendar
-        = this._timePicker
-        = this._datepickerInput
-        = this._container
-        = this._element
-        = this._date
-        = this._rangeModel
-        = this._openers
-        = this._isEnabled
-        = this._id
-        = null;
+      this._calendar = this._timePicker = this._datepickerInput = this._container = this._element = this._date = this._rangeModel = this._openers = this._isEnabled = this._id = null;
     }
   }
 );

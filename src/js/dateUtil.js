@@ -135,7 +135,7 @@ var utils = {
     var firstDayOfMonth = new Date(year, month - 1).getDay();
     var dateOffset = firstDayOfMonth - dayNumber - 1;
 
-    return new Date(year, month - 1, (weekNumber * 7) - dateOffset);
+    return new Date(year, month - 1, weekNumber * 7 - dateOffset);
   },
 
   /**

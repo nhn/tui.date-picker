@@ -49,7 +49,7 @@ var CLASS_NAME_SELECTED_RANGE = 'tui-is-selected-range';
  * import DatePicker from 'tui-date-picker' // ES6
  * // const DatePicker = require('tui-date-picker'); // CommonJS
  * // const DatePicker = tui.DatePicker;
- * 
+ *
  * const rangePicker = DatePicker.createRangePicker({
  *     startpicker: {
  *         input: '#start-input',
@@ -241,7 +241,7 @@ var DateRangePicker = defineClass(
        * rangePicker.on('change:start', function() {
        *     console.log(`Start date: ${rangePicker.getStartDate()}`);
        * });
-       * 
+       *
        * // unbind the 'change:start' event
        * rangePicker.off('change:start');
        */
@@ -264,7 +264,7 @@ var DateRangePicker = defineClass(
        * rangePicker.on('change:end', function() {
        *     console.log(`End date: ${rangePicker.getEndDate()}`);
        * });
-       * 
+       *
        * // unbind the 'change:end' event
        * rangePicker.off('change:end');
        */

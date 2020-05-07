@@ -11,7 +11,7 @@ describe('Calendar - Body', function() {
   var container = document.createElement('div');
 
   beforeEach(function() {
-    body = new Body(container, {language: 'en'});
+    body = new Body(container, { language: 'en' });
   });
 
   afterEach(function() {

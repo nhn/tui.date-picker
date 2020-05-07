@@ -1,9 +1,10 @@
-// Type definitions for TOAST UI DatePicker v4.0.3
+// Type definitions for TOAST UI Date Picker v4.0.3
 // TypeScript Version: 3.8.3
 
 export type CalendarType = 'date' | 'month' | 'year';
 export type DatePickerEventType = 'change' | 'close' | 'draw' | 'open';
 export type DateRangePickerEventType = 'change:start' | 'change:end';
+export type CalendarEventType = 'draw';
 
 export interface CalendarOptions {
   language?: string;
@@ -18,6 +19,7 @@ export interface DefaultPickerOptions {
   type?: CalendarType;
   selectableRanges?: Array<[Date | number, Date | number]>;
   calendar?: CalendarOptions;
+  timePicker?: object | boolean;
   showAlways?: boolean;
   autoClose?: boolean;
   language?: string;
@@ -30,20 +32,19 @@ export interface DatePickerOptions extends DefaultPickerOptions {
     format?: string;
   };
   openers?: Array<string | HTMLElement>;
-  date?: Date;
-  timePicker?: object | boolean;
+  date?: Date | number;
 }
 
 export interface DateRangePickerOptions extends DefaultPickerOptions {
   startpicker: {
-    input: HTMLInputElement;
-    container: HTMLElement;
-    date?: Date;
+    input: HTMLInputElement | string;
+    container: HTMLElement | string;
+    date?: Date | number;
   };
   endpicker: {
-    input: HTMLInputElement;
-    container: HTMLElement;
-    date?: Date;
+    input: HTMLInputElement | string;
+    container: HTMLElement | string;
+    date?: Date | number;
   };
   format?: string;
 }
@@ -77,13 +78,19 @@ export class Calendar {
 
   public hide(): void;
 
-  public moveCssClass(className: string): void;
+  public removeCssClass(className: string): void;
 
   public show(): void;
 
+  public off(
+    eventName?: CalendarEventType | { [key in CalendarEventType]?: Function } | Function,
+    handler?: Function
+  ): void;
+
   public on(
-    type: 'draw',
-    handler: (evt: { date: Date; type: string; dateElements: HTMLElement }) => void
+    eventName: CalendarEventType | { [key in CalendarEventType]?: Function },
+    handler?: Function | object,
+    context?: object
   ): void;
 
   static localeTexts: Record<string, object>;
@@ -104,15 +111,24 @@ export class DateRangePicker {
 
   public getEndDate: () => Date;
 
-  public getStartPicker: () => any;
+  public getStartpicker: () => DatePicker;
 
-  public getEndPicker: () => any;
+  public getEndpicker: () => DatePicker;
 
-  public setRange(ranges: Array<[Date | number, Date | number]>): void;
+  public setRanges(ranges: Array<[Date | number, Date | number]>): void;
 
-  public removeRange(start: Date | number, end: Date | number, type?: CalendarType): void;
+  public removeRange(start: Date | number, end: Date | number, type?: CalendarType | null): void;
 
-  public on(type: DateRangePickerEventType, handler: Function): void;
+  public off(
+    eventName?: DateRangePickerEventType | { [key in DateRangePickerEventType]?: Function } | Function,
+    handler?: Function
+  ): void;
+
+  public on(
+    eventName: DateRangePickerEventType | { [key in DateRangePickerEventType]?: Function },
+    handler?: Function | object,
+    context?: object
+  ): void;
 }
 
 export default class DatePicker {
@@ -130,9 +146,9 @@ export default class DatePicker {
 
   public enable(): void;
 
-  public drawLowerCalendar(date: Date): void;
+  public drawLowerCalendar(date?: Date): void;
 
-  public drawUpperCalendar(date: Date): void;
+  public drawUpperCalendar(date?: Date): void;
 
   public findOverlappedRange(startDate: Date | number, endDate: Date | number): void;
 
@@ -166,13 +182,15 @@ export default class DatePicker {
 
   public removeOpener(opener: HTMLElement | string): void;
 
-  public removeRange(start: Date | number, end: Date | number, type: CalendarType | null): void;
+  public removeRange(start: Date | number, end: Date | number, type?: CalendarType | null): void;
 
   public setDateFormat(format: string): void;
 
-  public setInput(element: HTMLElement, options: { format: string; syncFromInput: boolean }): void;
+  public setInput(element: HTMLElement | string, options: { format: string; syncFromInput: boolean }): void;
 
   public setNull(): void;
+
+  public setRanges(ranges: Array<[Date | number, Date | number]>): void;
 
   public setType(type: string): void;
 
@@ -180,7 +198,16 @@ export default class DatePicker {
 
   public destroy(): void;
 
-  public on(type: DatePickerEventType, handler: Function): void;
+  public off(
+    eventName?: DatePickerEventType | { [key in DatePickerEventType]?: Function } | Function,
+    handler?: Function
+  ): void;
+
+  public on(
+    eventName: DatePickerEventType | { [key in DatePickerEventType]?: Function },
+    handler?: Function | object,
+    context?: object
+  ): void;
 
   public setStartDate: (newDate: Date) => void;
 

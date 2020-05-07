@@ -1001,7 +1001,7 @@ var DatePicker = defineClass(
 
     /**
      * Raise the calendar type. (date -> month -> year)
-     * @param {Date} date - Date to set
+     * @param {Date} [date] - Date to set
      */
     drawUpperCalendar: function(date) {
       var calendarType = this.getCalendarType();
@@ -1021,7 +1021,7 @@ var DatePicker = defineClass(
 
     /**
      * Lower the calendar type. (year -> month -> date)
-     * @param {Date} date - Date to set
+     * @param {Date} [date] - Date to set
      */
     drawLowerCalendar: function(date) {
       var calendarType = this.getCalendarType();
@@ -1136,8 +1136,8 @@ var DatePicker = defineClass(
          * Occur after the selected date is changed. 
          * @event DatePicker#change
          * @see {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents#on datepicker.on()} to bind event handlers.
-       * @see {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents#off datepicker.off()} to unbind event handlers.
-       * @see Refer to {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents CustomEvents from tui-code-snippet} for more methods. DatePicker mixes in the methods from CustomEvents. 
+         * @see {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents#off datepicker.off()} to unbind event handlers.
+         * @see Refer to {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents CustomEvents from tui-code-snippet} for more methods. DatePicker mixes in the methods from CustomEvents.
          * @example
          * // bind the 'change' event
          * datepicker.on('change', function() {

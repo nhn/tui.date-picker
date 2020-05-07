@@ -87,8 +87,8 @@ var DateLayer = defineClass(
 
     /**
      * week (templating) for date-calendar
-     * @param {number} currentYear 
-     * @param {number} currentMonth 
+     * @param {number} currentYear
+     * @param {number} currentMonth
      * @param {Array.<Date>} dates
      * @private
      */

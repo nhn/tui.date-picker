@@ -2,34 +2,36 @@
 name: Bug report
 about: Create a report to help us improve
 title: ''
-labels: 'Type: Bug'
+labels: Bug
 assignees: ''
-
 ---
 
-<!--
-Thank you for your contribution.
+## Describe the bug
+A clear and concise description of what the bug is.
 
-When it comes to write an issue, please, use the template below.
-To use the template is mandatory for submit new issue and we won't reply the issue that without the template.
+## To Reproduce
+Steps to reproduce the behavior:
+1. Go to '...'
+2. Click on '....'
+3. Scroll down to '....'
+4. See error
 
-And you can write template's contents in Korean also.
--->
+## Expected behavior
+A clear and concise description of what you expected to happen.
 
-<!-- TEMPLATE -->
+## Screenshots
+If applicable, add screenshots to help explain your problem.
 
-## Version
-<!-- Write the version of component you are currently using. -->
+## Desktop (please complete the following information):
+ - OS: [e.g. iOS]
+ - Browser [e.g. chrome, safari]
+ - Version [e.g. 22]
 
-## Development Environment
-<!-- Write the browser type, OS and so on. -->
+## Smartphone (please complete the following information):
+ - Device: [e.g. iPhone6]
+ - OS: [e.g. iOS8.1]
+ - Browser [e.g. stock browser, safari]
+ - Version [e.g. 22]
 
-## Current Behavior
-<!-- Write a description of the current operation. You can add example code, 'CodePen' or 'jsfiddle' links. -->
-
-```js
-// Write example code
-```
-
-## Expected Behavior
-<!-- Write a description of the future action. -->
+## Additional context
+Add any other context about the problem here.

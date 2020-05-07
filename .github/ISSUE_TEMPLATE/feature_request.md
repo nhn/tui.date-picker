@@ -2,19 +2,29 @@
 name: Feature request
 about: Suggest an idea for this project
 title: ''
-labels: 'Type: Need Discussion'
+labels: Enhancement, Need Discussion
 assignees: ''
-
 ---
 
-**Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+<!--
+Thank you for your contribution.
 
-**Describe the solution you'd like**
-A clear and concise description of what you want to happen.
+When it comes to write an issue, please, use the template below.
+To use the template is mandatory for submit new issue and we won't reply the issue that without the template.
+-->
 
-**Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
+## Version
+Write the version that you are currently using.
 
-**Additional context**
-Add any other context or screenshots about the feature request here.
+## Development Environment
+Write the browser type, OS and so on.
+
+## Current Behavior
+Write a description of the current operation. You can add sample code, 'CodePen' or 'jsfiddle' links.
+
+```js
+// Write example code
+```
+
+## Expected Behavior
+Write a description of the future action.

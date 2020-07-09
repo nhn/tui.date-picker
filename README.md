@@ -187,7 +187,6 @@ For more information about the API, please see [here](http://nhn.github.io/tui.d
 
 
 ## 🔩 Dependency
-* [tui-code-snippet](https://github.com/nhn/tui.code-snippet) >= 2.2.0
 * [tui-time-picker](https://github.com/nhn/tui.time-picker) >= 2.0.3
 
 

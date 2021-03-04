@@ -38,7 +38,7 @@ var Body = defineClass(
        * @type {DateLayer}
        * @private
        */
-      this._dateLayer = new DateLayer(language);
+      this._dateLayer = new DateLayer(language, option);
 
       /**
        * MonthLayer

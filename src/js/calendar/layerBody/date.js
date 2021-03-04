@@ -23,8 +23,10 @@ var DATE_SELECTOR = '.tui-calendar-date';
 var DateLayer = defineClass(
   LayerBase,
   /** @lends DateLayer.prototype */ {
-    init: function(language) {
+    init: function(language, option) {
       LayerBase.call(this, language);
+
+      this.startOnMonday = option.startOnMonday;
     },
 
     /**
@@ -41,11 +43,18 @@ var DateLayer = defineClass(
      */
     _makeContext: function(date) {
       var daysShort = this._localeText.titles.D;
-      var year, month;
+      var year, month, days, sunday;
 
       date = date || new Date();
       year = date.getFullYear();
       month = date.getMonth() + 1;
+
+      if (this.startOnMonday) {
+        days = daysShort.slice();
+        sunday = days.shift();
+        days.push(sunday);
+        daysShort = days;
+      }
 
       return {
         Sun: daysShort[0],
@@ -72,14 +81,37 @@ var DateLayer = defineClass(
       var weekNumber = 0;
       var weeksCount = 6; // Fix for no changing height
       var weeks = [];
-      var dates, i;
+      var week, dates, i, sunday, datesStartingOnSunday, weekStartingOnSunday;
 
       for (; weekNumber < weeksCount; weekNumber += 1) {
         dates = [];
-        for (i = 0; i < 7; i += 1) {
+        // Sunday to Sunday (ex. 1(Sun), 2(Mon), ...,  8(Sun))
+        for (i = 0; i < 8; i += 1) {
           dates.push(dateUtil.getDateOfWeek(year, month, weekNumber, i));
         }
-        weeks.push(this._getWeek(year, month, dates));
+
+        week = this._getWeek(year, month, dates);
+
+        if (this.startOnMonday) {
+          sunday = week.shift();
+
+          if (sunday.dayInMonth === 1) {
+            datesStartingOnSunday = [];
+
+            // Monday to Sunday (ex. 2(Mon), 3(Tue), ...,  8(Sun))
+            // eslint-disable-next-line max-depth
+            for (i = 1; i < 8; i += 1) {
+              datesStartingOnSunday.push(dateUtil.getDateOfWeek(year, month, weekNumber - 1, i));
+            }
+
+            weekStartingOnSunday = this._getWeek(year, month, datesStartingOnSunday);
+            weeks.push(weekStartingOnSunday);
+          }
+        } else {
+          sunday = week.pop();
+        }
+
+        weeks.push(week);
       }
 
       return weeks;

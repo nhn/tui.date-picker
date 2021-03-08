@@ -13,6 +13,7 @@ var LayerBase = require('./base');
 var TYPE_DATE = require('../../constants').TYPE_DATE;
 
 var DATE_SELECTOR = '.tui-calendar-date';
+var DAYS_OF_WEEK = 7;
 
 /**
  * @ignore
@@ -26,7 +27,7 @@ var DateLayer = defineClass(
     init: function(language, option) {
       LayerBase.call(this, language);
 
-      this.startOnMonday = option.startOnMonday;
+      this.weekStart = option.weekStart;
     },
 
     /**
@@ -43,16 +44,17 @@ var DateLayer = defineClass(
      */
     _makeContext: function(date) {
       var daysShort = this._localeText.titles.D;
-      var year, month, days, sunday;
+      var year, month, days, i;
 
       date = date || new Date();
       year = date.getFullYear();
       month = date.getMonth() + 1;
 
-      if (this.startOnMonday) {
+      if (this.weekStart) {
         days = daysShort.slice();
-        sunday = days.shift();
-        days.push(sunday);
+        for (i = 0; i < this.weekStart; i += 1) {
+          days.push(days.shift());
+        }
         daysShort = days;
       }
 
@@ -81,34 +83,28 @@ var DateLayer = defineClass(
       var weekNumber = 0;
       var weeksCount = 6; // Fix for no changing height
       var weeks = [];
-      var week, dates, i, sunday, datesStartingOnSunday, weekStartingOnSunday;
+      var week, dates, i, firstWeekDates, firstWeek;
 
       for (; weekNumber < weeksCount; weekNumber += 1) {
         dates = [];
-        // Sunday to Sunday (ex. 1(Sun), 2(Mon), ...,  8(Sun))
-        for (i = 0; i < 8; i += 1) {
+
+        for (i = this.weekStart; i < DAYS_OF_WEEK + this.weekStart; i += 1) {
           dates.push(dateUtil.getDateOfWeek(year, month, weekNumber, i));
         }
 
         week = this._getWeek(year, month, dates);
 
-        if (this.startOnMonday) {
-          sunday = week.shift();
+        if (this.weekStart && !this._isFirstWeek(weekNumber, week[0].dayInMonth)) {
+          firstWeekDates = [];
 
-          if (sunday.dayInMonth === 1) {
-            datesStartingOnSunday = [];
-
-            // Monday to Sunday (ex. 2(Mon), 3(Tue), ...,  8(Sun))
-            // eslint-disable-next-line max-depth
-            for (i = 1; i < 8; i += 1) {
-              datesStartingOnSunday.push(dateUtil.getDateOfWeek(year, month, weekNumber - 1, i));
-            }
-
-            weekStartingOnSunday = this._getWeek(year, month, datesStartingOnSunday);
-            weeks.push(weekStartingOnSunday);
+          // Get first week of month
+          for (i = this.weekStart; i < DAYS_OF_WEEK + this.weekStart; i += 1) {
+            firstWeekDates.push(dateUtil.getDateOfWeek(year, month, weekNumber - 1, i));
           }
-        } else {
-          sunday = week.pop();
+
+          firstWeek = this._getWeek(year, month, firstWeekDates);
+          weeks.push(firstWeek);
+          weeksCount -= 1; // Fix for no changing height
         }
 
         weeks.push(week);
@@ -180,6 +176,15 @@ var DateLayer = defineClass(
      */
     getDateElements: function() {
       return this._element.querySelectorAll(DATE_SELECTOR);
+    },
+
+    /**
+     * Return week is first week
+     * @param {number} weekNumber - index of week
+     * @param {number} dayInMonth - day of month
+     */
+    _isFirstWeek: function(weekNumber, dayInMonth) {
+      return weekNumber || dayInMonth === 1 || dayInMonth > DAYS_OF_WEEK;
     }
   }
 );

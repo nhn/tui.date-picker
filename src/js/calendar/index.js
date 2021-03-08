@@ -51,7 +51,7 @@ var BODY_SELECTOR = '.tui-calendar-body';
  *     @param {boolean} [options.showToday = true] - Show today.
  *     @param {boolean} [options.showJumpButtons = false] - Show the yearly jump buttons (move to the previous and next year in 'date' Calendar)
  *     @param {boolean} [options.usageStatistics = true] - Send a hostname to Google Analytics (default: true)
- *     @param {boolean} [options.startOnMonday = false] - show the date starting on Monday (default: false(start on Sunday))
+ *     @param {boolean} [options.weekStart = 0] - Day of the week start. 0 (Sunday) to 6 (Saturday) (default: 0(start on Sunday))
  * @example
  * import DatePicker from 'tui-date-picker' // ES6
  * // const DatePicker = require('tui-date-picker'); // CommonJS
@@ -89,7 +89,7 @@ var Calendar = defineClass(
           date: new Date(),
           type: TYPE_DATE,
           usageStatistics: true,
-          startOnMonday: false
+          weekStart: 0
         },
         options
       );

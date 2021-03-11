@@ -78,7 +78,8 @@ var mergeDefaultOption = function(option) {
       selectableRanges: null,
       openers: [],
       autoClose: true,
-      usageStatistics: true
+      usageStatistics: true,
+      weekStart: 0
     },
     option
   );
@@ -128,6 +129,7 @@ var mergeDefaultOption = function(option) {
  *      @param {boolean} [options.showAlways = false] - Show the DatePicker always
  *      @param {boolean} [options.autoClose = true] - Close the DatePicker after clicking the date
  *      @param {boolean} [options.usageStatistics = true] - Send a hostname to Google Analytics (default: true)
+ *      @param {boolean} [options.weekStart = 0] - Day of the week start. 0 (Sunday) to 6 (Saturday) (default: 0(start on Sunday))
  * @example
  * import DatePicker from 'tui-date-picker' // ES6
  * // const DatePicker = require('tui-date-picker'); // CommonJS
@@ -162,7 +164,8 @@ var mergeDefaultOption = function(option) {
  *     type: 'date',
  *     date: new Date(2015, 0, 1)
  *     selectableRanges: [range1, range2],
- *     openers: ['#opener']
+ *     openers: ['#opener'],
+ *     weekStart: 1,
  * });
  */
 var DatePicker = defineClass(
@@ -237,7 +240,8 @@ var DatePicker = defineClass(
       this._calendar = new Calendar(
         this._element.querySelector(SELECTOR_CALENDAR_CONTAINER),
         extend(options.calendar, {
-          usageStatistics: options.usageStatistics
+          usageStatistics: options.usageStatistics,
+          weekStart: options.weekStart
         })
       );
 

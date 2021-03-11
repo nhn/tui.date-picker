@@ -62,7 +62,8 @@ var BODY_SELECTOR = '.tui-calendar-body';
  *     showToday: true,
  *     showJumpButtons: false,
  *     date: new Date(),
- *     type: 'date'
+ *     type: 'date',
+ *     weekStart: 1,
  * });
  *
  * calendar.on('draw', function(event) {

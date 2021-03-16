@@ -32,12 +32,12 @@ var CLASS_NAME_SELECTED_RANGE = 'tui-is-selected-range';
  *         @param {HTMLElement|string} options.startpicker.input - Startpicker input element or selector
  *         @param {HTMLElement|string} options.startpicker.container - Startpicker container element or selector
  *         @param {Date|number} [options.startpicker.date] - Initial date of the start picker. Set by a Date instance or a number(timestamp). (default: no initial date)
- *         @param {number} [options.startpicker.weekStart = 0] - start picker's day of the week start. 0 (Sunday) to 6 (Saturday) (default: 0(start on Sunday))
+ *         @param {string} [options.startpicker.weekStartDay = 'Sun'] - Start of the week. 'Sun', 'Mon', ..., 'Sat'(default: 'Sun'(start on Sunday))
  *     @param {object} options.endpicker - Endpicker options
  *         @param {HTMLElement|string} options.endpicker.input - Endpicker input element or selector
  *         @param {HTMLElement|string} options.endpicker.container - Endpicker container element or selector
  *         @param {Date|number} [options.endpicker.date] - Initial date of the end picker. Set by a Date instance or a number(timestamp). (default: no initial date)
- *         @param {number} [options.endpicker.weekStart = 0] - end picker's day of the week start. 0 (Sunday) to 6 (Saturday) (default: 0(start on Sunday))
+ *         @param {string} [options.endpicker.weekStartDay = 'Sun'] - Start of the week. 'Sun', 'Mon', ..., 'Sat'(default: 'Sun'(start on Sunday))
  *     @param {('date'|'month'|'year')} [options.type = 'date'] - DatePicker type. Determine whether to choose a date, month, or year.
  *     @param {string} [options.language='en'] - Language code. English('en') and Korean('ko') are provided as default. To use the other languages, use {@link DatePicker#localeTexts DatePicker.localeTexts}.
  *     @param {object|boolean} [options.timePicker] - [TimePicker](https://nhn.github.io/tui.time-picker/latest) options. Refer to the [TimePicker instance's options](https://nhn.github.io/tui.time-picker/latest/TimePicker). To create the TimePicker without customization, set to true.
@@ -57,12 +57,12 @@ var CLASS_NAME_SELECTED_RANGE = 'tui-is-selected-range';
  *         input: '#start-input',
  *         container: '#start-container'
  *         date: new Date(2019, 3, 1),
- *         weekStart: 1,
+ *         weekStartDay: 'Mon',
  *     },
  *     endpicker: {
  *         input: '#end-input',
  *         container: '#end-container',
- *         weekStart: 1,
+ *         weekStartDay: 'Mon',
  *     },
  *     type: 'date',
  *     format: 'yyyy-MM-dd'
@@ -123,7 +123,7 @@ var DateRangePicker = defineClass(
           format: options.format
         },
         date: options.startpicker.date,
-        weekStart: options.startpicker.weekStart || 0
+        weekStartDay: options.startpicker.weekStartDay || 'Sun'
       });
       var endpickerOpt = extend({}, options, {
         input: {
@@ -131,7 +131,7 @@ var DateRangePicker = defineClass(
           format: options.format
         },
         date: options.endpicker.date,
-        weekStart: options.endpicker.weekStart || 0
+        weekStartDay: options.endpicker.weekStartDay || 'Sun'
       });
 
       this._startpicker = new DatePicker(startpickerContainer, startpickerOpt);

@@ -14,6 +14,15 @@ var TYPE_DATE = require('../../constants').TYPE_DATE;
 
 var DATE_SELECTOR = '.tui-calendar-date';
 var DAYS_OF_WEEK = 7;
+var WEEK_START_DAY_MAP = {
+  sun: 0,
+  mon: 1,
+  tue: 2,
+  wed: 3,
+  thu: 4,
+  fri: 5,
+  sat: 6
+};
 
 /**
  * @ignore
@@ -24,10 +33,10 @@ var DAYS_OF_WEEK = 7;
 var DateLayer = defineClass(
   LayerBase,
   /** @lends DateLayer.prototype */ {
-    init: function(language, option) {
+    init: function(language, weekStartDay) {
       LayerBase.call(this, language);
 
-      this.weekStart = option.weekStart;
+      this.weekStartDay = WEEK_START_DAY_MAP[String(weekStartDay).toLowerCase()] || 0;
     },
 
     /**
@@ -50,9 +59,9 @@ var DateLayer = defineClass(
       year = date.getFullYear();
       month = date.getMonth() + 1;
 
-      if (this.weekStart) {
+      if (this.weekStartDay) {
         days = daysShort.slice();
-        for (i = 0; i < this.weekStart; i += 1) {
+        for (i = 0; i < this.weekStartDay; i += 1) {
           days.push(days.shift());
         }
         daysShort = days;
@@ -83,31 +92,24 @@ var DateLayer = defineClass(
       var weekNumber = 0;
       var weeksCount = 6; // Fix for no changing height
       var weeks = [];
-      var week, dates, i, firstWeekDates, firstWeek;
+      var week, dates, i;
 
-      for (; weekNumber < weeksCount; weekNumber += 1) {
+      while (weekNumber < weeksCount) {
         dates = [];
 
-        for (i = this.weekStart; i < DAYS_OF_WEEK + this.weekStart; i += 1) {
+        for (i = this.weekStartDay; i < DAYS_OF_WEEK + this.weekStartDay; i += 1) {
           dates.push(dateUtil.getDateOfWeek(year, month, weekNumber, i));
         }
 
         week = this._getWeek(year, month, dates);
 
-        if (this.weekStart && !this._isFirstWeek(weekNumber, week[0].dayInMonth)) {
-          firstWeekDates = [];
-
-          // Get first week of month
-          for (i = this.weekStart; i < DAYS_OF_WEEK + this.weekStart; i += 1) {
-            firstWeekDates.push(dateUtil.getDateOfWeek(year, month, weekNumber - 1, i));
-          }
-
-          firstWeek = this._getWeek(year, month, firstWeekDates);
-          weeks.push(firstWeek);
+        if (this.weekStartDay && !this._isFirstWeek(weekNumber, week[0].dayInMonth)) {
+          weeks.push(this._getFirstWeek(year, month));
           weeksCount -= 1; // Fix for no changing height
         }
 
         weeks.push(week);
+        weekNumber += 1;
       }
 
       return weeks;
@@ -178,13 +180,19 @@ var DateLayer = defineClass(
       return this._element.querySelectorAll(DATE_SELECTOR);
     },
 
-    /**
-     * Return week is first week
-     * @param {number} weekNumber - index of week
-     * @param {number} dayInMonth - day of month
-     */
-    _isFirstWeek: function(weekNumber, dayInMonth) {
-      return weekNumber || dayInMonth === 1 || dayInMonth > DAYS_OF_WEEK;
+    _isFirstWeek: function(weekIndex, dayInMonth) {
+      return weekIndex || dayInMonth === 1 || dayInMonth > DAYS_OF_WEEK;
+    },
+
+    _getFirstWeek: function(year, month) {
+      var firstWeekDates = [];
+      var i;
+
+      for (i = this.weekStartDay; i < DAYS_OF_WEEK + this.weekStartDay; i += 1) {
+        firstWeekDates.push(dateUtil.getDateOfWeek(year, month, -1, i));
+      }
+
+      return this._getWeek(year, month, firstWeekDates);
     }
   }
 );

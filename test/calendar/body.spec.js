@@ -50,13 +50,4 @@ describe('Calendar - Body', function() {
 
     expect(dateElements.length).toBe(12);
   });
-
-  it('should change start day of week', function() {
-    ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].forEach(function(day, index) {
-      body.destroy();
-      body = new Body(container, { language: 'en', weekStart: index });
-
-      expect(body._dateLayer._makeContext().Sun).toBe(day);
-    });
-  });
 });

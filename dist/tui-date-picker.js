@@ -1,6 +1,6 @@
 /*!
  * TOAST UI Date Picker
- * @version 4.1.0
+ * @version 4.2.0
  * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  * @license MIT
  */
@@ -217,7 +217,18 @@ module.exports = {
   CLASS_NAME_PREV_MONTH_BTN: 'tui-calendar-btn-prev-month',
   CLASS_NAME_PREV_YEAR_BTN: 'tui-calendar-btn-prev-year',
   CLASS_NAME_NEXT_YEAR_BTN: 'tui-calendar-btn-next-year',
-  CLASS_NAME_NEXT_MONTH_BTN: 'tui-calendar-btn-next-month'
+  CLASS_NAME_NEXT_MONTH_BTN: 'tui-calendar-btn-next-month',
+
+  DEFAULT_WEEK_START_DAY: 'Sun',
+  WEEK_START_DAY_MAP: {
+    sun: 0,
+    mon: 1,
+    tue: 2,
+    wed: 3,
+    thu: 4,
+    fri: 5,
+    sat: 6
+  }
 };
 
 
@@ -2340,6 +2351,7 @@ var mouseTouchEvent = __webpack_require__(19);
 var tmpl = __webpack_require__(58);
 var DatePickerInput = __webpack_require__(59);
 
+var DEFAULT_WEEK_START_DAY = constants.DEFAULT_WEEK_START_DAY;
 var DEFAULT_LANGUAGE_TYPE = constants.DEFAULT_LANGUAGE_TYPE;
 var TYPE_DATE = constants.TYPE_DATE;
 var TYPE_MONTH = constants.TYPE_MONTH;
@@ -2385,7 +2397,8 @@ var mergeDefaultOption = function(option) {
       selectableRanges: null,
       openers: [],
       autoClose: true,
-      usageStatistics: true
+      usageStatistics: true,
+      weekStartDay: DEFAULT_WEEK_START_DAY
     },
     option
   );
@@ -2435,6 +2448,7 @@ var mergeDefaultOption = function(option) {
  *      @param {boolean} [options.showAlways = false] - Show the DatePicker always
  *      @param {boolean} [options.autoClose = true] - Close the DatePicker after clicking the date
  *      @param {boolean} [options.usageStatistics = true] - Send a hostname to Google Analytics (default: true)
+ *      @param {string} [options.weekStartDay = 'Sun'] - Start of the week. 'Sun', 'Mon', ..., 'Sat'(default: 'Sun'(start on Sunday))
  * @example
  * import DatePicker from 'tui-date-picker' // ES6
  * // const DatePicker = require('tui-date-picker'); // CommonJS
@@ -2469,7 +2483,8 @@ var mergeDefaultOption = function(option) {
  *     type: 'date',
  *     date: new Date(2015, 0, 1)
  *     selectableRanges: [range1, range2],
- *     openers: ['#opener']
+ *     openers: ['#opener'],
+ *     weekStartDay: 'Mon',
  * });
  */
 var DatePicker = defineClass(
@@ -2544,7 +2559,8 @@ var DatePicker = defineClass(
       this._calendar = new Calendar(
         this._element.querySelector(SELECTOR_CALENDAR_CONTAINER),
         extend(options.calendar, {
-          usageStatistics: options.usageStatistics
+          usageStatistics: options.usageStatistics,
+          weekStartDay: options.weekStartDay
         })
       );
 
@@ -3991,6 +4007,7 @@ var constants = __webpack_require__(1);
 var dateUtil = __webpack_require__(5);
 var util = __webpack_require__(4);
 
+var DEFAULT_WEEK_START_DAY = constants.DEFAULT_WEEK_START_DAY;
 var DEFAULT_LANGUAGE_TYPE = constants.DEFAULT_LANGUAGE_TYPE;
 
 var TYPE_DATE = constants.TYPE_DATE;
@@ -4022,6 +4039,7 @@ var BODY_SELECTOR = '.tui-calendar-body';
  *     @param {boolean} [options.showToday = true] - Show today.
  *     @param {boolean} [options.showJumpButtons = false] - Show the yearly jump buttons (move to the previous and next year in 'date' Calendar)
  *     @param {boolean} [options.usageStatistics = true] - Send a hostname to Google Analytics (default: true)
+ *     @param {string} [options.weekStartDay = 'Sun'] - Start of the week. 'Sun', 'Mon', ..., 'Sat'(default: 'Sun'(start on Sunday))
  * @example
  * import DatePicker from 'tui-date-picker' // ES6
  * // const DatePicker = require('tui-date-picker'); // CommonJS
@@ -4032,7 +4050,8 @@ var BODY_SELECTOR = '.tui-calendar-body';
  *     showToday: true,
  *     showJumpButtons: false,
  *     date: new Date(),
- *     type: 'date'
+ *     type: 'date',
+ *     weekStartDay: 'Mon',
  * });
  *
  * calendar.on('draw', function(event) {
@@ -4058,7 +4077,8 @@ var Calendar = defineClass(
           showJumpButtons: false,
           date: new Date(),
           type: TYPE_DATE,
-          usageStatistics: true
+          usageStatistics: true,
+          weekStartDay: DEFAULT_WEEK_START_DAY
         },
         options
       );
@@ -5892,8 +5912,9 @@ var TYPE_YEAR = constants.TYPE_YEAR;
  */
 var Body = defineClass(
   /** @lends Body.prototype */ {
-    init: function(bodyContainer, option) {
-      var language = option.language;
+    init: function(bodyContainer, options) {
+      var language = options.language;
+      var weekStartDay = options.weekStartDay;
 
       /**
        * Body container element
@@ -5907,7 +5928,7 @@ var Body = defineClass(
        * @type {DateLayer}
        * @private
        */
-      this._dateLayer = new DateLayer(language);
+      this._dateLayer = new DateLayer(language, weekStartDay);
 
       /**
        * MonthLayer
@@ -6026,8 +6047,10 @@ var dateUtil = __webpack_require__(5);
 var bodyTmpl = __webpack_require__(51);
 var LayerBase = __webpack_require__(20);
 var TYPE_DATE = __webpack_require__(1).TYPE_DATE;
+var WEEK_START_DAY_MAP = __webpack_require__(1).WEEK_START_DAY_MAP;
 
 var DATE_SELECTOR = '.tui-calendar-date';
+var DAYS_OF_WEEK = 7;
 
 /**
  * @ignore
@@ -6038,8 +6061,10 @@ var DATE_SELECTOR = '.tui-calendar-date';
 var DateLayer = defineClass(
   LayerBase,
   /** @lends DateLayer.prototype */ {
-    init: function(language) {
+    init: function(language, weekStartDay) {
       LayerBase.call(this, language);
+
+      this.weekStartDay = WEEK_START_DAY_MAP[String(weekStartDay).toLowerCase()] || 0;
     },
 
     /**
@@ -6056,11 +6081,19 @@ var DateLayer = defineClass(
      */
     _makeContext: function(date) {
       var daysShort = this._localeText.titles.D;
-      var year, month;
+      var year, month, days, i;
 
       date = date || new Date();
       year = date.getFullYear();
       month = date.getMonth() + 1;
+
+      if (this.weekStartDay) {
+        days = daysShort.slice();
+        for (i = 0; i < this.weekStartDay; i += 1) {
+          days.push(days.shift());
+        }
+        daysShort = days;
+      }
 
       return {
         Sun: daysShort[0],
@@ -6087,14 +6120,24 @@ var DateLayer = defineClass(
       var weekNumber = 0;
       var weeksCount = 6; // Fix for no changing height
       var weeks = [];
-      var dates, i;
+      var week, dates, i;
 
-      for (; weekNumber < weeksCount; weekNumber += 1) {
+      while (weekNumber < weeksCount) {
         dates = [];
-        for (i = 0; i < 7; i += 1) {
+
+        for (i = this.weekStartDay; i < DAYS_OF_WEEK + this.weekStartDay; i += 1) {
           dates.push(dateUtil.getDateOfWeek(year, month, weekNumber, i));
         }
-        weeks.push(this._getWeek(year, month, dates));
+
+        week = this._getWeek(year, month, dates);
+
+        if (this.weekStartDay && !_isFirstWeek(weekNumber, week[0].dayInMonth)) {
+          weeks.push(this._getFirstWeek(year, month));
+          weeksCount -= 1; // Fix for no changing height
+        }
+
+        weeks.push(week);
+        weekNumber += 1;
       }
 
       return weeks;
@@ -6163,9 +6206,24 @@ var DateLayer = defineClass(
      */
     getDateElements: function() {
       return this._element.querySelectorAll(DATE_SELECTOR);
+    },
+
+    _getFirstWeek: function(year, month) {
+      var firstWeekDates = [];
+      var i;
+
+      for (i = this.weekStartDay; i < DAYS_OF_WEEK + this.weekStartDay; i += 1) {
+        firstWeekDates.push(dateUtil.getDateOfWeek(year, month, -1, i));
+      }
+
+      return this._getWeek(year, month, firstWeekDates);
     }
   }
 );
+
+function _isFirstWeek(weekIndex, dayInMonth) {
+  return weekIndex || dayInMonth === 1 || dayInMonth > DAYS_OF_WEEK;
+}
 
 module.exports = DateLayer;
 
@@ -7063,10 +7121,12 @@ var CLASS_NAME_SELECTED_RANGE = 'tui-is-selected-range';
  *         @param {HTMLElement|string} options.startpicker.input - Startpicker input element or selector
  *         @param {HTMLElement|string} options.startpicker.container - Startpicker container element or selector
  *         @param {Date|number} [options.startpicker.date] - Initial date of the start picker. Set by a Date instance or a number(timestamp). (default: no initial date)
+ *         @param {string} [options.startpicker.weekStartDay = 'Sun'] - Start of the week. 'Sun', 'Mon', ..., 'Sat'(default: 'Sun'(start on Sunday))
  *     @param {object} options.endpicker - Endpicker options
  *         @param {HTMLElement|string} options.endpicker.input - Endpicker input element or selector
  *         @param {HTMLElement|string} options.endpicker.container - Endpicker container element or selector
  *         @param {Date|number} [options.endpicker.date] - Initial date of the end picker. Set by a Date instance or a number(timestamp). (default: no initial date)
+ *         @param {string} [options.endpicker.weekStartDay = 'Sun'] - Start of the week. 'Sun', 'Mon', ..., 'Sat'(default: 'Sun'(start on Sunday))
  *     @param {('date'|'month'|'year')} [options.type = 'date'] - DatePicker type. Determine whether to choose a date, month, or year.
  *     @param {string} [options.language='en'] - Language code. English('en') and Korean('ko') are provided as default. To use the other languages, use {@link DatePicker#localeTexts DatePicker.localeTexts}.
  *     @param {object|boolean} [options.timePicker] - [TimePicker](https://nhn.github.io/tui.time-picker/latest) options. Refer to the [TimePicker instance's options](https://nhn.github.io/tui.time-picker/latest/TimePicker). To create the TimePicker without customization, set to true.
@@ -7085,11 +7145,13 @@ var CLASS_NAME_SELECTED_RANGE = 'tui-is-selected-range';
  *     startpicker: {
  *         input: '#start-input',
  *         container: '#start-container'
- *         date: new Date(2019, 3, 1)
+ *         date: new Date(2019, 3, 1),
+ *         weekStartDay: 'Mon',
  *     },
  *     endpicker: {
  *         input: '#end-input',
- *         container: '#end-container'
+ *         container: '#end-container',
+ *         weekStartDay: 'Mon',
  *     },
  *     type: 'date',
  *     format: 'yyyy-MM-dd'
@@ -7149,14 +7211,16 @@ var DateRangePicker = defineClass(
           element: startInput,
           format: options.format
         },
-        date: options.startpicker.date
+        date: options.startpicker.date,
+        weekStartDay: options.startpicker.weekStartDay
       });
       var endpickerOpt = extend({}, options, {
         input: {
           element: endInput,
           format: options.format
         },
-        date: options.endpicker.date
+        date: options.endpicker.date,
+        weekStartDay: options.endpicker.weekStartDay
       });
 
       this._startpicker = new DatePicker(startpickerContainer, startpickerOpt);

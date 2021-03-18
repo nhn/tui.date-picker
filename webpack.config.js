@@ -74,10 +74,7 @@ module.exports = function(env, argv) {
         },
         {
           test: /\.css/,
-          use: [
-            MiniCssExtractPlugin.loader,
-            'css-loader'
-          ]
+          use: [MiniCssExtractPlugin.loader, 'css-loader']
         },
         {
           test: /\.png/,
@@ -87,7 +84,7 @@ module.exports = function(env, argv) {
     },
     plugins: [
       new webpack.BannerPlugin(BANNER),
-      new MiniCssExtractPlugin({filename: FILENAME + '.css'})
+      new MiniCssExtractPlugin({ filename: FILENAME + '.css' })
     ],
     optimization: getOptimization(isMinified),
     devServer: {

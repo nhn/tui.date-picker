@@ -23,8 +23,9 @@ var TYPE_YEAR = constants.TYPE_YEAR;
  */
 var Body = defineClass(
   /** @lends Body.prototype */ {
-    init: function(bodyContainer, option) {
-      var language = option.language;
+    init: function(bodyContainer, options) {
+      var language = options.language;
+      var weekStartDay = options.weekStartDay;
 
       /**
        * Body container element
@@ -38,7 +39,7 @@ var Body = defineClass(
        * @type {DateLayer}
        * @private
        */
-      this._dateLayer = new DateLayer(language);
+      this._dateLayer = new DateLayer(language, weekStartDay);
 
       /**
        * MonthLayer

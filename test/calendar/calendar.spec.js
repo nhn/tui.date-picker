@@ -222,7 +222,7 @@ describe('Calendar', function() {
 
     it('should not send hostname on usageStatistics option false', function() {
       spyOn(util, 'sendHostName');
-      nCalendar = new Calendar(document.createElement('div'), {usageStatistics: false});
+      nCalendar = new Calendar(document.createElement('div'), { usageStatistics: false });
 
       expect(util.sendHostName).not.toHaveBeenCalled();
     });

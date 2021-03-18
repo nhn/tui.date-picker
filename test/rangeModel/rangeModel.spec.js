@@ -10,7 +10,13 @@ describe('RangeModel', function() {
   var rangeModel;
 
   beforeEach(function() {
-    rangeModel = new RangeModel([[10, 20], [400, 500], [100, 300], [25, 35], [290, 310]]);
+    rangeModel = new RangeModel([
+      [10, 20],
+      [400, 500],
+      [100, 300],
+      [25, 35],
+      [290, 310]
+    ]);
   });
 
   it('"contains" a value in ranges', function() {

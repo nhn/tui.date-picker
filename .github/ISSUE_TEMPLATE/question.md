@@ -1,6 +1,6 @@
 ---
 name: Question
-about: Create a question about the Editor
+about: Create a question about the DatePicker
 title: ''
 labels: Question
 assignees: ''
@@ -10,10 +10,10 @@ assignees: ''
   To make it easier for us to help you, please include as much useful information as possible.
 
   Useful Links:
-  - tutorial: https://github.com/nhn/tui.editor/tree/master/docs
-  - API/Example: https://nhn.github.io/tui.editor/latest/
+  - tutorial: https://github.com/nhn/tui.date-picker/tree/master/docs
+  - API/Example: https://nhn.github.io/tui.date-picker/latest/
 
-  Before opening a new issue, please search existing issues https://github.com/nhn/tui.editor/issues
+  Before opening a new issue, please search existing issues https://github.com/nhn/tui.date-picker/issues
 -->
 
 ## Summary

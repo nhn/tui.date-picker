@@ -33,6 +33,7 @@ var mouseTouchEvent = require('../mouseTouchEvent');
 var tmpl = require('../../template/datepicker/index');
 var DatePickerInput = require('./input');
 
+var DEFAULT_WEEK_START_DAY = constants.DEFAULT_WEEK_START_DAY;
 var DEFAULT_LANGUAGE_TYPE = constants.DEFAULT_LANGUAGE_TYPE;
 var TYPE_DATE = constants.TYPE_DATE;
 var TYPE_MONTH = constants.TYPE_MONTH;
@@ -78,7 +79,8 @@ var mergeDefaultOption = function(option) {
       selectableRanges: null,
       openers: [],
       autoClose: true,
-      usageStatistics: true
+      usageStatistics: true,
+      weekStartDay: DEFAULT_WEEK_START_DAY
     },
     option
   );
@@ -128,6 +130,7 @@ var mergeDefaultOption = function(option) {
  *      @param {boolean} [options.showAlways = false] - Show the DatePicker always
  *      @param {boolean} [options.autoClose = true] - Close the DatePicker after clicking the date
  *      @param {boolean} [options.usageStatistics = true] - Send a hostname to Google Analytics (default: true)
+ *      @param {string} [options.weekStartDay = 'Sun'] - Start of the week. 'Sun', 'Mon', ..., 'Sat'(default: 'Sun'(start on Sunday))
  * @example
  * import DatePicker from 'tui-date-picker' // ES6
  * // const DatePicker = require('tui-date-picker'); // CommonJS
@@ -162,7 +165,8 @@ var mergeDefaultOption = function(option) {
  *     type: 'date',
  *     date: new Date(2015, 0, 1)
  *     selectableRanges: [range1, range2],
- *     openers: ['#opener']
+ *     openers: ['#opener'],
+ *     weekStartDay: 'Mon',
  * });
  */
 var DatePicker = defineClass(
@@ -237,7 +241,8 @@ var DatePicker = defineClass(
       this._calendar = new Calendar(
         this._element.querySelector(SELECTOR_CALENDAR_CONTAINER),
         extend(options.calendar, {
-          usageStatistics: options.usageStatistics
+          usageStatistics: options.usageStatistics,
+          weekStartDay: options.weekStartDay
         })
       );
 

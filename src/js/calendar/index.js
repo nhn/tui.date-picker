@@ -20,6 +20,7 @@ var constants = require('../constants');
 var dateUtil = require('../dateUtil');
 var util = require('../util');
 
+var DEFAULT_WEEK_START_DAY = constants.DEFAULT_WEEK_START_DAY;
 var DEFAULT_LANGUAGE_TYPE = constants.DEFAULT_LANGUAGE_TYPE;
 
 var TYPE_DATE = constants.TYPE_DATE;
@@ -51,6 +52,7 @@ var BODY_SELECTOR = '.tui-calendar-body';
  *     @param {boolean} [options.showToday = true] - Show today.
  *     @param {boolean} [options.showJumpButtons = false] - Show the yearly jump buttons (move to the previous and next year in 'date' Calendar)
  *     @param {boolean} [options.usageStatistics = true] - Send a hostname to Google Analytics (default: true)
+ *     @param {string} [options.weekStartDay = 'Sun'] - Start of the week. 'Sun', 'Mon', ..., 'Sat'(default: 'Sun'(start on Sunday))
  * @example
  * import DatePicker from 'tui-date-picker' // ES6
  * // const DatePicker = require('tui-date-picker'); // CommonJS
@@ -61,7 +63,8 @@ var BODY_SELECTOR = '.tui-calendar-body';
  *     showToday: true,
  *     showJumpButtons: false,
  *     date: new Date(),
- *     type: 'date'
+ *     type: 'date',
+ *     weekStartDay: 'Mon',
  * });
  *
  * calendar.on('draw', function(event) {
@@ -87,7 +90,8 @@ var Calendar = defineClass(
           showJumpButtons: false,
           date: new Date(),
           type: TYPE_DATE,
-          usageStatistics: true
+          usageStatistics: true,
+          weekStartDay: DEFAULT_WEEK_START_DAY
         },
         options
       );

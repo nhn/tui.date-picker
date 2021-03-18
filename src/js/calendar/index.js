@@ -20,6 +20,7 @@ var constants = require('../constants');
 var dateUtil = require('../dateUtil');
 var util = require('../util');
 
+var DEFAULT_WEEK_START_DAY = constants.DEFAULT_WEEK_START_DAY;
 var DEFAULT_LANGUAGE_TYPE = constants.DEFAULT_LANGUAGE_TYPE;
 
 var TYPE_DATE = constants.TYPE_DATE;
@@ -90,7 +91,7 @@ var Calendar = defineClass(
           date: new Date(),
           type: TYPE_DATE,
           usageStatistics: true,
-          weekStartDay: 'Sun'
+          weekStartDay: DEFAULT_WEEK_START_DAY
         },
         options
       );

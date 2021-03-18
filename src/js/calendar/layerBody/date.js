@@ -11,18 +11,10 @@ var dateUtil = require('../../dateUtil');
 var bodyTmpl = require('./../../../template/calendar/dateLayer');
 var LayerBase = require('./base');
 var TYPE_DATE = require('../../constants').TYPE_DATE;
+var WEEK_START_DAY_MAP = require('../../constants').WEEK_START_DAY_MAP;
 
 var DATE_SELECTOR = '.tui-calendar-date';
 var DAYS_OF_WEEK = 7;
-var WEEK_START_DAY_MAP = {
-  sun: 0,
-  mon: 1,
-  tue: 2,
-  wed: 3,
-  thu: 4,
-  fri: 5,
-  sat: 6
-};
 
 /**
  * @ignore
@@ -103,7 +95,7 @@ var DateLayer = defineClass(
 
         week = this._getWeek(year, month, dates);
 
-        if (this.weekStartDay && !this._isFirstWeek(weekNumber, week[0].dayInMonth)) {
+        if (this.weekStartDay && !_isFirstWeek(weekNumber, week[0].dayInMonth)) {
           weeks.push(this._getFirstWeek(year, month));
           weeksCount -= 1; // Fix for no changing height
         }
@@ -180,10 +172,6 @@ var DateLayer = defineClass(
       return this._element.querySelectorAll(DATE_SELECTOR);
     },
 
-    _isFirstWeek: function(weekIndex, dayInMonth) {
-      return weekIndex || dayInMonth === 1 || dayInMonth > DAYS_OF_WEEK;
-    },
-
     _getFirstWeek: function(year, month) {
       var firstWeekDates = [];
       var i;
@@ -196,5 +184,9 @@ var DateLayer = defineClass(
     }
   }
 );
+
+function _isFirstWeek(weekIndex, dayInMonth) {
+  return weekIndex || dayInMonth === 1 || dayInMonth > DAYS_OF_WEEK;
+}
 
 module.exports = DateLayer;

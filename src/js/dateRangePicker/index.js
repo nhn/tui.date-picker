@@ -123,7 +123,7 @@ var DateRangePicker = defineClass(
           format: options.format
         },
         date: options.startpicker.date,
-        weekStartDay: options.startpicker.weekStartDay || 'Sun'
+        weekStartDay: options.startpicker.weekStartDay
       });
       var endpickerOpt = extend({}, options, {
         input: {
@@ -131,7 +131,7 @@ var DateRangePicker = defineClass(
           format: options.format
         },
         date: options.endpicker.date,
-        weekStartDay: options.endpicker.weekStartDay || 'Sun'
+        weekStartDay: options.endpicker.weekStartDay
       });
 
       this._startpicker = new DatePicker(startpickerContainer, startpickerOpt);

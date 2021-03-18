@@ -33,6 +33,7 @@ var mouseTouchEvent = require('../mouseTouchEvent');
 var tmpl = require('../../template/datepicker/index');
 var DatePickerInput = require('./input');
 
+var DEFAULT_WEEK_START_DAY = constants.DEFAULT_WEEK_START_DAY;
 var DEFAULT_LANGUAGE_TYPE = constants.DEFAULT_LANGUAGE_TYPE;
 var TYPE_DATE = constants.TYPE_DATE;
 var TYPE_MONTH = constants.TYPE_MONTH;
@@ -79,7 +80,7 @@ var mergeDefaultOption = function(option) {
       openers: [],
       autoClose: true,
       usageStatistics: true,
-      weekStartDay: 'Sun'
+      weekStartDay: DEFAULT_WEEK_START_DAY
     },
     option
   );

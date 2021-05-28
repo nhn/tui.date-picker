@@ -54,9 +54,14 @@ var BODY_SELECTOR = '.tui-calendar-body';
  *     @param {boolean} [options.usageStatistics = true] - Send a hostname to Google Analytics (default: true)
  *     @param {string} [options.weekStartDay = 'Sun'] - Start of the week. 'Sun', 'Mon', ..., 'Sat'(default: 'Sun'(start on Sunday))
  * @example
- * import DatePicker from 'tui-date-picker' // ES6
- * // const DatePicker = require('tui-date-picker'); // CommonJS
- * // const DatePicker = tui.DatePicker;
+ * //ES6
+ * import DatePicker from 'tui-date-picker'
+ *
+ * // CommonJS
+ * const DatePicker = require('tui-date-picker');
+ *
+ * // Browser
+ * const DatePicker = tui.DatePicker;
  *
  * const calendar = DatePicker.createCalendar('#calendar-wrapper', {
  *     language: 'en',
@@ -67,7 +72,7 @@ var BODY_SELECTOR = '.tui-calendar-body';
  *     weekStartDay: 'Mon',
  * });
  *
- * calendar.on('draw', function(event) {
+ * calendar.on('draw', (event) => {
  *     console.log(event.date);
  *     console.log(event.type);
  *     for (let i = 0, len = event.dateElements.length; i < len; i += 1) {
@@ -334,7 +339,7 @@ var Calendar = defineClass(
        * @property {HTMLElement[]} dateElements - elements for dates
        * @example
        * // bind the 'draw' event
-       * calendar.on('draw', function({type, date}) {
+       * calendar.on('draw', ({type, date}) => {
        *     console.log(`Draw the ${type} calendar and its date is ${date}.`);
        * });
        *

@@ -54,9 +54,14 @@ var BODY_SELECTOR = '.tui-calendar-body';
  *     @param {boolean} [options.usageStatistics = true] - Send a hostname to Google Analytics (default: true)
  *     @param {string} [options.weekStartDay = 'Sun'] - Start of the week. 'Sun', 'Mon', ..., 'Sat'(default: 'Sun'(start on Sunday))
  * @example
- * import DatePicker from 'tui-date-picker' // ES6
- * // const DatePicker = require('tui-date-picker'); // CommonJS
- * // const DatePicker = tui.DatePicker;
+ * //ES6
+ * import DatePicker from 'tui-date-picker'
+ *
+ * // CommonJS
+ * const DatePicker = require('tui-date-picker');
+ *
+ * // Browser
+ * const DatePicker = tui.DatePicker;
  *
  * const calendar = DatePicker.createCalendar('#calendar-wrapper', {
  *     language: 'en',

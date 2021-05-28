@@ -132,9 +132,14 @@ var mergeDefaultOption = function(option) {
  *      @param {boolean} [options.usageStatistics = true] - Send a hostname to Google Analytics (default: true)
  *      @param {string} [options.weekStartDay = 'Sun'] - Start of the week. 'Sun', 'Mon', ..., 'Sat'(default: 'Sun'(start on Sunday))
  * @example
- * import DatePicker from 'tui-date-picker' // ES6
- * // const DatePicker = require('tui-date-picker'); // CommonJS
- * // const DatePicker = tui.DatePicker;
+ * // ES6
+ * import DatePicker from 'tui-date-picker'
+ *
+ * // CommonJS
+ * const DatePicker = require('tui-date-picker');
+ *
+ * // Browser
+ * const DatePicker = tui.DatePicker;
  *
  * const range1 = [new Date(2015, 2, 1), new Date(2015, 3, 1)];
  * const range2 = [1465570800000, 1481266182155]; // timestamps

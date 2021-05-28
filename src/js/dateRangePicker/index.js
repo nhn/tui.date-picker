@@ -48,9 +48,14 @@ var CLASS_NAME_SELECTED_RANGE = 'tui-is-selected-range';
  *     @param {boolean} [options.autoClose = true] - Close the DateRangePicker after clicking the date
  *     @param {boolean} [options.usageStatistics = true] - Send a hostname to Google Analytics (default: true)
  * @example
- * import DatePicker from 'tui-date-picker' // ES6
- * // const DatePicker = require('tui-date-picker'); // CommonJS
- * // const DatePicker = tui.DatePicker;
+ * // ES6
+ * import DatePicker from 'tui-date-picker'
+ *
+ * // CommonJS
+ * const DatePicker = require('tui-date-picker');
+ *
+ * // Browser
+ * const DatePicker = tui.DatePicker;
  *
  * const rangePicker = DatePicker.createRangePicker({
  *     startpicker: {

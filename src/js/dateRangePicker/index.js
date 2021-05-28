@@ -244,7 +244,7 @@ var DateRangePicker = defineClass(
        * @see Refer to {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents CustomEvents} for more methods. DateRangePicker mixes in the methods from CustomEvents.
        * @example
        * // bind the 'change:start' event
-       * rangePicker.on('change:start', function() {
+       * rangePicker.on('change:start', () => {
        *     console.log(`Start date: ${rangePicker.getStartDate()}`);
        * });
        *
@@ -267,7 +267,7 @@ var DateRangePicker = defineClass(
        * @see Refer to {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents CustomEvents} for more methods. DateRangePicker mixes in the methods from CustomEvents.
        * @example
        * // bind the 'change:end' event
-       * rangePicker.on('change:end', function() {
+       * rangePicker.on('change:end', () => {
        *     console.log(`End date: ${rangePicker.getEndDate()}`);
        * });
        *

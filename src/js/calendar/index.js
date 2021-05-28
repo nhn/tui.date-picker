@@ -67,7 +67,7 @@ var BODY_SELECTOR = '.tui-calendar-body';
  *     weekStartDay: 'Mon',
  * });
  *
- * calendar.on('draw', function(event) {
+ * calendar.on('draw', (event) => {
  *     console.log(event.date);
  *     console.log(event.type);
  *     for (let i = 0, len = event.dateElements.length; i < len; i += 1) {
@@ -334,7 +334,7 @@ var Calendar = defineClass(
        * @property {HTMLElement[]} dateElements - elements for dates
        * @example
        * // bind the 'draw' event
-       * calendar.on('draw', function({type, date}) {
+       * calendar.on('draw', ({type, date}) => {
        *     console.log(`Draw the ${type} calendar and its date is ${date}.`);
        * });
        *

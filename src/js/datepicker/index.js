@@ -710,7 +710,7 @@ var DatePicker = defineClass(
        * @property {HTMLElement[]} dateElements - elements for dates
        * @example
        * // bind the 'draw' event
-       * datepicker.on('draw', function(event) {
+       * datepicker.on('draw', (event) => {
        *     console.log(`Draw the ${event.type} calendar and its date is ${event.date}.`);
        * });
        *
@@ -993,7 +993,7 @@ var DatePicker = defineClass(
        * @see Refer to {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents CustomEvents from tui-code-snippet} for more methods. DatePicker mixes in the methods from CustomEvents.
        * @example
        * // bind the 'open' event
-       * datepicker.on('open', function() {
+       * datepicker.on('open', () => {
        *     alert('open');
        * });
        *
@@ -1069,7 +1069,7 @@ var DatePicker = defineClass(
        * @see Refer to {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents CustomEvents from tui-code-snippet} for more methods. DatePicker mixes in the methods from CustomEvents.
        * @example
        * // bind the 'close' event
-       * datepicker.on('close', function() {
+       * datepicker.on('close', () => {
        *     alert('close');
        * });
        *
@@ -1144,7 +1144,7 @@ var DatePicker = defineClass(
          * @see Refer to {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents CustomEvents from tui-code-snippet} for more methods. DatePicker mixes in the methods from CustomEvents.
          * @example
          * // bind the 'change' event
-         * datepicker.on('change', function() {
+         * datepicker.on('change', () => {
          *     console.log(`Selected date: ${datepicker.getDate()}`);
          * });
          *

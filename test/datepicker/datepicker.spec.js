@@ -107,11 +107,11 @@ describe('Date Picker', function() {
     });
 
     it('getTimePicker', function() {
-      expect(datepicker.getTimePicker()).toEqual(jasmine.any(TimePicker));
+      expect(datepicker.getTimePicker()).toEqual(expect.any(TimePicker));
     });
 
     it('getCalendar', function() {
-      expect(datepicker.getCalendar()).toEqual(jasmine.any(Calendar));
+      expect(datepicker.getCalendar()).toEqual(expect.any(Calendar));
     });
 
     it('setDate', function() {
@@ -278,7 +278,7 @@ describe('Date Picker', function() {
     });
 
     it('disable', function() {
-      var handler = jasmine.createSpy('custom event handler');
+      var handler = jest.fn();
       var input = document.createElement('input');
       var opener = document.createElement('button');
 
@@ -297,7 +297,7 @@ describe('Date Picker', function() {
     });
 
     it('enable', function() {
-      var handler = jasmine.createSpy('custom event handler');
+      var handler = jest.fn();
       var input = document.createElement('input');
       var opener = document.createElement('button');
 
@@ -335,7 +335,8 @@ describe('Date Picker', function() {
     it('"changeLanguage" should call the changeLanguage method of the calendar instance', function() {
       var calendar = datepicker.getCalendar();
 
-      spyOn(calendar, 'changeLanguage');
+      calendar.changeLanguage = jest.fn();
+
       datepicker.changeLanguage('ko');
 
       expect(calendar.changeLanguage).toHaveBeenCalled();
@@ -391,7 +392,8 @@ describe('Date Picker', function() {
     });
 
     it('mousedown-document event should call "close" when showAlways=false', function() {
-      spyOn(datepicker, 'close');
+      datepicker.close = jest.fn();
+
       datepicker.showAlways = false;
       datepicker.open();
       datepicker._onMousedownDocument({
@@ -402,7 +404,7 @@ describe('Date Picker', function() {
     });
 
     it('mousedown-document event should not call "close" when showAlways=true', function() {
-      spyOn(datepicker, 'close');
+      datepicker.close = jest.fn();
       datepicker.showAlways = true;
       datepicker.open();
       datepicker._onMousedownDocument({
@@ -418,7 +420,7 @@ describe('Date Picker', function() {
       setData(el, 'timestamp', new Date(2017, 0, 1).getTime());
       document.body.appendChild(el);
 
-      spyOn(datepicker, 'close');
+      datepicker.close = jest.fn();
       datepicker.autoClose = true;
       datepicker.open();
       datepicker._onClickHandler({
@@ -433,7 +435,7 @@ describe('Date Picker', function() {
       addClass(el, CLASS_NAME_SELECTABLE);
       setData(el, 'timestamp', new Date(2017, 0, 1).getTime());
 
-      spyOn(datepicker, 'close');
+      datepicker.close = jest.fn();
       datepicker.autoClose = false;
       datepicker.open();
       datepicker._onClickHandler({

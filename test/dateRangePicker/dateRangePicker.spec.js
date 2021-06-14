@@ -37,8 +37,9 @@ describe('DateRangePicker', function() {
   });
 
   it('"changeLanguage" should call the changeLanguage method of the datePicker instance', function() {
-    spyOn(picker._startpicker, 'changeLanguage');
-    spyOn(picker._endpicker, 'changeLanguage');
+    picker._startpicker.changeLanguage = jest.fn();
+    picker._endpicker.changeLanguage = jest.fn();
+
     picker.changeLanguage('ko');
 
     expect(picker.getStartpicker().changeLanguage).toHaveBeenCalled();
@@ -46,8 +47,8 @@ describe('DateRangePicker', function() {
   });
 
   it('should create two datepickers', function() {
-    expect(picker.getStartpicker()).toEqual(jasmine.any(DatePicker));
-    expect(picker.getEndpicker()).toEqual(jasmine.any(DatePicker));
+    expect(picker.getStartpicker()).toEqual(expect.any(DatePicker));
+    expect(picker.getEndpicker()).toEqual(expect.any(DatePicker));
   });
 
   it('should set start-date', function() {
@@ -78,7 +79,7 @@ describe('DateRangePicker', function() {
   });
 
   it('should fire "change:start" when changing start-date', function() {
-    var spy = jasmine.createSpy();
+    var spy = jest.fn();
 
     picker.on('change:start', spy);
     picker.setStartDate(new Date(2017, 0, 4));
@@ -87,8 +88,7 @@ describe('DateRangePicker', function() {
   });
 
   it('should fire "change:end" when changing end-date', function() {
-    var spy = jasmine.createSpy();
-
+    var spy = jest.fn();
     picker.on('change:end', spy);
     picker.setEndDate(new Date(2017, 0, 4));
 

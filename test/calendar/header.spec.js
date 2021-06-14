@@ -40,29 +40,29 @@ describe('Calendar', function() {
     });
 
     it('should set title text formatted', function() {
-      expect(header._container.querySelector('.tui-calendar-title').innerText).toBe(
+      expect(header._container.querySelector('.tui-calendar-title').textContent).toBe(
         'December 2016'
       );
     });
 
     it('should fire "click" custom event when click a button', function() {
-      var spy = jasmine.createSpy('button click handler');
+      var spy = jest.fn();
       header.on('click', spy);
 
       header._container.querySelector('.' + constants.CLASS_NAME_NEXT_MONTH_BTN).click();
       expect(spy).toHaveBeenCalled();
 
-      spy.calls.reset();
+      spy.mockReset();
 
       header._container.querySelector('.' + constants.CLASS_NAME_NEXT_YEAR_BTN).click();
       expect(spy).toHaveBeenCalled();
 
-      spy.calls.reset();
+      spy.mockReset();
 
       header._container.querySelector('.' + constants.CLASS_NAME_PREV_MONTH_BTN).click();
       expect(spy).toHaveBeenCalled();
 
-      spy.calls.reset();
+      spy.mockReset();
 
       header._container.querySelector('.' + constants.CLASS_NAME_PREV_YEAR_BTN).click();
       expect(spy).toHaveBeenCalled();
@@ -85,7 +85,8 @@ describe('Calendar', function() {
     });
 
     it('"changeLanaguage" should re-initilize formatters', function() {
-      spyOn(header, '_setFormatters');
+      header._setFormatters = jest.fn();
+
       header.changeLanguage('ko');
 
       expect(header._setFormatters).toHaveBeenCalled();

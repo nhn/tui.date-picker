@@ -19,9 +19,9 @@ describe('Calendar - Body', function() {
   });
 
   it('"changeLanguage" should change each layer\'s language', function() {
-    spyOn(body._dateLayer, 'changeLanguage');
-    spyOn(body._monthLayer, 'changeLanguage');
-    spyOn(body._yearLayer, 'changeLanguage');
+    body._dateLayer.changeLanguage = jest.fn();
+    body._monthLayer.changeLanguage = jest.fn();
+    body._yearLayer.changeLanguage = jest.fn();
 
     body.changeLanguage('ko');
     expect(body._dateLayer.changeLanguage).toHaveBeenCalledWith('ko');
@@ -32,8 +32,8 @@ describe('Calendar - Body', function() {
   it('"render" should remove prevLayer and render matched layer', function() {
     body.render(new Date(), 'date');
 
-    spyOn(body._dateLayer, 'remove').and.callThrough();
-    spyOn(body._monthLayer, 'render').and.callThrough();
+    body._dateLayer.remove = jest.fn();
+    body._monthLayer.render = jest.fn();
 
     body.render(new Date(), 'month');
 

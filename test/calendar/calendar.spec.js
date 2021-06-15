@@ -102,8 +102,8 @@ describe('Calendar', function() {
         type: 'month'
       });
 
-      expect(calendar.getDate().getFullYear()).toEqual(newDate.getFullYear());
-      expect(calendar.getDate().getMonth()).toEqual(newDate.getMonth());
+      expect(calendar.getDate().getFullYear()).toBe(newDate.getFullYear());
+      expect(calendar.getDate().getMonth()).toBe(newDate.getMonth());
       expect(calendar.getType()).toBe('month');
     });
 

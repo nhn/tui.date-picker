@@ -66,7 +66,7 @@ describe('DateRangePicker', function() {
   it('should set null to end-date when changing start-date to a later date than end-date', function() {
     picker.setStartDate(new Date(2017, 0, 20));
 
-    expect(picker.getEndDate()).toEqual(null);
+    expect(picker.getEndDate()).toBeNull();
   });
 
   it('should not set end-date which is earlier than start-date', function() {
@@ -98,8 +98,8 @@ describe('DateRangePicker', function() {
   it('should (re)set ranges', function() {
     picker.setRanges([[new Date(2018, 0, 1), new Date(2019, 0, 1)]]);
 
-    expect(picker.getStartDate()).toBe(null);
-    expect(picker.getEndDate()).toBe(null);
+    expect(picker.getStartDate()).toBeNull();
+    expect(picker.getEndDate()).toBeNull();
 
     picker.setStartDate(new Date(2018, 0, 1));
 
@@ -120,6 +120,6 @@ describe('DateRangePicker', function() {
     });
 
     expect(picker.getEndpicker().isDisabled()).toBe(true);
-    expect(picker.getEndDate()).toBe(null);
+    expect(picker.getEndDate()).toBeNull();
   });
 });

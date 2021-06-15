@@ -41,7 +41,7 @@ describe('Date Picker', function() {
     });
 
     it('should set blank input', function() {
-      expect(input.value).toEqual('');
+      expect(input.value).toBe('');
       expect(datepicker.getDate()).toBeNull();
     });
 
@@ -84,20 +84,20 @@ describe('Date Picker', function() {
       datepicker.setNull();
 
       expect(datepicker.getDate()).toBeNull();
-      expect(input.value).toEqual('');
+      expect(input.value).toBe('');
     });
 
     it('open', function() {
       datepicker.open();
 
-      expect(datepicker.isOpened()).toEqual(true);
+      expect(datepicker.isOpened()).toBe(true);
     });
 
     it('close', function() {
       datepicker.open();
       datepicker.close();
 
-      expect(datepicker.isOpened()).toEqual(false);
+      expect(datepicker.isOpened()).toBe(false);
     });
 
     it('getDate', function() {
@@ -125,19 +125,19 @@ describe('Date Picker', function() {
     });
 
     it('setType', function() {
-      expect(datepicker.getType()).toEqual('date');
+      expect(datepicker.getType()).toBe('date');
 
       datepicker.setType('month');
 
-      expect(datepicker.getType()).toEqual('month');
+      expect(datepicker.getType()).toBe('month');
 
       datepicker.setType('year');
 
-      expect(datepicker.getType()).toEqual('year');
+      expect(datepicker.getType()).toBe('year');
 
       datepicker.setType('date');
 
-      expect(datepicker.getType()).toEqual('date');
+      expect(datepicker.getType()).toBe('date');
     });
 
     it('isSelectable', function() {
@@ -149,9 +149,9 @@ describe('Date Picker', function() {
       date2 = new Date(1990, 10, 3);
       date3 = new Date(2111, 10, 3);
 
-      expect(datepicker.isSelectable(date1)).toEqual(true);
-      expect(datepicker.isSelectable(date2)).toEqual(false);
-      expect(datepicker.isSelectable(date3)).toEqual(false);
+      expect(datepicker.isSelectable(date1)).toBe(true);
+      expect(datepicker.isSelectable(date2)).toBe(false);
+      expect(datepicker.isSelectable(date3)).toBe(false);
     });
 
     it('isSelected', function() {
@@ -167,7 +167,7 @@ describe('Date Picker', function() {
       datepicker.setDateFormat('yyyyMMdd hh:mm A');
       datepicker.getTimePicker().setTime(12, 34);
 
-      expect(input.value).toEqual('20171127 12:34 PM');
+      expect(input.value).toBe('20171127 12:34 PM');
     });
 
     it('addOpener', function() {
@@ -175,7 +175,7 @@ describe('Date Picker', function() {
 
       datepicker.addOpener(btn);
 
-      expect(inArray(btn, datepicker._openers)).not.toEqual(-1);
+      expect(inArray(btn, datepicker._openers)).not.toBe(-1);
     });
 
     it('removeOpener', function() {
@@ -184,7 +184,7 @@ describe('Date Picker', function() {
       datepicker.addOpener(btn);
       datepicker.removeOpener(btn);
 
-      expect(inArray(btn, datepicker._openers)).toEqual(-1);
+      expect(inArray(btn, datepicker._openers)).toBe(-1);
     });
 
     it('setRanges', function() {
@@ -202,7 +202,7 @@ describe('Date Picker', function() {
       expect(prevModel).not.toBe(nextModel);
       expect(datepicker.isSelectable(start)).toBe(true);
       expect(datepicker.isSelectable(end)).toBe(true);
-      expect(datepicker.getDate()).toBe(null);
+      expect(datepicker.getDate()).toBeNull();
     });
 
     it('addRange', function() {
@@ -245,7 +245,7 @@ describe('Date Picker', function() {
         format: 'yyyyMMdd'
       });
 
-      expect(input.value).toEqual('20170101');
+      expect(input.value).toBe('20170101');
     });
 
     it('setInput - syncFromInput=true with selectable input value', function() {
@@ -274,7 +274,7 @@ describe('Date Picker', function() {
       });
 
       expect(input.value).toEqual('');
-      expect(datepicker.getDate()).toBe(null);
+      expect(datepicker.getDate()).toBeNull();
     });
 
     it('disable', function() {
@@ -345,7 +345,7 @@ describe('Date Picker', function() {
     it('`locateTitle` should also be changed when you run `locateLanguage`', function() {
       datepicker.changeLanguage('ko');
 
-      expect(datepicker._datepickerInput._titles).toEqual(datepicker.getLocaleText().titles);
+      expect(datepicker._datepickerInput._titles).toBe(datepicker.getLocaleText().titles);
     });
   });
 
@@ -388,7 +388,7 @@ describe('Date Picker', function() {
       datepicker._onChangeInput();
 
       expect(datepicker.getDate().getTime()).toEqual(new Date(2017, 1, 3).getTime());
-      expect(input.value).toEqual('17년 02월 03일');
+      expect(input.value).toBe('17년 02월 03일');
     });
 
     it('mousedown-document event should call "close" when showAlways=false', function() {
@@ -474,7 +474,7 @@ describe('Date Picker', function() {
       datepicker.setRanges([[new Date(2016, 0, 1), new Date(2017, 11, 1)]]);
 
       expect(datepicker.getDate()).toEqual(new Date(2017, 0, 1));
-      expect(input.value).toEqual(prevInputValue);
+      expect(input.value).toBe(prevInputValue);
     });
 
     it('shuold not change current date when selectable after "removeRange"', function() {
@@ -483,21 +483,21 @@ describe('Date Picker', function() {
       datepicker.removeRange(new Date(2016, 11, 1), new Date(2016, 11, 31), 'date');
 
       expect(datepicker.getDate()).toEqual(new Date(2017, 0, 1));
-      expect(input.value).toEqual(prevInputValue);
+      expect(input.value).toBe(prevInputValue);
     });
 
     it('should set current-date to null when unselectable after "setRanges"', function() {
       datepicker.setRanges([[new Date(2016, 0, 1), new Date(2016, 11, 1)]]);
 
       expect(datepicker.getDate()).toBeNull();
-      expect(input.value).toEqual('');
+      expect(input.value).toBe('');
     });
 
     it('should set current-date to null when unselectable after "removeRanges"', function() {
       datepicker.removeRange(new Date(2016, 11, 1), new Date(2017, 1, 1));
 
       expect(datepicker.getDate()).toBeNull();
-      expect(input.value).toEqual('');
+      expect(input.value).toBe('');
     });
 
     it('should change (unselectable)calendar-date to minimum-selectable after "setRanges"', function() {

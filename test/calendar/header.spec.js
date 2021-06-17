@@ -89,14 +89,6 @@ describe('Calendar', function() {
       expect(nHeader._infoElement).toBeNull();
     });
 
-    it('"changeLanaguage" should re-initilize formatters', function() {
-      header._setFormatters = jest.fn();
-
-      header.changeLanguage('ko');
-
-      expect(header._setFormatters).toHaveBeenCalled();
-    });
-
     it('should render today box if allowed', function() {
       var nContainer = document.createElement('div');
       var nHeader = new Header(nContainer, {

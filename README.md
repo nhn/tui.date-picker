@@ -33,8 +33,8 @@
 - [🔧 Pull Request Steps](#-pull-request-steps)
   - [Setup](#setup)
   - [Develop](#develop)
-    - [Run webpack-dev-server](#run-webpack-dev-server)
-    - [Run jest test](#run-jest-test)
+    - [Run dev server](#run-dev-server)
+    - [Run test](#run-test)
   - [Pull Request](#pull-request)
 - [💬 Contributing](#-contributing)
 - [🍞 TOAST UI Family](#-toast-ui-family)
@@ -235,14 +235,14 @@ Let's start development!
 You can see your code is reflected as soon as you saving the codes by running a server.
 Don't miss adding test cases and then make green rights.
 
-#### Run webpack-dev-server
+#### Run dev server
 
 ``` sh
 $ npm run serve
 $ npm run serve:ie8 # Run on Internet Explorer 8
 ```
 
-#### Run jest test
+#### Run test
 
 ``` sh
 $ npm run test

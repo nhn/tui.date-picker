@@ -7,10 +7,23 @@
 var Header = require('../../src/js/calendar/header');
 var constants = require('../../src/js/constants');
 
+var CLASS_NAME_NEXT_MONTH_BTN = constants.CLASS_NAME_NEXT_MONTH_BTN;
+var CLASS_NAME_NEXT_YEAR_BTN = constants.CLASS_NAME_NEXT_YEAR_BTN;
+var CLASS_NAME_PREV_MONTH_BTN = constants.CLASS_NAME_PREV_MONTH_BTN;
+var CLASS_NAME_PREV_YEAR_BTN = constants.CLASS_NAME_PREV_YEAR_BTN;
+
 describe('Calendar', function() {
   describe('Header', function() {
     var header = null;
     var container = document.createElement('div');
+
+    function clickBtnInHeader(className) {
+      container.querySelector('.' + className).click();
+    }
+
+    function getElementCountInHeader(className) {
+      return container.querySelectorAll('.' + className).length;
+    }
 
     beforeEach(function() {
       header = new Header(container, {
@@ -25,18 +38,10 @@ describe('Calendar', function() {
     });
 
     it('should render buttons', function() {
-      expect(
-        header._container.querySelectorAll('.' + constants.CLASS_NAME_NEXT_MONTH_BTN).length
-      ).toBe(1);
-      expect(
-        header._container.querySelectorAll('.' + constants.CLASS_NAME_NEXT_YEAR_BTN).length
-      ).toBe(1);
-      expect(
-        header._container.querySelectorAll('.' + constants.CLASS_NAME_PREV_MONTH_BTN).length
-      ).toBe(1);
-      expect(
-        header._container.querySelectorAll('.' + constants.CLASS_NAME_PREV_YEAR_BTN).length
-      ).toBe(1);
+      expect(getElementCountInHeader(CLASS_NAME_NEXT_MONTH_BTN)).toBe(1);
+      expect(getElementCountInHeader(CLASS_NAME_NEXT_YEAR_BTN)).toBe(1);
+      expect(getElementCountInHeader(CLASS_NAME_PREV_MONTH_BTN)).toBe(1);
+      expect(getElementCountInHeader(CLASS_NAME_PREV_YEAR_BTN)).toBe(1);
     });
 
     it('should set title text formatted', function() {
@@ -49,22 +54,22 @@ describe('Calendar', function() {
       var spy = jest.fn();
       header.on('click', spy);
 
-      header._container.querySelector('.' + constants.CLASS_NAME_NEXT_MONTH_BTN).click();
+      clickBtnInHeader(CLASS_NAME_NEXT_MONTH_BTN);
       expect(spy).toHaveBeenCalled();
 
       spy.mockReset();
 
-      header._container.querySelector('.' + constants.CLASS_NAME_NEXT_YEAR_BTN).click();
+      clickBtnInHeader(CLASS_NAME_NEXT_YEAR_BTN);
       expect(spy).toHaveBeenCalled();
 
       spy.mockReset();
 
-      header._container.querySelector('.' + constants.CLASS_NAME_PREV_MONTH_BTN).click();
+      clickBtnInHeader(CLASS_NAME_PREV_MONTH_BTN);
       expect(spy).toHaveBeenCalled();
 
       spy.mockReset();
 
-      header._container.querySelector('.' + constants.CLASS_NAME_PREV_YEAR_BTN).click();
+      clickBtnInHeader(CLASS_NAME_PREV_YEAR_BTN);
       expect(spy).toHaveBeenCalled();
     });
 

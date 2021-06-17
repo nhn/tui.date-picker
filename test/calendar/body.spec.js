@@ -19,26 +19,25 @@ describe('Calendar - Body', function() {
   });
 
   it('"changeLanguage" should change each layer\'s language', function() {
-    body._dateLayer.changeLanguage = jest.fn();
-    body._monthLayer.changeLanguage = jest.fn();
-    body._yearLayer.changeLanguage = jest.fn();
-
     body.changeLanguage('ko');
-    expect(body._dateLayer.changeLanguage).toHaveBeenCalledWith('ko');
-    expect(body._monthLayer.changeLanguage).toHaveBeenCalledWith('ko');
-    expect(body._yearLayer.changeLanguage).toHaveBeenCalledWith('ko');
+
+    body.render(new Date(), 'date');
+    expect(container.querySelector('.tui-sun').textContent).toMatch(/^[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]$/);
+
+    body.render(new Date(), 'month');
+    expect(container.querySelector('.tui-calendar-month').textContent).toMatch(
+      /^[0-9]+[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]$/
+    );
   });
 
   it('"render" should remove prevLayer and render matched layer', function() {
-    body.render(new Date(), 'date');
+    var prevRenderedContent;
 
-    body._dateLayer.remove = jest.fn();
-    body._monthLayer.render = jest.fn();
+    body.render(new Date(), 'date');
+    prevRenderedContent = container.innerHTML;
 
     body.render(new Date(), 'month');
-
-    expect(body._dateLayer.remove).toHaveBeenCalled();
-    expect(body._monthLayer.render).toHaveBeenCalled();
+    expect(container.innerHTML).not.toEqual(prevRenderedContent);
   });
 
   it('"getDateElements" should return date HTML elements', function() {

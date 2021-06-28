@@ -33,6 +33,7 @@ export interface DatePickerOptions extends DefaultPickerOptions {
   };
   openers?: Array<string | HTMLElement>;
   date?: Date | number;
+  weekStartDay?: String;
 }
 
 export interface DateRangePickerOptions extends DefaultPickerOptions {

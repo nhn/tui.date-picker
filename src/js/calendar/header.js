@@ -137,10 +137,16 @@ var Header = defineClass(
      * @param {Event} ev An event object
      * @private
      */
-    _onClickHandler: function(ev) {
+     _onClickHandler: function(ev) {
       var target = util.getTarget(ev);
 
-      if (closest(target, SELECTOR_BTN)) {
+      let isClosestBtn  = false;
+      try {
+        isClosestBtn = closest(target, SELECTOR_BTN)
+      } catch(error) {
+
+      }
+      if (isClosestBtn) {
         this.fire('click', ev);
       }
     },

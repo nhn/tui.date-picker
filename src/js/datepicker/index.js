@@ -645,19 +645,37 @@ var DatePicker = defineClass(
      * @param {Event} ev An event object
      * @private
      */
-    _onClickHandler: function(ev) {
+     _onClickHandler: function(ev) {      
       var target = util.getTarget(ev);
       ev.preventDefault();
+      let isCLosesClassName = false;
+      let isCLosestSelectorCalendarTitle = false;
+      let isClosestSelectorButton = false;
+      try {
+        isCLosesClassName = closest(target, '.' + CLASS_NAME_SELECTABLE);
+      } catch(error) {
+       console.log(error);
+      }
+      try {
+        isCLosestSelectorCalendarTitle = closest(target, SELECTOR_CALENDAR_TITLE);
+      } catch (error) {
+        console.log(error);
+        
+      }
+      try {
+        isClosestSelectorButton = closest(target, '.' + CLASS_NAME_SELECTOR_BUTTON)
+      } catch(error) {
+        console.log(error);
 
-      if (closest(target, '.' + CLASS_NAME_SELECTABLE)) {
+      }
+      if (isCLosesClassName) {
         this._updateDate(target);
-      } else if (closest(target, SELECTOR_CALENDAR_TITLE)) {
+      } else if (isCLosestSelectorCalendarTitle) {
         this.drawUpperCalendar(this._date);
-      } else if (closest(target, '.' + CLASS_NAME_SELECTOR_BUTTON)) {
+      } else if (isClosestSelectorButton) {
         this._changePicker(target);
       }
     },
-
     /**
      * Update date from event-target
      * @param {HTMLElement} target An event target element

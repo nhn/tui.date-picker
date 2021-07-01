@@ -7,6 +7,18 @@
 var DatePicker = require('../../src/js/datepicker');
 var DateRangePicker = require('../../src/js/dateRangePicker');
 
+var getMatchedArray = function(length, disabledLength) {
+  var disabledArray = Array.from({ length: disabledLength }, function() {
+    return { disabled: true };
+  });
+
+  var enabledArray = Array.from({ length: length - disabledLength }, function() {
+    return { disabled: false };
+  });
+
+  return disabledArray.concat(enabledArray);
+};
+
 describe('DateRangePicker', function() {
   var picker, startpickerInput, endpickerInput, startpickerContainer, endpickerContainer;
 
@@ -104,6 +116,60 @@ describe('DateRangePicker', function() {
     picker.setStartDate(new Date(2018, 0, 1));
 
     expect(picker.getStartDate()).toEqual(new Date(2018, 0, 1));
+  });
+
+  it('should set disabled for hour select options outside the time range in endPicker', function() {
+    var date = new Date(2021, 1, 1, 9, 30);
+    var hourSelectOptions;
+    var expectMatchArray = getMatchedArray(24, 9);
+
+    picker = new DateRangePicker({
+      startpicker: {
+        input: startpickerInput,
+        container: startpickerContainer
+      },
+      endpicker: {
+        input: endpickerInput,
+        container: endpickerContainer
+      },
+      timePicker: { showMeridiem: false }
+    });
+
+    picker.setStartDate(date);
+    picker.setEndDate(date);
+
+    hourSelectOptions = Array.from(
+      endpickerContainer.querySelectorAll('.tui-timepicker-hour option')
+    );
+
+    expect(hourSelectOptions).toMatchObject(expectMatchArray);
+  });
+
+  it('should set disabled for minute select options outside the time range in endPicker', function() {
+    var date = new Date(2021, 1, 1, 9, 30);
+    var minuteSelectOptions;
+    var expectMatchArray = getMatchedArray(60, 31);
+
+    picker = new DateRangePicker({
+      startpicker: {
+        input: startpickerInput,
+        container: startpickerContainer
+      },
+      endpicker: {
+        input: endpickerInput,
+        container: endpickerContainer
+      },
+      timePicker: { showMeridiem: false }
+    });
+
+    picker.setStartDate(date);
+    picker.setEndDate(date);
+
+    minuteSelectOptions = Array.from(
+      endpickerContainer.querySelectorAll('.tui-timepicker-minute option')
+    );
+
+    expect(minuteSelectOptions).toMatchObject(expectMatchArray);
   });
 
   it('should disable endpicker with null when initial start-date is null', function() {

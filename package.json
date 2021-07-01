@@ -1,6 +1,6 @@
 {
   "name": "tui-date-picker",
-  "version": "4.2.0",
+  "version": "4.2.1",
   "description": "TOAST UI Components: DatePicker",
   "main": "dist/tui-date-picker",
   "types": "index.d.ts",

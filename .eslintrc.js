@@ -6,7 +6,7 @@ module.exports = {
   },
   env: {
     browser: true,
-    jasmine: true,
+    jest: true,
     commonjs: true
   },
   globals: {

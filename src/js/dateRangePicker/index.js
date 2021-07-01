@@ -48,9 +48,14 @@ var CLASS_NAME_SELECTED_RANGE = 'tui-is-selected-range';
  *     @param {boolean} [options.autoClose = true] - Close the DateRangePicker after clicking the date
  *     @param {boolean} [options.usageStatistics = true] - Send a hostname to Google Analytics (default: true)
  * @example
- * import DatePicker from 'tui-date-picker' // ES6
- * // const DatePicker = require('tui-date-picker'); // CommonJS
- * // const DatePicker = tui.DatePicker;
+ * // ES6
+ * import DatePicker from 'tui-date-picker'
+ *
+ * // CommonJS
+ * const DatePicker = require('tui-date-picker');
+ *
+ * // Browser
+ * const DatePicker = tui.DatePicker;
  *
  * const rangePicker = DatePicker.createRangePicker({
  *     startpicker: {
@@ -101,6 +106,10 @@ var DateRangePicker = defineClass(
        * @private
        */
       this._endpicker = null;
+
+      this._isRangeSet = false;
+
+      this._preEndPickerDate = new Date().getDate();
 
       this._initializePickers(options);
       this._syncRangesToEndpicker();
@@ -224,6 +233,8 @@ var DateRangePicker = defineClass(
 
         this._endpicker.enable();
         this._endpicker.setRanges([[startDate.getTime(), overlappedRange[1].getTime()]]);
+
+        this._setTimeRangeOnEndPicker();
       } else {
         this._endpicker.setNull();
         this._endpicker.disable();
@@ -244,7 +255,7 @@ var DateRangePicker = defineClass(
        * @see Refer to {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents CustomEvents} for more methods. DateRangePicker mixes in the methods from CustomEvents.
        * @example
        * // bind the 'change:start' event
-       * rangePicker.on('change:start', function() {
+       * rangePicker.on('change:start', () => {
        *     console.log(`Start date: ${rangePicker.getStartDate()}`);
        * });
        *
@@ -267,14 +278,71 @@ var DateRangePicker = defineClass(
        * @see Refer to {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents CustomEvents} for more methods. DateRangePicker mixes in the methods from CustomEvents.
        * @example
        * // bind the 'change:end' event
-       * rangePicker.on('change:end', function() {
+       * rangePicker.on('change:end', () => {
        *     console.log(`End date: ${rangePicker.getEndDate()}`);
        * });
        *
        * // unbind the 'change:end' event
        * rangePicker.off('change:end');
        */
+
+      var date;
+      var endPickerDate = this._endpicker.getDate();
+
+      if (endPickerDate) {
+        date = endPickerDate.getDate();
+        if (this._preEndPickerDate !== date) {
+          this._setTimeRangeOnEndPicker();
+        }
+
+        this._preEndPickerDate = date;
+      } else {
+        this._preEndPickerDate = null;
+      }
+
       this.fire('change:end');
+    },
+
+    /**
+     * Set time range on end picker
+     * @private
+     */
+    _setTimeRangeOnEndPicker: function() {
+      var pickerDate, timeRange;
+      var endTimePicker = this._endpicker._timePicker;
+
+      if (!endTimePicker) {
+        return;
+      }
+
+      pickerDate = this._endpicker.getDate() || this._startpicker.getDate();
+      timeRange = this._getTimeRangeFromStartPicker();
+
+      if (pickerDate && timeRange[pickerDate.getDate()]) {
+        endTimePicker.setRange(timeRange[pickerDate.getDate()]);
+        this._isRangeSet = true;
+      } else if (this._isRangeSet) {
+        endTimePicker.setRange({ hour: 0, minute: 0 });
+        endTimePicker.resetMinuteRange();
+        this._isRangeSet = false;
+      }
+    },
+
+    /**
+     * Return object of time range from start picker.
+     * @returns {object}
+     * @private
+     */
+    _getTimeRangeFromStartPicker: function() {
+      var startDate = this._startpicker.getDate();
+      var timeRange = {};
+
+      timeRange[startDate.getDate()] = {
+        hour: startDate.getHours(),
+        minute: startDate.getMinutes()
+      };
+
+      return timeRange;
     },
 
     /**

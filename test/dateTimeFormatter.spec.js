@@ -20,13 +20,13 @@ describe('DateTimeFormatter', function() {
     });
 
     it('should return formatted string', function() {
-      expect(formatter.format(new Date(2016, 10, 28))).toEqual('2016-11-28 00:00');
-      expect(formatter.format(new Date(2016, 10, 28, 10, 11))).toEqual('2016-11-28 10:11');
+      expect(formatter.format(new Date(2016, 10, 28))).toBe('2016-11-28 00:00');
+      expect(formatter.format(new Date(2016, 10, 28, 10, 11))).toBe('2016-11-28 10:11');
     });
 
     it('should return formatted string (with meridiem expression)', function() {
       formatter = new DateTimeFormatter('yyyy-MM-dd hh:mm a');
-      expect(formatter.format(new Date(2016, 10, 28, 16, 11))).toEqual('2016-11-28 04:11 pm');
+      expect(formatter.format(new Date(2016, 10, 28, 16, 11))).toBe('2016-11-28 04:11 pm');
     });
   });
 
@@ -55,7 +55,7 @@ describe('DateTimeFormatter', function() {
     });
 
     it('should format date to "16/11/28"', function() {
-      expect(formatter.format(new Date(2016, 10, 28))).toEqual('16/11/28');
+      expect(formatter.format(new Date(2016, 10, 28))).toBe('16/11/28');
     });
 
     it('should parse "16/11/28" to dateHash', function() {
@@ -69,8 +69,8 @@ describe('DateTimeFormatter', function() {
     });
 
     it('should format date to "05 12"', function() {
-      expect(formatter.format(new Date(0, 4, 12))).toEqual('05 12');
-      expect(formatter.format(new Date(2016, 4, 12))).toEqual('05 12');
+      expect(formatter.format(new Date(0, 4, 12))).toBe('05 12');
+      expect(formatter.format(new Date(2016, 4, 12))).toBe('05 12');
     });
 
     it('should parse "5 12" to dateHash', function() {
@@ -84,7 +84,7 @@ describe('DateTimeFormatter', function() {
     });
 
     it('should format date to "1-28, 2016"', function() {
-      expect(formatter.format(new Date(2016, 0, 28))).toEqual('1-28, 2016');
+      expect(formatter.format(new Date(2016, 0, 28))).toBe('1-28, 2016');
     });
 
     it('should parse "01/28, 2016:" to dateHash', function() {

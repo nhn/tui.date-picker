@@ -132,9 +132,14 @@ var mergeDefaultOption = function(option) {
  *      @param {boolean} [options.usageStatistics = true] - Send a hostname to Google Analytics (default: true)
  *      @param {string} [options.weekStartDay = 'Sun'] - Start of the week. 'Sun', 'Mon', ..., 'Sat'(default: 'Sun'(start on Sunday))
  * @example
- * import DatePicker from 'tui-date-picker' // ES6
- * // const DatePicker = require('tui-date-picker'); // CommonJS
- * // const DatePicker = tui.DatePicker;
+ * // ES6
+ * import DatePicker from 'tui-date-picker'
+ *
+ * // CommonJS
+ * const DatePicker = require('tui-date-picker');
+ *
+ * // Browser
+ * const DatePicker = tui.DatePicker;
  *
  * const range1 = [new Date(2015, 2, 1), new Date(2015, 3, 1)];
  * const range2 = [1465570800000, 1481266182155]; // timestamps
@@ -710,7 +715,7 @@ var DatePicker = defineClass(
        * @property {HTMLElement[]} dateElements - elements for dates
        * @example
        * // bind the 'draw' event
-       * datepicker.on('draw', function(event) {
+       * datepicker.on('draw', (event) => {
        *     console.log(`Draw the ${event.type} calendar and its date is ${event.date}.`);
        * });
        *
@@ -993,7 +998,7 @@ var DatePicker = defineClass(
        * @see Refer to {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents CustomEvents from tui-code-snippet} for more methods. DatePicker mixes in the methods from CustomEvents.
        * @example
        * // bind the 'open' event
-       * datepicker.on('open', function() {
+       * datepicker.on('open', () => {
        *     alert('open');
        * });
        *
@@ -1069,7 +1074,7 @@ var DatePicker = defineClass(
        * @see Refer to {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents CustomEvents from tui-code-snippet} for more methods. DatePicker mixes in the methods from CustomEvents.
        * @example
        * // bind the 'close' event
-       * datepicker.on('close', function() {
+       * datepicker.on('close', () => {
        *     alert('close');
        * });
        *
@@ -1144,7 +1149,7 @@ var DatePicker = defineClass(
          * @see Refer to {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents CustomEvents from tui-code-snippet} for more methods. DatePicker mixes in the methods from CustomEvents.
          * @example
          * // bind the 'change' event
-         * datepicker.on('change', function() {
+         * datepicker.on('change', () => {
          *     console.log(`Selected date: ${datepicker.getDate()}`);
          * });
          *

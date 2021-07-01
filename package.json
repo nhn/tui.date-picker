@@ -56,6 +56,6 @@
     "webpack-dev-server": "^3.8.0"
   },
   "dependencies": {
-    "tui-time-picker": "^2.0.3"
+    "tui-time-picker": "^2.1.2"
   }
 }

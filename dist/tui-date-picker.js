@@ -1,6 +1,6 @@
 /*!
  * TOAST UI Date Picker
- * @version 4.2.0
+ * @version 4.2.1
  * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  * @license MIT
  */
@@ -2450,9 +2450,14 @@ var mergeDefaultOption = function(option) {
  *      @param {boolean} [options.usageStatistics = true] - Send a hostname to Google Analytics (default: true)
  *      @param {string} [options.weekStartDay = 'Sun'] - Start of the week. 'Sun', 'Mon', ..., 'Sat'(default: 'Sun'(start on Sunday))
  * @example
- * import DatePicker from 'tui-date-picker' // ES6
- * // const DatePicker = require('tui-date-picker'); // CommonJS
- * // const DatePicker = tui.DatePicker;
+ * // ES6
+ * import DatePicker from 'tui-date-picker'
+ *
+ * // CommonJS
+ * const DatePicker = require('tui-date-picker');
+ *
+ * // Browser
+ * const DatePicker = tui.DatePicker;
  *
  * const range1 = [new Date(2015, 2, 1), new Date(2015, 3, 1)];
  * const range2 = [1465570800000, 1481266182155]; // timestamps
@@ -3028,7 +3033,7 @@ var DatePicker = defineClass(
        * @property {HTMLElement[]} dateElements - elements for dates
        * @example
        * // bind the 'draw' event
-       * datepicker.on('draw', function(event) {
+       * datepicker.on('draw', (event) => {
        *     console.log(`Draw the ${event.type} calendar and its date is ${event.date}.`);
        * });
        *
@@ -3311,7 +3316,7 @@ var DatePicker = defineClass(
        * @see Refer to {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents CustomEvents from tui-code-snippet} for more methods. DatePicker mixes in the methods from CustomEvents.
        * @example
        * // bind the 'open' event
-       * datepicker.on('open', function() {
+       * datepicker.on('open', () => {
        *     alert('open');
        * });
        *
@@ -3387,7 +3392,7 @@ var DatePicker = defineClass(
        * @see Refer to {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents CustomEvents from tui-code-snippet} for more methods. DatePicker mixes in the methods from CustomEvents.
        * @example
        * // bind the 'close' event
-       * datepicker.on('close', function() {
+       * datepicker.on('close', () => {
        *     alert('close');
        * });
        *
@@ -3462,7 +3467,7 @@ var DatePicker = defineClass(
          * @see Refer to {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents CustomEvents from tui-code-snippet} for more methods. DatePicker mixes in the methods from CustomEvents.
          * @example
          * // bind the 'change' event
-         * datepicker.on('change', function() {
+         * datepicker.on('change', () => {
          *     console.log(`Selected date: ${datepicker.getDate()}`);
          * });
          *
@@ -4041,9 +4046,14 @@ var BODY_SELECTOR = '.tui-calendar-body';
  *     @param {boolean} [options.usageStatistics = true] - Send a hostname to Google Analytics (default: true)
  *     @param {string} [options.weekStartDay = 'Sun'] - Start of the week. 'Sun', 'Mon', ..., 'Sat'(default: 'Sun'(start on Sunday))
  * @example
- * import DatePicker from 'tui-date-picker' // ES6
- * // const DatePicker = require('tui-date-picker'); // CommonJS
- * // const DatePicker = tui.DatePicker;
+ * //ES6
+ * import DatePicker from 'tui-date-picker'
+ *
+ * // CommonJS
+ * const DatePicker = require('tui-date-picker');
+ *
+ * // Browser
+ * const DatePicker = tui.DatePicker;
  *
  * const calendar = DatePicker.createCalendar('#calendar-wrapper', {
  *     language: 'en',
@@ -4054,7 +4064,7 @@ var BODY_SELECTOR = '.tui-calendar-body';
  *     weekStartDay: 'Mon',
  * });
  *
- * calendar.on('draw', function(event) {
+ * calendar.on('draw', (event) => {
  *     console.log(event.date);
  *     console.log(event.type);
  *     for (let i = 0, len = event.dateElements.length; i < len; i += 1) {
@@ -4321,7 +4331,7 @@ var Calendar = defineClass(
        * @property {HTMLElement[]} dateElements - elements for dates
        * @example
        * // bind the 'draw' event
-       * calendar.on('draw', function({type, date}) {
+       * calendar.on('draw', ({type, date}) => {
        *     console.log(`Draw the ${type} calendar and its date is ${date}.`);
        * });
        *
@@ -7137,9 +7147,14 @@ var CLASS_NAME_SELECTED_RANGE = 'tui-is-selected-range';
  *     @param {boolean} [options.autoClose = true] - Close the DateRangePicker after clicking the date
  *     @param {boolean} [options.usageStatistics = true] - Send a hostname to Google Analytics (default: true)
  * @example
- * import DatePicker from 'tui-date-picker' // ES6
- * // const DatePicker = require('tui-date-picker'); // CommonJS
- * // const DatePicker = tui.DatePicker;
+ * // ES6
+ * import DatePicker from 'tui-date-picker'
+ *
+ * // CommonJS
+ * const DatePicker = require('tui-date-picker');
+ *
+ * // Browser
+ * const DatePicker = tui.DatePicker;
  *
  * const rangePicker = DatePicker.createRangePicker({
  *     startpicker: {
@@ -7190,6 +7205,10 @@ var DateRangePicker = defineClass(
        * @private
        */
       this._endpicker = null;
+
+      this._isRangeSet = false;
+
+      this._preEndPickerDate = new Date().getDate();
 
       this._initializePickers(options);
       this._syncRangesToEndpicker();
@@ -7313,6 +7332,8 @@ var DateRangePicker = defineClass(
 
         this._endpicker.enable();
         this._endpicker.setRanges([[startDate.getTime(), overlappedRange[1].getTime()]]);
+
+        this._setTimeRangeOnEndPicker();
       } else {
         this._endpicker.setNull();
         this._endpicker.disable();
@@ -7333,7 +7354,7 @@ var DateRangePicker = defineClass(
        * @see Refer to {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents CustomEvents} for more methods. DateRangePicker mixes in the methods from CustomEvents.
        * @example
        * // bind the 'change:start' event
-       * rangePicker.on('change:start', function() {
+       * rangePicker.on('change:start', () => {
        *     console.log(`Start date: ${rangePicker.getStartDate()}`);
        * });
        *
@@ -7356,14 +7377,71 @@ var DateRangePicker = defineClass(
        * @see Refer to {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents CustomEvents} for more methods. DateRangePicker mixes in the methods from CustomEvents.
        * @example
        * // bind the 'change:end' event
-       * rangePicker.on('change:end', function() {
+       * rangePicker.on('change:end', () => {
        *     console.log(`End date: ${rangePicker.getEndDate()}`);
        * });
        *
        * // unbind the 'change:end' event
        * rangePicker.off('change:end');
        */
+
+      var date;
+      var endPickerDate = this._endpicker.getDate();
+
+      if (endPickerDate) {
+        date = endPickerDate.getDate();
+        if (this._preEndPickerDate !== date) {
+          this._setTimeRangeOnEndPicker();
+        }
+
+        this._preEndPickerDate = date;
+      } else {
+        this._preEndPickerDate = null;
+      }
+
       this.fire('change:end');
+    },
+
+    /**
+     * Set time range on end picker
+     * @private
+     */
+    _setTimeRangeOnEndPicker: function() {
+      var pickerDate, timeRange;
+      var endTimePicker = this._endpicker._timePicker;
+
+      if (!endTimePicker) {
+        return;
+      }
+
+      pickerDate = this._endpicker.getDate() || this._startpicker.getDate();
+      timeRange = this._getTimeRangeFromStartPicker();
+
+      if (pickerDate && timeRange[pickerDate.getDate()]) {
+        endTimePicker.setRange(timeRange[pickerDate.getDate()]);
+        this._isRangeSet = true;
+      } else if (this._isRangeSet) {
+        endTimePicker.setRange({ hour: 0, minute: 0 });
+        endTimePicker.resetMinuteRange();
+        this._isRangeSet = false;
+      }
+    },
+
+    /**
+     * Return object of time range from start picker.
+     * @returns {object}
+     * @private
+     */
+    _getTimeRangeFromStartPicker: function() {
+      var startDate = this._startpicker.getDate();
+      var timeRange = {};
+
+      timeRange[startDate.getDate()] = {
+        hour: startDate.getHours(),
+        minute: startDate.getMinutes()
+      };
+
+      return timeRange;
     },
 
     /**

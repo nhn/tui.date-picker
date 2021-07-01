@@ -7,6 +7,96 @@
 var DatePicker = require('../../src/js/datepicker');
 var DateRangePicker = require('../../src/js/dateRangePicker');
 
+var rangedHours = [
+  { disabled: true },
+  { disabled: true },
+  { disabled: true },
+  { disabled: true },
+  { disabled: true },
+  { disabled: true },
+  { disabled: true },
+  { disabled: true },
+  { disabled: true },
+  { disabled: false },
+  { disabled: false },
+  { disabled: false },
+  { disabled: false },
+  { disabled: false },
+  { disabled: false },
+  { disabled: false },
+  { disabled: false },
+  { disabled: false },
+  { disabled: false },
+  { disabled: false },
+  { disabled: false },
+  { disabled: false },
+  { disabled: false },
+  { disabled: false }
+];
+
+var rangedMins = [
+  { disabled: true },
+  { disabled: true },
+  { disabled: true },
+  { disabled: true },
+  { disabled: true },
+  { disabled: true },
+  { disabled: true },
+  { disabled: true },
+  { disabled: true },
+  { disabled: true },
+  { disabled: true },
+  { disabled: true },
+  { disabled: true },
+  { disabled: true },
+  { disabled: true },
+  { disabled: true },
+  { disabled: true },
+  { disabled: true },
+  { disabled: true },
+  { disabled: true },
+  { disabled: true },
+  { disabled: true },
+  { disabled: true },
+  { disabled: true },
+  { disabled: true },
+  { disabled: true },
+  { disabled: true },
+  { disabled: true },
+  { disabled: true },
+  { disabled: true },
+  { disabled: true },
+  { disabled: false },
+  { disabled: false },
+  { disabled: false },
+  { disabled: false },
+  { disabled: false },
+  { disabled: false },
+  { disabled: false },
+  { disabled: false },
+  { disabled: false },
+  { disabled: false },
+  { disabled: false },
+  { disabled: false },
+  { disabled: false },
+  { disabled: false },
+  { disabled: false },
+  { disabled: false },
+  { disabled: false },
+  { disabled: false },
+  { disabled: false },
+  { disabled: false },
+  { disabled: false },
+  { disabled: false },
+  { disabled: false },
+  { disabled: false },
+  { disabled: false },
+  { disabled: false },
+  { disabled: false },
+  { disabled: false },
+  { disabled: false }
+];
+
 describe('DateRangePicker', function() {
   var picker, startpickerInput, endpickerInput, startpickerContainer, endpickerContainer;
 
@@ -104,6 +194,56 @@ describe('DateRangePicker', function() {
     picker.setStartDate(new Date(2018, 0, 1));
 
     expect(picker.getStartDate()).toEqual(new Date(2018, 0, 1));
+  });
+
+  it('should set hour range on endpicker', function() {
+    var date = new Date(2021, 1, 1, 9, 30);
+    var hourSelect;
+
+    picker = new DateRangePicker({
+      startpicker: {
+        input: startpickerInput,
+        container: startpickerContainer
+      },
+      endpicker: {
+        date: new Date(),
+        input: endpickerInput,
+        container: endpickerContainer
+      },
+      timePicker: { showMeridiem: false }
+    });
+
+    picker.setStartDate(date);
+    picker.setEndDate(date);
+
+    hourSelect = Array.from(endpickerContainer.querySelectorAll('.tui-timepicker-hour option'));
+
+    expect(hourSelect).toMatchObject(rangedHours);
+  });
+
+  it('should set minute range on endpicker', function() {
+    var date = new Date(2021, 1, 1, 9, 30);
+    var minuteSelect;
+
+    picker = new DateRangePicker({
+      startpicker: {
+        input: startpickerInput,
+        container: startpickerContainer
+      },
+      endpicker: {
+        date: new Date(),
+        input: endpickerInput,
+        container: endpickerContainer
+      },
+      timePicker: { showMeridiem: false }
+    });
+
+    picker.setStartDate(date);
+    picker.setEndDate(date);
+
+    minuteSelect = Array.from(endpickerContainer.querySelectorAll('.tui-timepicker-minute option'));
+
+    expect(minuteSelect).toMatchObject(rangedMins);
   });
 
   it('should disable endpicker with null when initial start-date is null', function() {

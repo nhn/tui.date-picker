@@ -107,6 +107,20 @@ var DateRangePicker = defineClass(
        */
       this._endpicker = null;
 
+      /**
+       * Flag for time range setting in end picker
+       * @type {boolean}
+       * @private
+       */
+      this._isRangeSetted = false;
+
+      /**
+       * Previous date of end picker
+       * @type {number}
+       * @private
+       */
+      this.preEndPickerDate = new Date().getDate();
+
       this._initializePickers(options);
       this._syncRangesToEndpicker();
     },
@@ -229,6 +243,8 @@ var DateRangePicker = defineClass(
 
         this._endpicker.enable();
         this._endpicker.setRanges([[startDate.getTime(), overlappedRange[1].getTime()]]);
+
+        this._setTimeRangeOnEndPicker();
       } else {
         this._endpicker.setNull();
         this._endpicker.disable();
@@ -279,7 +295,60 @@ var DateRangePicker = defineClass(
        * // unbind the 'change:end' event
        * rangePicker.off('change:end');
        */
+
+      if (this._endpicker.getDate()) {
+        if (this.preEndPickerDate !== this._endpicker.getDate().getDate()) {
+          this._setTimeRangeOnEndPicker();
+        }
+
+        this.preEndPickerDate = this._endpicker.getDate().getDate();
+      } else {
+        this.preEndPickerDate = null;
+      }
+
       this.fire('change:end');
+    },
+
+    /**
+     * Set time range on end picker
+     * @private
+     */
+    _setTimeRangeOnEndPicker: function() {
+      var pickerDate, timeRange;
+      var endTimePicker = this._endpicker._timePicker;
+
+      if (!endTimePicker) {
+        return;
+      }
+
+      pickerDate = this._endpicker.getDate() || this._startpicker.getDate();
+      timeRange = this._getTimeRangeFromStartPicker();
+
+      if (pickerDate && timeRange[pickerDate.getDate()]) {
+        endTimePicker.setRange(timeRange[pickerDate.getDate()]);
+        this._isRangeSetted = true;
+      } else if (this._isRangeSetted) {
+        endTimePicker.setRange({ hour: 0, minute: 0 });
+        endTimePicker.resetMinuteRange();
+        this._isRangeSetted = false;
+      }
+    },
+
+    /**
+     * Return object of time range from start picker.
+     * @returns {object}
+     * @private
+     */
+    _getTimeRangeFromStartPicker: function() {
+      var startDate = this._startpicker.getDate();
+      var timeRange = {};
+
+      timeRange[startDate.getDate()] = {
+        hour: startDate.getHours(),
+        minute: startDate.getMinutes()
+      };
+
+      return timeRange;
     },
 
     /**

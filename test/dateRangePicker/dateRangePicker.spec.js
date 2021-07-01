@@ -7,95 +7,17 @@
 var DatePicker = require('../../src/js/datepicker');
 var DateRangePicker = require('../../src/js/dateRangePicker');
 
-var rangedHours = [
-  { disabled: true },
-  { disabled: true },
-  { disabled: true },
-  { disabled: true },
-  { disabled: true },
-  { disabled: true },
-  { disabled: true },
-  { disabled: true },
-  { disabled: true },
-  { disabled: false },
-  { disabled: false },
-  { disabled: false },
-  { disabled: false },
-  { disabled: false },
-  { disabled: false },
-  { disabled: false },
-  { disabled: false },
-  { disabled: false },
-  { disabled: false },
-  { disabled: false },
-  { disabled: false },
-  { disabled: false },
-  { disabled: false },
-  { disabled: false }
-];
+var getMatchedArray = function(length, disabledLength) {
+  var disabledArray = Array.from({ length: disabledLength }, function() {
+    return { disabled: true };
+  });
 
-var rangedMins = [
-  { disabled: true },
-  { disabled: true },
-  { disabled: true },
-  { disabled: true },
-  { disabled: true },
-  { disabled: true },
-  { disabled: true },
-  { disabled: true },
-  { disabled: true },
-  { disabled: true },
-  { disabled: true },
-  { disabled: true },
-  { disabled: true },
-  { disabled: true },
-  { disabled: true },
-  { disabled: true },
-  { disabled: true },
-  { disabled: true },
-  { disabled: true },
-  { disabled: true },
-  { disabled: true },
-  { disabled: true },
-  { disabled: true },
-  { disabled: true },
-  { disabled: true },
-  { disabled: true },
-  { disabled: true },
-  { disabled: true },
-  { disabled: true },
-  { disabled: true },
-  { disabled: true },
-  { disabled: false },
-  { disabled: false },
-  { disabled: false },
-  { disabled: false },
-  { disabled: false },
-  { disabled: false },
-  { disabled: false },
-  { disabled: false },
-  { disabled: false },
-  { disabled: false },
-  { disabled: false },
-  { disabled: false },
-  { disabled: false },
-  { disabled: false },
-  { disabled: false },
-  { disabled: false },
-  { disabled: false },
-  { disabled: false },
-  { disabled: false },
-  { disabled: false },
-  { disabled: false },
-  { disabled: false },
-  { disabled: false },
-  { disabled: false },
-  { disabled: false },
-  { disabled: false },
-  { disabled: false },
-  { disabled: false },
-  { disabled: false }
-];
+  var enabledArray = Array.from({ length: length - disabledLength }, function() {
+    return { disabled: false };
+  });
+
+  return disabledArray.concat(enabledArray);
+};
 
 describe('DateRangePicker', function() {
   var picker, startpickerInput, endpickerInput, startpickerContainer, endpickerContainer;
@@ -196,9 +118,10 @@ describe('DateRangePicker', function() {
     expect(picker.getStartDate()).toEqual(new Date(2018, 0, 1));
   });
 
-  it('should set hour range on endpicker', function() {
+  it('should set disabled for hour select options outside the time range in endPicker', function() {
     var date = new Date(2021, 1, 1, 9, 30);
-    var hourSelect;
+    var hourSelectOptions;
+    var expectMatchArray = getMatchedArray(24, 9);
 
     picker = new DateRangePicker({
       startpicker: {
@@ -206,7 +129,6 @@ describe('DateRangePicker', function() {
         container: startpickerContainer
       },
       endpicker: {
-        date: new Date(),
         input: endpickerInput,
         container: endpickerContainer
       },
@@ -216,14 +138,17 @@ describe('DateRangePicker', function() {
     picker.setStartDate(date);
     picker.setEndDate(date);
 
-    hourSelect = Array.from(endpickerContainer.querySelectorAll('.tui-timepicker-hour option'));
+    hourSelectOptions = Array.from(
+      endpickerContainer.querySelectorAll('.tui-timepicker-hour option')
+    );
 
-    expect(hourSelect).toMatchObject(rangedHours);
+    expect(hourSelectOptions).toMatchObject(expectMatchArray);
   });
 
-  it('should set minute range on endpicker', function() {
+  it('should set disabled for minute select options outside the time range in endPicker', function() {
     var date = new Date(2021, 1, 1, 9, 30);
-    var minuteSelect;
+    var minuteSelectOptions;
+    var expectMatchArray = getMatchedArray(60, 31);
 
     picker = new DateRangePicker({
       startpicker: {
@@ -231,7 +156,6 @@ describe('DateRangePicker', function() {
         container: startpickerContainer
       },
       endpicker: {
-        date: new Date(),
         input: endpickerInput,
         container: endpickerContainer
       },
@@ -241,9 +165,11 @@ describe('DateRangePicker', function() {
     picker.setStartDate(date);
     picker.setEndDate(date);
 
-    minuteSelect = Array.from(endpickerContainer.querySelectorAll('.tui-timepicker-minute option'));
+    minuteSelectOptions = Array.from(
+      endpickerContainer.querySelectorAll('.tui-timepicker-minute option')
+    );
 
-    expect(minuteSelect).toMatchObject(rangedMins);
+    expect(minuteSelectOptions).toMatchObject(expectMatchArray);
   });
 
   it('should disable endpicker with null when initial start-date is null', function() {

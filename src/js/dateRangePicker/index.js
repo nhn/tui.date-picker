@@ -107,19 +107,9 @@ var DateRangePicker = defineClass(
        */
       this._endpicker = null;
 
-      /**
-       * Flag for time range setting in end picker
-       * @type {boolean}
-       * @private
-       */
-      this._isRangeSetted = false;
+      this._isRangeSet = false;
 
-      /**
-       * Previous date of end picker
-       * @type {number}
-       * @private
-       */
-      this.preEndPickerDate = new Date().getDate();
+      this._preEndPickerDate = new Date().getDate();
 
       this._initializePickers(options);
       this._syncRangesToEndpicker();
@@ -296,14 +286,17 @@ var DateRangePicker = defineClass(
        * rangePicker.off('change:end');
        */
 
+      var date;
+
       if (this._endpicker.getDate()) {
-        if (this.preEndPickerDate !== this._endpicker.getDate().getDate()) {
+        date = this._endpicker.getDate().getDate();
+        if (this._preEndPickerDate !== date) {
           this._setTimeRangeOnEndPicker();
         }
 
-        this.preEndPickerDate = this._endpicker.getDate().getDate();
+        this._preEndPickerDate = date;
       } else {
-        this.preEndPickerDate = null;
+        this._preEndPickerDate = null;
       }
 
       this.fire('change:end');
@@ -326,11 +319,11 @@ var DateRangePicker = defineClass(
 
       if (pickerDate && timeRange[pickerDate.getDate()]) {
         endTimePicker.setRange(timeRange[pickerDate.getDate()]);
-        this._isRangeSetted = true;
-      } else if (this._isRangeSetted) {
+        this._isRangeSet = true;
+      } else if (this._isRangeSet) {
         endTimePicker.setRange({ hour: 0, minute: 0 });
         endTimePicker.resetMinuteRange();
-        this._isRangeSetted = false;
+        this._isRangeSet = false;
       }
     },
 

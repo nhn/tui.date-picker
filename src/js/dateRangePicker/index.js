@@ -287,9 +287,10 @@ var DateRangePicker = defineClass(
        */
 
       var date;
+      var endPickerDate = this._endpicker.getDate();
 
-      if (this._endpicker.getDate()) {
-        date = this._endpicker.getDate().getDate();
+      if (endPickerDate) {
+        date = endPickerDate.getDate();
         if (this._preEndPickerDate !== date) {
           this._setTimeRangeOnEndPicker();
         }

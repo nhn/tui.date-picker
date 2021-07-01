@@ -17,7 +17,7 @@
         "test",
         "tui-note.config.js",
         "tuidoc.config.json",
-        "karma.conf.js",
+        "jest.config.js",
         "webpack.config.js",
         "package.json",
         "package-lock.json"

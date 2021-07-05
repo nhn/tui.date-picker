@@ -352,7 +352,6 @@ var DatePicker = defineClass(
      */
     _setEvents: function() {
       mouseTouchEvent.on(this._element, 'click', this._onClickHandler, this);
-      this._element.addEventListener('touchstart', this._onTouchStartHandler);
       this._calendar.on('draw', this._onDrawCalendar, this);
     },
 
@@ -362,7 +361,6 @@ var DatePicker = defineClass(
      */
     _removeEvents: function() {
       mouseTouchEvent.off(this._element, 'click', this._onClickHandler, this);
-      this._element.removeEventListener('touchstart', this._onTouchStartHandler);
       this._calendar.off();
     },
 
@@ -649,6 +647,7 @@ var DatePicker = defineClass(
      */
     _onClickHandler: function(ev) {
       var target = util.getTarget(ev);
+      ev.preventDefault();
 
       if (closest(target, '.' + CLASS_NAME_SELECTABLE)) {
         this._updateDate(target);
@@ -657,15 +656,6 @@ var DatePicker = defineClass(
       } else if (closest(target, '.' + CLASS_NAME_SELECTOR_BUTTON)) {
         this._changePicker(target);
       }
-    },
-
-    /**
-     * Event handler for touchstart of calendar
-     * @param {Event} ev An event object
-     * @private
-     */
-    _onTouchStartHandler: function(ev) {
-      ev.preventDefault();
     },
 
     /**

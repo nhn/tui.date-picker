@@ -23,7 +23,7 @@ describe('Calendar', function() {
     it('"getDate" should return date instance', function() {
       var date = calendar.getDate();
 
-      expect(date).toEqual(jasmine.any(Date));
+      expect(date).toEqual(expect.any(Date));
     });
 
     it('"getNextDate" should return next date', function() {
@@ -102,8 +102,8 @@ describe('Calendar', function() {
         type: 'month'
       });
 
-      expect(calendar.getDate().getFullYear()).toEqual(newDate.getFullYear());
-      expect(calendar.getDate().getMonth()).toEqual(newDate.getMonth());
+      expect(calendar.getDate().getFullYear()).toBe(newDate.getFullYear());
+      expect(calendar.getDate().getMonth()).toBe(newDate.getMonth());
       expect(calendar.getType()).toBe('month');
     });
 
@@ -188,9 +188,9 @@ describe('Calendar', function() {
     });
 
     it('"changeLanguage" should change header,body and rerender', function() {
-      spyOn(calendar._header, 'changeLanguage');
-      spyOn(calendar._body, 'changeLanguage');
-      spyOn(calendar, '_render');
+      calendar._header.changeLanguage = jest.fn();
+      calendar._body.changeLanguage = jest.fn();
+      calendar._render = jest.fn();
 
       calendar.changeLanguage('ko');
 
@@ -214,14 +214,16 @@ describe('Calendar', function() {
   describe('usageStatistics', function() {
     var nCalendar;
     it('should send hostname by default', function() {
-      spyOn(util, 'sendHostName');
+      util.sendHostName = jest.fn();
+
       nCalendar = new Calendar(document.createElement('div'));
 
       expect(util.sendHostName).toHaveBeenCalled();
     });
 
     it('should not send hostname on usageStatistics option false', function() {
-      spyOn(util, 'sendHostName');
+      util.sendHostName = jest.fn();
+
       nCalendar = new Calendar(document.createElement('div'), { usageStatistics: false });
 
       expect(util.sendHostName).not.toHaveBeenCalled();

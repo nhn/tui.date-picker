@@ -1,6 +1,6 @@
 /*!
  * TOAST UI Date Picker
- * @version 4.2.1
+ * @version 4.2.2
  * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  * @license MIT
  */
@@ -2965,6 +2965,7 @@ var DatePicker = defineClass(
      */
     _onClickHandler: function(ev) {
       var target = util.getTarget(ev);
+      ev.preventDefault();
 
       if (closest(target, '.' + CLASS_NAME_SELECTABLE)) {
         this._updateDate(target);

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>9. Changing type</title>
+    <link rel="stylesheet" type="text/css" href="./css/tui-example-style.css" />
+    <link href="../dist/tui-date-picker.css" rel="stylesheet">
+</head>
+<body>
+<div class="code-html">
+    <div class="tui-datepicker-input tui-datetime-input tui-has-focus">
+        <input type="text" id="datepicker-input" aria-label="Date-Time">
+        <span class="tui-ico-date"></span>
+    </div>
+    <div id="wrapper" style="margin-top: -1px;"></div>
+</div>
+<div class="radio-set" style="margin-top: 10px;padding: 0 50px;">
+    <input type="radio" id="date" name="datePickerType" value="date" checked>
+    <label for="date">date</label>
+    <input type="radio" id="month" name="datePickerType" value="month">
+    <label for="month">month</label>
+    <input type="radio" id="year" name="datePickerType" value="year">
+    <label for="year">year</label>
+</div>
+<script type="text/javascript" src="../dist/tui-date-picker.js"></script>
+<script class="code-js">
+    var util = {
+        addEventListener: function(element, eventName, handler) {
+            if (element.addEventListener) {
+                element.addEventListener(eventName, handler, false);
+            } else {
+                element.attachEvent('on' + eventName, handler);
+            }
+        }
+    };
+
+     var datepicker = new tui.DatePicker('#wrapper', {
+         date: new Date(),
+         input: {
+             element: '#datepicker-input',
+             format: 'yyyy-MM-dd'
+         },
+         type: 'date',
+         language: 'ko'
+    });
+
+    var datePickerTypes = document.querySelector('.radio-set');
+    util.addEventListener(datePickerTypes, 'click', function(ev) {
+        var target = ev.target || ev.srcElement;
+        datepicker.setType(target.value);
+    })
+</script>
+</body>
+</html>

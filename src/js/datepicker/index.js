@@ -647,6 +647,7 @@ var DatePicker = defineClass(
      */
     _onClickHandler: function(ev) {
       var target = util.getTarget(ev);
+      ev.preventDefault();
 
       if (closest(target, '.' + CLASS_NAME_SELECTABLE)) {
         this._updateDate(target);

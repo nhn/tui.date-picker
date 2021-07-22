@@ -377,7 +377,8 @@ describe('Date Picker', function() {
       document.body.appendChild(td);
 
       datepicker._onClickHandler({
-        target: td
+        target: td,
+        preventDefault: jest.fn()
       });
 
       expect(datepicker.getDate().getTime()).toEqual(today.setHours(0, 0, 0, 0));
@@ -424,7 +425,8 @@ describe('Date Picker', function() {
       datepicker.autoClose = true;
       datepicker.open();
       datepicker._onClickHandler({
-        target: el
+        target: el,
+        preventDefault: jest.fn()
       });
 
       expect(datepicker.close).toHaveBeenCalled();
@@ -439,7 +441,8 @@ describe('Date Picker', function() {
       datepicker.autoClose = false;
       datepicker.open();
       datepicker._onClickHandler({
-        target: el
+        target: el,
+        preventDefault: jest.fn()
       });
 
       expect(datepicker.close).not.toHaveBeenCalled();

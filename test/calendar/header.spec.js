@@ -11,6 +11,7 @@ var CLASS_NAME_NEXT_MONTH_BTN = constants.CLASS_NAME_NEXT_MONTH_BTN;
 var CLASS_NAME_NEXT_YEAR_BTN = constants.CLASS_NAME_NEXT_YEAR_BTN;
 var CLASS_NAME_PREV_MONTH_BTN = constants.CLASS_NAME_PREV_MONTH_BTN;
 var CLASS_NAME_PREV_YEAR_BTN = constants.CLASS_NAME_PREV_YEAR_BTN;
+var CLASS_NAME_TITLE_TODAY = 'tui-calendar-title-today';
 
 describe('Calendar', function() {
   describe('Header', function() {
@@ -28,7 +29,8 @@ describe('Calendar', function() {
     beforeEach(function() {
       header = new Header(container, {
         language: 'en',
-        showJumpButtons: true
+        showJumpButtons: true,
+        showToday: true
       });
       header.render(new Date(2016, 11), 'date');
     });
@@ -70,6 +72,14 @@ describe('Calendar', function() {
       spy.mockReset();
 
       clickBtnInHeader(CLASS_NAME_PREV_YEAR_BTN);
+      expect(spy).toHaveBeenCalled();
+    });
+
+    it('should fire "today" custom event when click today text', function() {
+      var spy = jest.fn();
+      header.on('today', spy);
+
+      clickBtnInHeader(CLASS_NAME_TITLE_TODAY);
       expect(spy).toHaveBeenCalled();
     });
 

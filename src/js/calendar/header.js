@@ -24,11 +24,12 @@ var TYPE_YEAR = constants.TYPE_YEAR;
 var CLASS_NAME_TITLE_MONTH = 'tui-calendar-title-month';
 var CLASS_NAME_TITLE_YEAR = 'tui-calendar-title-year';
 var CLASS_NAME_TITLE_YEAR_TO_YEAR = 'tui-calendar-title-year-to-year';
-var CLASS_NAME_TITLE_TODAY = '.tui-calendar-title-today';
 
 var SELECTOR_INNER_ELEM = '.tui-calendar-header-inner';
 var SELECTOR_INFO_ELEM = '.tui-calendar-header-info';
 var SELECTOR_BTN = '.tui-calendar-btn';
+
+var TODAY_TITLE_ELEM = '.tui-calendar-title-today';
 
 var YEAR_TITLE_FORMAT = 'yyyy';
 
@@ -143,7 +144,7 @@ var Header = defineClass(
 
       if (closest(target, SELECTOR_BTN)) {
         this.fire('click', ev);
-      } else if (closest(target, CLASS_NAME_TITLE_TODAY)) {
+      } else if (closest(target, TODAY_TITLE_ELEM)) {
         this.fire('today');
       }
     },

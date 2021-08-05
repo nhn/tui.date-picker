@@ -16,12 +16,18 @@ var DatePicker = require('../../src/js/datepicker');
 var Calendar = require('../../src/js/calendar');
 var constants = require('../../src/js/constants');
 
+var CLASS_NAME_TITLE_TODAY = constants.CLASS_NAME_TITLE_TODAY;
+
 var CLASS_NAME_SELECTABLE = 'tui-is-selectable';
 var CLASS_NAME_HIDDEN = 'tui-hidden';
 
 describe('Date Picker', function() {
   describe('date=null on constructor', function() {
     var datepicker, input, container;
+
+    function clickBtnInDatePicker(className) {
+      container.querySelector('.' + className).click();
+    }
 
     beforeEach(function() {
       container = document.createElement('div');
@@ -55,6 +61,18 @@ describe('Date Picker', function() {
       datepicker.setDate(new Date(2016, 11, 3));
 
       expect(datepicker.getDate()).toEqual(new Date(2016, 11, 3));
+    });
+
+    it('should set date to today when click today text', function() {
+      var pickerDate;
+      var today = new Date();
+      datepicker.setDate(new Date(2016, 11, 3));
+
+      clickBtnInDatePicker(CLASS_NAME_TITLE_TODAY);
+
+      pickerDate = datepicker.getDate().toLocaleDateString();
+
+      expect(pickerDate).toBe(today.toLocaleDateString());
     });
   });
 

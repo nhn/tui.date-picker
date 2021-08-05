@@ -11,7 +11,7 @@ var CLASS_NAME_NEXT_MONTH_BTN = constants.CLASS_NAME_NEXT_MONTH_BTN;
 var CLASS_NAME_NEXT_YEAR_BTN = constants.CLASS_NAME_NEXT_YEAR_BTN;
 var CLASS_NAME_PREV_MONTH_BTN = constants.CLASS_NAME_PREV_MONTH_BTN;
 var CLASS_NAME_PREV_YEAR_BTN = constants.CLASS_NAME_PREV_YEAR_BTN;
-var CLASS_NAME_TITLE_TODAY = 'tui-calendar-title-today';
+var CLASS_NAME_TITLE_TODAY = constants.CLASS_NAME_TITLE_TODAY;
 
 describe('Calendar', function() {
   describe('Header', function() {

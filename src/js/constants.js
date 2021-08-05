@@ -23,6 +23,7 @@ module.exports = {
   CLASS_NAME_PREV_YEAR_BTN: 'tui-calendar-btn-prev-year',
   CLASS_NAME_NEXT_YEAR_BTN: 'tui-calendar-btn-next-year',
   CLASS_NAME_NEXT_MONTH_BTN: 'tui-calendar-btn-next-month',
+  CLASS_NAME_TITLE_TODAY: 'tui-calendar-title-today',
 
   DEFAULT_WEEK_START_DAY: 'Sun',
   WEEK_START_DAY_MAP: {

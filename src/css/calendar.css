@@ -91,6 +91,12 @@
     background-color: #f4f4f4
 }
 
+.tui-calendar .tui-calendar-title-today:hover {
+    color: #333;
+    background-color: #edf4fc;
+    cursor: pointer;
+}
+
 .tui-calendar .tui-calendar-title {
     display: inline-block;
     font-size: 18px;

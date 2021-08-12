@@ -1,6 +1,6 @@
 /*!
  * TOAST UI Date Picker
- * @version 4.2.2
+ * @version 4.3.0
  * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  * @license MIT
  */
@@ -218,6 +218,7 @@ module.exports = {
   CLASS_NAME_PREV_YEAR_BTN: 'tui-calendar-btn-prev-year',
   CLASS_NAME_NEXT_YEAR_BTN: 'tui-calendar-btn-next-year',
   CLASS_NAME_NEXT_MONTH_BTN: 'tui-calendar-btn-next-month',
+  CLASS_NAME_TITLE_TODAY: 'tui-calendar-title-today',
 
   DEFAULT_WEEK_START_DAY: 'Sun',
   WEEK_START_DAY_MAP: {
@@ -2671,6 +2672,7 @@ var DatePicker = defineClass(
     _setEvents: function() {
       mouseTouchEvent.on(this._element, 'click', this._onClickHandler, this);
       this._calendar.on('draw', this._onDrawCalendar, this);
+      this._calendar._header.on('today', this._onClickTodayHandler, this);
     },
 
     /**
@@ -2974,6 +2976,16 @@ var DatePicker = defineClass(
       } else if (closest(target, '.' + CLASS_NAME_SELECTOR_BUTTON)) {
         this._changePicker(target);
       }
+    },
+
+    /**
+     * Event handler for click of today text
+     * @param {Event} ev An event object
+     * @private
+     */
+    _onClickTodayHandler: function() {
+      this.setDate(Date.now());
+      this.close();
     },
 
     /**
@@ -5481,6 +5493,8 @@ var SELECTOR_INNER_ELEM = '.tui-calendar-header-inner';
 var SELECTOR_INFO_ELEM = '.tui-calendar-header-info';
 var SELECTOR_BTN = '.tui-calendar-btn';
 
+var TODAY_TITLE_ELEM = '.tui-calendar-title-today';
+
 var YEAR_TITLE_FORMAT = 'yyyy';
 
 /**
@@ -5594,6 +5608,8 @@ var Header = defineClass(
 
       if (closest(target, SELECTOR_BTN)) {
         this.fire('click', ev);
+      } else if (closest(target, TODAY_TITLE_ELEM)) {
+        this.fire('today');
       }
     },
 

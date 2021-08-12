@@ -1,6 +1,6 @@
 /*!
  * TOAST UI Date Picker
- * @version 4.2.2
+ * @version 4.3.0
  * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  * @license MIT
  */
@@ -95,6 +95,12 @@
     line-height: 34px;
     color: #777;
     background-color: #f4f4f4
+}
+
+.tui-calendar .tui-calendar-title-today:hover {
+    color: #333;
+    background-color: #edf4fc;
+    cursor: pointer;
 }
 
 .tui-calendar .tui-calendar-title {

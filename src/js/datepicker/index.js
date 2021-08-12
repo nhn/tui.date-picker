@@ -353,6 +353,7 @@ var DatePicker = defineClass(
     _setEvents: function() {
       mouseTouchEvent.on(this._element, 'click', this._onClickHandler, this);
       this._calendar.on('draw', this._onDrawCalendar, this);
+      this._calendar._header.on('today', this._onClickTodayHandler, this);
     },
 
     /**
@@ -656,6 +657,16 @@ var DatePicker = defineClass(
       } else if (closest(target, '.' + CLASS_NAME_SELECTOR_BUTTON)) {
         this._changePicker(target);
       }
+    },
+
+    /**
+     * Event handler for click of today text
+     * @param {Event} ev An event object
+     * @private
+     */
+    _onClickTodayHandler: function() {
+      this.setDate(Date.now());
+      this.close();
     },
 
     /**

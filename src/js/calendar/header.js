@@ -29,8 +29,6 @@ var SELECTOR_INNER_ELEM = '.tui-calendar-header-inner';
 var SELECTOR_INFO_ELEM = '.tui-calendar-header-info';
 var SELECTOR_BTN = '.tui-calendar-btn';
 
-var TODAY_TITLE_ELEM = '.tui-calendar-title-today';
-
 var YEAR_TITLE_FORMAT = 'yyyy';
 
 /**
@@ -144,8 +142,6 @@ var Header = defineClass(
 
       if (closest(target, SELECTOR_BTN)) {
         this.fire('click', ev);
-      } else if (closest(target, TODAY_TITLE_ELEM)) {
-        this.fire('today');
       }
     },
 

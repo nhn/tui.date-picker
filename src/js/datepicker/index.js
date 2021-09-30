@@ -43,6 +43,7 @@ var CLASS_NAME_NEXT_MONTH_BTN = constants.CLASS_NAME_NEXT_MONTH_BTN;
 var CLASS_NAME_PREV_YEAR_BTN = constants.CLASS_NAME_PREV_YEAR_BTN;
 var CLASS_NAME_PREV_MONTH_BTN = constants.CLASS_NAME_PREV_MONTH_BTN;
 var CLASS_NAME_SELECTED = constants.CLASS_NAME_SELECTED;
+var CLASS_NAME_TITLE_TODAY = constants.CLASS_NAME_TITLE_TODAY;
 
 var CLASS_NAME_SELECTABLE = 'tui-is-selectable';
 var CLASS_NAME_BLOCKED = 'tui-is-blocked';
@@ -353,7 +354,6 @@ var DatePicker = defineClass(
     _setEvents: function() {
       mouseTouchEvent.on(this._element, 'click', this._onClickHandler, this);
       this._calendar.on('draw', this._onDrawCalendar, this);
-      this._calendar._header.on('today', this._onClickTodayHandler, this);
     },
 
     /**
@@ -648,10 +648,13 @@ var DatePicker = defineClass(
      */
     _onClickHandler: function(ev) {
       var target = util.getTarget(ev);
-      ev.preventDefault();
 
       if (closest(target, '.' + CLASS_NAME_SELECTABLE)) {
+        ev.preventDefault();
         this._updateDate(target);
+      } else if (closest(target, '.' + CLASS_NAME_TITLE_TODAY)) {
+        ev.preventDefault();
+        this._updateDateToToday();
       } else if (closest(target, SELECTOR_CALENDAR_TITLE)) {
         this.drawUpperCalendar(this._date);
       } else if (closest(target, '.' + CLASS_NAME_SELECTOR_BUTTON)) {
@@ -660,11 +663,10 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Event handler for click of today text
-     * @param {Event} ev An event object
+     * Update date to today
      * @private
      */
-    _onClickTodayHandler: function() {
+    _updateDateToToday: function() {
       this.setDate(Date.now());
       this.close();
     },

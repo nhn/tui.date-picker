@@ -648,9 +648,9 @@ var DatePicker = defineClass(
      */
     _onClickHandler: function(ev) {
       var target = util.getTarget(ev);
-      ev.preventDefault();
 
       if (closest(target, '.' + CLASS_NAME_SELECTABLE)) {
+        ev.preventDefault();
         this._updateDate(target);
       } else if (closest(target, SELECTOR_CALENDAR_TITLE)) {
         this.drawUpperCalendar(this._date);

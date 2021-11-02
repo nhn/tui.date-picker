@@ -39,8 +39,10 @@ var utils = {
     var selector = '';
     if (elem.id) {
       selector = '#' + elem.id;
-    } else if (elem.className) {
+    } else if (typeof elem.className === "string") {
       selector = '.' + elem.className.split(' ')[0];
+    } else if (typeof elem.className === "object" && typeof elem.className.baseVal === "string") {
+      selector = '.' + elem.className.baseVal.split(' ')[0];
     }
 
     return selector;

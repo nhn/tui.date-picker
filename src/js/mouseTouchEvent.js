@@ -1,6 +1,5 @@
 /**
  * @fileoverview Set mouse-touch event
- * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  */
 
 'use strict';

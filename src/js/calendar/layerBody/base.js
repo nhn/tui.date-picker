@@ -1,6 +1,5 @@
 /**
  * @fileoverview Layer base
- * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  */
 
 'use strict';

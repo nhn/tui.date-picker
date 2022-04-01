@@ -1,6 +1,5 @@
 /**
  * @fileoverview Constants of date-picker
- * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  */
 
 'use strict';

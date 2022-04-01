@@ -1,7 +1,7 @@
 {
     "name": "tui-date-picker",
     "authors": [
-        "NHN. FE Development Lab <dl_javascript@nhn.com>"
+        "NHN Cloud. FE Development Lab <dl_javascript@nhn.com>"
     ],
     "main": [
         "dist/tui-date-picker.js",

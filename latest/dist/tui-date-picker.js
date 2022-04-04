@@ -1,7 +1,7 @@
 /*!
  * TOAST UI Date Picker
  * @version 4.3.1
- * @author NHN. FE Development Lab <dl_javascript@nhn.com>
+ * @author NHN Cloud. FE Development Lab <dl_javascript@nhn.com>
  * @license MIT
  */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -195,7 +195,6 @@ module.exports = defineClass;
 "use strict";
 /**
  * @fileoverview Constants of date-picker
- * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  */
 
 
@@ -352,7 +351,6 @@ module.exports = inArray;
 "use strict";
 /**
  * @fileoverview Utils for Datepicker component
- * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  */
 
 
@@ -445,7 +443,6 @@ module.exports = utils;
 "use strict";
 /**
  * @fileoverview Utils for DatePicker component
- * @author NHN. FE dev Lab. <dl_javascript@nhn.com>
  */
 
 
@@ -1432,7 +1429,6 @@ module.exports = forEach;
 "use strict";
 /**
  * @fileoverview Default locale texts
- * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  */
 
 
@@ -2125,7 +2121,6 @@ module.exports = removeClass;
 "use strict";
 /**
  * @fileoverview Set mouse-touch event
- * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  */
 
 
@@ -2195,7 +2190,6 @@ module.exports = mouseTouchEvent;
 "use strict";
 /**
  * @fileoverview Layer base
- * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  */
 
 
@@ -2319,7 +2313,6 @@ module.exports = LayerBase;
 "use strict";
 /**
  * @fileoverview DatePicker component
- * @author NHN. FE dev Lab <dl_javascript@nhn.com>
  */
 
 
@@ -4007,7 +4000,6 @@ module.exports = isDate;
 "use strict";
 /**
  * @fileoverview Calendar component
- * @author NHN. FE dev Lab <dl_javascript@nhn.com>
  */
 
 
@@ -4523,7 +4515,6 @@ module.exports = Calendar;
 "use strict";
 /**
  * @fileoverview Date <-> Text formatting module
- * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  */
 
 
@@ -5093,7 +5084,6 @@ module.exports = off;
 "use strict";
 /**
  * @fileoverview The entry file of DatePicker components
- * @author NHN. FE Development Team
  */
 
 
@@ -5466,7 +5456,6 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__43__;
 "use strict";
 /**
  * @fileoverview Calendar Header
- * @author NHN. FE dev Lab <dl_javascript@nhn.com>
  */
 
 
@@ -5914,7 +5903,6 @@ module.exports = imagePing;
 "use strict";
 /**
  * @fileoverview Calendar body
- * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  */
 
 
@@ -6061,7 +6049,6 @@ module.exports = Body;
 "use strict";
 /**
  * @fileoverview Date layer
- * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  */
 
 
@@ -6299,7 +6286,6 @@ module.exports = function(context) {
 "use strict";
 /**
  * @fileoverview Month layer
- * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  */
 
 
@@ -6432,7 +6418,6 @@ module.exports = function(context) {
 "use strict";
 /**
  * @fileoverview Year layer
- * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  */
 
 
@@ -6548,7 +6533,6 @@ module.exports = function(context) {
 "use strict";
 /**
  * @fileoverview RangeModel
- * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  */
 
 
@@ -6740,7 +6724,6 @@ module.exports = RangeModel;
 "use strict";
 /**
  * @fileoverview Range (in RangeModel)
- * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  */
 
 
@@ -6904,7 +6887,6 @@ module.exports = function(context) {
 "use strict";
 /**
  * @fileoverview DatePicker input(element) component
- * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  */
 
 
@@ -7114,7 +7096,6 @@ module.exports = DatePickerInput;
 "use strict";
 /**
  * @fileoverview Date-Range picker
- * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  */
 
 

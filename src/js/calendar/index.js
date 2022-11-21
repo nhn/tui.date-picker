@@ -418,7 +418,7 @@ var Calendar = defineClass(
         case TYPE_MONTH:
           return this._getRelativeDate(12); // 12 months = 1 year
         case TYPE_YEAR:
-          return this._getRelativeDate(108); // 108 months = 9 years = 12 * 9
+          return this._getRelativeDate(60); // 60 months = 5 years = 12 * 5
         default:
           throw new Error('Unknown layer type');
       }
@@ -434,7 +434,7 @@ var Calendar = defineClass(
         case TYPE_MONTH:
           return this._getRelativeDate(-12); // 12 months = 1 year
         case TYPE_YEAR:
-          return this._getRelativeDate(-108); // 108 months = 9 years = 12 * 9
+          return this._getRelativeDate(-60); // 60 months = 5 years = 12 * 5
         default:
           throw new Error('Unknown layer type');
       }

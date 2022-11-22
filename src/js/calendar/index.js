@@ -410,13 +410,12 @@ var Calendar = defineClass(
 
     /**
      * Return the date a year later.
-     * @param {boolean} useCustomStep - flag for getting relative date by using custom step
-     * @param {number} step - custom step for getting relative date
+     * @param {number} [customStep] - custom step for getting relative date
      * @returns {Date}
      */
-    getNextYearDate: function(useCustomStep, step) {
-      if (useCustomStep && step) {
-        return this._getRelativeDate(step);
+    getNextYearDate: function(customStep) {
+      if (customStep) {
+        return this._getRelativeDate(customStep);
       }
 
       switch (this.getType()) {
@@ -432,13 +431,12 @@ var Calendar = defineClass(
 
     /**
      * Return the date a year previously.
-     * @param {boolean} useCustomStep - flag for getting relative date by using custom step
-     * @param {number} step - custom step for getting relative date
+     * @param {number} [customStep] - custom step for getting relative date
      * @returns {Date}
      */
-    getPrevYearDate: function(useCustomStep, step) {
-      if (useCustomStep && step) {
-        return this._getRelativeDate(step);
+    getPrevYearDate: function(customStep) {
+      if (customStep) {
+        return this._getRelativeDate(customStep);
       }
 
       switch (this.getType()) {

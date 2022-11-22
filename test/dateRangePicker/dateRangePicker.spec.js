@@ -171,6 +171,36 @@ describe('DateRangePicker', function() {
     expect(minuteSelectOptions).toMatchObject(expectMatchArray);
   });
 
+  it('should not set disabled when date of start picker does not same as date of endPicker for time select options in endPicker', function() {
+    var startPickerDate = new Date(2021, 1, 1, 9, 30);
+    var endPickerDate = new Date(2022, 1, 1, 9, 30);
+    var hourSelectOptions, minuteSelectOptions;
+
+    picker = new DateRangePicker({
+      startpicker: {
+        date: startPickerDate,
+        input: startpickerInput,
+        container: startpickerContainer
+      },
+      endpicker: {
+        date: endPickerDate,
+        input: endpickerInput,
+        container: endpickerContainer
+      },
+      timePicker: true
+    });
+
+    hourSelectOptions = Array.from(
+      endpickerContainer.querySelectorAll('.tui-timepicker-hour option')
+    );
+    minuteSelectOptions = Array.from(
+      endpickerContainer.querySelectorAll('.tui-timepicker-minute option')
+    );
+
+    expect(hourSelectOptions).toMatchObject(getMatchedArray(12, 0));
+    expect(minuteSelectOptions).toMatchObject(getMatchedArray(60, 0));
+  });
+
   it('should disable endpicker with null when initial start-date is null', function() {
     picker = new DateRangePicker({
       startpicker: {

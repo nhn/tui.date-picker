@@ -410,15 +410,21 @@ var Calendar = defineClass(
 
     /**
      * Return the date a year later.
+     * @param {boolean} useCustomStep - flag for getting relative date by using custom step
+     * @param {number} step - custom step for getting relative date
      * @returns {Date}
      */
-    getNextYearDate: function() {
+    getNextYearDate: function(useCustomStep, step) {
+      if (useCustomStep && step) {
+        return this._getRelativeDate(step);
+      }
+
       switch (this.getType()) {
         case TYPE_DATE:
         case TYPE_MONTH:
           return this._getRelativeDate(12); // 12 months = 1 year
         case TYPE_YEAR:
-          return this._getRelativeDate(60); // 60 months = 5 years = 12 * 5
+          return this._getRelativeDate(108); // 108 months = 9 years = 12 * 9
         default:
           throw new Error('Unknown layer type');
       }
@@ -426,15 +432,21 @@ var Calendar = defineClass(
 
     /**
      * Return the date a year previously.
+     * @param {boolean} useCustomStep - flag for getting relative date by using custom step
+     * @param {number} step - custom step for getting relative date
      * @returns {Date}
      */
-    getPrevYearDate: function() {
+    getPrevYearDate: function(useCustomStep, step) {
+      if (useCustomStep && step) {
+        return this._getRelativeDate(step);
+      }
+
       switch (this.getType()) {
         case TYPE_DATE:
         case TYPE_MONTH:
           return this._getRelativeDate(-12); // 12 months = 1 year
         case TYPE_YEAR:
-          return this._getRelativeDate(-60); // 60 months = 5 years = 12 * 5
+          return this._getRelativeDate(-108); // 108 months = 9 years = 12 * 9
         default:
           throw new Error('Unknown layer type');
       }

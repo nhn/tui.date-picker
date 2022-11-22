@@ -48,7 +48,7 @@ describe('Calendar', function() {
 
       // year calendar
       expect(calendar.getNextDate()).toEqual(
-        new Date(currentDate.getFullYear() + 5, currentDate.getMonth())
+        new Date(currentDate.getFullYear() + 9, currentDate.getMonth())
       );
     });
 
@@ -75,7 +75,7 @@ describe('Calendar', function() {
 
       // year calendar
       expect(calendar.getPrevDate()).toEqual(
-        new Date(currentDate.getFullYear() - 5, currentDate.getMonth())
+        new Date(currentDate.getFullYear() - 9, currentDate.getMonth())
       );
     });
 
@@ -140,7 +140,7 @@ describe('Calendar', function() {
       });
       calendar.drawNext();
 
-      expect(calendar.getDate().getFullYear()).toBe(2021);
+      expect(calendar.getDate().getFullYear()).toBe(2025);
       expect(calendar.getDate().getMonth()).toBe(0);
     });
 
@@ -169,7 +169,7 @@ describe('Calendar', function() {
       });
       calendar.drawPrev();
 
-      expect(calendar.getDate().getFullYear()).toBe(2011);
+      expect(calendar.getDate().getFullYear()).toBe(2007);
       expect(calendar.getDate().getMonth()).toBe(0);
     });
 

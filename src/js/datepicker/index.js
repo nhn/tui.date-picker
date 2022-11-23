@@ -1155,7 +1155,7 @@ var DatePicker = defineClass(
         this._date = newDate;
         this._calendar.draw({ date: newDate });
         if (this._timePicker) {
-          this._timePicker.setTime(newDate.getHours(), newDate.getMinutes());
+          this._timePicker.setTime(newDate.getHours(), newDate.getMinutes(), true);
         }
         this._syncToInput();
 

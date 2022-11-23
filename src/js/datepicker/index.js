@@ -1133,11 +1133,12 @@ var DatePicker = defineClass(
     /**
      * Select the date.
      * @param {Date|number} date - Date instance or timestamp to set
+     * @param {boolean} [silent] - Prevents firing 'change' event if it is true.
      * @example
      * datepicker.setDate(new Date()); // Set today
      */
     // eslint-disable-next-line complexity
-    setDate: function(date) {
+    setDate: function(date, silent) {
       var isValidInput, newDate, shouldUpdate;
 
       if (date === null) {
@@ -1174,7 +1175,9 @@ var DatePicker = defineClass(
          * // unbind the 'change' event
          * datepicker.off('change');
          */
-        this.fire('change');
+        if (!silent) {
+          this.fire('change');
+        }
       }
     },
 

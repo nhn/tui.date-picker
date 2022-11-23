@@ -152,6 +152,15 @@ describe('Date Picker', function() {
 
         expect(spy).toHaveBeenCalledTimes(1);
       });
+
+      it('should not fire change event when silent is true', function() {
+        var spy = jest.fn();
+        datepicker.on('change', spy);
+
+        datepicker.setDate(new Date(2017, 10, 27, 23, 59), true);
+
+        expect(spy).toHaveBeenCalledTimes(0);
+      });
     });
 
     it('setType', function() {

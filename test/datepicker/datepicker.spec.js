@@ -148,7 +148,7 @@ describe('Date Picker', function() {
         var spy = jest.fn();
         datepicker.on('change', spy);
 
-        datepicker.setDate(new Date(2022, 11, 23, 23, 59));
+        datepicker.setDate(new Date(2017, 10, 27, 23, 59));
 
         expect(spy).toHaveBeenCalledTimes(1);
       });

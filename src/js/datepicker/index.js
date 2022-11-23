@@ -744,8 +744,13 @@ var DatePicker = defineClass(
      * @private
      */
     _setDisplayHeadButtons: function() {
-      var nextYearDate = this._calendar.getNextYearDate();
-      var prevYearDate = this._calendar.getPrevYearDate();
+      var customStep = 60; // 60 months = 5 years = 12 * 5
+      var nextYearDate = this._calendar.getNextYearDate(
+        this.getCalendarType() === TYPE_YEAR ? customStep : null
+      );
+      var prevYearDate = this._calendar.getPrevYearDate(
+        this.getCalendarType() === TYPE_YEAR ? -customStep : null
+      );
       var maxTimestamp = this._rangeModel.getMaximumValue();
       var minTimestamp = this._rangeModel.getMinimumValue();
       var nextYearBtn = this._element.querySelector('.' + CLASS_NAME_NEXT_YEAR_BTN);

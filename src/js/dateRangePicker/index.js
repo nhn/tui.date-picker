@@ -302,12 +302,29 @@ var DateRangePicker = defineClass(
       this.fire('change:end');
     },
 
+    /*
+     * Get date of start picker and end picker being same
+     * @returns {boolean}
+     * @private
+     */
+    _isStartAndEndDateSame: function() {
+      return (
+        !!this._endpicker.getDate() &&
+        !!this._startpicker.getDate() &&
+        dateUtil.compare(
+          this._endpicker.getDate(),
+          this._startpicker.getDate(),
+          constants.TYPE_DATE
+        ) === 0
+      );
+    },
+
     /**
      * Set time range on end picker
      * @private
      */
     _setTimeRangeOnEndPicker: function() {
-      var pickerDate, timeRange;
+      var pickerDate, timeRange, timeRangeToSet;
       var endTimePicker = this._endpicker._timePicker;
 
       if (!endTimePicker) {
@@ -316,9 +333,10 @@ var DateRangePicker = defineClass(
 
       pickerDate = this._endpicker.getDate() || this._startpicker.getDate();
       timeRange = this._getTimeRangeFromStartPicker();
+      timeRangeToSet = pickerDate && timeRange[pickerDate.getDate()];
 
-      if (pickerDate && timeRange[pickerDate.getDate()]) {
-        endTimePicker.setRange(timeRange[pickerDate.getDate()]);
+      if (this._isStartAndEndDateSame() && timeRangeToSet) {
+        endTimePicker.setRange(timeRangeToSet);
         this._isRangeSet = true;
       } else if (this._isRangeSet) {
         endTimePicker.setRange({ hour: 0, minute: 0 });

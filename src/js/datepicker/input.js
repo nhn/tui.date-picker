@@ -1,6 +1,5 @@
 /**
  * @fileoverview DatePicker input(element) component
- * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  */
 
 'use strict';

@@ -1,6 +1,5 @@
 /**
  * @fileoverview DatePicker component
- * @author NHN. FE dev Lab <dl_javascript@nhn.com>
  */
 
 'use strict';
@@ -745,8 +744,13 @@ var DatePicker = defineClass(
      * @private
      */
     _setDisplayHeadButtons: function() {
-      var nextYearDate = this._calendar.getNextYearDate();
-      var prevYearDate = this._calendar.getPrevYearDate();
+      var customStep = 60; // 60 months = 5 years = 12 * 5
+      var nextYearDate = this._calendar.getNextYearDate(
+        this.getCalendarType() === TYPE_YEAR ? customStep : null
+      );
+      var prevYearDate = this._calendar.getPrevYearDate(
+        this.getCalendarType() === TYPE_YEAR ? -customStep : null
+      );
       var maxTimestamp = this._rangeModel.getMaximumValue();
       var minTimestamp = this._rangeModel.getMinimumValue();
       var nextYearBtn = this._element.querySelector('.' + CLASS_NAME_NEXT_YEAR_BTN);
@@ -1129,11 +1133,12 @@ var DatePicker = defineClass(
     /**
      * Select the date.
      * @param {Date|number} date - Date instance or timestamp to set
+     * @param {boolean} [silent] - Prevents firing 'change' event if it is true.
      * @example
      * datepicker.setDate(new Date()); // Set today
      */
     // eslint-disable-next-line complexity
-    setDate: function(date) {
+    setDate: function(date, silent) {
       var isValidInput, newDate, shouldUpdate;
 
       if (date === null) {
@@ -1151,7 +1156,7 @@ var DatePicker = defineClass(
         this._date = newDate;
         this._calendar.draw({ date: newDate });
         if (this._timePicker) {
-          this._timePicker.setTime(newDate.getHours(), newDate.getMinutes());
+          this._timePicker.setTime(newDate.getHours(), newDate.getMinutes(), true);
         }
         this._syncToInput();
 
@@ -1170,7 +1175,9 @@ var DatePicker = defineClass(
          * // unbind the 'change' event
          * datepicker.off('change');
          */
-        this.fire('change');
+        if (!silent) {
+          this.fire('change');
+        }
       }
     },
 

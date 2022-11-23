@@ -1,6 +1,7 @@
+/* eslint-disable max-nested-callbacks */
+
 /**
  * @fileoverview DatePicker spec
- * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  */
 'use strict';
 
@@ -132,14 +133,34 @@ describe('Date Picker', function() {
       expect(datepicker.getCalendar()).toEqual(expect.any(Calendar));
     });
 
-    it('setDate', function() {
-      datepicker.setDate(new Date(2017, 2, 12));
+    describe('setDate', function() {
+      it('default', function() {
+        datepicker.setDate(new Date(2017, 2, 12));
 
-      expect(datepicker.getDate()).toEqual(new Date(2017, 2, 12));
+        expect(datepicker.getDate()).toEqual(new Date(2017, 2, 12));
 
-      datepicker.setDate();
+        datepicker.setDate();
 
-      expect(datepicker.getDate()).toEqual(new Date(2017, 2, 12));
+        expect(datepicker.getDate()).toEqual(new Date(2017, 2, 12));
+      });
+
+      it('should firing change event only once', function() {
+        var spy = jest.fn();
+        datepicker.on('change', spy);
+
+        datepicker.setDate(new Date(2017, 10, 27, 23, 59));
+
+        expect(spy).toHaveBeenCalledTimes(1);
+      });
+
+      it('should not fire change event when silent is true', function() {
+        var spy = jest.fn();
+        datepicker.on('change', spy);
+
+        datepicker.setDate(new Date(2017, 10, 27, 23, 59), true);
+
+        expect(spy).toHaveBeenCalledTimes(0);
+      });
     });
 
     it('setType', function() {

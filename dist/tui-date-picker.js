@@ -1,7 +1,7 @@
 /*!
  * TOAST UI Date Picker
- * @version 4.3.1
- * @author NHN. FE Development Lab <dl_javascript@nhn.com>
+ * @version 4.3.2
+ * @author NHN Cloud. FE Development Lab <dl_javascript@nhn.com>
  * @license MIT
  */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -195,7 +195,6 @@ module.exports = defineClass;
 "use strict";
 /**
  * @fileoverview Constants of date-picker
- * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  */
 
 
@@ -352,7 +351,6 @@ module.exports = inArray;
 "use strict";
 /**
  * @fileoverview Utils for Datepicker component
- * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  */
 
 
@@ -445,7 +443,6 @@ module.exports = utils;
 "use strict";
 /**
  * @fileoverview Utils for DatePicker component
- * @author NHN. FE dev Lab. <dl_javascript@nhn.com>
  */
 
 
@@ -1432,7 +1429,6 @@ module.exports = forEach;
 "use strict";
 /**
  * @fileoverview Default locale texts
- * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  */
 
 
@@ -2125,7 +2121,6 @@ module.exports = removeClass;
 "use strict";
 /**
  * @fileoverview Set mouse-touch event
- * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  */
 
 
@@ -2195,7 +2190,6 @@ module.exports = mouseTouchEvent;
 "use strict";
 /**
  * @fileoverview Layer base
- * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  */
 
 
@@ -2319,7 +2313,6 @@ module.exports = LayerBase;
 "use strict";
 /**
  * @fileoverview DatePicker component
- * @author NHN. FE dev Lab <dl_javascript@nhn.com>
  */
 
 
@@ -3064,8 +3057,13 @@ var DatePicker = defineClass(
      * @private
      */
     _setDisplayHeadButtons: function() {
-      var nextYearDate = this._calendar.getNextYearDate();
-      var prevYearDate = this._calendar.getPrevYearDate();
+      var customStep = 60; // 60 months = 5 years = 12 * 5
+      var nextYearDate = this._calendar.getNextYearDate(
+        this.getCalendarType() === TYPE_YEAR ? customStep : null
+      );
+      var prevYearDate = this._calendar.getPrevYearDate(
+        this.getCalendarType() === TYPE_YEAR ? -customStep : null
+      );
       var maxTimestamp = this._rangeModel.getMaximumValue();
       var minTimestamp = this._rangeModel.getMinimumValue();
       var nextYearBtn = this._element.querySelector('.' + CLASS_NAME_NEXT_YEAR_BTN);
@@ -3448,11 +3446,12 @@ var DatePicker = defineClass(
     /**
      * Select the date.
      * @param {Date|number} date - Date instance or timestamp to set
+     * @param {boolean} [silent] - Prevents firing 'change' event if it is true.
      * @example
      * datepicker.setDate(new Date()); // Set today
      */
     // eslint-disable-next-line complexity
-    setDate: function(date) {
+    setDate: function(date, silent) {
       var isValidInput, newDate, shouldUpdate;
 
       if (date === null) {
@@ -3470,7 +3469,7 @@ var DatePicker = defineClass(
         this._date = newDate;
         this._calendar.draw({ date: newDate });
         if (this._timePicker) {
-          this._timePicker.setTime(newDate.getHours(), newDate.getMinutes());
+          this._timePicker.setTime(newDate.getHours(), newDate.getMinutes(), true);
         }
         this._syncToInput();
 
@@ -3489,7 +3488,9 @@ var DatePicker = defineClass(
          * // unbind the 'change' event
          * datepicker.off('change');
          */
-        this.fire('change');
+        if (!silent) {
+          this.fire('change');
+        }
       }
     },
 
@@ -4007,7 +4008,6 @@ module.exports = isDate;
 "use strict";
 /**
  * @fileoverview Calendar component
- * @author NHN. FE dev Lab <dl_javascript@nhn.com>
  */
 
 
@@ -4418,9 +4418,14 @@ var Calendar = defineClass(
 
     /**
      * Return the date a year later.
+     * @param {number} [customStep] - custom step for getting relative date
      * @returns {Date}
      */
-    getNextYearDate: function() {
+    getNextYearDate: function(customStep) {
+      if (customStep) {
+        return this._getRelativeDate(customStep);
+      }
+
       switch (this.getType()) {
         case TYPE_DATE:
         case TYPE_MONTH:
@@ -4434,9 +4439,14 @@ var Calendar = defineClass(
 
     /**
      * Return the date a year previously.
+     * @param {number} [customStep] - custom step for getting relative date
      * @returns {Date}
      */
-    getPrevYearDate: function() {
+    getPrevYearDate: function(customStep) {
+      if (customStep) {
+        return this._getRelativeDate(customStep);
+      }
+
       switch (this.getType()) {
         case TYPE_DATE:
         case TYPE_MONTH:
@@ -4523,7 +4533,6 @@ module.exports = Calendar;
 "use strict";
 /**
  * @fileoverview Date <-> Text formatting module
- * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  */
 
 
@@ -5093,7 +5102,6 @@ module.exports = off;
 "use strict";
 /**
  * @fileoverview The entry file of DatePicker components
- * @author NHN. FE Development Team
  */
 
 
@@ -5466,7 +5474,6 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__43__;
 "use strict";
 /**
  * @fileoverview Calendar Header
- * @author NHN. FE dev Lab <dl_javascript@nhn.com>
  */
 
 
@@ -5914,7 +5921,6 @@ module.exports = imagePing;
 "use strict";
 /**
  * @fileoverview Calendar body
- * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  */
 
 
@@ -6061,7 +6067,6 @@ module.exports = Body;
 "use strict";
 /**
  * @fileoverview Date layer
- * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  */
 
 
@@ -6299,7 +6304,6 @@ module.exports = function(context) {
 "use strict";
 /**
  * @fileoverview Month layer
- * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  */
 
 
@@ -6432,7 +6436,6 @@ module.exports = function(context) {
 "use strict";
 /**
  * @fileoverview Year layer
- * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  */
 
 
@@ -6548,7 +6551,6 @@ module.exports = function(context) {
 "use strict";
 /**
  * @fileoverview RangeModel
- * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  */
 
 
@@ -6740,7 +6742,6 @@ module.exports = RangeModel;
 "use strict";
 /**
  * @fileoverview Range (in RangeModel)
- * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  */
 
 
@@ -6904,7 +6905,6 @@ module.exports = function(context) {
 "use strict";
 /**
  * @fileoverview DatePicker input(element) component
- * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  */
 
 
@@ -7114,7 +7114,6 @@ module.exports = DatePickerInput;
 "use strict";
 /**
  * @fileoverview Date-Range picker
- * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  */
 
 
@@ -7417,12 +7416,29 @@ var DateRangePicker = defineClass(
       this.fire('change:end');
     },
 
+    /*
+     * Get date of start picker and end picker being same
+     * @returns {boolean}
+     * @private
+     */
+    _isStartAndEndDateSame: function() {
+      return (
+        !!this._endpicker.getDate() &&
+        !!this._startpicker.getDate() &&
+        dateUtil.compare(
+          this._endpicker.getDate(),
+          this._startpicker.getDate(),
+          constants.TYPE_DATE
+        ) === 0
+      );
+    },
+
     /**
      * Set time range on end picker
      * @private
      */
     _setTimeRangeOnEndPicker: function() {
-      var pickerDate, timeRange;
+      var pickerDate, timeRange, timeRangeToSet;
       var endTimePicker = this._endpicker._timePicker;
 
       if (!endTimePicker) {
@@ -7431,9 +7447,10 @@ var DateRangePicker = defineClass(
 
       pickerDate = this._endpicker.getDate() || this._startpicker.getDate();
       timeRange = this._getTimeRangeFromStartPicker();
+      timeRangeToSet = pickerDate && timeRange[pickerDate.getDate()];
 
-      if (pickerDate && timeRange[pickerDate.getDate()]) {
-        endTimePicker.setRange(timeRange[pickerDate.getDate()]);
+      if (this._isStartAndEndDateSame() && timeRangeToSet) {
+        endTimePicker.setRange(timeRangeToSet);
         this._isRangeSet = true;
       } else if (this._isRangeSet) {
         endTimePicker.setRange({ hour: 0, minute: 0 });
